@@ -24,3 +24,13 @@ Example:
 
 
     > $(npm bin)/webpack --watch
+
+### Naming Convention
+* newfolder
+* NewFile
+* NewClass
+* newFunction
+* new_variable  
+
+Filenames should correspond to the class exported by default.  
+Example: `import CoolClass from './cool/CoolClass.js'`
