@@ -7,14 +7,13 @@ vCDAT 2.0
 <img src=https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png height="130px">
 
 ## Installation
-To develop on the front-end you need to have [node](https://docs.npmjs.com/getting-started/installing-node) installed on your computer.
-Homebrew can be used for this step.
+1. Install [node](https://docs.npmjs.com/getting-started/installing-node). Homebrew can be used for this step.
 
-1. Clone repo
+2. Clone repo
 
-2. `cd` into the Front-end directory and run `npm install`.
+3. `cd` into the Front-end directory and run `npm install`.
 
-3. Commands:  
+4. Commands:  
  - To run local server on port 3000: `npm run server`   
  - To build bundle.js file: `npm run build`
 
