@@ -2,9 +2,9 @@
 vCDAT 2.0
 
 # Front-end
-<img src=http://js.devexpress.com/Content/Images/features/html5-css-javascript-logos.png style='width:300px;'>
-<img src=http://red-badger.com/blog/wp-content/uploads/2015/04/react-logo-1000-transparent.png style='width:150px;'>
-<img src=https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png style='width:130px;'>
+<img src=http://js.devexpress.com/Content/Images/features/html5-css-javascript-logos.png style='height:120px;'>
+<img src=http://red-badger.com/blog/wp-content/uploads/2015/04/react-logo-1000-transparent.png style='height:150px;'>
+<img src=https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png style='height:130px;'>
 
 ## Installation
 To develop on the front-end you need to have [node](https://docs.npmjs.com/getting-started/installing-node) installed on your computer.
