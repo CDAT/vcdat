@@ -1,9 +1,9 @@
 module.exports = {
-    entry: __dirname + "/src/js/app.js",
+    entry: __dirname + "/src/js/App.js",
     devtool: 'source-map',
     output: {
         path: __dirname + "/dist",
-        filename: "bundle.js"
+        filename: "Bundle.js"
     },
     module: {
         loaders: [{
