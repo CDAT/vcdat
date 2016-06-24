@@ -4,6 +4,7 @@
   "description": "Front-end GUI for CDAT using React and Redux",
   "main": "src/js/app.js",
   "dependencies": {
+    "imports-loader": "^0.6.5",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
