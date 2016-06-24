@@ -3,7 +3,7 @@ vCDAT 2.0
 
 # Front-end
 <img src=http://js.devexpress.com/Content/Images/features/html5-css-javascript-logos.png height="120px">
-<img src=http://red-badger.com/blog/wp-content/uploads/2015/04/react-logo-1000-transparent.png height="180px">
+<img src=http://red-badger.com/blog/wp-content/uploads/2015/04/react-logo-1000-transparent.png height="150px">
 <img src=https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png height="130px">
 
 ## Installation
