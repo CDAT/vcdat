@@ -1,8 +1,8 @@
 {
-  "name": "react-without-jsx",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "vCDAT",
+  "version": "0.1.0",
+  "description": "Front-end GUI for CDAT using React and Redux",
+  "main": "src/js/app.js",
   "dependencies": {
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
@@ -23,5 +23,5 @@
     "server": "webpack-dev-server --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base src/ --output-public-path=/dist/",
     "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/"
   },
-  "license": "ISC"
+  "license": ""
 }
