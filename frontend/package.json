@@ -4,6 +4,11 @@
   "description": "Front-end GUI for CDAT using React and Redux",
   "main": "src/js/app.js",
   "dependencies": {
+<<<<<<< 55437d797bae29dd1d2da0b6a65b5d0c0a6f914c
+=======
+    "golden-layout": "^1.5.1",
+    "imports-loader": "^0.6.5",
+>>>>>>> fixed ReactDOM not defined for golden layout without using global var
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
@@ -20,8 +25,9 @@
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "server": "webpack-dev-server --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base src/ --output-public-path=/dist/",
+    "start": "webpack-dev-server --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base src/ --output-public-path=/dist/",
     "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/"
   },
-  "license": ""
+  "license": "Unknown",
+  "repository": "http://github.com/UV-CDAT/vcdat"
 }
