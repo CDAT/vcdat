@@ -1,5 +1,4 @@
-// import React from 'react'
-var React = require('react')
+import React from 'react'
 import Cell from '../components/Cell.jsx'
 import {connect} from 'react-redux'
 // import GoldenLayout from 'golden-layout'
@@ -21,7 +20,7 @@ var SpreadsheetContainer = React.createClass({
                             type: 'react-component',
                             component: 'test-component',
                             props: {
-                                label: 'A'
+                                id: 'A'
                             }
                         }, {
                             type: 'column',
@@ -30,13 +29,13 @@ var SpreadsheetContainer = React.createClass({
                                     type: 'react-component',
                                     component: 'test-component',
                                     props: {
-                                        label: 'B'
+                                        id: 'B'
                                     }
                                 }, {
                                     type: 'react-component',
                                     component: 'test-component',
                                     props: {
-                                        label: 'C'
+                                        id: 'C'
                                     }
                                 }
                             ]
@@ -45,8 +44,8 @@ var SpreadsheetContainer = React.createClass({
                 }
             ]
         };
-
-        this.myLayout = new GoldenLayout(config, document.getElementById('spreadsheet-div'));
+        var div = document.getElementById('spreadsheet-div')
+        this.myLayout = new GoldenLayout(config, div);
         this.myLayout.registerComponent('test-component', Cell);
         window.addEventListener('resize', (ev) => {
             this.myLayout.updateSize();
