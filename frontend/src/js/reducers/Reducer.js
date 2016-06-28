@@ -25,14 +25,14 @@ var default_config = {
 
 var div = document.getElementById('spreadsheet-div');
 var default_state = {
-    layout: {},
     config:default_config
 }
 
 const projectReducer = (state = default_state, action) => {
+    console.log('reducing');
     switch(action.type){
-        case 'LAYOUT_INITIALIZED':
-            var new_state = jQuery.extend(true, {}, state, {layout: action.layout});
+        case 'CONFIG_UPDATED':
+            var new_state = jQuery.extend(true, {}, state, {config: action.config});
             console.log('layout initted', new_state)
             return new_state;
         case 'ADD_ITEM':
@@ -40,7 +40,7 @@ const projectReducer = (state = default_state, action) => {
             var new_layout = jQuery.extend(true, {}, state.layout);
             console.log('new lay', new_layout);
             new_layout.root.contentItems[0].addChild(action.item);
-            var new_state = jQuery.extend(true, {}, state, {layout: new_layout});
+            var new_state = jQuery.extend(true, {}, state, {config: action.config});
             console.log('new state', new_state);
             return new_state
         default:

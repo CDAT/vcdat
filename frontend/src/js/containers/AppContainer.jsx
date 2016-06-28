@@ -8,7 +8,7 @@ var AppContainer = React.createClass({
     render() {
         return (
             <div>
-                <Toolbar onUndo={this.props.undo} onRedo={this.props.redo}/>
+                <Toolbar onUndo={this.props.undo} onRedo={this.props.redo} undoEnabled={this.props.undoEnabled} redoEnabled={this.props.redoEnabled}/>
                 <SpreadsheetContainer id='spreadsheet'/>
             </div>
         )
@@ -16,7 +16,9 @@ var AppContainer = React.createClass({
 })
 
 const mapStateToProps = (state) => {
-    return state.present;
+    var undoEnabled = state.past.length > 0;
+    var redoEnabled = state.future.length > 0;
+    return jQuery.extend({}, state.present, {undoEnabled: undoEnabled, redoEnabled: redoEnabled});
 }
 
 const mapDispatchToProps = (dispatch) => {

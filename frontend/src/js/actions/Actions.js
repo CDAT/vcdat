@@ -5,10 +5,10 @@ var Actions = {
             item: item
         }
     },
-    layoutInitialized(layout){
+    configUpdated(config){
         return {
-            type: 'LAYOUT_INITIALIZED',
-            layout:layout
+            type: 'CONFIG_UPDATED',
+            config, config
         }
     }
 

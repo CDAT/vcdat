@@ -6,11 +6,10 @@ const GoldenLayout = require('imports?React=react&ReactDOM=react-dom!golden-layo
 
 var SpreadsheetContainer = React.createClass({
     getInitialState() {
-        this.layout = this.props.present.projects.layout;
         this.config = this.props.present.projects.config;
         return {};
     },
-    setupSpreadsheet() {
+    setupSpreadsheet(update=true) {
         var div = document.getElementById('spreadsheet-div');
         //console.log('config', this.props.present.projects.config);
         console.log(this.config);
@@ -25,17 +24,24 @@ var SpreadsheetContainer = React.createClass({
         //})
         console.log('initting');
         this.layout.init();
-        this.props.layoutInitialized(this.layout);
+        if(update){
+            this.props.configUpdated(this.layout.toConfig);
+        }
     },
     componentDidMount() {
         this.setupSpreadsheet();
     },
     componentDidUpdate() {
-        console.log('componentDidUpdate', this.layout);
-        this.layout.init();
+        console.log('componentDidUpdate', this.props.undo_redo);
+        if (this.props.undo_redo){
+            var lay = document.getElementsByClassName('lm_goldenlayout')[0];
+            console.log(lay);
+            lay.parentNode.removeChild(lay);
+            this.setupSpreadsheet(false);
+        }
     },
     addSheet() {
-        this.props.addItem({
+        this.layout.root.contentItems[0].addChild({
             type: 'stack',
             title: 'New Sheet',
             content: [
@@ -52,7 +58,7 @@ var SpreadsheetContainer = React.createClass({
         return (
             <div id='spreadsheet-div'>
                 <button className='black' onClick={this.addSheet}>+</button>
-                // {JSON.stringify(this.props.present.projects.config)}
+                {JSON.stringify(this.props.present.projects.config)}
             </div>
         )
     }
@@ -60,14 +66,18 @@ var SpreadsheetContainer = React.createClass({
 
 const mapStateToProps = (state) => {
     console.log('mapping state', state);
-    return state;
+    var undo_redo = false;
+    if(state.future.length > 0){
+        undo_redo = true;
+    }
+    return jQuery.extend({}, state, {undo_redo: undo_redo});
     // return {config: state.present.projects.config};
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         addItem: (item) => dispatch(Actions.addItem(item)),
-        layoutInitialized: (layout) => dispatch(Actions.layoutInitialized(layout))
+        configUpdated: (config) => dispatch(Actions.configUpdated(config))
     }
 }
 
