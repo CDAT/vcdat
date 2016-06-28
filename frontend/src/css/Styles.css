@@ -19,3 +19,7 @@ canvas{
     height:25px;
     width:25px;
 }
+
+.undo-redo-button:disabled{
+    color:black;
+}
