@@ -5,6 +5,13 @@ while [ -n $curpath ] && [ `basename $curpath` != "vcdat" ]; do
     curpath=`dirname $curpath`
 done
 
+if [ -n $VIRTUAL_ENV ] && [ "$VIRTUAL_ENV" = "$curpath/backend/venv" ]; then
+    echo "Virtual Environment already loaded"
+else
+    echo "Loading virtual environment..."
+    source $curpath/backend/venv/bin/activate
+fi
+
 be_pid=0
 
 refresh_backend() {
