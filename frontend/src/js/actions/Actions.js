@@ -1,17 +1,16 @@
 var Actions = {
-    addItem(item){
+    rowCountChanged(count) {
         return {
-            type: 'ADD_ITEM',
-            item: item
+            type: 'ROW_COUNT_CHANGED',
+            count: count
         }
     },
-    configUpdated(config){
+    colCountChanged(count) {
         return {
-            type: 'CONFIG_UPDATED',
-            config, config
+            type: 'COL_COUNT_CHANGED',
+            count: count
         }
     }
-
 }
 
 export default Actions;
