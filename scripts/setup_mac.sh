@@ -48,7 +48,7 @@ fi
 if [ -z $VENV_bin ]; then
     echo "Installing virtualenv..."
     if [ -z `which pip` ]; then
-        echo "Couldn't find pip, installing pip..."
+        echo "Couldn\'t find pip, installing pip..."
         sudo easy_install pip
         if [ $? -eq 0 ]; then
             echo "Installed pip, installing virtualenv..."
@@ -67,7 +67,7 @@ if [ -z $VENV_bin ]; then
 fi
 
 if [ -z $FSWATCH_bin ]; then
-    echo "Installing fswatch...""
+    echo "Installing fswatch..."
     brew install fswatch
     if [ $? -eq 0 ]; then
         echo "Installed fswatch"
@@ -80,11 +80,12 @@ fi
 current_dir=`pwd`
 
 if [[ $current_dir == */vcdat* ]]; then
-    while [ `basename $current_dir` -ne "vcdat" ]; do
+    while [ `basename $current_dir` != "vcdat" ]; do
         current_dir=`dirname $current_dir`
     done
+    echo $current_dir
     echo "Installing requirements"
-    pushd $current_dir >/dev/null
+    pushd $current_dir
     cd backend
     virtualenv venv
     source venv/bin/activate
@@ -94,8 +95,8 @@ if [[ $current_dir == */vcdat* ]]; then
     cd frontend
     npm --cafile=$HOME/ca.llnl.gov.pem install
     echo "Done installing. You should be good to go."
-    popd >/dev/null
+    popd
 else
-    echo "Can't find vcdat directory, not installing app dependencies."
+    echo "Can\'t find vcdat directory, not installing app dependencies."
     exit 1
 fi
