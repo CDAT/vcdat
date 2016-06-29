@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
 *.pyc
-venv/
-env/
+backend/venv
+frontend/dist
+backend/env
