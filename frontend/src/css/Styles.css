@@ -1,5 +1,5 @@
 #spreadsheet-div{
-    height:500px;
+    height:70vh;
 }
 
 canvas{
@@ -22,4 +22,37 @@ canvas{
 
 .undo-redo-button:disabled{
     color:black;
+}
+#table-div{
+    height:100%;
+}
+
+#spreadsheet-table{
+    table-layout: fixed;
+    display:block;
+    height:100%;
+    width:100%;
+}
+#spreadsheet-table-body{
+    display:block;
+    height:100%;
+}
+
+#spreadsheet-table-body tr{
+    display:block;
+    height:inherit;
+}
+
+#spreadsheet-table-body tr td{
+    display:block;
+    height:inherit
+}
+
+.cell-image{
+    width:100%;
+    height:100%;
+}
+
+#spin-row, #spin-column{
+    width:40px;
 }
