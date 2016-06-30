@@ -3,18 +3,29 @@ import Cell from '../components/Cell.jsx'
 import {connect} from 'react-redux'
 import Actions from '../actions/Actions.js'
 
+// var Row = React.createClass({
+//     render(){
+//         rows = []
+//         for (var i = 0; i < this.props.rowCount; i++) {
+//
+//         }
+//     return (
+//
+//     )
+// })
+
 var Row = React.createClass({
     render() {
         var cols = [];
         for (var i = 0; i < this.props.colCount; i++) {
             cols.push(
-                <td key={'col' + i}><Cell id={'cell' + this.props.row + i}/></td>
+                <div className='col' key={'col' + i}><Cell id={'cell' + this.props.row + i}/></div>
             )
         }
         return (
-            <tr>
+            <div className='row'>
                 {cols}
-            </tr>
+            </div>
         )
     }
 })
@@ -30,27 +41,22 @@ var SpreadsheetContainer = React.createClass({
         this.props.rowCountChanged(event.target.value);
     },
     updateColCount(event) {
-        this.props.rowCountChanged(event.target.value);
+        this.props.colCountChanged(event.target.value);
     },
     render() {
         var rows = [];
         for (var i = 0; i < this.props.row_count; i++) {
-            rows.push(<Row key={'row' + i} colCount={this.props.col_count} row={i}/>);
+            rows.push(<Row key={'row' + i} colCount={this.props.col_count} row={i} className='row-element'/>);
         }
         console.log('rows', rows);
         return (
-            <div id='spreadsheet-div'>
+            <div >
                 <div>
-                    <input type='number' id='spin-row' defaultValue={this.props.row_count} min='1' max='4' onChange={this.updateRowCount}/>
-                    <input type='number' id='spin-column' defaultValue={this.props.col_count} min='1' max='4' onChange={this.updateColCount}/>
+                    <input type='number' id='spin-row' value={this.props.row_count} min='1' max='4' onChange={this.updateRowCount}/>
+                    <input type='number' id='spin-column' value={this.props.col_count} min='1' max='4' onChange={this.updateColCount}/>
                 </div>
-                <div id='table-div'>
-                    <table id='spreadsheet-table'>
-                        <tbody id='spreadsheet-table-body'>
-                            {rows}
-                        </tbody>
-                    </table>
-
+                <div id='spreadsheet-div'>
+                    {rows}
                 </div>
             </div>
         )
