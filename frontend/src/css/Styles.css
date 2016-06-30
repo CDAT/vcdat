@@ -1,4 +1,6 @@
 #spreadsheet-div{
+    display:flex;
+    flex-direction: column;
     height:70vh;
 }
 
@@ -21,36 +23,33 @@ canvas{
 }
 
 .undo-redo-button:disabled{
-    color:black;
-}
-#table-div{
-    height:100%;
+    color: #ACADAD;
 }
 
-#spreadsheet-table{
-    table-layout: fixed;
-    display:block;
-    height:100%;
-    width:100%;
-}
-#spreadsheet-table-body{
-    display:block;
-    height:100%;
+.row{
+    flex:1;
+    display: flex;
 }
 
-#spreadsheet-table-body tr{
-    display:block;
-    height:inherit;
-}
-
-#spreadsheet-table-body tr td{
-    display:block;
-    height:inherit
+.col{
+    flex:1;
 }
 
 .cell-image{
     width:100%;
     height:100%;
+}
+
+.cell{
+    border: 1px solid black;
+    background-color:white;
+    width:100%;
+    height:100%;
+}
+
+.cell-image{
+    height:100%;
+    width:100%;
 }
 
 #spin-row, #spin-column{
