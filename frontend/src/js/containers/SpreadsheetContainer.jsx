@@ -19,11 +19,11 @@ var Row = React.createClass({
         var cols = [];
         for (var i = 0; i < this.props.colCount; i++) {
             cols.push(
-                <div className='col' key={'col' + i}><Cell id={'cell' + this.props.row + i}/></div>
+                <div className='spreadsheet-col' key={'col' + i}><Cell id={'cell' + this.props.row + i}/></div>
             )
         }
         return (
-            <div className='row'>
+            <div className='spreadsheet-row'>
                 {cols}
             </div>
         )
@@ -42,6 +42,9 @@ var SpreadsheetContainer = React.createClass({
     },
     updateColCount(event) {
         this.props.colCountChanged(event.target.value);
+    },
+    componentDidMount(){
+        $('#spreadsheet-div').bind('mousedown', (e) => {e.metaKey = true;}).selectable({filter: '.cell'})
     },
     render() {
         var rows = [];
