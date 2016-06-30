@@ -26,12 +26,12 @@ canvas{
     color: #ACADAD;
 }
 
-.row{
+.spreadsheet-row{
     flex:1;
     display: flex;
 }
 
-.col{
+.spreadsheet-col{
     flex:1;
 }
 
@@ -41,15 +41,31 @@ canvas{
 }
 
 .cell{
-    border: 1px solid black;
+    outline: 1px solid black;
+    position:relative;
     background-color:white;
     width:100%;
     height:100%;
 }
 
+/*.cell.ui-selected{
+    border: 5px solid blue;
+}*/
+
 .cell-image{
     height:100%;
     width:100%;
+}
+
+.ui-selected div{
+    width:100%;
+    box-sizing: border-box;
+    border: 10px solid blue;
+}
+
+.border{
+    position:absolute;
+    top:0;
 }
 
 #spin-row, #spin-column{
