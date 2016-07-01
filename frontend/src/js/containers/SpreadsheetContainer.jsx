@@ -3,17 +3,6 @@ import Cell from '../components/Cell.jsx'
 import {connect} from 'react-redux'
 import Actions from '../actions/Actions.js'
 
-// var Row = React.createClass({
-//     render(){
-//         rows = []
-//         for (var i = 0; i < this.props.rowCount; i++) {
-//
-//         }
-//     return (
-//
-//     )
-// })
-
 var Row = React.createClass({
     render() {
         var cols = [];
@@ -38,26 +27,29 @@ var SpreadsheetContainer = React.createClass({
         console.log('addsheet');
     },
     updateRowCount(event) {
-        this.props.rowCountChanged(event.target.value);
+        this.props.rowCountChanged(parseInt(event.target.value));
     },
     updateColCount(event) {
-        this.props.colCountChanged(event.target.value);
+        this.props.colCountChanged(parseInt(event.target.value));
     },
-    componentDidMount(){
-        // $('#spreadsheet-div').bind('mousedown', (e) => {e.metaKey = true;}).selectable({filter: '.cell'})
+    componentDidMount() {
         $('#spreadsheet-div').selectable({filter: '.cell'})
     },
     render() {
+        console.log('props', this.props);
         var rows = [];
         for (var i = 0; i < this.props.row_count; i++) {
             rows.push(<Row key={'row' + i} colCount={this.props.col_count} row={i} className='row-element'/>);
         }
-        console.log('rows', rows);
         return (
             <div >
                 <div>
+                    <button className='black' onClick={this.addSheet}>+</button>
                     <input type='number' id='spin-row' value={this.props.row_count} min='1' max='4' onChange={this.updateRowCount}/>
                     <input type='number' id='spin-column' value={this.props.col_count} min='1' max='4' onChange={this.updateColCount}/>
+                    <ul id='sheet-list'>
+                        <li><button className='black'>Sheet1</button></li>
+                    </ul>
                 </div>
                 <div id='spreadsheet-div'>
                     {rows}
@@ -68,8 +60,8 @@ var SpreadsheetContainer = React.createClass({
 });
 
 const mapStateToProps = (state) => {
-    return state.present.projects;
-    // return {config: state.present.projects.config};
+    console.log(state.present.projects.sheets);
+    return state.present.projects.sheets[state.present.projects.cur_sheet]
 }
 
 const mapDispatchToProps = (dispatch) => {

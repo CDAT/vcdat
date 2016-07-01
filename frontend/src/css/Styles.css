@@ -1,73 +1,73 @@
-#spreadsheet-div{
-    display:flex;
+#spreadsheet-div {
+    display: flex;
     flex-direction: column;
-    height:70vh;
+    height: 70vh;
 }
-
-canvas{
-    width:100%;
-    height:100%;
+canvas {
+    width: 100%;
+    height: 100%;
 }
-
-.black{
-    color:black;
+.black {
+    color: black;
 }
-
-.toolbar{
-    height:50px;
+.toolbar {
+    height: 50px;
 }
-
-.toolbar button img{
-    height:25px;
-    width:25px;
+.toolbar button img {
+    height: 25px;
+    width: 25px;
 }
-
-.undo-redo-button:disabled{
+.undo-redo-button:disabled {
     color: #ACADAD;
 }
-
-.spreadsheet-row{
-    flex:1;
+.spreadsheet-row {
+    flex: 1;
     display: flex;
 }
-
-.spreadsheet-col{
-    flex:1;
+.spreadsheet-col {
+    flex: 1;
 }
-
-.cell-image{
-    width:100%;
-    height:100%;
+.cell-image {
+    width: 100%;
+    height: 100%;
 }
-
-.cell{
+.cell {
     outline: 1px solid black;
-    position:relative;
-    background-color:white;
-    width:100%;
-    height:100%;
+    position: relative;
+    background-color: white;
+    width: 100%;
+    height: 100%;
 }
-
-/*.cell.ui-selected{
-    border: 5px solid blue;
-}*/
-
-.cell-image{
-    height:100%;
-    width:100%;
+.cell-image {
+    height: 100%;
+    width: 100%;
 }
-
-.ui-selected div{
-    width:100%;
+.ui-selected .border {
+    width: 100%;
     box-sizing: border-box;
     border: 10px solid blue;
 }
-
-.border{
-    position:absolute;
-    top:0;
+.ui-selecting .border {
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid blue;
+}
+.border {
+    position: absolute;
+    top: 0;
+}
+#spin-row, #spin-column {
+    width: 40px;
 }
 
-#spin-row, #spin-column{
-    width:40px;
+/*jquery css for multi selection click and drag*/
+.ui-selectable-helper{
+  position:absolute;
+  z-index:100;
+  border:1px dotted black;
+}
+
+#sheet-list{
+    display:inline-block;
+    list-style-type: none;
 }

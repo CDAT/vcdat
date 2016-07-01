@@ -5,18 +5,16 @@ var Cell = React.createClass({
     resizeCells(){
         $('.cell-image').each((index, el) => {
                 el = $(el);
-                var height = el.parent().height();
+                var height = el.parent().innerHeight();
                 el.height(height);
-                console.log('setting height', height, el.parent().find('.border')[0]);
-                $(el.parent().find('.border')[0]).height(height);
-                console.log('after', el.parent().find('.border')[0]);
+                var border = el.next();
+                border.outerHeight(height);
             })
     },
     componentDidMount(){
         this.resizeCells();
         var element = $('.cell')[0];
         new ResizeSensor(element, () => {
-            console.log('resizing');
             this.resizeCells();
         })
     },
