@@ -44,7 +44,8 @@ var SpreadsheetContainer = React.createClass({
         this.props.colCountChanged(event.target.value);
     },
     componentDidMount(){
-        $('#spreadsheet-div').bind('mousedown', (e) => {e.metaKey = true;}).selectable({filter: '.cell'})
+        // $('#spreadsheet-div').bind('mousedown', (e) => {e.metaKey = true;}).selectable({filter: '.cell'})
+        $('#spreadsheet-div').selectable({filter: '.cell'})
     },
     render() {
         var rows = [];

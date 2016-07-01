@@ -7,8 +7,9 @@ var Cell = React.createClass({
                 el = $(el);
                 var height = el.parent().height();
                 el.height(height);
-                console.log('setting height', height);
-                el.parent().find('.border').height(height);
+                console.log('setting height', height, el.parent().find('.border')[0]);
+                $(el.parent().find('.border')[0]).height(height);
+                console.log('after', el.parent().find('.border')[0]);
             })
     },
     componentDidMount(){
