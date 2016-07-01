@@ -5,10 +5,10 @@ var Toolbar = React.createClass({
         return (
             <div className='toolbar'>
                 <button className='btn undo-redo-button' onClick={this.props.onUndo} disabled={!this.props.undoEnabled}>
-                    <img src='/img/undo_icon.png'></img>
+                    <i className='material-icons'>undo</i>
                 </button>
                 <button className='btn undo-redo-button' onClick={this.props.onRedo} disabled={!this.props.redoEnabled}>
-                    <img src='/img/redo_icon.png'></img>
+                    <i className='material-icons'>redo</i>
                 </button>
             </div>
         )

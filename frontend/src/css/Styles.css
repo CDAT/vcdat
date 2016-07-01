@@ -71,3 +71,12 @@ canvas {
     display:inline-block;
     list-style-type: none;
 }
+.sheet-list-item{
+    display:inline-block;
+}
+.btn{
+    border-radius: 0px;
+}
+button.activated{
+    
+}
