@@ -7,7 +7,7 @@ var default_sheet = {
 }
 
 var default_project = {
-    cur_sheet: 0,
+    cur_sheet_index: 0,
     sheets: [default_sheet]
 }
 
@@ -28,8 +28,17 @@ const projectReducer = (state = default_project, action) => {
         case 'COL_COUNT_CHANGED':
             var new_state = jQuery.extend(true, {}, state);
             console.log('new state', new_state);
-            sheetReducer(new_state.sheets[new_state.cur_sheet], action)
+            sheetReducer(new_state.sheets[new_state.cur_sheet_index], action)
             console.log('after', new_state);
+            return new_state;
+        case 'ADD_SHEET':
+            var new_state = jQuery.extend(true, {}, state);
+            new_state.sheets.push(default_sheet);
+            new_state.cur_sheet_index = new_state.sheets.length-1;
+            return new_state;
+        case 'CHANGE_CUR_SHEET_INDEX':
+            var new_state = jQuery.extend(true, {}, state);
+            new_state.cur_sheet_index = action.index;
             return new_state;
         default:
             return state;
@@ -64,7 +73,7 @@ const reducers = combineReducers({
 })
 
 const undoableReducer = undoable(reducers,{
-    filter: excludeAction(['CHANGE_VISIBILITY'])
+    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX'])
 })
 
 export default undoableReducer
