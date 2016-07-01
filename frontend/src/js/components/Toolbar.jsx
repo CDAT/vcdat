@@ -2,7 +2,6 @@ import React from 'react'
 
 var Toolbar = React.createClass({
     render() {
-        console.log('undo redo', this.props.undoEnabled, this.props.redoEnabled);
         return (
             <div className='toolbar'>
                 <button className='btn undo-redo-button' onClick={this.props.onUndo} disabled={!this.props.undoEnabled}>
