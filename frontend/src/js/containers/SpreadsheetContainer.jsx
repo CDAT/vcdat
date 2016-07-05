@@ -45,9 +45,12 @@ var SpreadsheetContainer = React.createClass({
     },
     componentDidMount() {
         $('#spreadsheet-div').selectable({filter: '.cell'})
+        $('#spreadsheet-container').resizable({
+            handles: 'e, w',
+            minWidth: 500
+        })
     },
     render() {
-        console.log('props', this.props, this.row_count);
         this.row_count = this.props.cur_sheet.row_count;
         this.col_count = this.props.cur_sheet.col_count;
         var rows = [];
@@ -55,7 +58,7 @@ var SpreadsheetContainer = React.createClass({
             rows.push(<Row key={'row' + i} colCount={this.col_count} row={i} className='row-element'/>);
         }
         return (
-            <div >
+            <div id='spreadsheet-container'>
                 <div>
                     <input type='number' id='spin-row' value={this.row_count} min='1' max='4' onChange={this.updateRowCount}/>
                     <input type='number' id='spin-column' value={this.col_count} min='1' max='4' onChange={this.updateColCount}/>
@@ -78,7 +81,6 @@ var SpreadsheetContainer = React.createClass({
 });
 
 const mapStateToProps = (state) => {
-    console.log('mapping to props');
     return {
         sheets: state.present.projects.sheets,
         cur_sheet: state.present.projects.sheets[state.present.projects.cur_sheet_index],
