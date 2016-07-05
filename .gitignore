@@ -1,7 +1,8 @@
 .DS_Store
+<<<<<<< 61ccf1df696de510f50e7125b9966e8d2db1c161
 node_modules
 *.pyc
 backend/venv
 frontend/dist
 backend/env
-*/.jquery-ui-1.11.4.custom
+*jquery-ui-1.11.4.custom
