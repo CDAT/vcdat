@@ -60,13 +60,6 @@ canvas {
     width: 40px;
 }
 
-/*jquery css for multi selection click and drag*/
-.ui-selectable-helper{
-  position:absolute;
-  z-index:100;
-  border:1px dotted black;
-}
-
 #sheet-list{
     display:inline-block;
     list-style-type: none;
@@ -77,6 +70,6 @@ canvas {
 .btn{
     border-radius: 0px;
 }
-button.activated{
-    
+#spreadsheet-container{
+    margin:0 10px 0 10px;
 }
