@@ -27,9 +27,7 @@ const projectReducer = (state = default_project, action) => {
         case 'ROW_COUNT_CHANGED':
         case 'COL_COUNT_CHANGED':
             var new_state = jQuery.extend(true, {}, state);
-            console.log('new state', new_state);
             sheetReducer(new_state.sheets[new_state.cur_sheet_index], action)
-            console.log('after', new_state);
             return new_state;
         case 'ADD_SHEET':
             var new_state = jQuery.extend(true, {}, state);
