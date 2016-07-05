@@ -1,5 +1,4 @@
 .DS_Store
-<<<<<<< 61ccf1df696de510f50e7125b9966e8d2db1c161
 node_modules
 *.pyc
 backend/venv
