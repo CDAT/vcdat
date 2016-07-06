@@ -4,3 +4,4 @@ node_modules
 backend/venv
 frontend/dist
 backend/env
+*jquery-ui-1.11.4.custom
