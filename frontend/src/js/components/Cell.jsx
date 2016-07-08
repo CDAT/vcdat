@@ -20,7 +20,7 @@ var Cell = React.createClass({
     },
     render(){
         return(
-            <div className='cell'>
+            <div className='cell' data-row={this.props.row} data-col={this.props.col}>
                 <img className='cell-image' src='deps/clt_image.png' alt='climate_data'></img>
                 <div className='border'></div>
             </div>
