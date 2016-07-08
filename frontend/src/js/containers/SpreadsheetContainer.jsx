@@ -8,7 +8,7 @@ var Row = React.createClass({
         var cols = [];
         for (var i = 0; i < this.props.colCount; i++) {
             cols.push(
-                <div className='spreadsheet-col' key={'col' + i}><Cell id={'cell' + this.props.row + i}/></div>
+                <div className='spreadsheet-col' key={'col' + i}><Cell row={this.props.row} col={i}/></div>
             )
         }
         return (
@@ -44,8 +44,23 @@ var SpreadsheetContainer = React.createClass({
         this.props.changeCurSheetIndex(index);
     },
     componentDidMount() {
-        $('#spreadsheet-div').selectable({filter: '.cell'})
+        $('#spreadsheet-div').selectable({
+            filter: '.cell',
+            stop: this.updateSelectedCells
+        })
 
+    },
+    updateSelectedCells(event, ui){
+        console.log('event', event);
+        console.log('ui', ui);
+        $(event.target).find('.ui-selected').each((integer, value) => {
+            var value = $(value);
+            console.log(value);
+            var row = value.attr('data-row');
+            var col = value.attr('data-col');
+            console.log('rc',row, col);
+
+        })
     },
     removeSheet(index, event){
         event.stopPropagation();
