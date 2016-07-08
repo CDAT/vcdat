@@ -1,5 +1,5 @@
 import React from 'react'
-import Inspector from '../components/Inspector.jsx'
+import InspectorContainer from './InspectorContainer.jsx'
 import Animation from '../components/Animation.jsx'
 
 var RightSideBar = React.createClass({
@@ -14,7 +14,7 @@ var RightSideBar = React.createClass({
     render(){
         return (
             <div id='right-side-bar'>
-                <Inspector />
+                <InspectorContainer />
                 <Animation />
             </div>
         )
