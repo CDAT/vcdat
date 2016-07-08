@@ -4,11 +4,11 @@ var Toolbar = React.createClass({
     render() {
         return (
             <div className='toolbar'>
-                <button className='btn undo-redo-button' onClick={this.props.onUndo} disabled={!this.props.undoEnabled}>
-                    <i className='material-icons'>undo</i>
+                <button className='btn btn-default' onClick={this.props.onUndo} disabled={!this.props.undoEnabled}>
+                    <i className='glyphicon glyphicon-share-alt icon-flipped'></i>
                 </button>
-                <button className='btn undo-redo-button' onClick={this.props.onRedo} disabled={!this.props.redoEnabled}>
-                    <i className='material-icons'>redo</i>
+                <button className='btn btn-default ' onClick={this.props.onRedo} disabled={!this.props.redoEnabled}>
+                    <i className='glyphicon glyphicon-share-alt'></i>
                 </button>
             </div>
         )

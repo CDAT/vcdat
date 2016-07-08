@@ -45,10 +45,12 @@ var SpreadsheetContainer = React.createClass({
     },
     componentDidMount() {
         $('#spreadsheet-div').selectable({filter: '.cell'})
-        $('#spreadsheet-container').resizable({
-            handles: 'e, w',
-            minWidth: 500
-        })
+
+    },
+    removeSheet(index, event){
+        console.log('removing sheet', index, event);
+        event.stopPropagation();
+        this.props.removeSheet(index)
     },
     render() {
         this.row_count = this.props.cur_sheet.row_count;
@@ -59,20 +61,20 @@ var SpreadsheetContainer = React.createClass({
         }
         return (
             <div id='spreadsheet-container'>
-                <div>
+                <div id='spreadsheet-toolbar'>
                     <input type='number' id='spin-row' value={this.row_count} min='1' max='4' onChange={this.updateRowCount}/>
                     <input type='number' id='spin-column' value={this.col_count} min='1' max='4' onChange={this.updateColCount}/>
-                    <button className='btn' onClick={this.addSheet}><i className='material-icons'>add</i></button>
-                    <ul id='sheet-list'>
+                    <button className='btn btn-default' id='add-sheet-button' onClick={this.addSheet}><i className='glyphicon glyphicon-plus'></i></button>
+                    <ul id='sheet-list' className='nav nav-tabs'>
                         {this.props.sheets.map((item, index) => {
                             return(
-                                <li className='sheet-list-item' key={'Sheet' + (index+1)}>
-                                    <button onClick={this.changeCurSheetIndex.bind(this, index)} className={'btn ' + (index === this.props.cur_sheet_index ? 'teal accent-3': '')}>{'Sheet' + (index+1)}</button>
+                                <li role='presentation' className={'sheet-list-item ' + (index === this.props.cur_sheet_index ? 'active': '')}  key={'Sheet' + (index+1)}>
+                                    <a onClick={this.changeCurSheetIndex.bind(this, index)}>{'Sheet' + (index+1)}<button onClick={this.removeSheet.bind(this, index)} className="close" disabled={!this.props.remove_enabled} type="button">×</button></a>
                                 </li>)
                         })}
                     </ul>
                 </div>
-                <div id='spreadsheet-div'>
+                <div id='spreadsheet-div' className=''>
                     {rows}
                 </div>
             </div>
@@ -82,9 +84,10 @@ var SpreadsheetContainer = React.createClass({
 
 const mapStateToProps = (state) => {
     return {
-        sheets: state.present.projects.sheets,
-        cur_sheet: state.present.projects.sheets[state.present.projects.cur_sheet_index],
-        cur_sheet_index: state.present.projects.cur_sheet_index
+        sheets: state.present.sheets_model.sheets,
+        cur_sheet: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index],
+        cur_sheet_index: state.present.sheets_model.cur_sheet_index,
+        remove_enabled: state.present.sheets_model.sheets.length > 1
     }
 }
 
@@ -93,7 +96,8 @@ const mapDispatchToProps = (dispatch) => {
         rowCountChanged: (count) => dispatch(Actions.rowCountChanged(count)),
         colCountChanged: (count) => dispatch(Actions.colCountChanged(count)),
         addSheet: () => dispatch(Actions.addSheet()),
-        changeCurSheetIndex: (index) => dispatch(Actions.changeCurSheetIndex(index))
+        changeCurSheetIndex: (index) => dispatch(Actions.changeCurSheetIndex(index)),
+        removeSheet: (index) => dispatch(Actions.removeSheet(index))
     }
 }
 
