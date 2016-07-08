@@ -16,7 +16,7 @@ be_pid=0
 
 refresh_backend() {
    if [ $be_pid -ne 0 ]; then
-      kill $be_pid   
+      kill $be_pid
    fi
    python $curpath/backend/vcdat/app.py &
    be_pid=$!
@@ -37,4 +37,4 @@ trap "{ kill $be_pid; }" INT
 
 route_notification
 
-fswatch -r -o -e "pyc" -e "$curpath/frontend/dist" $curpath/backend $curpath/frontend | (while read; do route_notification; done;)
+fswatch -r -o -e "pyc" -e 'css' -e 'html' -e "$curpath/frontend/dist" $curpath/backend $curpath/frontend | (while read; do route_notification; done;)
