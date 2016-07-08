@@ -63,7 +63,6 @@ var SpreadsheetContainer = React.createClass({
         })
     },
     removeSheet(index, event){
-        console.log('removing sheet', index, event);
         event.stopPropagation();
         this.props.removeSheet(index)
     },

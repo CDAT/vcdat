@@ -25,7 +25,7 @@ var default_cell = {
 var default_sheet = {
     col_count: 1,
     row_count: 1,
-    selected_cell_indices: [0,0],
+    selected_cell_indices: [[0,0]],
     cells: [[default_cell]]
 
 }
@@ -96,7 +96,7 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
         case 'CHANGE_PLOT_TEMPLATE':
             var new_state = jQuery.extend(true, {}, state);
             var sheet = new_state.sheets[state.cur_sheet_index]
-            updateCell(sheet.cells[sheet.selected_cell_indices[0]][sheet.selected_cell_indices[1]], action)
+            updateCell(sheet.cells[sheet.selected_cell_indices[0][0]][sheet.selected_cell_indices[0][1]], action)
             return new_state;
         case 'ROW_COUNT_CHANGED':
             var new_state = jQuery.extend(true, {}, state);
@@ -147,7 +147,7 @@ Tree Structure:
                     {
                         row_count: number
                         col_count: number
-                        selected_cell_indices: [0,0] <--[-1, -1] if more than one or none selected
+                        selected_cell_indices: [[0,0]] <--[[-1, -1]] for none selected. length > 1 for multi select
                         cells: [                  <--two dim array row, col
                                     [
                                         {
