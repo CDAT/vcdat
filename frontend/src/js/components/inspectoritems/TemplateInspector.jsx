@@ -14,13 +14,13 @@ var TemplateInspector = React.createClass({
                                     <span className="caret"></span>
                                 </button>
                                 <ul className="dropdown-menu">
-                                    {this.props.templates.map((value, index) => {
+                                    {(this.props.populateInspector ? this.props.templates.map((value, index) => {
                                         return (
                                             <li onClick={this.props.changePlotTemplate.bind(this, value)} key={'inspector_temp_' + value} className={'inspector-dropdown-item ' + (value === this.props.template
                                                 ? 'active'
                                                 : '')}>{value}</li>
                                         )
-                                    })}
+                                    }): [])}
                                 </ul>
                             </td>
                             <td className='edit-button'>

@@ -27,11 +27,11 @@ var PlotInspector = React.createClass({
                                 <tr>
                                     <td>
                                         <button type="button" className="btn btn-info dropdown-toggle dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span className='inspector-dropdown-title'>{'Plot ' + this.props.plotBeingEdited}</span>
+                                            <span className='inspector-dropdown-title'>{(this.props.populateInspector ? 'Plot ' + this.props.plotBeingEdited : [] )}</span>
                                             <span className="caret"></span>
                                         </button>
                                         <ul className="dropdown-menu">
-                                            {this.getPlotItems(this.props.plotBeingEdited)}
+                                            {(this.props.populateInspector ? this.getPlotItems(this.props.plotBeingEdited) : [])}
                                         </ul>
                                     </td>
                                     <td className='edit-button'>

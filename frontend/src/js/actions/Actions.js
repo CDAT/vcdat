@@ -47,6 +47,12 @@ var Actions = {
             type: 'CHANGE_PLOT_TEMPLATE',
             value: value
         }
+    },
+    updateSelectedCells(selected_cells){
+        return{
+            type: 'UPDATE_SELECTED_CELLS',
+            selected_cells: selected_cells
+        }
     }
 
 }

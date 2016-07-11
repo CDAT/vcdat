@@ -25,7 +25,7 @@ var default_cell = {
 var default_sheet = {
     col_count: 1,
     row_count: 1,
-    selected_cell_indices: [[0,0]],
+    selected_cell_indices: [[-1,-1]],
     cells: [[default_cell]]
 
 }
@@ -35,15 +35,43 @@ var default_sheets_model = {
     sheets: [default_sheet]
 }
 
-const sheetReducer = (sheet = default_sheet, action) => {
-    switch(action.type){
-        case 'ROW_COUNT_CHANGED':
-            sheet.row_count = action.count;
-            break;
-        case 'COL_COUNT_CHANGED':
-            sheet.col_count = action.count;
-            break;
+const createCellGrid = (sheet) => {
+    console.log('sheet', sheet);
+    var cells = sheet.cells;
+    var row_count = sheet.row_count;
+    var col_count = sheet.col_count;
+    var rows = []
+    for (var i = 0; i < row_count;i++){
+        let col = []
+        for (var j = 0; j < col_count; j++){
+            if(i < cells.length && j < cells[i].length){
+                col.push(cells[i][j]);
+            }
+            else{
+                col.push(default_cell);
+            }
+        }
+        rows.push(col);
     }
+    //update selected cells
+    console.log('rows, cols', row_count, col_count);
+    console.log('updated selected indices before', sheet.selected_cell_indices)
+    var new_arr = [];
+    sheet.selected_cell_indices.forEach((value, index, arr) => {
+        console.log('vals 0 1:', value[0], value[1]);
+        if (!value[0] >= row_count){
+            new_arr.push(value);
+        }
+        if (!value[1] >= col_count){
+            new_arr.push(val);
+        }
+    });
+    if(new_arr.length < 1){
+        new_arr = [[-1, -1]];
+    }
+    sheet.selected_cell_indices = new_arr;
+    console.log('updated selected indices', sheet.selected_cell_indices)
+    return rows
 }
 
 const varListReducer = (state = test_vars, action) => {
@@ -91,22 +119,29 @@ const updateCell = (cell, action) => {
 
 const sheetsModelReducer = (state = default_sheets_model, action) => {
     switch(action.type){
+        case 'UPDATE_SELECTED_CELLS':
+            var new_state = jQuery.extend(true, {}, state);
+            var sheet = new_state.sheets[state.cur_sheet_index];
+            sheet.selected_cell_indices = action.selected_cells;
+            return new_state;
         case 'CHANGE_PLOT_VAR':
         case 'CHANGE_PLOT_GM':
         case 'CHANGE_PLOT_TEMPLATE':
             var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[state.cur_sheet_index]
+            var sheet = new_state.sheets[state.cur_sheet_index];
             updateCell(sheet.cells[sheet.selected_cell_indices[0][0]][sheet.selected_cell_indices[0][1]], action)
             return new_state;
         case 'ROW_COUNT_CHANGED':
             var new_state = jQuery.extend(true, {}, state);
             var sheet = new_state.sheets[new_state.cur_sheet_index];
             sheet.row_count = action.count;
+            sheet.cells = createCellGrid(sheet);
             return new_state;
         case 'COL_COUNT_CHANGED':
             var new_state = jQuery.extend(true, {}, state);
             var sheet = new_state.sheets[new_state.cur_sheet_index];
             sheet.col_count = action.count;
+            sheet.cells = createCellGrid(sheet);
             return new_state;
         case 'ADD_SHEET':
             var new_state = jQuery.extend(true, {}, state);
@@ -180,7 +215,7 @@ const reducers = combineReducers({
 })
 
 const undoableReducer = undoable(reducers,{
-    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX'])
+    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'UPDATE_SELECTED_CELLS'])
 })
 
 export default undoableReducer
