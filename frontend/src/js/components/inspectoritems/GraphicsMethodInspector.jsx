@@ -18,12 +18,12 @@ var GraphicsMethodInspector = React.createClass({
                                             <span className="caret"></span>
                                         </button>
                                         <ul className="dropdown-menu">
-                                            {Object.keys(this.props.graphicsMethods).map((value, index) => {
+                                            {(this.props.populateInspector ? Object.keys(this.props.graphicsMethods).map((value, index) => {
                                                 return (
                                                     <li onClick={this.props.changePlotGM.bind(this, true, value)} key={'inspector_gmp_' + value} className={'inspector-dropdown-item ' + (value === this.props.graphicsMethodParent ? 'active'
                                                         : '')}>{value}</li>
                                                 )
-                                            })}
+                                            }): [])}
                                         </ul>
                                     </div>
                                 </td>
@@ -37,12 +37,12 @@ var GraphicsMethodInspector = React.createClass({
                                             <span className="caret"></span>
                                         </button>
                                         <ul className="dropdown-menu">
-                                            {this.props.graphicsMethods[this.props.graphicsMethodParent].map((value, index) => {
+                                            {(this.props.populateInspector ? this.props.graphicsMethods[this.props.graphicsMethodParent].map((value, index) => {
                                                 return (
                                                     <li onClick={this.props.changePlotGM.bind(this, false, value)} key={'inspector_gm_' + value} className={'inspector-dropdown-item ' + (value === this.props.graphicsMethod ? 'active'
                                                         : '')}>{value}</li>
                                                 )
-                                            })}
+                                            }): [] )}
                                         </ul>
 
                                     </div>

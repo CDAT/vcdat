@@ -13,6 +13,7 @@ var Row = React.createClass({
         }
         return (
             <div className='spreadsheet-row'>
+                <div className='draggable-head'></div>
                 {cols}
             </div>
         )
@@ -51,16 +52,17 @@ var SpreadsheetContainer = React.createClass({
 
     },
     updateSelectedCells(event, ui){
-        console.log('event', event);
-        console.log('ui', ui);
+        var selected_cells = [];
         $(event.target).find('.ui-selected').each((integer, value) => {
             var value = $(value);
-            console.log(value);
             var row = value.attr('data-row');
             var col = value.attr('data-col');
-            console.log('rc',row, col);
-
+            selected_cells.push([row, col]);
         })
+        if (selected_cells.length === 0){
+            selected_cells = [[-1, -1]];
+        }
+        this.props.updateSelectedCells(selected_cells);
     },
     removeSheet(index, event){
         event.stopPropagation();
@@ -111,7 +113,8 @@ const mapDispatchToProps = (dispatch) => {
         colCountChanged: (count) => dispatch(Actions.colCountChanged(count)),
         addSheet: () => dispatch(Actions.addSheet()),
         changeCurSheetIndex: (index) => dispatch(Actions.changeCurSheetIndex(index)),
-        removeSheet: (index) => dispatch(Actions.removeSheet(index))
+        removeSheet: (index) => dispatch(Actions.removeSheet(index)),
+        updateSelectedCells: (selected_cells) => dispatch(Actions.updateSelectedCells(selected_cells))
     }
 }
 
