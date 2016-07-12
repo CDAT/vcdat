@@ -21,7 +21,7 @@ var Cell = React.createClass({
     render(){
         return(
             <div className='cell'>
-                <img className='cell-image' src='../../res/clt_image.png' alt='climate_data'></img>
+                <img className='cell-image' src='deps/clt_image.png' alt='climate_data'></img>
                 <div className='border'></div>
             </div>
         )

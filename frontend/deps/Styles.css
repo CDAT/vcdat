@@ -1,0 +1,227 @@
+/*makes stuff work in firefox*/
+* {
+min-height: 0;
+min-width: 0;
+}
+button:focus{
+    outline:0 !important;
+}
+
+.no-bullets{
+    list-style-type: none;
+}
+
+#spreadsheet-div {
+    display: flex;
+    flex-direction: column;
+    flex:1;
+}
+.black {
+    color: black;
+}
+.toolbar {
+    height: 50px;
+}
+.undo-redo-button:disabled {
+    color: #ACADAD;
+}
+.spreadsheet-row {
+    flex: 1;
+    display: flex;
+}
+.spreadsheet-col {
+    flex: 1;
+}
+.cell-image {
+    width: 100%;
+    height: 100%;
+}
+.cell {
+    outline: 1px solid black;
+    position: relative;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+}
+.ui-selected .border {
+    width: 100%;
+    box-sizing: border-box;
+    border: 10px solid blue;
+}
+.ui-selecting .border {
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid blue;
+}
+.border {
+    position: absolute;
+    top: 0;
+}
+#spin-row, #spin-column {
+    width: 40px;
+}
+#sheet-list {
+    display: inline-block;
+    vertical-align: bottom;
+}
+.sheet-list-item {
+    cursor: pointer;
+}
+#left-side-bar {
+    min-width: 200px;
+    display: inline-block;
+    float: left;
+    background-color: white;
+    height: 80vh !important;
+    vertical-align: top;
+    margin-right: 10px;
+}
+#spreadsheet-container {
+    display: flex;
+    flex-flow:column;
+    float: none;
+    height:80vh;
+}
+#right-side-bar {
+    width:200px;
+    min-width: 200px;
+    display: inline-block;
+    float: right;
+    background-color: white;
+    height: 80vh !important;
+    vertical-align: top;
+    left: 0 !important;
+    margin-left: 10px;
+}
+#var-ulist {
+    width: 115px;
+}
+#var-ulist li a {
+    padding: 0 4px;
+}
+#main-container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: inline;
+}
+#spreadsheet-toolbar {
+    padding-bottom: 3px;
+    min-height:46px;
+    flex:0;
+}
+#add-sheet-button {
+    margin: 0 2px 0 2px;
+    height: 100%;
+}
+.icon-flipped {
+    transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+}
+.side-nav-header{
+    margin-top:10px;
+    margin-left:-8px;
+}
+.left-side-list{
+    height:33.33%;
+}
+.right-side-list{
+    /*height:50%;*/
+}
+#inspector{
+    height:75%;
+}
+.scroll-area-list-parent{
+    display: flex;
+    flex-flow:column;
+}
+.scroll-area{
+    overflow-y: auto;
+    flex:1;
+}
+#animation{
+    height:25%;
+}
+.nav li a{
+    padding-left:5px;
+    padding-right:5px;
+}
+.navbar{
+    border-radius: 0;
+    margin-bottom:0;
+}
+.main-left-list-item a{
+    display:block;
+    color:black;
+    cursor: pointer;
+    width:100%;
+    padding-left:10px;
+    text-decoration: none;
+}
+.main-left-list-item a:hover{
+    background-color: #6D7F91;
+    color:white;
+}
+.sub-left-list-item a{
+    display:block;
+    color:black;
+    width:100%;
+    padding-left:10px;
+    text-decoration: none;
+    cursor: grab;
+    cursor: -webkit-grab;
+}
+.left-list{
+    padding-left:0;
+}
+.dropdown-button{
+    width:100%;
+    text-align: right;
+}
+.edit-button{
+    width:60.55px;
+}
+
+.inspector-selector{
+    width:100%;
+}
+.inspector-selector table{
+    width:100%;
+}
+.inspector-dropdown-title{
+    float:left;
+}
+.inspector-dropdown-item{
+    cursor:pointer;
+    padding-left: 10px;
+}
+.inspector-dropdown-item:hover, .inspector-dropdown-item.active:hover{
+    background-color:white;
+    color:black;
+}
+.inspector-dropdown-item.active{
+    background-color: #6D7F91;
+}
+.dropdown-menu{
+    background-color:#31b0d5;
+    position: absolute;
+    top: 100%;
+    right:0;
+}
+.dropdown-container{
+    position:relative;
+}
+.inspector-selector td{
+    vertical-align: top;
+    padding:0;
+    margin:0;
+}
+.inspector-selector table{
+    border-collapse: collapse;
+}
+.nav-tabs > li .close {
+    margin: 1px 0 0 10px;
+    font-size: 18px;
+}
