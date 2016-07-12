@@ -31,12 +31,15 @@ button:focus{
 }
 .spreadsheet-col {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 .cell-image {
     width: 100%;
     height: 100%;
 }
 .cell {
+    flex:1;
     outline: 1px solid black;
     position: relative;
     background-color: white;
@@ -225,7 +228,34 @@ button:focus{
     margin: 1px 0 0 10px;
     font-size: 18px;
 }
-.draggable-head{
-    height:10px;
-    color:black;
+.col-droppable-head{
+    display:inline-block;
+    height:20px;
+    width:50%;
+    opacity: 0;
+}
+.col-draggable-head{
+    height:20px;
+    background-color:black;
+}
+.head-left-border{
+    border-left:1px solid white;
+}
+#header-spacer{
+    height:20px;
+    width:20px;
+}
+.row-droppable-head{
+    width:20px;
+    height:50%;
+    opacity: 0;
+}
+.row-draggable-head{
+    flex:1;
+    width:20px;
+    background-color:black;
+}
+.row-header-container{
+    display: flex;
+    flex-direction: column;
 }

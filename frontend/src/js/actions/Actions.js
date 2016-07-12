@@ -48,13 +48,29 @@ var Actions = {
             value: value
         }
     },
-    updateSelectedCells(selected_cells){
-        return{
+    updateSelectedCells(selected_cells) {
+        return {
             type: 'UPDATE_SELECTED_CELLS',
             selected_cells: selected_cells
         }
-    }
+    },
+    moveColumn(dragged_index, dropped_index, position) {
+        return {
+            type: 'MOVE_COLUMN',
+            dragged_index: dragged_index,
+            dropped_index: dropped_index,
+            position: position
 
+        }
+    },
+    moveRow(dragged_index, dropped_index, position){
+        return {
+            type: 'MOVE_ROW',
+            dragged_index: dragged_index,
+            dropped_index: dropped_index,
+            position: position
+        }
+    }
 }
 
 export default Actions;
