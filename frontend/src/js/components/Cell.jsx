@@ -10,6 +10,7 @@ var Cell = React.createClass({
                 var border = el.next();
                 border.outerHeight(height);
             })
+        this.props.resizeHeader($('.cell-image')[0]);
     },
     componentDidMount(){
         this.resizeCells();

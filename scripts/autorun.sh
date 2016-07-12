@@ -13,6 +13,12 @@ else
 fi
 
 be_pid=0
+webpackid=0
+
+ctrl_c() {
+        echo "** Trapped CTRL-C"
+        kill $webpackid
+}
 
 refresh_backend() {
    if [ $be_pid -ne 0 ]; then
@@ -22,19 +28,22 @@ refresh_backend() {
    be_pid=$!
 }
 
-refresh_frontend() {
-   pushd $curpath/frontend
-   $(npm bin)/webpack
-   popd
-}
 
 route_notification() {
-   refresh_frontend
    refresh_backend
 }
+
+trap ctrl_c EXIT
+
+
 
 trap "{ kill $be_pid; }" INT
 
 route_notification
+pushd $curpath/frontend
+$(npm bin)/webpack --watch
+webpackid=$!
+popd
 
-fswatch -r -o -e "pyc" -e 'css' -e 'html' -e "$curpath/frontend/dist" $curpath/backend $curpath/frontend | (while read; do route_notification; done;)
+
+fswatch -r -o -e "pyc" -e "$curpath/frontend/dist" $curpath/backend | (while read; do route_notification; done;)

@@ -38,7 +38,6 @@ var InspectorContainer = React.createClass({
 });
 
 const mapStateToProps = (state) => {
-    console.log('state.present', state.present);
     var cur_sheet_index = state.present.sheets_model.cur_sheet_index;
     var selected_cell_indices = state.present.sheets_model.sheets[cur_sheet_index].selected_cell_indices;
     var populate_inspector = (selected_cell_indices.length === 1 && selected_cell_indices[0][0] !== -1 && selected_cell_indices[0][0] !== -1);
