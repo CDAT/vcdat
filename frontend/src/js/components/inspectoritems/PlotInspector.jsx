@@ -5,7 +5,7 @@ var PlotInspector = React.createClass({
         var items = [];
         for (var i = 0; i < this.props.selectedCell.plots.length; i++) {
             items.push(
-                <li key={i} className={'inspector-dropdown-item ' + (i === cur_plot_index
+                <li key={i} onClick={this.props.changePlot.bind(this, i)} className={'inspector-dropdown-item ' + (i === cur_plot_index
                     ? 'active'
                     : '')}>{i}</li>
             )

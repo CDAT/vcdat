@@ -16,21 +16,22 @@ var test_gms = {
 };
 
 var test_temps = ['default', 'LLof4', 'bot_of_3'];
-
-var default_cell = {
-    plot_being_edited: 0,
-    plots: [{
-        variables: ['clt'], //testing inspector
+var default_plot = {
+        variables: [], //testing inspector
         graphics_method_parent: 'boxfill',
         graphics_method: 'default',
         template: 'default'
-    }]
+    }
+
+var default_cell = {
+    plot_being_edited: 0,
+    plots: [default_plot]
 }
 
 var second_cell = {
     plot_being_edited: 0,
     plots: [{
-        variables: ['u'], //testing inspector
+        variables: [], //testing inspector
         graphics_method_parent: 'isofill',
         graphics_method: 'default',
         template: 'default'
@@ -135,6 +136,28 @@ const templateListReducer = (state = test_temps, action) => {
 
 const updateCell = (cell, action) => {
     switch (action.type) {
+        case 'CHANGE_PLOT':
+            cell.plot_being_edited = action.value
+            break
+        case 'ADD_PLOT':
+            var new_plot = jQuery.extend(true, {}, default_plot);
+            if (action.variable){
+                new_plot.variables.push(action.variable);
+            }
+            // if (action.graphics_method){
+            //     new_plot.
+            // }
+            console.log('cell', cell);
+            cell.plots.push(new_plot);
+            console.log('done adding plot')
+            break
+        case 'ADD_VARIABLE_TO_PLOT':
+            console.log('cell', cell);
+            console.log('action', action)
+            console.log('before push', cell.plots[action.plot_index], action.variable, cell.plots[action.plot_index].variables);
+            cell.plots[action.plot_index].variables.push(action.variable);
+            console.log('after push', cell.plots[action.plot_index]);
+            break
         case 'CHANGE_PLOT_VAR':
             cell.plots[cell.plot_being_edited].variables[action.var_being_changed] = action.value;
             break
@@ -154,6 +177,13 @@ const updateCell = (cell, action) => {
     }
 }
 
+const getCell = (sheet, action) => {
+    if (sheet.selected_cell_indices[0][0] !== -1){
+        return sheet.cells[sheet.selected_cell_indices[0][0]][sheet.selected_cell_indices[0][1]]
+    }
+    return sheet.cells[action.row][action.col]
+}
+
 const sheetsModelReducer = (state = default_sheets_model, action) => {
     switch (action.type) {
         case 'MOVE_ROW':
@@ -171,12 +201,15 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             var sheet = new_state.sheets[state.cur_sheet_index];
             sheet.selected_cell_indices = action.selected_cells;
             return new_state;
+        case 'ADD_PLOT':
+        case 'ADD_VARIABLE_TO_PLOT':
+        case 'CHANGE_PLOT':
         case 'CHANGE_PLOT_VAR':
         case 'CHANGE_PLOT_GM':
         case 'CHANGE_PLOT_TEMPLATE':
             var new_state = jQuery.extend(true, {}, state);
             var sheet = new_state.sheets[state.cur_sheet_index];
-            updateCell(sheet.cells[sheet.selected_cell_indices[0][0]][sheet.selected_cell_indices[0][1]], action)
+            updateCell(getCell(sheet, action), action)
             return new_state;
         case 'ROW_COUNT_CHANGED':
             var new_state = jQuery.extend(true, {}, state);

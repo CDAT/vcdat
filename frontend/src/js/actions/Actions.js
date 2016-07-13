@@ -28,6 +28,12 @@ var Actions = {
             index: index
         }
     },
+    changePlot(value){
+        return {
+            type: 'CHANGE_PLOT',
+            value, value
+        }
+    },
     changePlotVar(var_being_changed, value) {
         return {
             type: 'CHANGE_PLOT_VAR',
@@ -69,6 +75,27 @@ var Actions = {
             dragged_index: dragged_index,
             dropped_index: dropped_index,
             position: position
+        }
+    },
+    addPlot(variable, graphics_method_parent, graphics_method, template, row, col){
+        console.log('adding plot', row, col);
+        return {
+            type: 'ADD_PLOT',
+            variable: variable,
+            graphics_method_parent: graphics_method_parent,
+            graphics_method: graphics_method,
+            template: template,
+            row: row,
+            col: col
+        }
+    },
+    addVariableToPlot(variable, row, col, plot_index){
+        return {
+            type: 'ADD_VARIABLE_TO_PLOT',
+            variable: variable,
+            row: row,
+            col: col,
+            plot_index: plot_index
         }
     }
 }
