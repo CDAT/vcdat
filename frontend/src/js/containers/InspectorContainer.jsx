@@ -27,7 +27,7 @@ var InspectorContainer = React.createClass({
         return (
             <div id='inspector' className=' scroll-area-list-parent right-side-list'>
                 <div className='scroll-area'>
-                    <PlotInspector populateInspector={this.props.populate_inspector} selectedCell={this.props.selected_cell} plotBeingEdited={this.props.plot_being_edited}/>
+                    <PlotInspector populateInspector={this.props.populate_inspector} selectedCell={this.props.selected_cell} plotBeingEdited={this.props.plot_being_edited} changePlot={this.props.changePlot}/>
                     <VariableInspector populateInspector={this.props.populate_inspector} variables={this.props.variables} nonVector={this.props.non_vector} variable1={variable1} variable2={variable2} changePlotVar={this.props.changePlotVar}/>
                     <GraphicsMethodInspector populateInspector={this.props.populate_inspector} graphicsMethods={this.props.graphics_methods} graphicsMethod={graphics_method} graphicsMethodParent={graphics_method_parent} changePlotGM={this.props.changePlotGM}/>
                     <TemplateInspector populateInspector={this.props.populate_inspector} template={template} templates={this.props.templates} changePlotTemplate={this.props.changePlotTemplate}/>
@@ -64,6 +64,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        changePlot: (value) => dispatch(Actions.changePlot(value)),
         changePlotVar: (var_being_changed, value) => dispatch(Actions.changePlotVar(var_being_changed, value)),
         changePlotGM: (parent, value) => dispatch(Actions.changePlotGM(parent, value)),
         changePlotTemplate: (value) => dispatch(Actions.changePlotTemplate(value))

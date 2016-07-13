@@ -13,11 +13,11 @@ var Row = React.createClass({
                     {(() => {
                         if (this.props.row === 0) {
                             return (
-                                <div className={'col-draggable-head ' + (i !== 0
+                                <div className={'draggable-head ' + (i !== 0
                                     ? 'head-left-border'
                                     : '')} data-col={i}>
-                                    <div className='col-droppable-head' data-position='left'>LEFT</div>
-                                    <div className='col-droppable-head' data-position='right'>RIGHT</div>
+                                    <div className='droppable-head' data-position='left'>LEFT</div>
+                                    <div className='droppable-head' data-position='right'>RIGHT</div>
                                 </div>
                             )
                         }
@@ -40,9 +40,9 @@ var Row = React.createClass({
 
                         return;
                     })()}
-                    <div className='row-draggable-head' data-row={this.props.row}>
-                        <div className='row-droppable-head' data-position='top'>TOP</div>
-                        <div className='row-droppable-head' data-position='bottom'>BOT</div>
+                    <div className='draggable-head' data-row={this.props.row}>
+                        <div className='droppable-head' data-position='top'>TOP</div>
+                        <div className='droppable-head' data-position='bottom'>BOT</div>
                     </div>
                 </div>
                 {cols}
@@ -77,7 +77,7 @@ var SpreadsheetContainer = React.createClass({
     },
     initDragAndDrop() {
         //col rearrange
-        $(".col-draggable-head").draggable({
+        $(".spreadsheet-col .draggable-head").draggable({
             axis: 'x',
             opacity: 0.7,
             helper: 'clone',
@@ -89,10 +89,10 @@ var SpreadsheetContainer = React.createClass({
             }
         });
 
-        $(".col-droppable-head").droppable({tolerance: 'intersect', over: this.overDroppable, out: this.outDroppable, drop: this.dropppedColHeader});
+        $(".spreadsheet-col .droppable-head").droppable({tolerance: 'intersect', over: this.overDroppable, out: this.outDroppable, drop: this.dropppedColHeader});
 
         //row rearrange
-        $(".row-draggable-head").draggable({
+        $(".row-header-container .draggable-head").draggable({
             axis: 'y',
             opacity: 0.7,
             helper: 'clone',
@@ -103,7 +103,7 @@ var SpreadsheetContainer = React.createClass({
                 ui.helper.css('background-color', 'black');
             }
         });
-        $(".row-droppable-head").droppable({tolerance: 'intersect', over: this.overDroppable, out: this.outDroppable, drop: this.dropppedRowHeader});
+        $(".row-header-container .droppable-head").droppable({tolerance: 'intersect', over: this.overDroppable, out: this.outDroppable, drop: this.dropppedRowHeader});
     },
     componentDidMount() {
         $('#spreadsheet-div').selectable({filter: '.cell', stop: this.updateSelectedCells});
@@ -136,11 +136,12 @@ var SpreadsheetContainer = React.createClass({
     //     ui.helper.css('background-color', 'black');
     // },
     resizeHeader(el) {
-        $(".col-draggable-head").each((index, element) => {
-            $(element).width(el.width);
+        $(".spreadsheet-col .draggable-head").each((index, element) => {
+            console.log('setting width', $(el).width(), el)
+            $(element).width($(el).width());
         })
-        $(".row-draggable-head").each((index, element) => {
-            $(element).height(el.height);
+        $(".row-header-container .draggable-head").each((index, element) => {
+            $(element).height($(el).height());
         })
     },
     updateSelectedCells(event, ui) {

@@ -5,8 +5,24 @@ import TemplateList from '../components/TemplateList.jsx'
 import {connect} from 'react-redux'
 
 var LeftSideBar = React.createClass({
+    initDragListItems(){
+        $('.draggable-list-item').draggable({
+            opacity: 0.7,
+            helper: 'clone',
+            cursorAt: {
+                left:0,
+                bot: 0
+            },
+            cursor: 'pointer'
+
+        })
+    },
     componentDidMount() {
         $('#left-side-bar').resizable({ghost: true, handles: 'e', minWidth: 100, maxWidth: 500})
+        this.initDragListItems();
+    },
+    componentDidUpdate(){
+        this.initDragListItems();
     },
     render() {
         return (
