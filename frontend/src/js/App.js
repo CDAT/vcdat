@@ -5,6 +5,7 @@ import configureStore from './Store.js'
 import {Provider} from 'react-redux'
 
 let store = configureStore();
+
 (function($) {
     $(document).ready(() => {
         $(".btn").mouseup(function() {
@@ -13,7 +14,7 @@ let store = configureStore();
     })
 })(jQuery);
 
-//attack quicktree to jquery
+//attach quicktree to jquery
 (function($) {
     $.fn.quicktree = function() {
         function click(e) {
@@ -42,10 +43,7 @@ let store = configureStore();
 
         $(this).on("DOMNodeInserted", child_inserted);
         return this;
-
-
     };
-
 }(jQuery));
 
 ReactDOM.render(
