@@ -78,7 +78,6 @@ var Actions = {
         }
     },
     addPlot(variable, graphics_method_parent, graphics_method, template, row, col){
-        console.log('adding plot', row, col);
         return {
             type: 'ADD_PLOT',
             variable: variable,
@@ -89,13 +88,15 @@ var Actions = {
             col: col
         }
     },
-    addVariableToPlot(variable, row, col, plot_index){
+    swapVariableInPlot(variable, row, col, plot_index, second_var){
+        console.log('action', row, col);
         return {
-            type: 'ADD_VARIABLE_TO_PLOT',
+            type: 'SWAP_VARIABLE_IN_PLOT',
             variable: variable,
             row: row,
             col: col,
-            plot_index: plot_index
+            plot_index: plot_index,
+            second_var: second_var
         }
     }
 }
