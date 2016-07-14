@@ -32,7 +32,6 @@ var Row = React.createClass({
                 <div className='row-header-container'>
                     {(() => {
                         if (this.props.row === 0) {
-                            console.log('returning spacer')
                             return (
                                 <div id='header-spacer'></div>
                             );
@@ -116,28 +115,16 @@ var SpreadsheetContainer = React.createClass({
         var dragged_index = ui.draggable.attr('data-col');
         var dropped_index = $(event.target).parent().attr('data-col');
         var dropped_position = $(event.target).attr('data-position');
-        console.log('dragged col', dragged_index, 'to the', dropped_position, 'of', dropped_index);
         this.props.moveColumn(dragged_index, dropped_index, dropped_position);
     },
     dropppedRowHeader(event, ui) {
         var dragged_index = ui.draggable.attr('data-row');
         var dropped_index = $(event.target).parent().attr('data-row');
         var dropped_position = $(event.target).attr('data-position');
-        console.log('dragged row', dragged_index, 'to the', dropped_position, 'of', dropped_index);
         this.props.moveRow(dragged_index, dropped_index, dropped_position);
     },
-    // overDroppable(event, ui) {
-    //     // console.log('ui.helper', ui.helper);
-    //     console.log('moved into of droppable');
-    //     ui.helper.css('background-color', 'white');
-    // },
-    // outDroppable(event, ui) {
-    //     console.log('moved out of droppable');
-    //     ui.helper.css('background-color', 'black');
-    // },
     resizeHeader(el) {
         $(".spreadsheet-col .draggable-head").each((index, element) => {
-            console.log('setting width', $(el).width(), el)
             $(element).width($(el).width());
         })
         $(".row-header-container .draggable-head").each((index, element) => {

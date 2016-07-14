@@ -17,11 +17,11 @@ var test_gms = {
 
 var test_temps = ['default', 'LLof4', 'bot_of_3'];
 var default_plot = {
-        variables: [], //testing inspector
-        graphics_method_parent: 'boxfill',
-        graphics_method: 'default',
-        template: 'default'
-    }
+    variables: [], //testing inspector
+    graphics_method_parent: 'boxfill',
+    graphics_method: 'default',
+    template: 'default'
+}
 
 var default_cell = {
     plot_being_edited: 0,
@@ -59,10 +59,8 @@ const moveRow = (cells, action) => {
     var item = cells.splice(action.dragged_index, 1)[0];
 
     if (action.position === 'top') {
-        console.log('moving to top');
         cells.splice(action.dropped_index - 1, 0, item)
     } else {
-        console.log('moving to bot');
         cells.splice(action.dropped_index, 0, item)
     }
 }
@@ -72,10 +70,8 @@ const moveCol = (cells, action) => {
         var item = row.splice(action.dragged_index, 1)[0];
 
         if (action.position === 'left') {
-            console.log('moving to left');
             row.splice(action.dropped_index - 1, 0, item)
         } else {
-            console.log('moving to right');
             row.splice(action.dropped_index, 0, item)
         }
     });
@@ -141,22 +137,21 @@ const updateCell = (cell, action) => {
             break
         case 'ADD_PLOT':
             var new_plot = jQuery.extend(true, {}, default_plot);
-            if (action.variable){
+            if (action.variable) {
                 new_plot.variables.push(action.variable);
             }
             // if (action.graphics_method){
             //     new_plot.
             // }
-            console.log('cell', cell);
+            console.log('adding plot', new_plot)
             cell.plots.push(new_plot);
-            console.log('done adding plot')
             break
-        case 'ADD_VARIABLE_TO_PLOT':
-            console.log('cell', cell);
-            console.log('action', action)
-            console.log('before push', cell.plots[action.plot_index], action.variable, cell.plots[action.plot_index].variables);
-            cell.plots[action.plot_index].variables.push(action.variable);
-            console.log('after push', cell.plots[action.plot_index]);
+        case 'SWAP_VARIABLE_IN_PLOT':
+            if (!action.second_var) {
+                cell.plots[action.plot_index].variables[0] = action.variable;
+            } else {
+                cell.plots[action.plot_index].variables[1] = action.variable;
+            }
             break
         case 'CHANGE_PLOT_VAR':
             cell.plots[cell.plot_being_edited].variables[action.var_being_changed] = action.value;
@@ -178,10 +173,16 @@ const updateCell = (cell, action) => {
 }
 
 const getCell = (sheet, action) => {
-    if (sheet.selected_cell_indices[0][0] !== -1){
-        return sheet.cells[sheet.selected_cell_indices[0][0]][sheet.selected_cell_indices[0][1]]
+
+    switch (action.type) {
+
+        case 'ADD_PLOT':
+        case 'SWAP_VARIABLE_IN_PLOT':
+            console.log('cell at', action.row, action.col);
+            return sheet.cells[action.row][action.col]
+        default:
+            return sheet.cells[sheet.selected_cell_indices[0][0]][sheet.selected_cell_indices[0][1]]
     }
-    return sheet.cells[action.row][action.col]
 }
 
 const sheetsModelReducer = (state = default_sheets_model, action) => {
@@ -202,7 +203,7 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             sheet.selected_cell_indices = action.selected_cells;
             return new_state;
         case 'ADD_PLOT':
-        case 'ADD_VARIABLE_TO_PLOT':
+        case 'SWAP_VARIABLE_IN_PLOT':
         case 'CHANGE_PLOT':
         case 'CHANGE_PLOT_VAR':
         case 'CHANGE_PLOT_GM':

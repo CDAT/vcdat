@@ -13,7 +13,10 @@ var LeftSideBar = React.createClass({
                 left:0,
                 bot: 0
             },
-            cursor: 'pointer'
+            cursor: 'pointer',
+            stop(){
+                $('.cell-stack-bottom').removeClass('plotter-to-top');
+            }
 
         })
     },
