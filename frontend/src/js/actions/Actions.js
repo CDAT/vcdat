@@ -89,7 +89,6 @@ var Actions = {
         }
     },
     swapVariableInPlot(variable, row, col, plot_index, second_var){
-        console.log('action', row, col);
         return {
             type: 'SWAP_VARIABLE_IN_PLOT',
             variable: variable,

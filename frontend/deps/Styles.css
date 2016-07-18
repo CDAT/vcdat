@@ -57,6 +57,7 @@ button:focus{
     border: 2px solid blue;
 }
 .border {
+    width:100%;
     position: absolute;
     top: 0;
 }
@@ -293,13 +294,21 @@ button:focus{
 .plotter-add-plot{
     flex:1;
 }
+.plot{
+    box-sizing: border-box;
+    padding: 0 10px 0 10px;
+}
 .plotter-add-plot .glyphicon{
 }
-.plotter-var{
+.plot-var{
     display: inline-block;
     width:50%;
     height:20px;
     vertical-align: top;
+}
+.plot-hover{
+    opacity: 0.7;
+    background-color: #A3E2F7;
 }
 .second-var{
     background-color: gray;
