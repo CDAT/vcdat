@@ -297,7 +297,8 @@ button:focus{
     box-sizing: border-box;
     padding: 0 10px 0 10px;
 }
-.plotter-add-plot .glyphicon{
+.plotter-add-plot > img{
+    height:100%
 }
 .plot-var{
     display: inline-block;

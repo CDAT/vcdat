@@ -57,7 +57,7 @@ var Plotter = React.createClass({
                         return plotters;
                     })()}
                     <div className='plotter-add-plot' id={'add-plot-' + this.props.row + this.props.col}>
-                        ADD plot
+                        <img src='deps/add_plot.svg' alt='Add Plot'></img>
                     </div>
                 </div>
             </div>
