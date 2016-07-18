@@ -21,6 +21,12 @@ var Plotter = React.createClass({
             case 'variable':
                 this.props.addPlot(ui.draggable.attr('data-name'), graphics_method_parent, graphics_method, template, this.props.row, this.props.col);
                 break
+            case 'graphics_method':
+                this.props.addPlot(variable, ui.draggable.attr('data-parent'), ui.draggable.attr('data-name'), template, this.props.row, this.props.col);
+                break
+            case 'template':
+                this.props.addPlot(variable, graphics_method_parent, graphics_method, ui.draggable.attr('data-name'), this.props.row, this.props.col);
+                break
             default:
                 break
         }
@@ -46,7 +52,7 @@ var Plotter = React.createClass({
                         for (var i = 0; i < this.props.cell.plots.length; i++) {
                             let plot = this.props.cell.plots[i];
                             let plot_name = 'plot' + this.props.row + this.props.col + i;
-                            plotters.push(<Plot key={i} plotName={plot_name} plot={plot} plotIndex={i} swapVariableInPlot={this.props.swapVariableInPlot.bind(this, this.props.row, this.props.col)}/>)
+                            plotters.push(<Plot key={i} plotName={plot_name} plot={plot} plotIndex={i} swapVariableInPlot={this.props.swapVariableInPlot.bind(this, this.props.row, this.props.col)} swapGraphicsMethodInPlot={this.props.swapGraphicsMethodInPlot.bind(this, this.props.row, this.props.col)} swapTemplateInPlot={this.props.swapTemplateInPlot.bind(this, this.props.row, this.props.col)}/>)
                         }
                         return plotters;
                     })()}

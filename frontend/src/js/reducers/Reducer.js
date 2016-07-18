@@ -140,37 +140,46 @@ const updateCell = (cell, action) => {
             if (action.variable) {
                 new_plot.variables.push(action.variable);
             }
-            // if (action.graphics_method){
-            //     new_plot.
-            // }
+            if (action.graphics_method){
+                new_plot.graphics_method_parent = action.graphics_method_parent;
+                new_plot.graphics_method = action.graphics_method;
+            }
+            if(action.template){
+                new_plot.template = action.template;
+            }
             cell.plots.push(new_plot);
             break
-        case 'SWAP_VARIABLE_IN_PLOT':
-            if (!action.second_var) {
-                cell.plots[action.plot_index].variables[0] = action.variable;
-            } else {
-                cell.plots[action.plot_index].variables[1] = action.variable;
-            }
-            break
         case 'CHANGE_PLOT_VAR':
-            cell.plots[cell.plot_being_edited].variables[action.var_being_changed] = action.value;
+            var plot = cell.plots[cell.plot_being_edited]
+            if(action.plot_index){
+                plot = cell.plots[action.plot_index]
+            }
+            plot.variables[action.var_being_changed] = action.value;
             break
         case 'CHANGE_PLOT_GM':
-            if (action.parent) {
-                cell.plots[cell.plot_being_edited].graphics_method_parent = action.value;
-                cell.plots[cell.plot_being_edited].graphics_method = 'default';
+            var plot = cell.plots[cell.plot_being_edited]
+            if(action.plot_index){
+                plot = cell.plots[action.plot_index]
+            }
+            if (action.graphics_method_parent) {
+                plot.graphics_method_parent = action.graphics_method_parent;
+                plot.graphics_method = 'default';
 
                 //remove second var if not vector
-                if(cell.plots[cell.plot_being_edited].graphics_method_parent !== 'vector'){
-                    cell.plots[cell.plot_being_edited].variables.splice(1, 1);
+                if(plot.graphics_method_parent !== 'vector'){
+                    plot.variables.splice(1, 1);
                 }
-            } else {
-                cell.plots[cell.plot_being_edited].graphics_method = action.value;
-
+            }
+            if(action.graphics_method){
+                plot.graphics_method = action.graphics_method;
             }
             break
         case 'CHANGE_PLOT_TEMPLATE':
-            cell.plots[cell.plot_being_edited].template = action.value;
+            var plot = cell.plots[cell.plot_being_edited]
+            if(action.plot_index){
+                plot = cell.plots[action.plot_index]
+            }
+            plot.template = action.value;
             break
         default:
             break;
@@ -178,14 +187,10 @@ const updateCell = (cell, action) => {
 }
 
 const getCell = (sheet, action) => {
-
-    switch (action.type) {
-
-        case 'ADD_PLOT':
-        case 'SWAP_VARIABLE_IN_PLOT':
-            return sheet.cells[action.row][action.col]
-        default:
-            return sheet.cells[sheet.selected_cell_indices[0][0]][sheet.selected_cell_indices[0][1]]
+    if(action.row >= 0 && action.col >= 0)
+        return sheet.cells[action.row][action.col]
+    else{
+        return sheet.cells[sheet.selected_cell_indices[0][0]][sheet.selected_cell_indices[0][1]]
     }
 }
 
@@ -207,7 +212,6 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             sheet.selected_cell_indices = action.selected_cells;
             return new_state;
         case 'ADD_PLOT':
-        case 'SWAP_VARIABLE_IN_PLOT':
         case 'CHANGE_PLOT':
         case 'CHANGE_PLOT_VAR':
         case 'CHANGE_PLOT_GM':

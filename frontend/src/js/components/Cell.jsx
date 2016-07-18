@@ -15,8 +15,7 @@ var Cell = React.createClass({
         })
         this.props.resizeHeader($('.cell-image')[0]);
     },
-    initDrop() {
-    },
+    initDrop() {},
     componentDidMount() {
         this.resizeCells();
         var element = $('.cell')[0];
@@ -34,7 +33,7 @@ var Cell = React.createClass({
         this.col = this.props.col;
         return (
             <div className='cell' data-row={this.props.row} data-col={this.props.col}>
-                <Plotter cell={this.cell} row={this.props.row} col={this.props.col} addPlot={this.props.addPlot} swapVariableInPlot={this.props.swapVariableInPlot}/>
+                <Plotter cell={this.cell} row={this.props.row} col={this.props.col} addPlot={this.props.addPlot} swapVariableInPlot={this.props.swapVariableInPlot} swapGraphicsMethodInPlot={this.props.swapGraphicsMethodInPlot} swapTemplateInPlot={this.props.swapTemplateInPlot}/>
                 <div className='cell-stack-top'>
                     <img className='cell-image' src='#' alt='climate_data'></img>
                     <div className={'border border-' + this.props.row + this.props.col}></div>
@@ -51,7 +50,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         addPlot: (variable = null, graphics_method_parent = null, graphics_method = null, template = null, row, col) => dispatch(Actions.addPlot(variable, graphics_method_parent, graphics_method, template, row, col)),
-        swapVariableInPlot: (row, col, variable, index, second_var = false) => dispatch(Actions.swapVariableInPlot(variable, row, col, index, second_var))
+        swapVariableInPlot: (row, col, value, index, var_being_changed = 0) => dispatch(Actions.swapVariableInPlot(value, row, col, index, var_being_changed)),
+        swapGraphicsMethodInPlot: (row, col, graphics_method_parent, graphics_method, index) => dispatch(Actions.swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, index)),
+        swapTemplateInPlot: (row, col, value, index) => dispatch(Actions.swapTemplateInPlot(value, row, col, index))
     }
 }
 
