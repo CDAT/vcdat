@@ -28,10 +28,11 @@ var Actions = {
             index: index
         }
     },
-    changePlot(value){
+    changePlot(value) {
         return {
             type: 'CHANGE_PLOT',
-            value, value
+            value,
+            value
         }
     },
     changePlotVar(var_being_changed, value) {
@@ -42,11 +43,16 @@ var Actions = {
         }
     },
     changePlotGM(parent, value) {
-        return {
+        var obj = {
             type: 'CHANGE_PLOT_GM',
-            parent: parent,
-            value: value
         }
+        if (parent){
+            obj.graphics_method_parent = value
+        }
+        else{
+            obj.graphics_method = value
+        }
+        return obj;
     },
     changePlotTemplate(value) {
         return {
@@ -69,7 +75,7 @@ var Actions = {
 
         }
     },
-    moveRow(dragged_index, dropped_index, position){
+    moveRow(dragged_index, dropped_index, position) {
         return {
             type: 'MOVE_ROW',
             dragged_index: dragged_index,
@@ -77,7 +83,7 @@ var Actions = {
             position: position
         }
     },
-    addPlot(variable, graphics_method_parent, graphics_method, template, row, col){
+    addPlot(variable, graphics_method_parent, graphics_method, template, row, col) {
         return {
             type: 'ADD_PLOT',
             variable: variable,
@@ -88,14 +94,33 @@ var Actions = {
             col: col
         }
     },
-    swapVariableInPlot(variable, row, col, plot_index, second_var){
+    swapVariableInPlot(value, row, col, plot_index, var_being_changed) {
         return {
-            type: 'SWAP_VARIABLE_IN_PLOT',
-            variable: variable,
+            type: 'CHANGE_PLOT_VAR',
+            value: value,
             row: row,
             col: col,
             plot_index: plot_index,
-            second_var: second_var
+            var_being_changed: var_being_changed
+        }
+    },
+    swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, plot_index) {
+        return {
+            type: 'CHANGE_PLOT_GM',
+            graphics_method_parent: graphics_method_parent,
+            graphics_method: graphics_method,
+            row: row,
+            col: col,
+            plot_index: plot_index
+        }
+    },
+    swapTemplateInPlot(value, row, col, plot_index) {
+        return {
+            type: 'CHANGE_PLOT_TEMPLATE',
+            value, value,
+            row: row,
+            col: col,
+            plot_index: plot_index
         }
     }
 }

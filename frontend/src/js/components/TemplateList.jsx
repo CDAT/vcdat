@@ -9,7 +9,9 @@ var TemplateList = React.createClass({
                 <div className='scroll-area'>
                 <ul id='temp-list' className='no-bullets left-list'>
                     {this.props.templates.map((value, index) => {
-                        return (<li key={value} className='main-left-list-item'><a>{value}</a></li>)
+                        return (<li key={value} className='main-left-list-item draggable-list-item' data-type='template' data-name={value}>
+                            <a>{value}</a>
+                        </li>)
                     })}
                 </ul>
             </div>

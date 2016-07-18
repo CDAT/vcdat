@@ -174,8 +174,7 @@ button:focus{
     width:100%;
     padding-left:10px;
     text-decoration: none;
-    cursor: grab;
-    cursor: -webkit-grab;
+    cursor: pointer;
 }
 .left-list{
     padding-left:0;
@@ -310,9 +309,17 @@ button:focus{
     opacity: 0.7;
     background-color: #A3E2F7;
 }
-.second-var{
+.colored-second-var{
     background-color: gray;
 }
 .second-var-highlight{
     background-color:yellow;
+}
+.plot-var{
+    padding-left:5px;
+}
+.first-var{
+    background-color: gray;
+    width:40%;
+    margin-right:5px;
 }

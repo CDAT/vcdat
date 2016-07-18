@@ -9,6 +9,7 @@ var LeftSideBar = React.createClass({
         $('.draggable-list-item').draggable({
             opacity: 0.7,
             helper: 'clone',
+            zIndex:2,
             cursorAt: {
                 left:0,
                 bot: 0
