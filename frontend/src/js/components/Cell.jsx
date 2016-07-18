@@ -35,7 +35,7 @@ var Cell = React.createClass({
             <div className='cell' data-row={this.props.row} data-col={this.props.col}>
                 <Plotter cell={this.cell} row={this.props.row} col={this.props.col} addPlot={this.props.addPlot} swapVariableInPlot={this.props.swapVariableInPlot} swapGraphicsMethodInPlot={this.props.swapGraphicsMethodInPlot} swapTemplateInPlot={this.props.swapTemplateInPlot}/>
                 <div className='cell-stack-top'>
-                    <img className='cell-image' src='#' alt='climate_data'></img>
+                    <img className='cell-image' src='deps/clt_image.png' alt='climate_data'></img>
                     <div className={'border border-' + this.props.row + this.props.col}></div>
                 </div>
             </div>
@@ -57,7 +57,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cell);
-
-// <i className='glyphicon glyphicon-plus-sign'></i>
-
-// <img className='cell-image' src='deps/clt_image.png' alt='climate_data'></img>
