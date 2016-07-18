@@ -17,12 +17,6 @@ var Cell = React.createClass({
     },
     initDrop() {
     },
-    validSecondVar(event, ui) {
-        if (ui.draggable.attr('data-type') === 'variable' && this.cell.plots[$(event.target).parent().parent().attr('data-plot-index')].graphics_method_parent === 'vector') {
-            return true;
-        }
-        return false;
-    },
     componentDidMount() {
         this.resizeCells();
         var element = $('.cell')[0];
@@ -38,13 +32,12 @@ var Cell = React.createClass({
         this.cell = this.props.cells[this.props.row][this.props.col];
         this.row = this.props.row;
         this.col = this.props.col;
-        console.log('this.cell', this.cell, this.props.row, this.props.col);
         return (
             <div className='cell' data-row={this.props.row} data-col={this.props.col}>
                 <Plotter cell={this.cell} row={this.props.row} col={this.props.col} addPlot={this.props.addPlot} swapVariableInPlot={this.props.swapVariableInPlot}/>
                 <div className='cell-stack-top'>
                     <img className='cell-image' src='#' alt='climate_data'></img>
-                    <div className='border'></div>
+                    <div className={'border border-' + this.props.row + this.props.col}></div>
                 </div>
             </div>
         )

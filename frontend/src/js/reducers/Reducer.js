@@ -143,7 +143,6 @@ const updateCell = (cell, action) => {
             // if (action.graphics_method){
             //     new_plot.
             // }
-            console.log('adding plot', new_plot)
             cell.plots.push(new_plot);
             break
         case 'SWAP_VARIABLE_IN_PLOT':
@@ -160,8 +159,14 @@ const updateCell = (cell, action) => {
             if (action.parent) {
                 cell.plots[cell.plot_being_edited].graphics_method_parent = action.value;
                 cell.plots[cell.plot_being_edited].graphics_method = 'default';
+
+                //remove second var if not vector
+                if(cell.plots[cell.plot_being_edited].graphics_method_parent !== 'vector'){
+                    cell.plots[cell.plot_being_edited].variables.splice(1, 1);
+                }
             } else {
                 cell.plots[cell.plot_being_edited].graphics_method = action.value;
+
             }
             break
         case 'CHANGE_PLOT_TEMPLATE':
@@ -178,7 +183,6 @@ const getCell = (sheet, action) => {
 
         case 'ADD_PLOT':
         case 'SWAP_VARIABLE_IN_PLOT':
-            console.log('cell at', action.row, action.col);
             return sheet.cells[action.row][action.col]
         default:
             return sheet.cells[sheet.selected_cell_indices[0][0]][sheet.selected_cell_indices[0][1]]
@@ -239,7 +243,6 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             new_state.sheets.splice(action.sheet_index, 1);
             return new_state;
         case 'CHANGE_CUR_SHEET_INDEX':
-            console.log('changing to sheet', action.index);
             var new_state = jQuery.extend(true, {}, state);
             new_state.cur_sheet_index = action.index;
             return new_state;

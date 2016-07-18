@@ -88,7 +88,12 @@ var SpreadsheetContainer = React.createClass({
             }
         });
 
-        $(".spreadsheet-col .droppable-head").droppable({tolerance: 'intersect', over: this.overDroppable, out: this.outDroppable, drop: this.dropppedColHeader});
+        $(".spreadsheet-col .droppable-head").droppable({
+            tolerance: 'intersect',
+            over: this.overColDroppable,
+            out: this.outColDroppable,
+            drop: this.dropppedColHeader
+        });
 
         //row rearrange
         $(".row-header-container .draggable-head").draggable({
@@ -102,7 +107,40 @@ var SpreadsheetContainer = React.createClass({
                 ui.helper.css('background-color', 'black');
             }
         });
-        $(".row-header-container .droppable-head").droppable({tolerance: 'intersect', over: this.overDroppable, out: this.outDroppable, drop: this.dropppedRowHeader});
+        $(".row-header-container .droppable-head").droppable({
+            tolerance: 'intersect',
+            over: this.overRowDroppable,
+            out: this.outRowDroppable,
+            drop: this.dropppedRowHeader
+        });
+    },
+    overColDroppable(event, ui){
+        let col = $(event.target).parent().attr('data-col');
+        if($(event.target).attr('data-position') === 'left'){
+            col -= 1
+        }
+        $(':regex(class, border-[0-9]' + col.toString() + ')').css('background-color', '#A3E2F7');
+    },
+    outColDroppable(event, ui){
+        let col = $(event.target).parent().attr('data-col');
+        if($(event.target).attr('data-position') === 'left'){
+            col -= 1
+        }
+        $(':regex(class, border-[0-9]' + col.toString() + ')').css('background-color', 'transparent');
+    },
+    overRowDroppable(event, ui){
+        let row = $(event.target).parent().attr('data-row');
+        if($(event.target).attr('data-position') === 'top'){
+            row -= 1
+        }
+        $(':regex(class, border-' + row.toString() + '[0-9])').css('background-color', '#A3E2F7');
+    },
+    outRowDroppable(event, ui){
+        let row = $(event.target).parent().attr('data-row');
+        if($(event.target).attr('data-position') === 'top'){
+            row -= 1
+        }
+        $(':regex(class, border-' + row.toString() + '[0-9])').css('background-color', 'transparent');
     },
     componentDidMount() {
         $('#spreadsheet-div').selectable({filter: '.cell', stop: this.updateSelectedCells});
@@ -115,12 +153,14 @@ var SpreadsheetContainer = React.createClass({
         var dragged_index = ui.draggable.attr('data-col');
         var dropped_index = $(event.target).parent().attr('data-col');
         var dropped_position = $(event.target).attr('data-position');
+        $('.border').css('background-color', 'transparent');
         this.props.moveColumn(dragged_index, dropped_index, dropped_position);
     },
     dropppedRowHeader(event, ui) {
         var dragged_index = ui.draggable.attr('data-row');
         var dropped_index = $(event.target).parent().attr('data-row');
         var dropped_position = $(event.target).attr('data-position');
+        $('.border').css('background-color', 'transparent');
         this.props.moveRow(dragged_index, dropped_index, dropped_position);
     },
     resizeHeader(el) {

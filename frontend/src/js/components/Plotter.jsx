@@ -13,14 +13,12 @@ var Plotter = React.createClass({
         })
     },
     addPlot(event, ui) {
-        console.log('addplot', this.props.row, this.props.col);
         let variable = null;
         let graphics_method_parent = null;
         let graphics_method = null;
         let template = null;
         switch (ui.draggable.attr('data-type')) {
             case 'variable':
-                console.log('dropped into add plot', this.row, this.col);
                 this.props.addPlot(ui.draggable.attr('data-name'), graphics_method_parent, graphics_method, template, this.props.row, this.props.col);
                 break
             default:
@@ -30,15 +28,16 @@ var Plotter = React.createClass({
     },
     componentDidMount(){
         this.initDrop();
-        $('#add-plot-' + this.props.row + this.props.col).droppable({tolerance: 'pointer', drop: this.addPlot})
+        $('#add-plot-' + this.props.row + this.props.col).droppable({
+            tolerance: 'pointer',
+            hoverClass: 'plot-hover',
+            drop: this.addPlot
+        })
     },
     componentDidUpdate(){
-        console.log('updating drop with', this.props.row, this.props.col)
         this.initDrop();
     },
     render() {
-        console.log('this', this);
-        console.log('plotter row col', this.props.row, this.props.col);
         return (
             <div className='cell-stack-bottom'>
                 <div className='plotter-plots'>
@@ -46,7 +45,8 @@ var Plotter = React.createClass({
                         let plotters = [];
                         for (var i = 0; i < this.props.cell.plots.length; i++) {
                             let plot = this.props.cell.plots[i];
-                            plotters.push(<Plot key={i} plot={plot} plotIndex={i} swapVariableInPlot={this.props.swapVariableInPlot.bind(this, this.props.row, this.props.col)}/>)
+                            let plot_name = 'plot' + this.props.row + this.props.col + i;
+                            plotters.push(<Plot key={i} plotName={plot_name} plot={plot} plotIndex={i} swapVariableInPlot={this.props.swapVariableInPlot.bind(this, this.props.row, this.props.col)}/>)
                         }
                         return plotters;
                     })()}
