@@ -1,6 +1,7 @@
 from flask import Flask, send_from_directory
 import os
 import vcs
+import json
 app = Flask(__name__, static_url_path='')
 
 @app.route("/")
@@ -22,7 +23,8 @@ def serve_resource_file(path):
 @app.route("/getTemplates")
 def get_templates():
     templates = sorted(vcs.elements['template'].keys())
-    return templates
+    print templates
+    return json.dumps(templates)
 
 if __name__ == "__main__":
     app.run()

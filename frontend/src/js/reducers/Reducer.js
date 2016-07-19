@@ -1,5 +1,7 @@
 import undoable, { distinctState, combineFilters, excludeAction } from 'redux-undo'
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
+import Actions from '../actions/Actions.js';
+import {getStore} from '../Store.js';
 
 var test_vars = ['clt', 'u', 'v'];
 
@@ -60,18 +62,27 @@ const gmListReducer = (state = test_gms, action) => {
     }
 }
 
-const templateListReducer = (state = getTemplates(), action) => {
+const templateListReducer = (state = [], action) => {
+    console.log('template state', state, action);
+    if (!state.length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
+        console.log('calling getTemplates');
+        getTemplates();
+    }
     switch (action.type) {
+        case 'INITIALIZE_TEMPLATE_VALUES':
+            return action.templates;
         default:
             return state
     }
 }
 
-const getTemplates  = () => {
-    //var templates = ['one', 'two', 'there']
+const getTemplates = () => {
+    //var templates = ['one', 'two', 'there']'
+    console.log('getting templates');
     $.get("getTemplates").then(
         function(templates){
-            return templates;
+            console.log(JSON.parse(templates));
+            getStore().dispatch(Actions.initializeTemplateValues(JSON.parse(templates)));
         }
     );
 }
@@ -191,7 +202,7 @@ const reducers = combineReducers({
 })
 
 const undoableReducer = undoable(reducers,{
-    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX'])
+    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES'])
 })
 
 export default undoableReducer

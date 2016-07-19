@@ -47,6 +47,12 @@ var Actions = {
             type: 'CHANGE_PLOT_TEMPLATE',
             value: value
         }
+    },
+    initializeTemplateValues(templates){
+        return {
+            type: 'INITIALIZE_TEMPLATE_VALUES',
+            templates: templates
+        }
     }
 
 }
