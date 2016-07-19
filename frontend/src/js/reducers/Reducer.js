@@ -63,9 +63,7 @@ const gmListReducer = (state = test_gms, action) => {
 }
 
 const templateListReducer = (state = [], action) => {
-    console.log('template state', state, action);
     if (!state.length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
-        console.log('calling getTemplates');
         getTemplates();
     }
     switch (action.type) {
@@ -77,11 +75,8 @@ const templateListReducer = (state = [], action) => {
 }
 
 const getTemplates = () => {
-    //var templates = ['one', 'two', 'there']'
-    console.log('getting templates');
     $.get("getTemplates").then(
         function(templates){
-            console.log(JSON.parse(templates));
             getStore().dispatch(Actions.initializeTemplateValues(JSON.parse(templates)));
         }
     );
@@ -146,7 +141,6 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             new_state.sheets.splice(action.sheet_index, 1);
             return new_state;
         case 'CHANGE_CUR_SHEET_INDEX':
-            console.log('changing to sheet', action.index);
             var new_state = jQuery.extend(true, {}, state);
             new_state.cur_sheet_index = action.index;
             return new_state;
