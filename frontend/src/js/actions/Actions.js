@@ -31,8 +31,7 @@ var Actions = {
     changePlot(value) {
         return {
             type: 'CHANGE_PLOT',
-            value,
-            value
+            value: value
         }
     },
     changePlotVar(var_being_changed, value) {
