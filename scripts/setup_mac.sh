@@ -31,7 +31,6 @@ EOF
 INSTALLER=`which brew`
 
 NPM_bin=`which npm`
-VENV_bin=`which virtualenv`
 FSWATCH_bin=`which fswatch`
 
 if [ -z $NPM_bin ]; then
@@ -42,27 +41,6 @@ if [ -z $NPM_bin ]; then
     else
         echo "Failed to install NPM, exiting."
     	exit 1
-    fi
-fi
-
-if [ -z $VENV_bin ]; then
-    echo "Installing virtualenv..."
-    if [ -z `which pip` ]; then
-        echo "Couldn\'t find pip, installing pip..."
-        sudo easy_install pip
-        if [ $? -eq 0 ]; then
-            echo "Installed pip, installing virtualenv..."
-        else
-            echo "Failed to install pip, exiting."
-            exit 1
-        fi
-    fi
-    sudo pip --cert $HOME/ca.llnl.gov.pem install virtualenv
-    if [ $? -eq 0 ]; then
-        echo "Installed virtualenv."
-    else
-        echo "Failed to install virtualenv, exiting."
-        exit 1
     fi
 fi
 
@@ -87,10 +65,10 @@ if [[ $current_dir == */vcdat* ]]; then
     echo "Installing requirements"
     pushd $current_dir
     cd backend
-    virtualenv venv
-    source venv/bin/activate
+    conda create -p venv -c uvcdat uvcdat
+    source activate ./venv
     pip --cert $HOME/ca.llnl.gov.pem install -r requirements.txt
-    deactivate
+    source deactivate
     cd ..
     cd frontend
     npm --cafile=$HOME/ca.llnl.gov.pem install
