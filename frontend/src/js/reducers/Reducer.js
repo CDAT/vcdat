@@ -60,12 +60,23 @@ const gmListReducer = (state = test_gms, action) => {
     }
 }
 
-const templateListReducer = (state = test_temps, action) => {
+const templateListReducer = (state = getTemplates(), action) => {
     switch (action.type) {
         default:
             return state
     }
 }
+
+const getTemplates  = () => {
+    //var templates = ['one', 'two', 'there']
+    $.get("getTemplates").then(
+        function(templates){
+            return templates;
+        }
+    );
+}
+
+
 
 const updateCell = (cell, action) => {
     switch(action.type){
