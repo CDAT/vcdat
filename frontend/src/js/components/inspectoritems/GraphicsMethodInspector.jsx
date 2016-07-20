@@ -66,7 +66,6 @@ var GraphicsMethodInspector = React.createClass({
                     </tbody>
                 </table>
             </div>
-
         )
     }
 })
