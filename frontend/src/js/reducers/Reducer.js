@@ -1,3 +1,5 @@
+import Actions from '../actions/Actions.js';
+import {getStore} from '../Store.js';
 import undoable, {
     distinctState,
     combineFilters,
@@ -9,13 +11,6 @@ import {
 
 var test_vars = ['clt', 'u', 'v'];
 
-var test_gms = {
-    'boxfill': ['a_boxfill', 'default'],
-    'isofill': ['a_isofill', 'default'],
-    'vector': ['default']
-};
-
-var test_temps = ['default', 'LLof4', 'bot_of_3'];
 var default_plot = {
     variables: [], //testing inspector
     graphics_method_parent: 'boxfill',
@@ -118,16 +113,44 @@ const varListReducer = (state = test_vars, action) => {
     }
 }
 
-const gmListReducer = (state = test_gms, action) => {
+const gmListReducer = (state = {}, action) => {
+    if (!state.length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
+        getGraphicsMethods();
+    }
     switch (action.type) {
-        default: return state
+        case "INITIALIZE_GRAPHICS_METHODS_VALUES":
+            return action.graphics_methods;
+        default:
+            return state
     }
 }
 
-const templateListReducer = (state = test_temps, action) => {
-    switch (action.type) {
-        default: return state
+const getGraphicsMethods = () => {
+    $.get("getGraphicsMethods").then(
+        function(gm){
+            getStore().dispatch(Actions.initializeGraphicsMethodsValues(JSON.parse(gm)))
+        }
+    )
+}
+const templateListReducer = (state = [], action) => {
+    if (!state.length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
+        getTemplates();
     }
+    switch (action.type) {
+
+        case 'INITIALIZE_TEMPLATE_VALUES':
+            return action.templates;
+        default:
+            return state
+    }
+}
+
+const getTemplates = () => {
+    $.get("getTemplates").then(
+        function(templates){
+            getStore().dispatch(Actions.initializeTemplateValues(JSON.parse(templates)));
+        }
+    );
 }
 
 const updateCell = (cell, action) => {
@@ -255,6 +278,20 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
     }
 }
 
+const reducers = combineReducers({
+    variables: varListReducer,
+    graphics_methods: gmListReducer,
+    templates:templateListReducer,
+    sheets_model: sheetsModelReducer
+
+})
+
+const undoableReducer = undoable(reducers,{
+    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES', 'INITIALIZE_GRAPHICS_METHODS_VALUES'])
+})
+
+export default undoableReducer
+
 /*
 Tree Structure:
     {
@@ -291,18 +328,3 @@ Tree Structure:
     }
 
 */
-
-
-const reducers = combineReducers({
-    variables: varListReducer,
-    graphics_methods: gmListReducer,
-    templates: templateListReducer,
-    sheets_model: sheetsModelReducer
-
-})
-
-const undoableReducer = undoable(reducers, {
-    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'UPDATE_SELECTED_CELLS'])
-})
-
-export default undoableReducer

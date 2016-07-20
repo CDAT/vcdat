@@ -2,6 +2,9 @@ import React from 'react'
 import AddEditRemoveNav from './AddEditRemoveNav.jsx'
 
 var TemplateList = React.createClass({
+    getInitialState(){
+        return {};
+    },
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent'>

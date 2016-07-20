@@ -59,6 +59,18 @@ var Actions = {
             value: value
         }
     },
+    initializeTemplateValues(templates){
+        return {
+            type: 'INITIALIZE_TEMPLATE_VALUES',
+            templates: templates
+        }
+    },
+    initializeGraphicsMethodsValues(gm){
+        return {
+            type: 'INITIALIZE_GRAPHICS_METHODS_VALUES',
+            graphics_methods: gm
+        }
+    },
     updateSelectedCells(selected_cells) {
         return {
             type: 'UPDATE_SELECTED_CELLS',
@@ -71,7 +83,6 @@ var Actions = {
             dragged_index: dragged_index,
             dropped_index: dropped_index,
             position: position
-
         }
     },
     moveRow(dragged_index, dropped_index, position) {
