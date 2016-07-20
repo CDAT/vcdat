@@ -11,8 +11,6 @@ var test_gms = {
     'vector': ['default']
 };
 
-var test_temps = ['default', 'LLof4', 'bot_of_3'];
-
 var default_cell = {
     plot_being_edited:0,
     plots:
@@ -55,13 +53,25 @@ const varListReducer = (state = test_vars, action) => {
     }
 }
 
-const gmListReducer = (state = test_gms, action) => {
+const gmListReducer = (state = {}, action) => {
+    if (!state.length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
+        getGraphicsMethods();
+    }
     switch (action.type) {
+        case "INITIALIZE_GRAPHICS_METHODS_VALUES":
+            return action.graphics_methods;
         default:
             return state
     }
 }
 
+const getGraphicsMethods = () => {
+    $.get("getGraphicsMethods").then(
+        function(gm){
+            getStore().dispatch(Actions.initializeGraphicsMethodsValues(JSON.parse(gm)))
+        }
+    )
+}
 const templateListReducer = (state = [], action) => {
     if (!state.length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
         getTemplates();
@@ -81,8 +91,6 @@ const getTemplates = () => {
         }
     );
 }
-
-
 
 const updateCell = (cell, action) => {
     switch(action.type){
@@ -149,6 +157,20 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
     }
 }
 
+const reducers = combineReducers({
+    variables: varListReducer,
+    graphics_methods: gmListReducer,
+    templates:templateListReducer,
+    sheets_model: sheetsModelReducer
+
+})
+
+const undoableReducer = undoable(reducers,{
+    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES', 'INITIALIZE_GRAPHICS_METHODS_VALUES'])
+})
+
+export default undoableReducer
+
 /*
 Tree Structure:
     {
@@ -186,17 +208,3 @@ Tree Structure:
 
 */
 
-
-const reducers = combineReducers({
-    variables: varListReducer,
-    graphics_methods: gmListReducer,
-    templates:templateListReducer,
-    sheets_model: sheetsModelReducer
-
-})
-
-const undoableReducer = undoable(reducers,{
-    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES'])
-})
-
-export default undoableReducer

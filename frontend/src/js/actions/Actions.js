@@ -53,6 +53,12 @@ var Actions = {
             type: 'INITIALIZE_TEMPLATE_VALUES',
             templates: templates
         }
+    },
+    initializeGraphicsMethodsValues(gm){
+        return {
+            type: 'INITIALIZE_GRAPHICS_METHODS_VALUES',
+            graphics_methods: gm
+        }
     }
 
 }

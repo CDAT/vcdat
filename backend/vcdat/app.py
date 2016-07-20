@@ -1,8 +1,12 @@
-from flask import Flask, send_from_directory
 import os
 import vcs
 import json
+from flask import Flask, send_from_directory
+from GraphicsMethods import get_gm
+from Templates import get_t
 app = Flask(__name__, static_url_path='')
+
+_ = vcs.init()
 
 @app.route("/")
 def hello():
@@ -22,9 +26,13 @@ def serve_resource_file(path):
 
 @app.route("/getTemplates")
 def get_templates():
-    templates = sorted(vcs.elements['template'].keys())
-    print templates
+    templates = get_t()
     return json.dumps(templates)
+
+@app.route("/getGraphicsMethods")
+def get_graphics_methods():
+    graphics_methods = get_gm()
+    return graphics_methods
 
 if __name__ == "__main__":
     app.run()
