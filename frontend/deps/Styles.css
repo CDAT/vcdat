@@ -31,12 +31,15 @@ button:focus{
 }
 .spreadsheet-col {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 .cell-image {
     width: 100%;
     height: 100%;
 }
 .cell {
+    flex:1;
     outline: 1px solid black;
     position: relative;
     background-color: white;
@@ -54,6 +57,7 @@ button:focus{
     border: 2px solid blue;
 }
 .border {
+    width:100%;
     position: absolute;
     top: 0;
 }
@@ -170,8 +174,7 @@ button:focus{
     width:100%;
     padding-left:10px;
     text-decoration: none;
-    cursor: grab;
-    cursor: -webkit-grab;
+    cursor: pointer;
 }
 .left-list{
     padding-left:0;
@@ -224,4 +227,100 @@ button:focus{
 .nav-tabs > li .close {
     margin: 1px 0 0 10px;
     font-size: 18px;
+}
+.spreadsheet-row .spreadsheet-col .droppable-head{
+    display:inline-block;
+    height:20px;
+    width:50%;
+    opacity: 0;
+}
+.spreadsheet-row .spreadsheet-col .draggable-head{
+    height:20px;
+    background-color: #6D7F91;
+    cursor: pointer;
+}
+.head-left-border{
+    border-left:1px solid white;
+}
+#header-spacer{
+    height:20px;
+    width:20px;
+}
+.row-header-container .droppable-head{
+    width:20px;
+    height:50%;
+    opacity: 0;
+}
+.row-header-container .draggable-head{
+    flex:1;
+    width:20px;
+    background-color: #6D7F91;
+    cursor: pointer;
+}
+.row-header-container{
+    display: flex;
+    flex-direction: column;
+}
+.cell-stack-top{
+    position:absolute;
+    height:100%;
+    width:100%;
+}
+.cell-stack-bottom{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-color: white;
+    color:black;
+    display:flex;
+}
+.plotter-to-top{
+    z-index: 1;
+}
+.plotter-plots{
+    width:100%;
+    display:flex;
+}
+.plotter-plots > div{
+    flex:1;
+    display:flex;
+    flex-direction: column;
+    height: 100%;
+}
+.plotter-plots > div > div{
+    flex: 1;
+}
+.plotter-add-plot{
+    flex:1;
+}
+.plot{
+    box-sizing: border-box;
+    padding: 0 10px 0 10px;
+}
+.plotter-add-plot > img{
+    height:100%
+}
+.plot-var{
+    display: inline-block;
+    width:50%;
+    height:20px;
+    vertical-align: top;
+}
+.plot-hover{
+    opacity: 0.7;
+    background-color: #A3E2F7;
+}
+.colored-second-var{
+    background-color: gray;
+}
+.second-var-highlight{
+    background-color:yellow;
+}
+.plot-var{
+    padding-left:5px;
+}
+.first-var{
+    background-color: gray;
+    width:40%;
+    margin-right:5px;
 }
