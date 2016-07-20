@@ -201,6 +201,7 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             var new_state = jQuery.extend(true, {}, state);
             var sheet = new_state.sheets.splice(action.old_position, 1)[0];
             new_state.sheets.splice(action.new_position, 0, sheet);
+            new_state.cur_sheet_index = action.new_position;
             return new_state;
         case 'MOVE_ROW':
             var new_state = jQuery.extend(true, {}, state);
