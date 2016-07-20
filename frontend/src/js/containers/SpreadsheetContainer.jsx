@@ -2,6 +2,7 @@ import React from 'react'
 import Cell from '../components/Cell.jsx'
 import {connect} from 'react-redux'
 import Actions from '../actions/Actions.js'
+import Spinner from '../components/Spinner.jsx'
 
 var Row = React.createClass({
 
@@ -57,19 +58,11 @@ var SpreadsheetContainer = React.createClass({
     addSheet() {
         this.props.addSheet();
     },
-    updateRowCount(event) {
-        if (event.target.value < 1 || event.target.value > 4) {
-            event.target.value = '';
-            return;
-        }
-        this.props.rowCountChanged(parseInt(event.target.value));
+    updateRowCount(value) {
+        this.props.rowCountChanged(value, 10);
     },
-    updateColCount(event) {
-        if (event.target.value < 1 || event.target.value > 4) {
-            event.target.value = '';
-            return;
-        }
-        this.props.colCountChanged(parseInt(event.target.value));
+    updateColCount(value) {
+        this.props.colCountChanged(value, 10);
     },
     changeCurSheetIndex(index) {
         this.props.changeCurSheetIndex(index);
@@ -89,6 +82,7 @@ var SpreadsheetContainer = React.createClass({
         });
 
         $(".spreadsheet-col .droppable-head").droppable({
+            accept: ".spreadsheet-col .draggable-head",
             tolerance: 'intersect',
             over: this.overColDroppable,
             out: this.outColDroppable,
@@ -108,11 +102,30 @@ var SpreadsheetContainer = React.createClass({
             }
         });
         $(".row-header-container .droppable-head").droppable({
+            accept: ".row-header-container .draggable-head",
             tolerance: 'intersect',
             over: this.overRowDroppable,
             out: this.outRowDroppable,
             drop: this.dropppedRowHeader
         });
+
+        //sortable for sheet tabs
+        $('#sheet-list').sortable({
+            helper: 'clone',
+            start: (event, ui) => {
+                ui.item.attr('data-previndex', ui.item.index());
+                ui.helper.width(ui.helper.width() + 1)
+            },
+            stop: (event, ui) => {
+                ui.item.parent().sortable('cancel');
+            },
+            update: (event, ui) => {
+                var oldIndex = ui.item.attr('data-previndex');
+                ui.item.removeAttr('data-previndex');
+                this.props.shiftSheet(oldIndex, ui.item.index());
+            }
+        }
+        );
     },
     overColDroppable(event, ui){
         let col = $(event.target).parent().attr('data-col');
@@ -148,6 +161,7 @@ var SpreadsheetContainer = React.createClass({
     },
     componentDidUpdate() {
         this.initDragAndDrop();
+
     },
     dropppedColHeader(event, ui) {
         var dragged_index = ui.draggable.attr('data-col');
@@ -200,8 +214,8 @@ var SpreadsheetContainer = React.createClass({
         return (
             <div id='spreadsheet-container'>
                 <div id='spreadsheet-toolbar'>
-                    <input type='number' id='spin-row' value={this.row_count} min='1' max='4' onChange={this.updateRowCount}/>
-                    <input type='number' id='spin-column' value={this.col_count} min='1' max='4' onChange={this.updateColCount}/>
+                    <Spinner min='1' max='4' value={this.row_count} update={this.updateRowCount} />
+                    <Spinner min='1' max='4' value={this.col_count} update={this.updateColCount} />
                     <button className='btn btn-default' id='add-sheet-button' onClick={this.addSheet}>
                         <i className='glyphicon glyphicon-plus'></i>
                     </button>
@@ -211,7 +225,8 @@ var SpreadsheetContainer = React.createClass({
                                 <li role='presentation' className={'sheet-list-item ' + (index === this.props.cur_sheet_index
                                     ? 'active'
                                     : '')} key={'Sheet' + (index + 1)}>
-                                    <a onClick={this.changeCurSheetIndex.bind(this, index)}>{'Sheet' + (index + 1)}
+                                    <a onClick={this.changeCurSheetIndex.bind(this, index)}>
+                                        <span>{item.name}</span>
                                         <button onClick={this.removeSheet.bind(this, index)} className="close" disabled={!this.props.remove_enabled} type="button">×</button>
                                     </a>
                                 </li>
@@ -245,7 +260,8 @@ const mapDispatchToProps = (dispatch) => {
         removeSheet: (index) => dispatch(Actions.removeSheet(index)),
         updateSelectedCells: (selected_cells) => dispatch(Actions.updateSelectedCells(selected_cells)),
         moveColumn: (dragged_index, dropped_index, position) => dispatch(Actions.moveColumn(dragged_index, dropped_index, position)),
-        moveRow: (dragged_index, dropped_index, position) => dispatch(Actions.moveRow(dragged_index, dropped_index, position))
+        moveRow: (dragged_index, dropped_index, position) => dispatch(Actions.moveRow(dragged_index, dropped_index, position)),
+        shiftSheet: (old_position, new_position) => dispatch(Actions.shiftSheet(old_position, new_position))
     }
 }
 

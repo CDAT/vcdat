@@ -121,6 +121,13 @@ var Actions = {
             col: col,
             plot_index: plot_index
         }
+    },
+    shiftSheet(old_position, new_position){
+        return {
+            type: 'SHIFT_SHEET',
+            old_position: old_position,
+            new_position: new_position
+        }
     }
 }
 

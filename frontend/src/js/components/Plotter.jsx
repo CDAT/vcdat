@@ -4,6 +4,7 @@ import Plot from './Plot.jsx'
 var Plotter = React.createClass({
     initDrop() {
         $('.cell-stack-bottom').droppable({
+            accept: '.draggable-list-item',
             over: (event, ui) => {
                 $(event.target).addClass('plotter-to-top');
             },
