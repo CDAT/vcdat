@@ -3,7 +3,7 @@ import React from 'react'
 var GraphicsMethodInspector = React.createClass({
     getGMS()
     {
-        if (Object.keys(this.props.graphicsMethods).length) {
+        if (Object.keys(this.props.graphicsMethods).length && this.props.graphicsMethodParent) {
             return Object.keys(this.props.graphicsMethods[this.props.graphicsMethodParent]).map((value, index) => {
                 return (
                     <li onClick={this.props.changePlotGM.bind(this, false, value)} key={'inspector_gm_' + value}
@@ -66,7 +66,6 @@ var GraphicsMethodInspector = React.createClass({
                     </tbody>
                 </table>
             </div>
-
         )
     }
 })
