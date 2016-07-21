@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import AppContainer from './containers/AppContainer.jsx'
-import configureStore from './Store.js'
+import {configureStore} from './Store.js'
 import {Provider} from 'react-redux'
 
 let store = configureStore();
@@ -37,8 +37,6 @@ let store = configureStore();
             t.children("a").click(click);
             t.children('ul').quicktree();
 
-            //perform click to start with list closed
-            t.children("a").click();
         });
 
         $(this).on("DOMNodeInserted", child_inserted);
