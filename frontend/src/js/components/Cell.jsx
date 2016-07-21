@@ -15,17 +15,12 @@ var Cell = React.createClass({
         })
         this.props.resizeHeader($('.cell-image')[0]);
     },
-    initDrop() {},
     componentDidMount() {
         this.resizeCells();
         var element = $('.cell')[0];
         new ResizeSensor(element, () => {
             this.resizeCells();
         })
-        this.initDrop();
-    },
-    componentDidUpdate() {
-        this.initDrop();
     },
     render() {
         this.cell = this.props.cells[this.props.row][this.props.col];

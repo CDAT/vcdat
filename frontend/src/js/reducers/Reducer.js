@@ -30,6 +30,7 @@ var second_cell = {
 }
 
 var default_sheet = {
+    name: 'Sheet',
     col_count: 1,
     row_count: 1,
     selected_cell_indices: [
@@ -110,7 +111,7 @@ const varListReducer = (state = test_vars, action) => {
 }
 
 const gmListReducer = (state = {}, action) => {
-    if (!state.length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
+    if (!Object.keys(state).length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
         getGraphicsMethods();
     }
     switch (action.type) {
@@ -214,6 +215,12 @@ const getCell = (sheet, action) => {
 
 const sheetsModelReducer = (state = default_sheets_model, action) => {
     switch (action.type) {
+        case 'SHIFT_SHEET':
+            var new_state = jQuery.extend(true, {}, state);
+            var sheet = new_state.sheets.splice(action.old_position, 1)[0];
+            new_state.sheets.splice(action.new_position, 0, sheet);
+            new_state.cur_sheet_index = action.new_position;
+            return new_state;
         case 'MOVE_ROW':
             var new_state = jQuery.extend(true, {}, state);
             var sheet = new_state.sheets[state.cur_sheet_index];
@@ -252,7 +259,9 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             return new_state;
         case 'ADD_SHEET':
             var new_state = jQuery.extend(true, {}, state);
-            new_state.sheets.push(default_sheet);
+            var sheet = jQuery.extend(true, {}, default_sheet);
+            sheet.name += new_state.sheets.length;
+            new_state.sheets.push(sheet);
             new_state.cur_sheet_index = new_state.sheets.length - 1;
             return new_state;
         case 'REMOVE_SHEET':
