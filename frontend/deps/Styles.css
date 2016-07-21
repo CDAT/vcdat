@@ -1,20 +1,19 @@
 /*makes stuff work in firefox*/
-* {
-min-height: 0;
-min-width: 0;
-}
-button:focus{
-    outline:0 !important;
-}
 
-.no-bullets{
+* {
+    min-height: 0;
+    min-width: 0;
+}
+button:focus {
+    outline: 0 !important;
+}
+.no-bullets {
     list-style-type: none;
 }
-
 #spreadsheet-div {
     display: flex;
     flex-direction: column;
-    flex:1;
+    flex: 1;
 }
 .black {
     color: black;
@@ -39,7 +38,7 @@ button:focus{
     height: 100%;
 }
 .cell {
-    flex:1;
+    flex: 1;
     outline: 1px solid black;
     position: relative;
     background-color: white;
@@ -57,7 +56,7 @@ button:focus{
     border: 2px solid blue;
 }
 .border {
-    width:100%;
+    width: 100%;
     position: absolute;
     top: 0;
 }
@@ -71,6 +70,12 @@ button:focus{
 .sheet-list-item {
     cursor: pointer;
 }
+.sheet-list-item > a > button{
+    display:inline-block
+}
+.sheet-list-item > a > span{
+    display:inline-block
+}
 #left-side-bar {
     min-width: 200px;
     display: inline-block;
@@ -82,12 +87,12 @@ button:focus{
 }
 #spreadsheet-container {
     display: flex;
-    flex-flow:column;
+    flex-flow: column;
     float: none;
-    height:80vh;
+    height: 80vh;
 }
 #right-side-bar {
-    width:200px;
+    width: 200px;
     min-width: 200px;
     display: inline-block;
     float: right;
@@ -111,10 +116,11 @@ button:focus{
 }
 #spreadsheet-toolbar {
     padding-bottom: 3px;
-    min-height:46px;
-    flex:0;
+    min-height: 46px;
+    flex: 0;
 }
 #add-sheet-button {
+    vertical-align: top;
     margin: 0 2px 0 2px;
     height: 100%;
 }
@@ -124,203 +130,237 @@ button:focus{
     -webkit-transform: scaleX(-1);
     -ms-transform: scaleX(-1);
 }
-.side-nav-header{
-    margin-top:10px;
-    margin-left:-8px;
+.side-nav-header {
+    margin-top: 10px;
+    margin-left: -8px;
 }
-.left-side-list{
-    height:33.33%;
+.left-side-list {
+    height: 33.33%;
 }
-.right-side-list{
+.right-side-list {
     /*height:50%;*/
 }
-#inspector{
-    height:75%;
+#inspector {
+    height: 75%;
 }
-.scroll-area-list-parent{
+.scroll-area-list-parent {
     display: flex;
-    flex-flow:column;
+    flex-flow: column;
 }
-.scroll-area{
+.scroll-area {
     overflow-y: auto;
-    flex:1;
+    flex: 1;
 }
-#animation{
-    height:25%;
+#animation {
+    height: 25%;
 }
-.nav li a{
-    padding-left:5px;
-    padding-right:5px;
+.nav li a {
+    padding-left: 5px;
+    padding-right: 5px;
 }
-.navbar{
+.navbar {
     border-radius: 0;
-    margin-bottom:0;
+    margin-bottom: 0;
 }
-.main-left-list-item a{
-    display:block;
-    color:black;
+.main-left-list-item a {
+    display: block;
+    color: black;
     cursor: pointer;
-    width:100%;
-    padding-left:10px;
+    width: 100%;
+    padding-left: 10px;
     text-decoration: none;
 }
-.main-left-list-item a:hover{
+.main-left-list-item a:hover {
     background-color: #6D7F91;
-    color:white;
+    color: white;
 }
-.sub-left-list-item a{
-    display:block;
-    color:black;
-    width:100%;
-    padding-left:10px;
+.sub-left-list-item a {
+    display: block;
+    color: black;
+    width: 100%;
+    padding-left: 10px;
     text-decoration: none;
     cursor: pointer;
 }
-.left-list{
-    padding-left:0;
+.left-list {
+    padding-left: 0;
 }
-.dropdown-button{
-    width:100%;
+.dropdown-button {
+    width: 100%;
     text-align: right;
 }
-.edit-button{
-    width:60.55px;
+.edit-button {
+    width: 60.55px;
 }
-
-.inspector-selector{
-    width:100%;
+.inspector-selector {
+    width: 100%;
 }
-.inspector-selector table{
-    width:100%;
+.inspector-selector table {
+    width: 100%;
 }
-.inspector-dropdown-title{
-    float:left;
+.inspector-dropdown-title {
+    float: left;
 }
-.inspector-dropdown-item{
-    cursor:pointer;
+.inspector-dropdown-item {
+    cursor: pointer;
     padding-left: 10px;
 }
-.inspector-dropdown-item:hover, .inspector-dropdown-item.active:hover{
-    background-color:white;
-    color:black;
+.inspector-dropdown-item:hover, .inspector-dropdown-item.active:hover {
+    background-color: white;
+    color: black;
 }
-.inspector-dropdown-item.active{
+.inspector-dropdown-item.active {
     background-color: #6D7F91;
 }
-.dropdown-menu{
-    background-color:#31b0d5;
+.dropdown-menu {
+    background-color: #31b0d5;
     position: absolute;
     top: 100%;
-    right:0;
+    right: 0;
 }
-.dropdown-container{
-    position:relative;
+.dropdown-container {
+    position: relative;
 }
-.inspector-selector td{
+.inspector-selector td {
     vertical-align: top;
-    padding:0;
-    margin:0;
+    padding: 0;
+    margin: 0;
 }
-.inspector-selector table{
+.inspector-selector table {
     border-collapse: collapse;
 }
-.nav-tabs > li .close {
+.nav-tabs> li .close {
     margin: 1px 0 0 10px;
     font-size: 18px;
 }
-.spreadsheet-row .spreadsheet-col .droppable-head{
-    display:inline-block;
-    height:20px;
-    width:50%;
+.spreadsheet-row .spreadsheet-col .droppable-head {
+    display: inline-block;
+    height: 20px;
+    width: 50%;
     opacity: 0;
 }
-.spreadsheet-row .spreadsheet-col .draggable-head{
-    height:20px;
+.spreadsheet-row .spreadsheet-col .draggable-head {
+    height: 20px;
     background-color: #6D7F91;
     cursor: pointer;
 }
-.head-left-border{
-    border-left:1px solid white;
+.head-left-border {
+    border-left: 1px solid white;
 }
-#header-spacer{
-    height:20px;
-    width:20px;
+#header-spacer {
+    height: 20px;
+    width: 20px;
 }
-.row-header-container .droppable-head{
-    width:20px;
-    height:50%;
+.row-header-container .droppable-head {
+    width: 20px;
+    height: 50%;
     opacity: 0;
 }
-.row-header-container .draggable-head{
-    flex:1;
-    width:20px;
+.row-header-container .draggable-head {
+    flex: 1;
+    width: 20px;
     background-color: #6D7F91;
     cursor: pointer;
 }
-.row-header-container{
+.row-header-container {
     display: flex;
     flex-direction: column;
 }
-.cell-stack-top{
-    position:absolute;
-    height:100%;
-    width:100%;
+.cell-stack-top {
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }
-.cell-stack-bottom{
-    position:absolute;
-    width:100%;
-    height:100%;
+.cell-stack-bottom {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     background-color: white;
-    color:black;
-    display:flex;
+    color: black;
+    display: flex;
 }
-.plotter-to-top{
+.plotter-to-top {
     z-index: 1;
 }
-.plotter-plots{
-    width:100%;
-    display:flex;
+.plotter-plots {
+    width: 100%;
+    display: flex;
 }
-.plotter-plots > div{
-    flex:1;
-    display:flex;
+.plotter-plots> div {
+    flex: 1;
+    display: flex;
     flex-direction: column;
     height: 100%;
 }
-.plotter-plots > div > div{
+.plotter-plots> div> div {
     flex: 1;
 }
-.plotter-add-plot{
-    flex:1;
+.plotter-add-plot {
+    flex: 1;
 }
-.plot{
+.plot {
     box-sizing: border-box;
     padding: 0 10px 0 10px;
 }
-.plotter-add-plot > img{
-    height:100%
+.plotter-add-plot> img {
+    height: 100%
 }
-.plot-var{
+.plot-var {
     display: inline-block;
-    width:50%;
-    height:20px;
+    width: 50%;
+    height: 20px;
     vertical-align: top;
 }
-.plot-hover{
+.plot-hover {
     opacity: 0.7;
     background-color: #A3E2F7;
 }
-.colored-second-var{
+.colored-second-var {
     background-color: gray;
 }
-.second-var-highlight{
-    background-color:yellow;
+.second-var-highlight {
+    background-color: yellow;
 }
-.plot-var{
-    padding-left:5px;
+.plot-var {
+    padding-left: 5px;
 }
-.first-var{
+.first-var {
     background-color: gray;
-    width:40%;
-    margin-right:5px;
+    width: 40%;
+    margin-right: 5px;
+}
+
+/* begin css spinner css */
+
+.spinner {
+    margin-right: 5px;
+    height: 39px;
+    display: inline-block;
+    width: 100px;
+}
+.spinner input {
+    vertical-align: top;
+    display: inline-block;
+    height: 100%;
+    text-align: right;
+    width: 75% !important;
+}
+.input-group-btn-vertical {
+    display: inline-block;
+    height: 100%;
+    width: 25%;
+}
+.input-group-btn-vertical> .btn {
+    display: block;
+    padding: 0;
+    width: 100%;
+    height: 50%;
+    border-radius: 0;
+}
+
+/* end css spinner css */
+
+.ui-sortable-placeholder {
+    display: inline-block;
+    height: 1px;
 }

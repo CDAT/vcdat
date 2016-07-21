@@ -21,12 +21,14 @@ var Plot = React.createClass({
     initDrop() {
         var plot = $(document.getElementById(this.props.plotName));
         plot.droppable({
+            accept: '.draggable-list-item',
             tolerance: 'pointer',
             hoverClass: 'plot-hover',
             drop: this.addToPlotter,
         })
 
         plot.find('.second-var').droppable({
+            accept: '.draggable-list-item',
             tolerance: 'pointer',
             over: (event, ui) => {
                 if (!this.validSecondVar(event, ui)) {
