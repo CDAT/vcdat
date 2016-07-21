@@ -111,7 +111,7 @@ const varListReducer = (state = test_vars, action) => {
 }
 
 const gmListReducer = (state = {}, action) => {
-    if (!state.length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
+    if (!Object.keys(state).length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
         getGraphicsMethods();
     }
     switch (action.type) {
