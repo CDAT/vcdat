@@ -16,8 +16,8 @@ var GMList = React.createClass({
                                 <li key={parent_value} className='main-left-list-item'>
                                     <a>{parent_value}</a>
                                     <ul className='no-bullets'>
-                                        {this.props.graphicsMethods[parent_value].map((value, index) => {
-                                            return <li key={value} className='sub-left-list-item draggable-list-item' data-type='graphics_method' data-name={value} data-parent={parent_value}>
+                                        {Object.keys(this.props.graphicsMethods[parent_value]).map((value, index) => {
+                                            return <li key={value} className='sub-left-list-item draggable-list-item' data-type='graphics_method' data-name={value} data-parent={parent_value} style={{'display':'none'}}>
                                                 <a>{value}</a>
                                             </li>
                                         })}

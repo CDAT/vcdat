@@ -5,11 +5,11 @@ while [ -n $curpath ] && [ `basename $curpath` != "vcdat" ]; do
     curpath=`dirname $curpath`
 done
 
-if [ -n $VIRTUAL_ENV ] && [ "$VIRTUAL_ENV" = "$curpath/backend/venv" ]; then
+if [ -n $CONDA_PREFIX ] && [ "$CONDA_PREFIX" = "$curpath/backend/venv" ]; then
     echo "Virtual Environment already loaded"
 else
     echo "Loading virtual environment..."
-    source $curpath/backend/venv/bin/activate
+    source activate $curpath/backend/venv
 fi
 
 be_pid=0
