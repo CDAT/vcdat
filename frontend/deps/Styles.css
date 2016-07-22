@@ -364,3 +364,7 @@ button:focus {
     display: inline-block;
     height: 1px;
 }
+
+#file{
+    display: none;
+}

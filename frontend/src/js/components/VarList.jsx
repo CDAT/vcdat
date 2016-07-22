@@ -1,11 +1,15 @@
 import React from 'react'
 import AddEditRemoveNav from './AddEditRemoveNav.jsx'
+import FileExplorer from './modals/FileExplorer.jsx'
 
 var VarList = React.createClass({
+    openDialog(){
+        $('#file-explorer').modal('show');
+    },
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent'>
-                <AddEditRemoveNav title='Variables' />
+                <AddEditRemoveNav title='Variables' addAction={this.openDialog} />
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {this.props.variables.map((value, index) => {
@@ -17,6 +21,7 @@ var VarList = React.createClass({
                         })}
                     </ul>
                 </div>
+                <FileExplorer />
             </div>
         )
     }

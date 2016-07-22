@@ -1,9 +1,10 @@
 import os
 import vcs
 import json
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from GraphicsMethods import get_gm
 from Templates import get_t
+from Files import getFiles
 app = Flask(__name__, static_url_path='')
 
 _ = vcs.init()
@@ -33,6 +34,21 @@ def get_templates():
 def get_graphics_methods():
     graphics_methods = get_gm()
     return graphics_methods
+
+
+
+@app.route("/browseFiles")
+def browse_files():
+    start_path = request.args.get('path')
+    if start_path is None:
+        start_path = os.path.expanduser('~')
+    files = getFiles(start_path)
+    print 'got files in app'
+    obj = {
+        'files':files,
+        'dir_path':start_path
+    }
+    return json.dumps(obj)
 
 if __name__ == "__main__":
     app.run()

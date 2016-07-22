@@ -18,6 +18,7 @@ let store = configureStore();
 (function($) {
     $.fn.quicktree = function() {
         function click(e) {
+            console.log('click fired');
             var a = $(this);
             a.next('ul').children("li").toggle();
             e.preventDefault();
