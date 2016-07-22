@@ -1,10 +1,11 @@
 import React from 'react'
 import AddEditRemoveNav from './AddEditRemoveNav.jsx'
+import CachedFiles from './modals/CachedFiles.jsx'
 import FileExplorer from './modals/FileExplorer.jsx'
 
 var VarList = React.createClass({
     openDialog(){
-        $('#file-explorer').modal('show');
+        $('#cached-files').modal('show');
     },
     render() {
         return (
@@ -21,7 +22,8 @@ var VarList = React.createClass({
                         })}
                     </ul>
                 </div>
-                <FileExplorer loadVariables={this.props.loadVariables}/>
+                <CachedFiles curVariables={this.props.variables} loadVariables={this.props.loadVariables} cachedFiles={this.props.cachedFiles} />
+                <FileExplorer addFileToCache={this.props.addFileToCache}/>
             </div>
         )
     }

@@ -144,6 +144,14 @@ var Actions = {
             type: 'LOAD_VARIABLES',
             var_list: var_list
         }
+    },
+    addFileToCache(filename, filepath, variables){
+        return {
+            type: 'ADD_FILE_TO_CACHE',
+            filename: filename,
+            filepath: filepath,
+            variables: variables
+        }
     }
 }
 

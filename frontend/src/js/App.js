@@ -20,7 +20,7 @@ let store = configureStore();
         function click(e) {
             var a = $(this);
             a.next('ul').children("li").toggle();
-            a.parent().parent().find('.active').removeClass('active');
+            a.parent().parent().parent().find('.active').removeClass('active');
             a.addClass('active');
             e.preventDefault();
         }

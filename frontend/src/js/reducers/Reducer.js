@@ -104,7 +104,20 @@ const createCellGrid = (sheet) => {
     return rows
 }
 
-const varListReducer = (state = test_vars, action) => {
+const cachedFilesReducer = (state = {}, action) => {
+    switch(action.type){
+        case 'ADD_FILE_TO_CACHE':
+            var new_state = jQuery.extend(true, {}, state)
+            new_state[action.filename] = {
+                filepath: action.filepath,
+                variables: action.variables
+            }
+            return new_state;
+        default: return state;
+    }
+}
+
+const varListReducer = (state = [], action) => {
     switch (action.type) {
         case 'LOAD_VARIABLES':
             var new_list = jQuery.extend(true, [], state);
@@ -287,6 +300,7 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
 }
 
 const reducers = combineReducers({
+    cached_files: cachedFilesReducer,
     variables: varListReducer,
     graphics_methods: gmListReducer,
     templates:templateListReducer,
@@ -295,7 +309,7 @@ const reducers = combineReducers({
 })
 
 const undoableReducer = undoable(reducers,{
-    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES', 'INITIALIZE_GRAPHICS_METHODS_VALUES'])
+    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES', 'INITIALIZE_GRAPHICS_METHODS_VALUES', 'ADD_FILE_TO_CACHE'])
 })
 
 export default undoableReducer
@@ -303,6 +317,7 @@ export default undoableReducer
 /*
 Tree Structure:
     {
+        cached_files: {filename: {path, variables}},
         variables: [],
         graphics_methods: [],
         templates: [],

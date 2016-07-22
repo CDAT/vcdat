@@ -368,24 +368,24 @@ button:focus {
 #file{
     display: none;
 }
-#file-tree{
+.tree-view{
     max-height:80vh;
     overflow:auto;
 }
-#file-tree a{
+.tree-view a{
     text-decoration: none;
     display:inline-block;
     width:100%;
     cursor: pointer;
 }
-#file-tree a>i{
+.tree-view a>i{
     padding-right: 5px;
 }
-#file-tree .directory{
+.tree-view .directory{
     color: #EDC566;
 }
 
-#file-tree a.active{
+.tree-view a.active{
     padding: 0 5px 0 5px;
     background-color: white;
 }

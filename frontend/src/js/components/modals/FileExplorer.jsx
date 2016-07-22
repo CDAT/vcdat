@@ -4,7 +4,8 @@ var FileExplorer = React.createClass({
     getInitialState() {
         return {
             files: {
-                sub_items: {}
+                sub_items: {},
+                file_selected: false
             }
         };
     },
@@ -30,23 +31,19 @@ var FileExplorer = React.createClass({
         })
     },
     loadFiles(event) {
-        // console.log(event.target);
+        this.setFileSelected(false);
         var item = $(event.target);
         var path = item.attr('data-path') + '/' + item.text();
-        // console.log('path', path)
         $.get('browseFiles', {'path': path}).then((obj) => {
             let new_obj = JSON.parse(obj);
-            // console.log('new_obj', new_obj, new_obj.dir_path, new_obj.files);
             let cur_state = this.state.files;
             let arr = new_obj.dir_path.replace(this.start_path, '').split('/');
             arr.splice(0, 1);
             let cur_tree = cur_state;
-            // console.log('arr', arr)
             arr.forEach((value) => {
                 console.log('cur_tree', cur_tree, value)
                 cur_tree = cur_tree.sub_items[value];
             })
-            // cur_tree._path = new_obj.dir_path;
             new_obj.files.forEach((value) => {
                 console.log('value', cur_tree, value)
                 cur_tree.sub_items[value.name] = value;
@@ -58,10 +55,7 @@ var FileExplorer = React.createClass({
         $('#file-tree').quicktree();
     },
     buildList(file_obj) {
-        // console.log('file_obj', file_obj)
-        // console.log('sub_items', file_obj.sub_items);
         var list_items = Object.keys(file_obj.sub_items).map((value, index) => {
-            // console.log('value', value, Object.keys(file_obj.sub_items[value].sub_items));
             if (Object.keys(file_obj.sub_items[value].sub_items).length) {
                 return (
                     <li key={index}>
@@ -81,7 +75,7 @@ var FileExplorer = React.createClass({
                                 )
                             } else {
                                 return (
-                                    <a onClick={this.sendPath} className='file' data-path={file_obj.sub_items[value].path}><i className='glyphicon glyphicon-file'></i>{value}</a>
+                                    <a onClick={this.setFileSelected.bind(this, true)} className='file' data-path={file_obj.sub_items[value].path}><i className='glyphicon glyphicon-file'></i>{value}</a>
                                 )
                             }
                         })()}
@@ -91,16 +85,27 @@ var FileExplorer = React.createClass({
         })
         return list_items;
     },
-    sendPath(event) {
-        let path = $(event.target).attr('data-path') + '/' + $(event.target).text();
+    setFileSelected(value){
+        let state = this.state;
+        state.file_selected = value;
+        this.setState(state);
+    },
+    cacheFile(event) {
+        let selected = $('#file-tree').find('.active');
+        console.log('selected', selected);
+        let path = selected.attr('data-path') + '/' + selected.text();
+        this.filepath = path;
+        this.filename = selected.text();
         $.get('loadVariablesFromFile', {'path': path}).then((obj) => {
             obj = JSON.parse(obj);
-            this.props.loadVariables(obj.variables)
+            console.log(obj, this.filename, this.filepath);
+            this.props.addFileToCache(this.filename, this.filepath, obj.variables);
+            $('#file-explorer').modal('hide');
         })
     },
     render() {
         return (
-            <div className="modal fade" id='file-explorer'>
+            <div className="modal fade" id='file-explorer' data-backdrop='static' data-keyboard='false'>
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -110,13 +115,13 @@ var FileExplorer = React.createClass({
                             <h4 className="modal-title">File Explorer</h4>
                         </div>
                         <div className="modal-body">
-                            <ul id='file-tree' className='no-bullets'>
+                            <ul id='file-tree' className='tree-view no-bullets'>
                                 {this.buildList(this.state.files)}
                             </ul>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Open</button>
+                            <button type="button" className="btn btn-primary" onClick={this.cacheFile} disabled={!this.state.file_selected}>Open</button>
                         </div>
                     </div>
                 </div>
