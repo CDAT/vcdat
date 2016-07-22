@@ -18,29 +18,21 @@ let store = configureStore();
 (function($) {
     $.fn.quicktree = function() {
         function click(e) {
-            console.log('click fired');
             var a = $(this);
             a.next('ul').children("li").toggle();
+            a.parent().parent().find('.active').removeClass('active');
+            a.addClass('active');
             e.preventDefault();
-        }
-
-        function child_inserted(e) {
-            var new_child = $(e.target);
-            if (new_child.parent().get(0) === this) {
-                new_child.children('a').click(click);
-                new_child.children('ul').quicktree()
-            }
         }
 
         // Grab the LI's and iterate over them
         $(this).find("li").each(function(ind) {
             var t = $(this);
-            t.children("a").click(click);
+            t.children("a").off('click').click(click);
             t.children('ul').quicktree();
 
         });
 
-        $(this).on("DOMNodeInserted", child_inserted);
         return this;
 
     };

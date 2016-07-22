@@ -1,5 +1,5 @@
 import os
-import vcs
+import vcs, cdms2
 import json
 from flask import Flask, send_from_directory, request
 from GraphicsMethods import get_gm
@@ -49,6 +49,12 @@ def browse_files():
         'dir_path':start_path
     }
     return json.dumps(obj)
+
+@app.route("/loadVariablesFromFile")
+def load_variables_from_file():
+    file_path = request.args.get('path')
+    f = cdms2.open(file_path);
+    return json.dumps({'variables': f.listvariables()})
 
 if __name__ == "__main__":
     app.run()

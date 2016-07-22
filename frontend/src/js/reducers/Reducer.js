@@ -106,6 +106,10 @@ const createCellGrid = (sheet) => {
 
 const varListReducer = (state = test_vars, action) => {
     switch (action.type) {
+        case 'LOAD_VARIABLES':
+            var new_list = jQuery.extend(true, [], state);
+            new_list.push(...action.var_list);
+            return new_list;
         default: return state
     }
 }

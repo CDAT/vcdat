@@ -21,7 +21,7 @@ var VarList = React.createClass({
                         })}
                     </ul>
                 </div>
-                <FileExplorer />
+                <FileExplorer loadVariables={this.props.loadVariables}/>
             </div>
         )
     }
