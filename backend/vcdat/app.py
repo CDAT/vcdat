@@ -4,7 +4,7 @@ import json
 from flask import Flask, send_from_directory, request
 from GraphicsMethods import get_gm
 from Templates import get_t
-from Files import getFiles
+from Files import getFilesObject
 app = Flask(__name__, static_url_path='')
 
 _ = vcs.init()
@@ -36,19 +36,38 @@ def get_graphics_methods():
     return graphics_methods
 
 
+@app.route("/getInitialFileTree")
+def get_initial_file_tree():
+    start_path = os.path.expanduser('~')
+    dir_list = start_path.split('/')
+    del dir_list[0]
+    dir_list.insert(0, '/')
+    print dir_list
+    base_files = {}
+    total_path = ''
+    prev_obj = {}
+    for index, directory in enumerate(dir_list):
+        total_path += directory
+        if index:
+            total_path += '/'
+        files = getFilesObject(total_path)
+
+        if index:
+            prev_obj['sub_items'][directory] = files
+        else:
+            base_files = files
+        prev_obj = files
+
+    print base_files
+    return json.dumps(base_files)
 
 @app.route("/browseFiles")
 def browse_files():
-    start_path = request.args.get('path')
-    if start_path is None:
-        start_path = os.path.expanduser('~')
-    files = getFiles(start_path)
+    start_path = request.args.get('path') + '/'
+    print 'start_path', start_path
+    file_obj = getFilesObject(start_path)
     print 'got files in app'
-    obj = {
-        'files':files,
-        'dir_path':start_path
-    }
-    return json.dumps(obj)
+    return json.dumps(file_obj)
 
 @app.route("/loadVariablesFromFile")
 def load_variables_from_file():

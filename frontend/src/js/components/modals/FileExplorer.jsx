@@ -11,43 +11,34 @@ var FileExplorer = React.createClass({
     },
     componentDidMount() {
         $('#file-explorer').on('shown.bs.modal', () => {
-            $.get('browseFiles').then((obj) => {
+            $.get('getInitialFileTree').then((obj) => {
                 obj = JSON.parse(obj);
                 console.log('got files', obj);
-                var files_obj = {
-                    directory: true,
-                    sub_items: {},
-                    name: 'sampson9',
-                    path: obj.dir_path
-                };
-                this.start_path = obj.dir_path;
-                obj.files.forEach((value) => {
-                    console.log('value', value)
-                    files_obj.sub_items[value.name] = value;
-                })
-                console.log('files_obj', files_obj)
-                this.setState({files: files_obj})
+                this.setState({files: obj})
             })
         })
     },
     loadFiles(event) {
         this.setFileSelected(false);
         var item = $(event.target);
-        var path = item.attr('data-path') + '/' + item.text();
+        console.log('data-path', item.attr('data-path'))
+        var path = item.attr('data-path') + item.text();
+        console.log('sending to get files', path);
         $.get('browseFiles', {'path': path}).then((obj) => {
             let new_obj = JSON.parse(obj);
+            console.log('new_obj', new_obj)
             let cur_state = this.state.files;
-            let arr = new_obj.dir_path.replace(this.start_path, '').split('/');
+            let arr = new_obj.path.split('/');
+            console.log('arr before', arr)
             arr.splice(0, 1);
+            arr.splice(-2, 2);
+            console.log('arr', arr)
             let cur_tree = cur_state;
             arr.forEach((value) => {
-                console.log('cur_tree', cur_tree, value)
                 cur_tree = cur_tree.sub_items[value];
             })
-            new_obj.files.forEach((value) => {
-                console.log('value', cur_tree, value)
-                cur_tree.sub_items[value.name] = value;
-            })
+            console.log('cur_tree', cur_tree)
+            cur_tree.sub_items[new_obj.name] = new_obj;
             this.setState({files: cur_state});
         });
     },
@@ -75,7 +66,7 @@ var FileExplorer = React.createClass({
                                 )
                             } else {
                                 return (
-                                    <a onClick={this.setFileSelected.bind(this, true)} className='file' data-path={file_obj.sub_items[value].path}><i className='glyphicon glyphicon-file'></i>{value}</a>
+                                    <a onClick={(file_obj.name != 'empty' ? this.setFileSelected.bind(this, true) : '')} className='file' data-path={file_obj.sub_items[value].path}><i className='glyphicon glyphicon-file'></i>{value}</a>
                                 )
                             }
                         })()}

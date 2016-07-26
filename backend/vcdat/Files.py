@@ -10,9 +10,20 @@ def isValidDir(start_path, item):
         return True
     return False
 
-def getFiles(start_path):
+def getFilesObject(start_path):
     print start_path
-    cur_dir_items = []
+    if start_path != '/':
+        name = start_path.split('/')[-2]
+    else:
+        name = '/'
+    print 'name', name
+
+    cur_dir_items = {
+        'name': name,
+        'sub_items': {},
+        'directory': True,
+        'path': start_path
+    }
     for item in os.listdir(start_path):
         if isValidFile(start_path, item) or isValidDir(start_path, item):
             obj = {
@@ -23,5 +34,12 @@ def getFiles(start_path):
             }
             if isValidDir(start_path, item):
                 obj['directory'] = True
-            cur_dir_items.append(obj)
+            cur_dir_items['sub_items'][item] = obj
+    if len(cur_dir_items['sub_items'].keys()) == 0:
+        cur_dir_items['sub_items']['empty'] = {
+            'name': 'empty',
+            'sub_items': {},
+            'directory': False,
+            'path': start_path
+        }
     return cur_dir_items
