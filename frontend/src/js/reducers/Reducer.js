@@ -19,16 +19,6 @@ var default_cell = {
     plots: [default_plot]
 }
 
-var second_cell = {
-    plot_being_edited: 0,
-    plots: [{
-        variables: [], //testing inspector
-        graphics_method_parent: 'isofill',
-        graphics_method: 'default',
-        template: 'default'
-    }]
-}
-
 var default_sheet = {
     name: 'Sheet',
     col_count: 1,
@@ -80,7 +70,7 @@ const createCellGrid = (sheet) => {
             if (i < cells.length && j < cells[i].length) {
                 col.push(cells[i][j]);
             } else {
-                col.push(second_cell);
+                col.push(default_cell);
             }
         }
         rows.push(col);
@@ -120,8 +110,11 @@ const cachedFilesReducer = (state = {}, action) => {
 const varListReducer = (state = [], action) => {
     switch (action.type) {
         case 'LOAD_VARIABLES':
-            var new_list = jQuery.extend(true, [], state);
-            new_list.push(...action.var_list);
+            var new_list = jQuery.extend(true, {}, state);
+            action.var_list.forEach((var_obj) => {
+                let key = Object.keys(var_obj)[0];
+                new_list[key] = var_obj[key];
+            })
             return new_list;
         default: return state
     }
@@ -317,8 +310,14 @@ export default undoableReducer
 /*
 Tree Structure:
     {
-        cached_files: {filename: {path, variables}},
-        variables: [],
+        cached_files: {filename: {filepath, variables}},
+        variables: {
+            var_name: {
+                    cdms_var_name,
+                    filename,
+                    filepath
+                }
+        },
         graphics_methods: [],
         templates: [],
         cur_sheet: 0,

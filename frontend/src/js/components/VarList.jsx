@@ -13,7 +13,7 @@ var VarList = React.createClass({
                 <AddEditRemoveNav title='Variables' addAction={this.openDialog} />
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
-                        {this.props.variables.map((value, index) => {
+                        {Object.keys(this.props.variables).map((value, index) => {
                             return (
                                 <li key={value} className='main-left-list-item draggable-list-item' data-type='variable' data-name={value}>
                                     <a>{value}</a>

@@ -11,12 +11,10 @@ def isValidDir(start_path, item):
     return False
 
 def getFilesObject(start_path):
-    print start_path
     if start_path != '/':
         name = start_path.split('/')[-2]
     else:
         name = '/'
-    print 'name', name
 
     cur_dir_items = {
         'name': name,

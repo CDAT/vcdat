@@ -42,7 +42,6 @@ def get_initial_file_tree():
     dir_list = start_path.split('/')
     del dir_list[0]
     dir_list.insert(0, '/')
-    print dir_list
     base_files = {}
     total_path = ''
     prev_obj = {}
@@ -58,15 +57,12 @@ def get_initial_file_tree():
             base_files = files
         prev_obj = files
 
-    print base_files
     return json.dumps(base_files)
 
 @app.route("/browseFiles")
 def browse_files():
     start_path = request.args.get('path') + '/'
-    print 'start_path', start_path
     file_obj = getFilesObject(start_path)
-    print 'got files in app'
     return json.dumps(file_obj)
 
 @app.route("/loadVariablesFromFile")

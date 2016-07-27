@@ -13,7 +13,6 @@ var FileExplorer = React.createClass({
         $('#file-explorer').on('shown.bs.modal', () => {
             $.get('getInitialFileTree').then((obj) => {
                 obj = JSON.parse(obj);
-                console.log('got files', obj);
                 this.setState({files: obj})
             })
         })
@@ -21,23 +20,17 @@ var FileExplorer = React.createClass({
     loadFiles(event) {
         this.setFileSelected(false);
         var item = $(event.target);
-        console.log('data-path', item.attr('data-path'))
         var path = item.attr('data-path') + item.text();
-        console.log('sending to get files', path);
         $.get('browseFiles', {'path': path}).then((obj) => {
             let new_obj = JSON.parse(obj);
-            console.log('new_obj', new_obj)
             let cur_state = this.state.files;
             let arr = new_obj.path.split('/');
-            console.log('arr before', arr)
             arr.splice(0, 1);
             arr.splice(-2, 2);
-            console.log('arr', arr)
             let cur_tree = cur_state;
             arr.forEach((value) => {
                 cur_tree = cur_tree.sub_items[value];
             })
-            console.log('cur_tree', cur_tree)
             cur_tree.sub_items[new_obj.name] = new_obj;
             this.setState({files: cur_state});
         });
@@ -83,13 +76,11 @@ var FileExplorer = React.createClass({
     },
     cacheFile(event) {
         let selected = $('#file-tree').find('.active');
-        console.log('selected', selected);
-        let path = selected.attr('data-path') + '/' + selected.text();
+        let path = selected.attr('data-path') + selected.text();
         this.filepath = path;
         this.filename = selected.text();
         $.get('loadVariablesFromFile', {'path': path}).then((obj) => {
             obj = JSON.parse(obj);
-            console.log(obj, this.filename, this.filepath);
             this.props.addFileToCache(this.filename, this.filepath, obj.variables);
             $('#file-explorer').modal('hide');
         })

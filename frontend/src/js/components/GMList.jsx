@@ -6,7 +6,6 @@ var GMList = React.createClass({
         $('#gm-list').quicktree();
     },
     componentDidMount() {
-        console.log('calling quicktree');
         $('#gm-list').quicktree();
     },
     render() {

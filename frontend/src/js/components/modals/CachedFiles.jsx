@@ -9,13 +9,20 @@ var CachedFiles = React.createClass({
         $('#cache-tree').quicktree();
     },
     loadVariable(event){
-        let selected = $('#cache-tree').find('.active');
-        let var_name = selected.text();
-        this.props.loadVariables([selected.text()])
-        $('#cached-files').modal('hide');
-    },
+       let selected = $('#cache-tree').find('.active');
+       let var_name = selected.text();
+       let filename = selected.parent().attr('data-filename');
+       let path = selected.parent().attr('data-path');
+       let var_obj = {};
+       var_obj[var_name] = {
+               cdms_var_name: var_name,
+               filename: filename,
+               path: path
+           }
+       this.props.loadVariables([var_obj])
+       $('#cached-files').modal('hide');
+   },
     render() {
-        console.log('rendering cached files')
         return (
             <div className="modal fade" id='cached-files' data-backdrop='static' data-keyboard='false'>
                 <div className="modal-dialog" role="document">
@@ -29,14 +36,14 @@ var CachedFiles = React.createClass({
                         </div>
                         <div className="modal-body">
                             <ul id='cache-tree' className='tree-view no-bullets'>
-                                {Object.keys(this.props.cachedFiles).map((value, index) => {
+                                {Object.keys(this.props.cachedFiles).map((filename, index) => {
                                     return (
                                         <li key={index}>
-                                            <a>{value}</a>
+                                            <a>{filename}</a>
                                             <ul>
-                                                {this.props.cachedFiles[value].variables.map((value, index)=>{
-                                                    return (<li key={index} style={{'display': 'none'}}>
-                                                        <a>{value}</a>
+                                                {this.props.cachedFiles[filename].variables.map((var_name, index)=>{
+                                                    return (<li key={index} data-filename={filename} data-path={this.props.cachedFiles[filename].filepath} style={{'display': 'none'}}>
+                                                        <a>{var_name}</a>
                                                     </li>)
                                                 })}
                                             </ul>
