@@ -1,14 +1,17 @@
 import os
 
+
 def isValidFile(start_path, item):
     if os.path.isfile(os.path.join(start_path, item)) and item[0] != '.' and item.endswith('.nc'):
         return True
     return False
 
+
 def isValidDir(start_path, item):
     if not os.path.isfile(os.path.join(start_path, item)) and item[0] != '.':
         return True
     return False
+
 
 def getFilesObject(start_path):
     if start_path != '/':

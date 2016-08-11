@@ -1,5 +1,6 @@
 import os
-import vcs, cdms2
+import vcs
+import cdms2
 import json
 from flask import Flask, send_from_directory, request
 from GraphicsMethods import get_gm
@@ -9,10 +10,12 @@ app = Flask(__name__, static_url_path='')
 
 _ = vcs.init()
 
+
 @app.route("/")
 def hello():
     path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'frontend/src/'))
     return send_from_directory(path, 'index.html')
+
 
 @app.route("/deps/<path:path>")
 def serve_resource_file(path):
@@ -25,10 +28,12 @@ def serve_resource_file(path):
         print 'Unable to serve file ', path
         return send_from_directory(dir_path, 'taco')
 
+
 @app.route("/getTemplates")
 def get_templates():
     templates = get_t()
     return json.dumps(templates)
+
 
 @app.route("/getGraphicsMethods")
 def get_graphics_methods():
@@ -59,16 +64,18 @@ def get_initial_file_tree():
 
     return json.dumps(base_files)
 
+
 @app.route("/browseFiles")
 def browse_files():
     start_path = request.args.get('path') + '/'
     file_obj = getFilesObject(start_path)
     return json.dumps(file_obj)
 
+
 @app.route("/loadVariablesFromFile")
 def load_variables_from_file():
     file_path = request.args.get('path')
-    f = cdms2.open(file_path);
+    f = cdms2.open(file_path)
     return json.dumps({'variables': f.listvariables()})
 
 if __name__ == "__main__":
