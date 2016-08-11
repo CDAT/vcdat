@@ -30,7 +30,8 @@
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/"
+    "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
+    "lint": "./node_modules/.bin/eslint -f table src/"
   },
   "license": "This is a license",
   "repository": "http://github.com/UV-CDAT/vcdat",
