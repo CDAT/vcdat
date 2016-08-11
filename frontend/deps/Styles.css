@@ -364,3 +364,28 @@ button:focus {
     display: inline-block;
     height: 1px;
 }
+
+#file{
+    display: none;
+}
+.tree-view{
+    max-height:80vh;
+    overflow:auto;
+}
+.tree-view a{
+    text-decoration: none;
+    display:inline-block;
+    width:100%;
+    cursor: pointer;
+}
+.tree-view a>i{
+    padding-right: 5px;
+}
+.tree-view .directory{
+    color: #EDC566;
+}
+
+.tree-view a.active{
+    padding: 0 5px 0 5px;
+    background-color: white;
+}

@@ -16,7 +16,7 @@ var VariableInspector = React.createClass({
                                         <span className="caret"></span>
                                     </button>
                                     <ul className="dropdown-menu">
-                                        {(this.props.populateInspector ? this.props.variables.map((value, index) => {
+                                        {(this.props.populateInspector ? Object.keys(this.props.variables).map((value, index) => {
                                             return (
                                                 <li onClick={this.props.changePlotVar.bind(this, 0, value)} key={'inspector_var_' + value} className={'inspector-dropdown-item ' + (value === this.props.variable1
                                                     ? 'active'
@@ -37,7 +37,7 @@ var VariableInspector = React.createClass({
                                     <span className="caret"></span>
                                 </button>
                                 <ul className="dropdown-menu">
-                                    {(this.props.populateInspector ? this.props.variables.map((value, index) => {
+                                    {(this.props.populateInspector ? Object.keys(this.props.variables).map((value, index) => {
                                         return (
                                             <li onClick={this.props.changePlotVar.bind(this, 1, value)} key={'inspector_var_' + value} className={'inspector-dropdown-item ' + (value === this.props.variable2
                                                 ? 'active'

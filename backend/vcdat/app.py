@@ -1,9 +1,10 @@
 import os
-import vcs
+import vcs, cdms2
 import json
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from GraphicsMethods import get_gm
 from Templates import get_t
+from Files import getFilesObject
 app = Flask(__name__, static_url_path='')
 
 _ = vcs.init()
@@ -33,6 +34,42 @@ def get_templates():
 def get_graphics_methods():
     graphics_methods = get_gm()
     return graphics_methods
+
+
+@app.route("/getInitialFileTree")
+def get_initial_file_tree():
+    start_path = os.path.expanduser('~')
+    dir_list = start_path.split('/')
+    del dir_list[0]
+    dir_list.insert(0, '/')
+    base_files = {}
+    total_path = ''
+    prev_obj = {}
+    for index, directory in enumerate(dir_list):
+        total_path += directory
+        if index:
+            total_path += '/'
+        files = getFilesObject(total_path)
+
+        if index:
+            prev_obj['sub_items'][directory] = files
+        else:
+            base_files = files
+        prev_obj = files
+
+    return json.dumps(base_files)
+
+@app.route("/browseFiles")
+def browse_files():
+    start_path = request.args.get('path') + '/'
+    file_obj = getFilesObject(start_path)
+    return json.dumps(file_obj)
+
+@app.route("/loadVariablesFromFile")
+def load_variables_from_file():
+    file_path = request.args.get('path')
+    f = cdms2.open(file_path);
+    return json.dumps({'variables': f.listvariables()})
 
 if __name__ == "__main__":
     app.run()

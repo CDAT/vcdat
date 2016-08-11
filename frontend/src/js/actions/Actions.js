@@ -45,10 +45,9 @@ var Actions = {
         var obj = {
             type: 'CHANGE_PLOT_GM',
         }
-        if (parent){
+        if (parent) {
             obj.graphics_method_parent = value
-        }
-        else{
+        } else {
             obj.graphics_method = value
         }
         return obj;
@@ -59,13 +58,13 @@ var Actions = {
             value: value
         }
     },
-    initializeTemplateValues(templates){
+    initializeTemplateValues(templates) {
         return {
             type: 'INITIALIZE_TEMPLATE_VALUES',
             templates: templates
         }
     },
-    initializeGraphicsMethodsValues(gm){
+    initializeGraphicsMethodsValues(gm) {
         return {
             type: 'INITIALIZE_GRAPHICS_METHODS_VALUES',
             graphics_methods: gm
@@ -133,11 +132,25 @@ var Actions = {
             plot_index: plot_index
         }
     },
-    shiftSheet(old_position, new_position){
+    shiftSheet(old_position, new_position) {
         return {
             type: 'SHIFT_SHEET',
             old_position: old_position,
             new_position: new_position
+        }
+    },
+    loadVariables(var_list) {
+        return {
+            type: 'LOAD_VARIABLES',
+            var_list: var_list
+        }
+    },
+    addFileToCache(filename, filepath, variables){
+        return {
+            type: 'ADD_FILE_TO_CACHE',
+            filename: filename,
+            filepath: filepath,
+            variables: variables
         }
     }
 }
