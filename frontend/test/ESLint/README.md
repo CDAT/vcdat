@@ -42,7 +42,16 @@ Here is an example of our 'root' .eslintrc.json, which uses the [ESLint][5] and 
     }
 }
 ```
-_Note:_ If your rules extend a [plugin][9], you have to specify the plugin along with the name of the rule set.
+__Note:__ If your rules extend a [plugin][9], you have to [specify the plugin along with the name of the rule set][10].
+
+### Adding plugins
+
+ESLint can account for lots of variations on vanilla Javascript, including the use of ES6, ES7, jsx, etc.
+But if you're using some other Javascript framework, you will likely need to include a plugin so that the linter can
+correctly interpret your project, and so you have rules presets for developing in that framework's paradigm.
+There are tons of [plugins][9] available through npm.
+vCDAT is a React application, and we use the recommended React linting rules, so our project includes this plugin as a
+devDependency.
 
 [1]: http://eslint.org/
 [2]: http://mikecavaliere.com/javascript-linting-what-developers-need-to-know/
@@ -52,3 +61,5 @@ _Note:_ If your rules extend a [plugin][9], you have to specify the plugin along
 [6]: https://www.npmjs.com/search?q=eslint-config-*
 [7]: http://eslint.org/docs/user-guide/configuring#extending-configuration-files
 [8]: https://github.com/yannickcr/eslint-plugin-react#user-content-recommended
+[9]: https://www.npmjs.com/search?q=eslint-plugin-*
+[10]: http://eslint.org/docs/user-guide/configuring#using-the-configuration-from-a-plugin
