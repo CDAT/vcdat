@@ -11,8 +11,8 @@ We configure our linter with .eslintrc.json files. The frontend/ directory conta
 Each sub-directory can contain its own .eslintrc.json file, if we want to leverage the [configuration cascading][3]
 feature of ESLint. This lets us universally apply the 'root' configuration, while allowing for directory-specific
 configurations that can override 'root', when necessary.
-I will touch briefly on basic configuration options below. If you want to learn more, you can check out ESLint's
-[guide][4].
+I will touch briefly on basic configuration options below. If you want to learn more, you can check out
+[ESLint's configuration guide][4].
 
 ### Adding rules
 
@@ -32,26 +32,23 @@ There is a huge set of [rules included in ESLint][5], and there are [many npm pa
 
 If you don't want to go through the pain of searching for and applying individual rules, you can make your configuration
 [extend][7] a pre-defined rule set.
+Here is an example of our 'root' .eslintrc.json, which uses the [ESLint][5] and [React][8] recommended rules sets
+(ESLint's recommended rules are denoted with a :heavy_check_mark:).
 ```javascript
 {
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "extends": ["eslint:recommended", "plugin:react/recommended"], // We use the React plugin for vCDAT
     "rules":{
         // Your rules here
     }
 }
 ```
-
+_Note:_ If your rules extend a [plugin][9], you have to specify the plugin along with the name of the rule set.
 
 [1]: http://eslint.org/
-
 [2]: http://mikecavaliere.com/javascript-linting-what-developers-need-to-know/
-
 [3]: http://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy
-
 [4]: http://eslint.org/docs/user-guide/configuring
-
 [5]: http://eslint.org/docs/rules/
-
 [6]: https://www.npmjs.com/search?q=eslint-config-*
-
 [7]: http://eslint.org/docs/user-guide/configuring#extending-configuration-files
+[8]: https://github.com/yannickcr/eslint-plugin-react#user-content-recommended
