@@ -49,9 +49,14 @@ __Note:__ If your rules extend a [plugin][9], you have to [specify the plugin al
 ESLint can account for lots of variations on vanilla Javascript, including the use of ES6, ES7, jsx, etc.
 But if you're using some other Javascript framework, you will likely need to include a plugin so that the linter can
 correctly interpret your project, and so you have rules presets for developing in that framework's paradigm.
+To install a plugin:
+```
+npm install eslint-[plugin-name-here]
+```
 There are tons of [plugins][9] available through npm.
 vCDAT is a React application, and we use the recommended React linting rules, so our project includes this plugin as a
 devDependency.
+
 
 [1]: http://eslint.org/
 [2]: http://mikecavaliere.com/javascript-linting-what-developers-need-to-know/
