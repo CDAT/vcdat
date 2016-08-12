@@ -1,5 +1,9 @@
 #!/bin/bash
 
+CONDA_ENV="vcdat"
+CONDA_CHANNELS="-c uvcdat/label/nightly/ -c uvcdat -c cpcloud"
+CONDA_EXTRA_PACKAGES="hdf5=1.8.16 pyqt=4.11.3 npm"
+
 curpath=`pwd`
 while [ -n $curpath ] && [ `basename $curpath` != "vcdat" ]; do
     curpath=`dirname $curpath`
@@ -9,7 +13,7 @@ if [ -n $CONDA_PREFIX ] && [ "$CONDA_PREFIX" = "$curpath/backend/venv" ]; then
     echo "Virtual Environment already loaded"
 else
     echo "Loading virtual environment..."
-    source activate $curpath/backend/venv
+    source activate ${CONDA_ENV}
 fi
 
 be_pid=0
