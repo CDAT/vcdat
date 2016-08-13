@@ -1,9 +1,9 @@
 #!/bin/bash
 
-CONDA_ENV="venv"
+CONDA_ENV="vcdat"
 # Following install uvcdat nightly
 #CONDA_CHANNELS="-c uvcdat/label/nightly/ -c uvcdat -c cpcloud"
-CONDA_CHANNELS=" -c uvcdat"
+CONDA_CHANNELS=" -c uvcdat -c cpcloud"
 CONDA_EXTRA_PACKAGES="hdf5=1.8.16 pyqt=4.11.3"
 
 CERT=""
@@ -42,18 +42,6 @@ CERT=$HOME/ca.llnl.gov.pem
 fi
 
 
-NPM_bin=`which npm`
-if [ -z $NPM_bin ]; then
-    echo "Installing NPM..."
-    brew install npm
-    if [ $? -eq 0 ]; then
-        echo "Installed NPM."
-    else
-        echo "Failed to install NPM, exiting."
-    	exit 1
-    fi
-fi
-
 FSWATCH_bin=`which fswatch`
 if [ -z $FSWATCH_bin ]; then
     echo "Installing fswatch..."
@@ -76,7 +64,7 @@ if [[ $current_dir == */vcdat* ]]; then
     echo "Installing requirements"
     pushd $current_dir
     cd backend
-    conda create -y -n ${CONDA_ENV} ${CONDA_CHANNELS} uvcdat ${CONDA_EXTRA_PACKAGES} `more requirements.txt | tr "\n" " "`
+    conda create -y -n ${CONDA_ENV} ${CONDA_CHANNELS} uvcdat npm ${CONDA_EXTRA_PACKAGES} `more requirements.txt | tr "\n" " "`
     # in case env already existed
     source activate ${CONDA_ENV}
     conda install -y ${CONDA_CHANNELS} uvcdat ${CONDA_EXTRA_PACKAGES} `more requirements.txt | tr "\n" " "`
