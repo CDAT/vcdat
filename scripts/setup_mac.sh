@@ -1,6 +1,18 @@
 #!/bin/bash
 
-cat <<EOF > $HOME/ca.llnl.gov.pem
+CONDA_ENV="venv"
+# Following install uvcdat nightly
+#CONDA_CHANNELS="-c uvcdat/label/nightly/ -c uvcdat -c cpcloud"
+CONDA_CHANNELS=" -c uvcdat"
+CONDA_EXTRA_PACKAGES="hdf5=1.8.16 pyqt=4.11.3"
+
+CERT=""
+
+if [ -z $CERT ]; then
+    echo "NO CERT?"
+fi
+if [ "-"$CERT"-" == "-auto-" ]; then
+    cat <<EOF > $HOME/ca.llnl.gov.pem
 -----BEGIN CERTIFICATE-----
 MIIEGTCCA4KgAwIBAgIJAJU8ST3qOQXtMA0GCSqGSIb3DQEBBQUAMIG6MQswCQYD
 VQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTESMBAGA1UEBxMJTGl2ZXJtb3Jl
@@ -26,13 +38,11 @@ x8ZJont1by5j3L3Yjnk76TlJKN9cwGnxU1RhjqbLlm48uYiA/WUkFz7zbYwRHM0B
 O9u1qu7Igq8QVmvk778e5rGzfykclPbvNu67n/Sha4RIJLyZUsHcJym+tZSH
 -----END CERTIFICATE-----
 EOF
+CERT=$HOME/ca.llnl.gov.pem
+fi
 
-
-INSTALLER=`which brew`
 
 NPM_bin=`which npm`
-FSWATCH_bin=`which fswatch`
-
 if [ -z $NPM_bin ]; then
     echo "Installing NPM..."
     brew install npm
@@ -44,6 +54,7 @@ if [ -z $NPM_bin ]; then
     fi
 fi
 
+FSWATCH_bin=`which fswatch`
 if [ -z $FSWATCH_bin ]; then
     echo "Installing fswatch..."
     brew install fswatch
@@ -65,13 +76,18 @@ if [[ $current_dir == */vcdat* ]]; then
     echo "Installing requirements"
     pushd $current_dir
     cd backend
-    conda create -p venv -c uvcdat uvcdat
-    source activate ./venv
-    pip --cert $HOME/ca.llnl.gov.pem install -r requirements.txt
-    source deactivate
+    conda create -y -n ${CONDA_ENV} ${CONDA_CHANNELS} uvcdat ${CONDA_EXTRA_PACKAGES} `more requirements.txt | tr "\n" " "`
+    # in case env already existed
+    source activate ${CONDA_ENV}
+    conda install -y ${CONDA_CHANNELS} uvcdat ${CONDA_EXTRA_PACKAGES} `more requirements.txt | tr "\n" " "`
+    #source deactivate
     cd ..
     cd frontend
-    npm --cafile=$HOME/ca.llnl.gov.pem install
+    if [ -z $CERT ]; then
+        npm install
+    else
+        npm --cafile=$CERT install
+    fi
     echo "Done installing. You should be good to go."
     popd
 else

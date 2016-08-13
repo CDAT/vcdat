@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONDA_ENV="vcdat"
+CONDA_ENV="venv"
 CONDA_CHANNELS="-c uvcdat/label/nightly/ -c uvcdat -c cpcloud"
 CONDA_EXTRA_PACKAGES="hdf5=1.8.16 pyqt=4.11.3 npm"
 
