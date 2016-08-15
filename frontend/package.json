@@ -19,6 +19,7 @@
     "babel-preset-react": "^6.3.13",
     "chai": "^3.5.0",
     "eslint": "^3.2.2",
+    "eslint-plugin-filenames": "^1.1.0",
     "eslint-plugin-react": "^6.0.0",
     "karma": "^1.1.2",
     "karma-chai": "^0.1.0",
