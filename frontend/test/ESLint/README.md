@@ -1,3 +1,16 @@
+### Table of Contents:
+    * [What is ESLint?](#eslint)
+    * [Configuration](#configuration)
+        * [Adding rules](#adding-rules)
+        * [Using predefined rules](#using-predefined-rules)
+        * [Adding plugins](#adding-plugins)
+    * [Creating custom rules](#creating-custom-rules)
+    * [The Command Line Interface](#the-eslint-cli)
+        * [Automatic config setup](#automatic-config-setup)
+        * [Running the linter](#running-the-linter)
+        * [Running custom rules](#running-custom-rules)
+
+
 # ESLint
 
 [ESLint][1] is a [Javascript linting tool][2] . It assesses our code to ensure that it both conforms to
@@ -53,9 +66,9 @@ ESLint can account for lots of variations on vanilla Javascript, including the u
 But if you're using some other Javascript framework, you will likely need to include a plugin so that the linter can
 correctly interpret your project, and so you have rules presets for developing in that framework's paradigm.
 
-To install a plugin:
+To install a plugin via the commandline:
 ```bash
-npm install eslint-[plugin-name-here]
+$npm install eslint-[plugin-name-here]
 ```
 
 There are tons of [plugins][9] available through npm.
@@ -107,15 +120,59 @@ module.exports = {
 ```
 
 Above is an example taken from [Jamund Ferguson's][11] presentation on creating rules with ESLint. It's a simple
-linting rule which flags code where an error is caught, and anything other than a new Error object is thrown.
+linting rule which flags code where an error is caught and anything other than a new Error object is thrown.
 
-The main takeaway from this example is that in the create function, you return any number of objects associated with
+The main takeaway is that in the create function you return any number of objects, each associated with
 an [ESTree Node object][12] corresponding to the type of node you want to check. That object contains the function that
-you use to check the node for compliance with your linting rule(s). If your function determines that the node is
-compliant, you don't have to do anything. If the node is not compliant, calling context.report on the node, with your
-custom warning/error message makes the linter output the proper warning/error at runtime.
+you use to check instances of that node type for compliance with your linting rule(s).
+If your function determines that the node is compliant, you don't have to do anything.
+If the node is not compliant, calling context.report on the node, with your custom warning/error message makes
+the linter output the proper warning/error at runtime.
 
-Because we are not submitting our custom rules for incorporation into ESLint's official rules repo, we will have to run our rules manually from the command-line. I will discuss how to do this when I talk about the command-line interface.
+
+Because we are not submitting our custom rules for incorporation into ESLint's official rules repo, we will have to
+[run custom rules manually](#running-custom-rules) from the command-line.
+I will show how to do this when I discuss the command-line interface.
+
+For more on building custom ESLint rules, check out [ESLint's guide][13].
+
+## The ESLint CLI
+
+ESLint's CLI supports many options such as specifyin the environment to run int, which parser should be used, specific
+files to ignore, etc. I will briefly touch on one or two parts of the CLI that we will use heavily, and let the
+[ESLint CLI documentation][14] speak for the rest.
+
+In our repository, the linter can be accessed through ```frontend/node_modules/.bin/eslint``` .
+
+### Automatic config setup
+
+If you're setting up a new directory and want to use ESLint to generate your .eslintrc.json file, you can run:
+```$ frontend/node_modules/.bin/eslint --init .eslintrc.json```
+on an empty file called ```.eslintrc.json```. This will allow you to choose options such as whether you want to use ES6
+syntax, if you are using jsx, etc.
+
+### Running the linter
+
+To run the linter on all files in frontent/src/ according to the 'root' configuration:
+```bash
+$ frontend/node_modules/.bin/eslint -f table frontend/src
+```
+
+This outputs the linter warnings and errors in table format. There are [many other formatting options][15].
+
+### Running custom rules
+
+To use custom rules that haven't been incorporated into the official ESLint rules repository, you will need to provide
+a commandline option specifying which custom rules you want to use, and where to load them from.
+All the custom rules for our project will be located in frontend/test/ESLint/custom.
+
+To load a rule called 'snake-case' from our custom rules directory:
+```bash
+$ frontend/node_modules/.bin/eslint -f table --rule 'snake-case: 1' --rulesdir frontend/test/ESLint/custom frontend/src
+```
+
+You can also enable your custom rules in the ```.eslintrc.json``` file,
+provided its name doesn't clash with another rule.
 
 
 [1]: http://eslint.org/
@@ -129,3 +186,7 @@ Because we are not submitting our custom rules for incorporation into ESLint's o
 [9]: https://www.npmjs.com/search?q=eslint-plugin-*
 [10]: http://eslint.org/docs/user-guide/configuring#using-the-configuration-from-a-plugin
 [11]: https://www.pubnub.com/blog/2015-03-13-linting-ensure-javascript-code-quality-eslint/
+[12]: https://github.com/estree/estree/blob/master/spec.md#node-objects
+[13]: http://eslint.org/docs/developer-guide/working-with-rules
+[14]: http://eslint.org/docs/user-guide/command-line-interface
+[15]: http://eslint.org/docs/user-guide/command-line-interface#f---format
