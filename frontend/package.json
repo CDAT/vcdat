@@ -29,9 +29,6 @@
     "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   },
-  "bin": {
-      "eslint" : "./node_modules/.bin/eslint"
-  },
   "scripts": {
     "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
     "lint": "$(npm bin)/eslint -f table src/"

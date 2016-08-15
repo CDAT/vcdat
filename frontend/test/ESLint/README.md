@@ -159,6 +159,12 @@ To run the linter on all files in frontent/src/ according to the 'root' configur
 $ frontend/node_modules/.bin/eslint -f table frontend/src
 ```
 
+OR there is a script built into our which allows you to simply run:
+```bash
+$ npm run lint
+```
+to lint all the files in the src/ directory
+
 This outputs the linter warnings and errors in table format. There are [many other formatting options][15].
 
 ### Running custom rules
