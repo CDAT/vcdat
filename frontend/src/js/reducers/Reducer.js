@@ -19,16 +19,6 @@ var default_cell = {
     plots: [default_plot]
 }
 
-var second_cell = {
-    plot_being_edited: 0,
-    plots: [{
-        variables: [], //testing inspector
-        graphics_method_parent: 'isofill',
-        graphics_method: 'default',
-        template: 'default'
-    }]
-}
-
 var default_sheet = {
     name: 'Sheet',
     col_count: 1,
@@ -80,7 +70,7 @@ const createCellGrid = (sheet) => {
             if (i < cells.length && j < cells[i].length) {
                 col.push(cells[i][j]);
             } else {
-                col.push(second_cell);
+                col.push(default_cell);
             }
         }
         rows.push(col);
@@ -104,8 +94,28 @@ const createCellGrid = (sheet) => {
     return rows
 }
 
-const varListReducer = (state = test_vars, action) => {
+const cachedFilesReducer = (state = {}, action) => {
+    switch(action.type){
+        case 'ADD_FILE_TO_CACHE':
+            var new_state = jQuery.extend(true, {}, state)
+            new_state[action.filename] = {
+                filepath: action.filepath,
+                variables: action.variables
+            }
+            return new_state;
+        default: return state;
+    }
+}
+
+const varListReducer = (state = [], action) => {
     switch (action.type) {
+        case 'LOAD_VARIABLES':
+            var new_list = jQuery.extend(true, {}, state);
+            action.var_list.forEach((var_obj) => {
+                let key = Object.keys(var_obj)[0];
+                new_list[key] = var_obj[key];
+            })
+            return new_list;
         default: return state
     }
 }
@@ -283,6 +293,7 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
 }
 
 const reducers = combineReducers({
+    cached_files: cachedFilesReducer,
     variables: varListReducer,
     graphics_methods: gmListReducer,
     templates:templateListReducer,
@@ -291,7 +302,7 @@ const reducers = combineReducers({
 })
 
 const undoableReducer = undoable(reducers,{
-    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES', 'INITIALIZE_GRAPHICS_METHODS_VALUES'])
+    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES', 'INITIALIZE_GRAPHICS_METHODS_VALUES', 'ADD_FILE_TO_CACHE'])
 })
 
 export default undoableReducer
@@ -299,7 +310,14 @@ export default undoableReducer
 /*
 Tree Structure:
     {
-        variables: [],
+        cached_files: {filename: {filepath, variables}},
+        variables: {
+            var_name: {
+                    cdms_var_name,
+                    filename,
+                    filepath
+                }
+        },
         graphics_methods: [],
         templates: [],
         cur_sheet: 0,

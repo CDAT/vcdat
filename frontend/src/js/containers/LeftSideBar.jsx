@@ -2,6 +2,7 @@ import React from 'react'
 import VarList from '../components/VarList.jsx'
 import GMList from '../components/GMList.jsx'
 import TemplateList from '../components/TemplateList.jsx'
+import Actions from '../actions/Actions.js'
 import {connect} from 'react-redux'
 
 var LeftSideBar = React.createClass({
@@ -31,7 +32,7 @@ var LeftSideBar = React.createClass({
     render() {
         return (
             <div id='left-side-bar' className=''>
-                <VarList variables={this.props.variables}/>
+                <VarList variables={this.props.variables} loadVariables={this.props.loadVariables} addFileToCache={this.props.addFileToCache} cachedFiles={this.props.cached_files}/>
                 <GMList graphicsMethods={this.props.graphics_methods}/>
                 <TemplateList templates={this.props.templates}/>
             </div>
@@ -40,11 +41,19 @@ var LeftSideBar = React.createClass({
 })
 
 const mapStateToProps = (state) => {
-    return {variables: state.present.variables, graphics_methods: state.present.graphics_methods, templates: state.present.templates}
+    return {
+        variables: state.present.variables,
+        graphics_methods: state.present.graphics_methods,
+        templates: state.present.templates,
+        cached_files: state.present.cached_files
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {}
+    return {
+        addFileToCache: (filename, filepath, variables) => dispatch(Actions.addFileToCache(filename, filepath, variables)),
+        loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list))
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeftSideBar);

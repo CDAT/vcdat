@@ -2,6 +2,9 @@ import React from 'react'
 import AddEditRemoveNav from './AddEditRemoveNav.jsx'
 
 var GMList = React.createClass({
+    componentDidUpdate(){
+        $('#gm-list').quicktree();
+    },
     componentDidMount() {
         $('#gm-list').quicktree();
     },
