@@ -1,14 +1,15 @@
 ### Table of Contents:
-    * [What is ESLint?](#eslint)
-    * [Configuration](#configuration)
-        * [Adding rules](#adding-rules)
-        * [Using predefined rules](#using-predefined-rules)
-        * [Adding plugins](#adding-plugins)
-    * [Creating custom rules](#creating-custom-rules)
-    * [The Command Line Interface](#the-eslint-cli)
-        * [Automatic config setup](#automatic-config-setup)
-        * [Running the linter](#running-the-linter)
-        * [Running custom rules](#running-custom-rules)
+
+* [What is ESLint?](#eslint)
+* [Configuration](#configuration)
+    * [Adding rules](#adding-rules)
+    * [Using predefined rules](#using-predefined-rules)
+    * [Adding plugins](#adding-plugins)
+* [Creating custom rules](#creating-custom-rules)
+* [The Command Line Interface](#the-eslint-cli)
+    * [Automatic config setup](#automatic-config-setup)
+    * [Running the linter](#running-the-linter)
+    * [Running custom rules](#running-custom-rules)
 
 
 # ESLint
