@@ -6,9 +6,9 @@
 2. Clone your fork (`git clone git@github.com:$USERNAME/vcdat`)
 3. Install homebrew
 4. Run `scripts/setup_mac.sh` (May require sudo, if virtualenv is not installed)
-6. Run `scripts/autorun.sh`
-7. Go to [http://localhost:5000/]
-
+5. Run `scripts/autorun.sh`
+6. Go to [http://localhost:5000/](#)
+7. Run the [linter](https://github.com/UV-CDAT/vcdat/test/ESLint/README.md) to test code quality
 
 ### Naming Convention
 * newfolder
