@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Front-end GUI for CDAT using React and Redux",
   "main": "src/js/app.js",
+  "private": true,
   "dependencies": {
     "css-element-queries": "^0.3.2",
     "react": "^15.1.0",
@@ -34,6 +35,5 @@
     "lint": "$(npm bin)/eslint -f table src/"
   },
   "license": "",
-  "repository": "http://github.com/UV-CDAT/vcdat",
-  "README": ""
+  "repository": "http://github.com/UV-CDAT/vcdat"
 }
