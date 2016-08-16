@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Front-end GUI for CDAT using React and Redux",
   "main": "src/js/app.js",
+  "private": true,
   "dependencies": {
     "css-element-queries": "^0.3.2",
     "react": "^15.1.0",
@@ -17,12 +18,21 @@
     "babel-loader": "^6.2.1",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
+    "chai": "^3.5.0",
+    "eslint": "3.2.2",
+    "eslint-plugin-react": "^6.1.0",
+    "karma": "^1.1.2",
+    "karma-chai": "^0.1.0",
+    "karma-mocha": "^1.1.1",
+    "karma-sinon": "^1.0.5",
+    "mocha": "^3.0.2",
+    "sinon": "^1.17.5",
     "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "server": "webpack-dev-server --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base src/ --output-public-path=/dist/",
-    "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/"
+    "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
+    "lint": "$(npm bin)/eslint -f table src/"
   },
   "license": "",
   "repository": "http://github.com/UV-CDAT/vcdat"
