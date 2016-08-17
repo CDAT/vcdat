@@ -9,24 +9,24 @@ Reading
 
 Running test 
 
-    cd ~/project/vcdat
-    source activate backend/venv
-    python backend/vcdat/FlaskTests.py 
+    > cd ~/project/vcdat
+    > source activate backend/venv
+    > python backend/vcdat/FlaskTests.py 
     .......
     -----------
     Ran 7 tests in 0.541s
 
     OK
     
-coverage
+Coverage
 
-    coverage run backend/vcdat/FlaskTests.py 
+    > coverage run backend/vcdat/FlaskTests.py 
     .......
     ----------------------------------------------------------------------
     Ran 7 tests in 0.464s
     
     OK
-    (../venv/) harris112@harris112ml1:[vcdat]:[refactor]:[24508]> coverage report
+    > coverage report
     Name                               Stmts   Miss  Cover
     ------------------------------------------------------
     backend/vcdat/Files.py                23      2    91%
@@ -37,5 +37,6 @@ coverage
     ------------------------------------------------------
     TOTAL                                142     12    92%
 
+pep8
 
-    
+    > pep8 backend/vcdat
