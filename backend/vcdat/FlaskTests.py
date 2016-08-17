@@ -1,6 +1,6 @@
 from app import app
 import unittest
-
+import os
 
 class FlaskTests(unittest.TestCase):
 
@@ -37,7 +37,8 @@ class FlaskTests(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
 
     def test_browse_files_status_code(self):
-        result = self.app.get('/browseFiles', query_string='path=/Users/')
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        result = self.app.get('/browseFiles', query_string='path='+dir_path)
         self.assertEqual(result.status_code, 200)
 
     def test_load_variable_status_code(self):
