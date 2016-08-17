@@ -1,6 +1,6 @@
 # vCDAT
 
-## Developer Setup
+## Developer Clean Setup
 
 1. Fork the repo
 2. Clone your fork (`git clone git@github.com:$USERNAME/vcdat`)
@@ -9,6 +9,9 @@
 5. Run `scripts/autorun.sh`
 6. Go to [http://localhost:5000/](#)
 7. Run the [linter](https://github.com/UV-CDAT/vcdat/test/ESLint/README.md) to test code quality
+
+## Developer Update
+1. Run `scripts/setup_mac.sh` (May require sudo, if virtualenv is not installed)
 
 ### Naming Convention
 * newfolder
