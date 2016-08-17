@@ -2,6 +2,7 @@ from app import app
 import unittest
 import os
 
+
 class FlaskTests(unittest.TestCase):
 
     @classmethod
