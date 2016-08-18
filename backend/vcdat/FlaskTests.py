@@ -52,6 +52,18 @@ class FlaskTests(unittest.TestCase):
         result = self.app.get('/getTemplates')
         self.assertNotEqual(result.data, "[]")
 
+    def test_browseFiles(self):
+        folder = "emptyFolder"
+        os.mkdir(folder)
+        result = self.app.get('/browseFiles', query_string='path=' + folder)
+        os.rmdir(folder)
+        self.assertNotEqual(result.data, "[]")
+
+
+
+
+
+
 # runs the unit tests in the module
 if __name__ == '__main__':
     unittest.main()
