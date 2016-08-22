@@ -4,7 +4,7 @@ import json
 _ = vcs.init()
 _methods = {}
 _2d_methods = ('scatter', 'vector', 'xvsy', 'stream', 'glyph', '3d_vector', '3d_dual_scalar')
-_primitives = ('line', 'marker', 'fillarea', 'text','isofill')
+_primitives = ('line', 'marker', 'fillarea', 'text')
 
 
 def get_gm():
