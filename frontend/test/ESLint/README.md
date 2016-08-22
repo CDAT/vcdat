@@ -44,7 +44,7 @@ to activate, and any options that may go with that rule.
 ```
 There is a huge set of [rules included in ESLint][5], and there are [many npm packages][6] that expand the rule set.
 
-### Using predefined rules sets
+### Using predefined rules
 
 If you don't want to go through the pain of searching for and applying individual rules, you can make your configuration
 [extend][7] a pre-defined rule set.
@@ -76,7 +76,7 @@ There are tons of [plugins][9] available through npm.
 vCDAT is a React application, and we use the recommended React linting rules, so our project includes this plugin as a
 devDependency.
 
-## Creating rules
+## Creating custom rules
 
 One of our primary reasons for selecting ESLint as opposed to some other linting utility is that it is the only linter
 that allows us to create custom rules. For instance, we want out variable names to all be snake_case; since there is no
