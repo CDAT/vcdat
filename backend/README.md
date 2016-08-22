@@ -39,7 +39,7 @@ Coverage
 
 HTML Coverage Output 
 
-[app.py output](https://github.com/pawpepe/media/blob/master/Screen%20Shot%202016-08-22%20at%208.56.55%20AM.png)
+![app.py output](https://github.com/pawpepe/media/blob/master/Screen%20Shot%202016-08-22%20at%208.56.55%20AM.png)
 
 
 
