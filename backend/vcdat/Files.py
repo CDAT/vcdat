@@ -37,6 +37,7 @@ def getFilesObject(start_path):
                 obj['directory'] = True
             cur_dir_items['sub_items'][item] = obj
     if len(cur_dir_items['sub_items'].keys()) == 0:
+        print start_path
         cur_dir_items['sub_items']['empty'] = {
             'name': 'empty',
             'sub_items': {},
