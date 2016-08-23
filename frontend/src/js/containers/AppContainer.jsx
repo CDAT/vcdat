@@ -11,7 +11,10 @@ var AppContainer = React.createClass({
     render() {
         return (
             <div id='app-container'>
-                <Toolbar onUndo={this.props.undo} onRedo={this.props.redo} undoEnabled={this.props.undoEnabled}
+                <Toolbar
+                    onUndo={this.props.undo}
+                    onRedo={this.props.redo}
+                    undoEnabled={this.props.undoEnabled}
                     redoEnabled={this.props.redoEnabled}
                 />
                 <div id='main-container'>
@@ -20,9 +23,9 @@ var AppContainer = React.createClass({
                     <SpreadsheetContainer/>
                 </div>
             </div>
-        )
+        );
     }
-})
+});
 
 const mapStateToProps = (state) => {
     var undoEnabled = state.past.length > 0;
@@ -31,13 +34,13 @@ const mapStateToProps = (state) => {
         undoEnabled: undoEnabled,
         redoEnabled: redoEnabled
     });
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
         undo: () => dispatch(UndoActionCreators.undo()),
         redo: () => dispatch(UndoActionCreators.redo())
-    }
-}
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

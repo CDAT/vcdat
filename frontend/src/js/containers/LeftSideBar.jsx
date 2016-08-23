@@ -32,8 +32,11 @@ var LeftSideBar = React.createClass({
     render() {
         return (
             <div id='left-side-bar' className=''>
-                <VarList variables={this.props.variables} loadVariables={this.props.loadVariables}
-                    addFileToCache={this.props.addFileToCache} cachedFiles={this.props.cached_files}
+                <VarList
+                    variables={this.props.variables}
+                    loadVariables={this.props.loadVariables}
+                    addFileToCache={this.props.addFileToCache}
+                    cachedFiles={this.props.cached_files}
                 />
                 <GMList graphicsMethods={this.props.graphics_methods}/>
                 <TemplateList templates={this.props.templates}/>

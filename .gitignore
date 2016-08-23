@@ -7,4 +7,6 @@ backend/env
 *jquery-ui-1.11.4.custom
 .idea/
 npm-debug.log
+*.swp
+lint.out
 *.coverage*

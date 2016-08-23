@@ -28,7 +28,11 @@ var Cell = React.createClass({
         this.col = this.props.col;
         return (
             <div className='cell' data-row={this.props.row} data-col={this.props.col}>
-                <Plotter cell={this.cell} row={this.props.row} col={this.props.col} addPlot={this.props.addPlot}
+                <Plotter
+                    cell={this.cell}
+                    row={this.props.row}
+                    col={this.props.col}
+                    addPlot={this.props.addPlot}
                     swapVariableInPlot={this.props.swapVariableInPlot}
                     swapGraphicsMethodInPlot={this.props.swapGraphicsMethodInPlot}
                     swapTemplateInPlot={this.props.swapTemplateInPlot}

@@ -26,4 +26,4 @@ var TemplateList = React.createClass({
     }
 });
 
-    export default TemplateList;
+export default TemplateList;

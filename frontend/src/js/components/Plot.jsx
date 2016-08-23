@@ -5,15 +5,17 @@ var Plot = React.createClass({
     addToPlotter(event, ui) {
         switch (ui.draggable.attr('data-type')) {
             case 'variable':
-                this.props.swapVariableInPlot(ui.draggable.attr('data-name'), this.props.plotIndex);
+                let var_name = ui.draggable.attr('data-name');
+                this.props.swapVariableInPlot(var_name, this.props.plotIndex);
                 break;
             case 'graphics_method':
-                let parent = ui.draggable.attr('data-parent');
-                let name = ui.draggable.attr('data-name');
-                this.props.swapGraphicsMethodInPlot(parent, name, this.props.plotIndex)
+                let gm_parent = ui.draggable.attr('data-parent');
+                let gm_name = ui.draggable.attr('data-name');
+                this.props.swapGraphicsMethodInPlot(gm_parent, gm_name, this.props.plotIndex)
                 break
             case 'template':
-                this.props.swapTemplateInPlot(ui.draggable.attr('data-name'), this.props.plotIndex);
+                let tm_name = ui.draggable.attr('data-name');
+                this.props.swapTemplateInPlot(tm_name, this.props.plotIndex);
             default:
                 break;
         }

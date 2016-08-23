@@ -33,8 +33,8 @@
   },
   "scripts": {
     "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
-    "lint": "$(npm bin)/eslint -f table src/, src/js/*/*.js*",
-    "lint_silent": "$(npm bin)/eslint -f table src/, src/js/*/*.js* > lint.out"
+    "lint": "$(npm bin)/eslint -f table src/*.js* src/*/*.js* src/*/*/*.js* src/*/*/*/*.js*",
+    "lint_silent": "npm run lint > lint.out; vim lint.out"
   },
   "license": "",
   "repository": "http://github.com/UV-CDAT/vcdat"

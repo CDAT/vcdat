@@ -210,7 +210,11 @@ var SpreadsheetContainer = React.createClass({
         var rows = [];
         for (var i = 0; i < this.row_count; i++) {
             rows.push(
-                <Row resizeHeader={this.resizeHeader} key={'row' + i} colCount={this.col_count} row={i}
+                <Row
+                    resizeHeader={this.resizeHeader}
+                    key={'row' + i}
+                    colCount={this.col_count}
+                    row={i}
                     className='row-element'
                 />
             );
@@ -226,12 +230,13 @@ var SpreadsheetContainer = React.createClass({
                     <ul id='sheet-list' className='nav nav-tabs'>
                         {this.props.sheets.map((item, index) => {
                             return (
-                                <li role='presentation' className={
+                                <li role='presentation'
+                                    className={
                                         'sheet-list-item ' + (index === this.props.cur_sheet_index
                                             ? 'active'
                                             : '')
-                                        } key={'Sheet' + (index + 1)}
-                                >
+                                    }
+                                    key={'Sheet' + (index + 1)}>
                                     <a onClick={this.changeCurSheetIndex.bind(this, index)}>
                                         <span>{item.name}</span>
                                         <button onClick={this.removeSheet.bind(this, index)} className="close"

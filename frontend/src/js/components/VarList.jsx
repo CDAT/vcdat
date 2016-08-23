@@ -23,7 +23,9 @@ var VarList = React.createClass({
                         })};
                     </ul>
                 </div>
-                <CachedFiles curVariables={this.props.variables} loadVariables={this.props.loadVariables}
+                <CachedFiles
+                    curVariables={this.props.variables}
+                    loadVariables={this.props.loadVariables}
                     cachedFiles={this.props.cachedFiles}
                 />
                 <FileExplorer addFileToCache={this.props.addFileToCache}/>

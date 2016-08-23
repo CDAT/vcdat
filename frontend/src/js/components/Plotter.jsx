@@ -67,7 +67,11 @@ var Plotter = React.createClass({
                             let col = this.props.col;
                             let swapVariableInPlot = this.props.swapVariableInPlot
                             plotters.push(
-                                <Plot key={i} plotName={plot_name} plot={plot} plotIndex={i}
+                                <Plot
+                                    key={i}
+                                    plotName={plot_name}
+                                    plot={plot}
+                                    plotIndex={i}
                                     swapVariableInPlot={
                                         this.props.swapVariableInPlot.bind(this, this.props.row, this.props.col)
                                     } swapGraphicsMethodInPlot={
