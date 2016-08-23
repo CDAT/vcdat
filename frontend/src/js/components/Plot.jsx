@@ -8,7 +8,9 @@ var Plot = React.createClass({
                 this.props.swapVariableInPlot(ui.draggable.attr('data-name'), this.props.plotIndex);
                 break;
             case 'graphics_method':
-                this.props.swapGraphicsMethodInPlot(ui.draggable.attr('data-parent'), ui.draggable.attr('data-name'), this.props.plotIndex)
+                let parent = ui.draggable.attr('data-parent');
+                let name = ui.draggable.attr('data-name');
+                this.props.swapGraphicsMethodInPlot(parent, name, this.props.plotIndex)
                 break
             case 'template':
                 this.props.swapTemplateInPlot(ui.draggable.attr('data-name'), this.props.plotIndex);
@@ -76,10 +78,15 @@ var Plot = React.createClass({
                     <h4>Variables:</h4>
                     <div className='plot-var first-var'>{(this.props.plot.variables.length > 0
                             ? this.props.plot.variables[0]
-                            : '')}</div>
-                        <div className={'plot-var second-var ' + (this.isVector() ? 'colored-second-var' : '')}>{(this.props.plot.variables.length > 1
-                            ? this.props.plot.variables[1]
-                            : '')}</div>
+                            : '')}
+                    </div>
+                    <div className={'plot-var second-var ' + (this.isVector()
+                            ? 'colored-second-var'
+                            : '')}>
+                                {(this.props.plot.variables.length > 1
+                                    ? this.props.plot.variables[1]
+                                    : '')}
+                    </div>
                 </div>
                 <div>
                     <h4>Graphics method:</h4>

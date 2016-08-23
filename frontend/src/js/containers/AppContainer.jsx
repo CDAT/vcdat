@@ -11,7 +11,9 @@ var AppContainer = React.createClass({
     render() {
         return (
             <div id='app-container'>
-                <Toolbar onUndo={this.props.undo} onRedo={this.props.redo} undoEnabled={this.props.undoEnabled} redoEnabled={this.props.redoEnabled}/>
+                <Toolbar onUndo={this.props.undo} onRedo={this.props.redo} undoEnabled={this.props.undoEnabled}
+                    redoEnabled={this.props.redoEnabled}
+                />
                 <div id='main-container'>
                     <RightSideBar resizeSpreadsheet={this.resizeSpreadsheet}/>
                     <LeftSideBar resizeSpreadsheet={this.resizeSpreadsheet}/>
