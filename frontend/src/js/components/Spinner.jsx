@@ -21,8 +21,9 @@ var Spinner = React.createClass({
         return (
             <div className="spinner">
                 <input ref='input' type="text"
-                    onChange={ (event) => {this.props.update(event.target.value)}} 
-                    value={this.props.value}/>
+                    onChange={ (event) => {this.props.update(event.target.value)}}
+                    value={this.props.value}
+                />
                 <div className="input-group-btn-vertical">
                     <button onClick={this.incrementValue} className="btn btn-default" type="button">
                         <i className="glyphicon glyphicon-chevron-up"></i>
