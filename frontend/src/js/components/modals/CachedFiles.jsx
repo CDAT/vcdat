@@ -1,5 +1,6 @@
 import React from 'react'
 import FileExplorer from './FileExplorer.jsx'
+require('../../../../deps/quicktree.js');
 
 var CachedFiles = React.createClass({
     componentDidUpdate(){

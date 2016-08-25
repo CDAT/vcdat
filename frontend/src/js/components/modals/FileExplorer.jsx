@@ -1,4 +1,5 @@
 import React from 'react'
+require('../../../../deps/quicktree.js')
 
 var FileExplorer = React.createClass({
     getInitialState() {

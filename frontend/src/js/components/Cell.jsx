@@ -1,10 +1,21 @@
-import React from 'react'
-import ResizeSensor from 'css-element-queries/src/ResizeSensor'
-import {connect} from 'react-redux'
-import Actions from '../actions/Actions.js'
-import Plotter from './Plotter.jsx'
+import React from 'react';
+import ResizeSensor from 'css-element-queries/src/ResizeSensor';
+import {connect} from 'react-redux';
+import Actions from '../actions/Actions.js';
+import Plotter from './Plotter.jsx';
+import $ from 'jquery';
 
 var Cell = React.createClass({
+    propTypes: {
+        cells: React.PropTypes.array,
+        row: React.PropTypes.number,
+        col: React.PropTypes.number,
+        addPlot: React.PropTypes.func,
+        resizeHeader: React.PropTypes.func,
+        swapVariableInPlot: React.PropTypes.func,
+        swapGraphicsMethodInPlot: React.PropTypes.func,
+        swapTemplateInPlot: React.PropTypes.func
+    },
     resizeCells() {
         $('.cell-image').each((index, el) => {
             el = $(el);
@@ -17,7 +28,7 @@ var Cell = React.createClass({
     },
     componentDidMount() {
         this.resizeCells();
-        var element = $('.cell')[0];
+        let element = $('.cell')[0];
         new ResizeSensor(element, () => {
             this.resizeCells();
         })
