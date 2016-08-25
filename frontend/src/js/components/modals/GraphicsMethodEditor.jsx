@@ -10,7 +10,9 @@ var GraphicsMethodEditor = React.createClass({
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h4 className="modal-title">{'Editing ' + this.props.graphicsMethodParent + ' ' + this.props.graphicsMethod}</h4>
+                            <h4 className="modal-title">
+                                {'Editing ' + this.props.graphicsMethodParent + ' ' + this.props.graphicsMethod}
+                            </h4>
                         </div>
                         <div className="modal-body">
                             <button className='btn btn-default'>Left Ticks</button>

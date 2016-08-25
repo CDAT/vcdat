@@ -11,18 +11,29 @@ var VariableInspector = React.createClass({
                         <tr>
                             <td>
                                 <div className='dropdown-container'>
-                                    <button type="button" className="btn btn-info dropdown-toggle dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" className="btn btn-info dropdown-toggle dropdown-button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    >
                                         <span className='inspector-dropdown-title'>{this.props.variable1}</span>
                                         <span className="caret"></span>
                                     </button>
                                     <ul className="dropdown-menu">
-                                        {(this.props.populateInspector ? Object.keys(this.props.variables).map((value, index) => {
-                                            return (
-                                                <li onClick={this.props.changePlotVar.bind(this, 0, value)} key={'inspector_var_' + value} className={'inspector-dropdown-item ' + (value === this.props.variable1
-                                                    ? 'active'
-                                                    : '')}>{value}</li>
-                                            )
-                                        }): [])}
+                                        {
+                                            (this.props.populateInspector
+                                                ? Object.keys(this.props.variables).map((value, index) => {
+                                                    return (
+                                                        <li onClick={this.props.changePlotVar.bind(this, 0, value)}
+                                                            key={'inspector_var_' + value}
+                                                            className={'inspector-dropdown-item ' + (
+                                                                value === this.props.variable1
+                                                                    ? 'active'
+                                                                    : '')}
+                                                        >
+                                                            {value}
+                                                        </li>
+                                                    );})
+                                                : [])
+                                        }
                                     </ul>
                                 </div>
                             </td>
@@ -32,22 +43,38 @@ var VariableInspector = React.createClass({
                         </tr>
                         <tr>
                             <td>
-                                <button type="button" className="btn btn-info dropdown-toggle dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled={!this.props.populateInspector || this.props.nonVector}>
+                                <button type="button" className="btn btn-info dropdown-toggle dropdown-button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    disabled={!this.props.populateInspector || this.props.nonVector}
+                                >
                                     <span className='inspector-dropdown-title'>{this.props.variable2}</span>
                                     <span className="caret"></span>
                                 </button>
                                 <ul className="dropdown-menu">
-                                    {(this.props.populateInspector ? Object.keys(this.props.variables).map((value, index) => {
-                                        return (
-                                            <li onClick={this.props.changePlotVar.bind(this, 1, value)} key={'inspector_var_' + value} className={'inspector-dropdown-item ' + (value === this.props.variable2
-                                                ? 'active'
-                                                : '')}>{value}</li>
+                                    {
+                                        (this.props.populateInspector
+                                            ? Object.keys(this.props.variables).map((value, index) => {
+                                                return (
+                                                    <li onClick={this.props.changePlotVar.bind(this, 1, value)}
+                                                        key={'inspector_var_' + value}
+                                                        className={
+                                                            'inspector-dropdown-item ' + (
+                                                                value === this.props.variable2
+                                                                    ? 'active'
+                                                                    : '')}
+                                                    >
+                                                        {value}
+                                                    </li>
                                         )
                                     }) : [])}
                                 </ul>
                             </td>
                             <td className='edit-button'>
-                                <button type='button' className='btn btn-default' disabled={!this.props.populateInspector || this.props.nonVector}>Edit</button>
+                                <button type='button' className='btn btn-default'
+                                    disabled={!this.props.populateInspector || this.props.nonVector}
+                                >
+                                    Edit
+                                </button>
                             </td>
                         </tr>
                     </tbody>
