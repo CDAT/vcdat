@@ -9,18 +9,31 @@ var TemplateInspector = React.createClass({
                     <tbody>
                         <tr>
                             <td>
-                                <button type="button" className="btn btn-info dropdown-toggle dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="button" className="btn btn-info dropdown-toggle dropdown-button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                >
                                     <span className='inspector-dropdown-title'>{this.props.template}</span>
                                     <span className="caret"></span>
                                 </button>
                                 <ul className="dropdown-menu">
-                                    {(this.props.populateInspector ? this.props.templates.map((value, index) => {
-                                        return (
-                                            <li onClick={this.props.changePlotTemplate.bind(this, value)} key={'inspector_temp_' + value} className={'inspector-dropdown-item ' + (value === this.props.template
-                                                ? 'active'
-                                                : '')}>{value}</li>
-                                        )
-                                    }): [])}
+                                    {
+                                        (this.props.populateInspector
+                                            ? this.props.templates.map((value, index) => {
+                                                return (
+                                                    <li onClick={this.props.changePlotTemplate.bind(this, value)}
+                                                        key={'inspector_temp_' + value}
+                                                        className={
+                                                            'inspector-dropdown-item ' + (
+                                                                value === this.props.template
+                                                                    ? 'active'
+                                                                    : '')
+                                                        }
+                                                    >
+                                                        {value}
+                                                    </li>
+                                                );})
+                                            : [])
+                                    }
                                 </ul>
                             </td>
                             <td className='edit-button'>

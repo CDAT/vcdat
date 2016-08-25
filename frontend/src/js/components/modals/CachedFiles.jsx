@@ -32,7 +32,13 @@ var CachedFiles = React.createClass({
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <h4 className="modal-title">Recent Files</h4>
-                            <button onClick={() => {$('#file-explorer').modal('show')}} className='btn btn-default'>Add</button>
+                            <button onClick={
+                                    () => {$('#file-explorer').modal('show')}
+                                }
+                                className='btn btn-default'
+                            >
+                                Add
+                            </button>
                         </div>
                         <div className="modal-body">
                             <ul id='cache-tree' className='tree-view no-bullets'>
@@ -42,10 +48,14 @@ var CachedFiles = React.createClass({
                                             <a>{filename}</a>
                                             <ul>
                                                 {this.props.cachedFiles[filename].variables.map((var_name, index)=>{
-                                                    return (<li key={index} data-filename={filename} data-path={this.props.cachedFiles[filename].filepath} style={{'display': 'none'}}>
-                                                        <a>{var_name}</a>
-                                                    </li>)
-                                                })}
+                                                    return (
+                                                        <li key={index} data-filename={filename}
+                                                            data-path={this.props.cachedFiles[filename].filepath}
+                                                            style={{'display': 'none'}}
+                                                        >
+                                                            <a>{var_name}</a>
+                                                        </li>);})
+                                                }
                                             </ul>
                                         </li>
                                     )
