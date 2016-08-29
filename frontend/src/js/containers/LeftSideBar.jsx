@@ -4,8 +4,21 @@ import GMList from '../components/GMList.jsx'
 import TemplateList from '../components/TemplateList.jsx'
 import Actions from '../actions/Actions.js'
 import {connect} from 'react-redux'
+/* global $ */
 
 var LeftSideBar = React.createClass({
+    propTypes: {
+        addFileToCache: React.PropTypes.func,
+        cached_files: React.PropTypes.object,
+        graphics_methods: React.PropTypes.object,
+        loadVariables: React.PropTypes.func,
+        templates: React.PropTypes.array,
+        variables: React.PropTypes.oneOfType([
+            React.PropTypes.array,
+            React.PropTypes.object
+        ]),
+
+    },
     initDragListItems(){
         $('.draggable-list-item').draggable({
             opacity: 0.7,

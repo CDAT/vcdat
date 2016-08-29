@@ -1,7 +1,15 @@
 import React from 'react'
-
+/* global $ */
 var Plot = React.createClass({
+    propTypes: {
+        plot: React.PropTypes.object,
+        plotIndex: React.PropTypes.number,
+        plotName: React.PropTypes.string,
+        swapVariableInPlot: React.PropTypes.func,
+        swapGraphicsMethodInPlot: React.PropTypes.func,
+        swapTemplateInPlot: React.PropTypes.func,
 
+    },
     addToPlotter(event, ui) {
         switch (ui.draggable.attr('data-type')) {
             case 'variable':
@@ -42,7 +50,7 @@ var Plot = React.createClass({
                 plot.removeClass('plot-hover')
                 $(event.target).addClass('second-var-highlight');
             },
-            out: (event, ui) => {
+            out: (event) => {
                 plot.addClass('plot-hover')
                 plot.droppable("enable");
                 $(event.target).removeClass('second-var-highlight');

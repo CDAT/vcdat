@@ -14,7 +14,7 @@ let store = configureStore();
     })
 })(jQuery);
 
-//attach quicktree to jquery
+// attach quicktree to jquery
 (function($) {
     $.fn.quicktree = function() {
         function click(e) {
@@ -56,5 +56,7 @@ let store = configureStore();
 
 ReactDOM.render(
     <Provider store={store}>
-    <AppContainer/>
-</Provider>, document.getElementById('app'));
+        <AppContainer/>
+    </Provider>,
+    document.getElementById('app')
+);

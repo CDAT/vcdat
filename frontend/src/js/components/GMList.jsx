@@ -1,7 +1,12 @@
-import React from 'react'
-import AddEditRemoveNav from './AddEditRemoveNav.jsx'
+import React from 'react';
+import AddEditRemoveNav from './AddEditRemoveNav.jsx';
+import $ from 'jquery';
+require('../../../deps/quicktree.js')
 
 var GMList = React.createClass({
+    propTypes: {
+        graphicsMethods: React.PropTypes.object
+    },
     componentDidUpdate(){
         $('#gm-list').quicktree();
     },
@@ -14,12 +19,12 @@ var GMList = React.createClass({
                 <AddEditRemoveNav title='Graphics Methods'/>
                 <div className='scroll-area'>
                     <ul id='gm-list' className='no-bullets left-list'>
-                        {Object.keys(this.props.graphicsMethods).map((parent_value, index) => {
+                        {Object.keys(this.props.graphicsMethods).map((parent_value) => {
                             return (
                                 <li key={parent_value} className='main-left-list-item'>
                                     <a>{parent_value}</a>
                                     <ul className='no-bullets'>
-                                        {Object.keys(this.props.graphicsMethods[parent_value]).map((value, index) => {
+                                        {Object.keys(this.props.graphicsMethods[parent_value]).map((value) => {
                                             return (
                                                 <li key={value} className='sub-left-list-item draggable-list-item'
                                                     data-type='graphics_method' data-name={value}

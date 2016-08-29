@@ -1,6 +1,11 @@
 import React from 'react'
 
+
 var AddEditRemoveNav = React.createClass({
+    propTypes:{
+        addAction: React.PropTypes.func,
+        title: React.PropTypes.string
+    },
     render() {
         return (
             <nav className="navbar navbar-default">
