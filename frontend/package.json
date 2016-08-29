@@ -34,7 +34,7 @@
   },
   "scripts": {
     "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
-    "test": "mocha --require test/mocha/dom-mock.js test/mocha/*/*.js* --compilers jsx:babel-core/register --recursive",
+    "test": "mocha --require test/mocha/dom-mock.js test/mocha/*/*Test.js* --compilers jsx:babel-core/register --recursive",
     "lint": "$(npm bin)/eslint -f table src/*.js* src/*/*.js* src/*/*/*.js* src/*/*/*/*.js*",
     "lint_silent": "npm run lint > lint.out; vim lint.out"
   },
