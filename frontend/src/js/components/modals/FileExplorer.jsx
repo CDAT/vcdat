@@ -1,7 +1,11 @@
 import React from 'react'
+/* global $ */
 require('../../../../deps/quicktree.js')
 
 var FileExplorer = React.createClass({
+    propTypes: {
+        addFileToCache: React.PropTypes.func
+    },
     getInitialState() {
         return {
             files: {

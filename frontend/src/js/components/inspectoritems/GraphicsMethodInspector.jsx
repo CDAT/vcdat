@@ -1,6 +1,15 @@
 import React from 'react'
 
 var GraphicsMethodInspector = React.createClass({
+    propTypes: {
+        changePlot: React.PropTypes.func,
+        changePlotGM: React.PropTypes.func,
+        changePlotTemplate: React.PropTypes.func,
+        changePlotVar: React.PropTypes.func,
+        graphicsMethod: React.PropTypes.string,
+        graphicsMethodParent: React.PropTypes.string,
+        graphicsMethods: React.PropTypes.object,
+    },
     getGMS()
     {
         if (Object.keys(this.props.graphicsMethods).length && this.props.graphicsMethodParent) {

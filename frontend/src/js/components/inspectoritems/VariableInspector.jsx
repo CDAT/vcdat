@@ -1,8 +1,19 @@
 import React from 'react'
 
 var VariableInspector = React.createClass({
+    propTypes: {
+        changePlotTemplate: React.PropTypes.func,
+        changePlotVar: React.PropTypes.func,
+        nonVector:React.PropTypes.bool,
+        populateInspector: React.PropTypes.bool,
+        variable1: React.PropTypes.string,
+        variable2: React.PropTypes.string,
+        variables: React.PropTypes.oneOfType([
+            React.PropTypes.array,
+            React.PropTypes.object
+        ])
+    },
     render() {
-
         return (
             <div className='inspector-selector btn-group'>
                 <h5 className='black'>Variable(s):</h5>

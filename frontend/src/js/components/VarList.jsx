@@ -2,8 +2,19 @@ import React from 'react'
 import AddEditRemoveNav from './AddEditRemoveNav.jsx'
 import CachedFiles from './modals/CachedFiles.jsx'
 import FileExplorer from './modals/FileExplorer.jsx'
+/* global $ */
 
 var VarList = React.createClass({
+    propTypes: {
+        addFileToCache: React.PropTypes.func,
+        cachedFiles: React.PropTypes.object,
+        loadVariables: React.PropTypes.func,
+        variables: React.PropTypes.oneOfType([
+            React.PropTypes.array,
+            React.PropTypes.object
+        ])
+
+    },
     openDialog(){
         $('#cached-files').modal('show');
     },

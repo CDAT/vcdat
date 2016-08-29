@@ -1,7 +1,18 @@
 import React from 'react'
 import Plot from './Plot.jsx'
+/* global $*/
 
 var Plotter = React.createClass({
+    propTypes: {
+        addPlot: React.PropTypes.func,
+        row: React.PropTypes.number,
+        col: React.PropTypes.number,
+        cell: React.PropTypes.object,
+        swapTemplateInPlot: React.PropTypes.func,
+        swapVariableInPlot: React.PropTypes.func,
+        swapGraphicsMethodInPlot: React.PropTypes.func
+
+    },
     initDrop() {
         $('.cell-stack-bottom').droppable({
             accept: '.draggable-list-item',
@@ -63,9 +74,6 @@ var Plotter = React.createClass({
                         for (var i = 0; i < this.props.cell.plots.length; i++) {
                             let plot = this.props.cell.plots[i];
                             let plot_name = 'plot' + this.props.row + this.props.col + i;
-                            let row = this.props.row;
-                            let col = this.props.col;
-                            let swapVariableInPlot = this.props.swapVariableInPlot
                             plotters.push(
                                 <Plot
                                     key={i}
