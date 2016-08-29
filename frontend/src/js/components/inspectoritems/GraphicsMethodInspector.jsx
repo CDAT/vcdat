@@ -36,8 +36,15 @@ var GraphicsMethodInspector = React.createClass({
                                     {Object.keys(this.props.graphicsMethods).map((value, index) => {
                                         return (
                                             <li onClick={this.props.changePlotGM.bind(this, true, value)}
-                                                key={'inspector_gmp_' + value} className={'inspector-dropdown-item ' + (value === this.props.graphicsMethodParent ? 'active'
-                                                        : '')}>{value}</li>
+                                                key={'inspector_gmp_' + value}
+                                                className={
+                                                    'inspector-dropdown-item ' + (
+                                                        value === this.props.graphicsMethodParent
+                                                        ? 'active'
+                                                        : '')
+                                                }>
+                                                    {value}
+                                            </li>
                                         )
                                     })}
                                 </ul>
