@@ -7,8 +7,23 @@ import GraphicsMethodInspector from '../components/inspectoritems/GraphicsMethod
 import TemplateInspector from '../components/inspectoritems/TemplateInspector.jsx'
 
 var InspectorContainer = React.createClass({
+    propTypes: {
+        changePlot: React.PropTypes.func,
+        changePlotGM: React.PropTypes.func,
+        changePlotTemplate: React.PropTypes.func,
+        changePlotVar: React.PropTypes.func,
+        graphics_methods: React.PropTypes.object,
+        non_vector: React.PropTypes.bool,
+        plot_being_edited: React.PropTypes.number,
+        populate_inspector: React.PropTypes.bool,
+        selected_cell: React.PropTypes.object,
+        templates: React.PropTypes.array,
+        variables: React.PropTypes.oneOfType([
+            React.PropTypes.array,
+            React.PropTypes.object
+        ]),
+    },
     render() {
-
         var template = '';
         var graphics_method_parent = '';
         var graphics_method = '';

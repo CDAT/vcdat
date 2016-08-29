@@ -1,6 +1,12 @@
 import React from 'react'
 
 var TemplateInspector = React.createClass({
+    propTypes: {
+        changePlotTemplate: React.PropTypes.func,
+        populateInspector: React.PropTypes.bool,
+        template: React.PropTypes.string,
+        templates: React.PropTypes.array
+    },
     render() {
         return (
             <div className='inspector-selector btn-group'>

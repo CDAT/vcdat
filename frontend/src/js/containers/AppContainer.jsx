@@ -6,8 +6,15 @@ import SpreadsheetContainer from './SpreadsheetContainer.jsx'
 import ResizeSensor from 'css-element-queries/src/ResizeSensor'
 import {ActionCreators as UndoActionCreators} from 'redux-undo'
 import {connect} from 'react-redux'
+/* global jQuery */
 
 var AppContainer = React.createClass({
+    propTypes: {
+        undo: React.PropTypes.func,
+        redo: React.PropTypes.func,
+        undoEnabled: React.PropTypes.bool,
+        redoEnabled: React.PropTypes.bool
+    },
     render() {
         return (
             <div id='app-container'>

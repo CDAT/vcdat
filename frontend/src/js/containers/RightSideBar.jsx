@@ -1,6 +1,7 @@
 import React from 'react'
 import InspectorContainer from './InspectorContainer.jsx'
 import Animation from '../components/Animation.jsx'
+/* global $ */
 
 var RightSideBar = React.createClass({
     componentDidMount(){

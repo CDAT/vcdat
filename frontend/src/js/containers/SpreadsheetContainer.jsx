@@ -3,9 +3,15 @@ import Cell from '../components/Cell.jsx'
 import {connect} from 'react-redux'
 import Actions from '../actions/Actions.js'
 import Spinner from '../components/Spinner.jsx'
+/* global $ */
 
 var Row = React.createClass({
-
+    propTypes: {
+        col: React.PropTypes.number,
+        colCount: React.PropTypes.number,
+        resizeHeader: React.PropTypes.func,
+        row: React.PropTypes.number
+    },
     render() {
         var cols = [];
         for (var i = 0; i < this.props.colCount; i++) {
@@ -52,6 +58,23 @@ var Row = React.createClass({
 })
 
 var SpreadsheetContainer = React.createClass({
+    propTypes: {
+        addSheet: React.PropTypes.func,
+        changeCurSheetIndex: React.PropTypes.func,
+        colCountChanged: React.PropTypes.func,
+        cur_sheet: React.PropTypes.object,
+        cur_sheet_index: React.PropTypes.number,
+        moveColumn: React.PropTypes.func,
+        moveRow: React.PropTypes.func,
+        remove_enabled: React.PropTypes.bool,
+        removeSheet: React.PropTypes.func,
+        rowCountChanged: React.PropTypes.func,
+        sheets: React.PropTypes.array,
+        shiftSheet: React.PropTypes.func,
+        updateColCount: React.PropTypes.func,
+        updateRowCount: React.PropTypes.func,
+        updateSelectedCells: React.PropTypes.func
+    },
     getInitialState() {
         return {};
     },
@@ -68,7 +91,7 @@ var SpreadsheetContainer = React.createClass({
         this.props.changeCurSheetIndex(index);
     },
     initDragAndDrop() {
-        //col rearrange
+        // col rearrange
         $(".spreadsheet-col .draggable-head").draggable({
             axis: 'x',
             opacity: 0.7,
@@ -89,7 +112,7 @@ var SpreadsheetContainer = React.createClass({
             drop: this.dropppedColHeader
         });
 
-        //row rearrange
+        // row rearrange
         $(".row-header-container .draggable-head").draggable({
             axis: 'y',
             opacity: 0.7,
@@ -109,7 +132,7 @@ var SpreadsheetContainer = React.createClass({
             drop: this.dropppedRowHeader
         });
 
-        //sortable for sheet tabs
+        // sortable for sheet tabs
         $('#sheet-list').sortable({
             helper: 'clone',
             start: (event, ui) => {

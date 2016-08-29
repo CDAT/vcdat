@@ -2,6 +2,9 @@ import React from 'react'
 import AddEditRemoveNav from './AddEditRemoveNav.jsx'
 
 var TemplateList = React.createClass({
+    propTypes: {
+        templates: React.PropTypes.array
+    },
     getInitialState(){
         return {};
     },

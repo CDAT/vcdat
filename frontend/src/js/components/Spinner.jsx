@@ -1,6 +1,14 @@
 import React from 'react'
+/* global $*/
 
 var Spinner = React.createClass({
+    propTypes: {
+            max: React.PropTypes.string,
+            min: React.PropTypes.string,
+            update: React.PropTypes.func,
+            value: React.PropTypes.number
+
+    },
     incrementValue(event) {
         let input = $(this.refs.input);
         let value = parseInt(input.val(), 10) + 1;

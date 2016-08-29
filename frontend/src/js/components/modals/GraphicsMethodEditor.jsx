@@ -1,6 +1,10 @@
 import React from 'react'
 
 var GraphicsMethodEditor = React.createClass({
+    propTypes: {
+        graphicsMethod: React.PropTypes.string,
+        graphicsMethodParent: React.PropTypes.string
+    },
     render() {
         return (
             <div className="modal fade" id='graphcis-method-editor'>

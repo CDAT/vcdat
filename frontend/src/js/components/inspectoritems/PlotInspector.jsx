@@ -1,6 +1,12 @@
 import React from 'react'
 
 var PlotInspector = React.createClass({
+    propTypes: {
+        changePlot: React.PropTypes.func,
+        plotBeingEdited: React.PropTypes.number,
+        populateInspector: React.PropTypes.bool,
+        selectedCell: React.PropTypes.object
+    },
     getPlotItems(cur_plot_index) {
         var items = [];
         for (var i = 0; i < this.props.selectedCell.plots.length; i++) {
