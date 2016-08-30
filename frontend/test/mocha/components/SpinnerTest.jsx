@@ -17,8 +17,10 @@ describe('Testing Spinner.jsx ...', function() {
     jsdom({ skipWindowCheck: false });
 
     it('Renders a div named "spinner"', function() {
+        var mockUpdate = ()=>{};
+        var mockValue = 10;
         var spinner = TestUtils.renderIntoDocument(
-            <Spinner min='1' max='4' value='1' update='true' />
+            <Spinner min='1' max='4' value={mockValue} update={mockUpdate} />
         );
         var spinner_div = TestUtils.scryRenderedDOMComponentsWithClass(spinner, 'spinner');
         expect(spinner_div).to.exist;

@@ -19,9 +19,14 @@ I will go over directory structure, how to write tests, and some brief examples 
 
 All of vCDAT's tests are located in [vcdat/frontend/test/mocha][testdir]. Under this directory there are subdirectories for each type of Javascript/React component source in our project (actions, components, containers, and a special directory for the top-level App.js and Store.js files, called 'app').
 
-When writing tests for a component, make sure you write the test in the correct directory.
-A test for a component should always go into the directory in [test/mocha][testdir] which corresponds to the component's sourcecode origin.
-For example, if you were to write a test for Plot
+Make sure to adhere to the following guidelines when writing your tests:
+
+* When writing tests for a component, make sure you write the test in the correct directory.
+* * The directory in [test/mocha/][testdir] should correspond to the component's sourcecode origin.
+* Test name should be CapitalCase, with the source name of the Javascript being tested, followed by the word 'Test'.
+* For example, if you were to write a test for [src/js/components/Plotter.jsx][plotter],
+* * You should place this test in [mocha/test/components][components]
+* * The test should be called 'PlotterTest.jsx'
 
 
 
@@ -31,6 +36,8 @@ For example, if you were to write a test for Plot
 * [ReactTestUtils](https://facebook.github.io/react/docs/test-utils.html)
 
 [chai]: http://chaijs.com/
+[components]:
 [dom-mock]: https://github.com/embrown/vcdat/blob/master/frontend/test/mocha/dom-mock.js
 [mocha]: https://mochajs.org/
+[plotter]:
 [testutils]: https://facebook.github.io/react/docs/test-utils.html
