@@ -13,7 +13,7 @@ var TestComponent = require('./Example.jsx').default;
 
 // Mocha's describe() allows us to group tests
 //  This allows us to create testing suites, and pick them out easily in the reporter when we run tests
-describe('Testing my div', function() {
+describe('EXAMPLE: Testing my div', function() {
     // we'd like to check the window to make sure it's there
     jsdom({ skipWindowCheck: false });
 

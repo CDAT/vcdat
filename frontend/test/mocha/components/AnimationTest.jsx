@@ -9,7 +9,7 @@ var TestUtils = require('react-addons-test-utils');
 var Animation= require('../../../src/js/components/Animation.jsx').default;
 
 
-describe('Testing Animation.jsx ...', function() {
+describe('AnimationTest.jsx', function() {
     jsdom({ skipWindowCheck: false });
     before(function(){
         dom_mock('<html><body></body></html>');

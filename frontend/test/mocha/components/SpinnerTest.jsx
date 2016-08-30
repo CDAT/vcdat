@@ -13,7 +13,7 @@ beforeEach(function(){
     dom_mock('<html><body></body></html>');
 });
 
-describe('Testing Spinner.jsx ...', function() {
+describe('SpinnerTest.jsx', function() {
     jsdom({ skipWindowCheck: false });
 
     it('Renders a div named "spinner"', function() {
