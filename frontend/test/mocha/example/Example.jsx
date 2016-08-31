@@ -1,6 +1,6 @@
 import React from 'react';
 
-var TestComponent = React.createClass({
+var ExampleComponent = React.createClass({
     render(){
         return (
             <div className="test">
@@ -10,4 +10,4 @@ var TestComponent = React.createClass({
     }
 })
 
-export default TestComponent;
+export default ExampleComponent;

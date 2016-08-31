@@ -24,6 +24,7 @@
     "enzyme": "^2.4.1",
     "eslint": "3.2.2",
     "eslint-plugin-react": "^6.1.0",
+    "jsdom": "^9.4.5",
     "karma": "^1.1.2",
     "karma-chai": "^0.1.0",
     "karma-mocha": "^1.1.1",
@@ -35,7 +36,7 @@
   },
   "scripts": {
     "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
-    "test": "mocha test/mocha/ -g '.*Test.js[x]*' --compilers jsx:babel-core/register --recursive",
+    "test": "mocha test/mocha/ -g '.*Test.js[x]{0,1}' --compilers jsx:babel-core/register --recursive",
     "lint": "$(npm bin)/eslint -f table src/*.js* src/*/*.js* src/*/*/*.js* src/*/*/*/*.js*",
     "lint_silent": "npm run lint > lint.out; vim lint.out"
   },
