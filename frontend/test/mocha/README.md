@@ -26,18 +26,16 @@ directory.
 This will run Mocha, with all of the necessary options to run the existing tests for vCDAT.
 
 If you wish to run tests on specific files, you'll need to consult [Mocha's documentation][mocha-cli].
-I will provide a few simple examples of how to use Mocha's CLI here.
+I will provide a simple example of how to use Mocha's CLI here.
 
 ```mocha test/mocha/ -g '.*Test.js[x]*' --compilers jsx:babel-core/register --recursive```
+
 This is the current default configuration that gets run when you type ```npm test```.
 It is necessary to specify that we want to use the babel compiler, because we are utilizing JSX syntax.
 The '-g' option tells mocha to only run tests whose names match the given pattern. By convention, all of our
 React component and Javascript tests follow naming guidelines which ensures that they will be caught by this
 expression.
 
-Some options that you can specify with mocha are:
-* [The reporter][mocha-reporter], which specifies how the test results will be output
-*
 
 ## Developing tests
 
