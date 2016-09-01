@@ -12,7 +12,6 @@
 
 ## Developer Update
 1. Run `scripts/setup_mac.sh` (May require sudo, if virtualenv is not installed)
->>>>>>> d986d210b4840e3479ff6664f39f24bf13a6a62d
 
 ### Naming Convention
 * newfolder
