@@ -85,9 +85,9 @@ DOM, it gets replaced with ```<div class='test'><span>TEST</span></div>```.
 To test a react component, we have to import several libraries and other Javascript files:
 * [dom-mock.js][dom-mock] allows us to buld a fake DOM into which we can render react components
 * [jsdom][jsdom] must be imported before React so TestUtils can use DOM objects and methods
-* [chai][local-chai] lets us use functions like 'assert' and 'expect' to test our rendered html
+* [chai](#chai) lets us use functions like 'assert' and 'expect' to test our rendered html
 * Obviously, React needs to be loaded to run React code
-* [TestUtils][local-test-utils] is React's library for testing React components
+* [TestUtils](#testutils) is React's library for testing React components
 * Finally, we have to import the component we are testing
 
 After we have all the correct libraries and files imported, there are three essential things we need to make a test.
@@ -95,7 +95,7 @@ After we have all the correct libraries and files imported, there are three esse
 * a [before()](#hooks) block, which we use to create a mock DOM before rendering the components
 * and an [it()](#it) block, which contains the test
 
-After that, all that's left to do is use [TestUtils][local-test-utils] to render the React component in the DOM,
+After that, all that's left to do is use [TestUtils](#testutils) to render the React component in the DOM,
 pull that component out of the DOM, and test it with an assert.
 When we run ```npm test```, mocha will let us know if it gets any errors while running our test.
 
@@ -166,6 +166,7 @@ For more information, refer to [Mocha's documentation][mocha-hooks]
 ##### assert
 
 Chai expands on Node's assert library. See the [full API][chai-assert-api] for more information.
+
 Example from [Chai's documentation][chai-assert]:
 ```javascript
 var assert = require('chai').assert
@@ -182,6 +183,7 @@ assert.lengthOf(beverages.tea, 3, 'beverages has 3 types of tea');
 ##### expect
 
 ```expect()``` is one of Chai's [BDD-style assert APIs][chai-bdd-api].
+
 Example from [Chai's documentation][chai-expect]:
 ```javascript
 var expect = require('chai').expect
@@ -197,6 +199,7 @@ expect(beverages).to.have.property('tea').with.length(3);
 ##### should
 
 ```should()``` is the other of Chai's [BDD-style assert APIs][chai-bdd-api].
+
 Example from [Chai's documentation][chai-should]:
 ```javascript
 var should = require('chai').should() //actually call the function
