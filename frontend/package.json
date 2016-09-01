@@ -6,11 +6,13 @@
   "private": true,
   "dependencies": {
     "css-element-queries": "^0.3.2",
+    "jquery": "^3.1.0",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
-    "redux-undo": "^0.6.1"
+    "redux-undo": "^0.6.1",
+    "webpack": "^1.12.11"
   },
   "devDependencies": {
     "babel-cli": "^6.4.0",
@@ -32,7 +34,8 @@
   },
   "scripts": {
     "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
-    "lint": "$(npm bin)/eslint -f table src/"
+    "lint": "$(npm bin)/eslint -f table src/*.js* src/*/*.js* src/*/*/*.js* src/*/*/*/*.js*",
+    "lint_silent": "npm run lint > lint.out; vim lint.out"
   },
   "license": "",
   "repository": "http://github.com/UV-CDAT/vcdat"

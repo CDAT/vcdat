@@ -1,6 +1,10 @@
 import React from 'react'
 
 var GraphicsMethodEditor = React.createClass({
+    propTypes: {
+        graphicsMethod: React.PropTypes.string,
+        graphicsMethodParent: React.PropTypes.string
+    },
     render() {
         return (
             <div className="modal fade" id='graphcis-method-editor'>
@@ -10,7 +14,9 @@ var GraphicsMethodEditor = React.createClass({
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h4 className="modal-title">{'Editing ' + this.props.graphicsMethodParent + ' ' + this.props.graphicsMethod}</h4>
+                            <h4 className="modal-title">
+                                {'Editing ' + this.props.graphicsMethodParent + ' ' + this.props.graphicsMethod}
+                            </h4>
                         </div>
                         <div className="modal-body">
                             <button className='btn btn-default'>Left Ticks</button>

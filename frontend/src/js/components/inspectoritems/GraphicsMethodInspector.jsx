@@ -1,6 +1,15 @@
 import React from 'react'
 
 var GraphicsMethodInspector = React.createClass({
+    propTypes: {
+        changePlot: React.PropTypes.func,
+        changePlotGM: React.PropTypes.func,
+        changePlotTemplate: React.PropTypes.func,
+        changePlotVar: React.PropTypes.func,
+        graphicsMethod: React.PropTypes.string,
+        graphicsMethodParent: React.PropTypes.string,
+        graphicsMethods: React.PropTypes.object,
+    },
     getGMS()
     {
         if (Object.keys(this.props.graphicsMethods).length && this.props.graphicsMethodParent) {
@@ -36,8 +45,15 @@ var GraphicsMethodInspector = React.createClass({
                                     {Object.keys(this.props.graphicsMethods).map((value, index) => {
                                         return (
                                             <li onClick={this.props.changePlotGM.bind(this, true, value)}
-                                                key={'inspector_gmp_' + value} className={'inspector-dropdown-item ' + (value === this.props.graphicsMethodParent ? 'active'
-                                                        : '')}>{value}</li>
+                                                key={'inspector_gmp_' + value}
+                                                className={
+                                                    'inspector-dropdown-item ' + (
+                                                        value === this.props.graphicsMethodParent
+                                                        ? 'active'
+                                                        : '')
+                                                }>
+                                                    {value}
+                                            </li>
                                         )
                                     })}
                                 </ul>

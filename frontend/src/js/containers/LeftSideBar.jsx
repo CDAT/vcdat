@@ -4,8 +4,21 @@ import GMList from '../components/GMList.jsx'
 import TemplateList from '../components/TemplateList.jsx'
 import Actions from '../actions/Actions.js'
 import {connect} from 'react-redux'
+/* global $ */
 
 var LeftSideBar = React.createClass({
+    propTypes: {
+        addFileToCache: React.PropTypes.func,
+        cached_files: React.PropTypes.object,
+        graphics_methods: React.PropTypes.object,
+        loadVariables: React.PropTypes.func,
+        templates: React.PropTypes.array,
+        variables: React.PropTypes.oneOfType([
+            React.PropTypes.array,
+            React.PropTypes.object
+        ]),
+
+    },
     initDragListItems(){
         $('.draggable-list-item').draggable({
             opacity: 0.7,
@@ -32,7 +45,12 @@ var LeftSideBar = React.createClass({
     render() {
         return (
             <div id='left-side-bar' className=''>
-                <VarList variables={this.props.variables} loadVariables={this.props.loadVariables} addFileToCache={this.props.addFileToCache} cachedFiles={this.props.cached_files}/>
+                <VarList
+                    variables={this.props.variables}
+                    loadVariables={this.props.loadVariables}
+                    addFileToCache={this.props.addFileToCache}
+                    cachedFiles={this.props.cached_files}
+                />
                 <GMList graphicsMethods={this.props.graphics_methods}/>
                 <TemplateList templates={this.props.templates}/>
             </div>
@@ -51,7 +69,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addFileToCache: (filename, filepath, variables) => dispatch(Actions.addFileToCache(filename, filepath, variables)),
+        addFileToCache: function(filename, filepath, variables) {
+            dispatch(Actions.addFileToCache(filename, filepath, variables));
+        },
         loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list))
     }
 }

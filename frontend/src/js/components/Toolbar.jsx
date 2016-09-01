@@ -1,6 +1,12 @@
 import React from 'react'
 
 var Toolbar = React.createClass({
+    propTypes: {
+        onUndo: React.PropTypes.func,
+        onRedo: React.PropTypes.func,
+        undoEnabled: React.PropTypes.bool,
+        redoEnabled: React.PropTypes.bool
+    },
     render() {
         return (
             <div className='toolbar'>
