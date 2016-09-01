@@ -1,6 +1,11 @@
 import React from 'react'
+/* global $ */
+require('../../../../deps/quicktree.js')
 
 var FileExplorer = React.createClass({
+    propTypes: {
+        addFileToCache: React.PropTypes.func
+    },
     getInitialState() {
         return {
             files: {
@@ -13,9 +18,9 @@ var FileExplorer = React.createClass({
         $('#file-explorer').on('shown.bs.modal', () => {
             $.get('getInitialFileTree').then((obj) => {
                 obj = JSON.parse(obj);
-                this.setState({files: obj})
-            })
-        })
+                this.setState({files: obj});
+            });
+        });
     },
     loadFiles(event) {
         this.setFileSelected(false);
@@ -43,7 +48,9 @@ var FileExplorer = React.createClass({
             if (Object.keys(file_obj.sub_items[value].sub_items).length) {
                 return (
                     <li key={index}>
-                        <a className='directory' data-path={file_obj.sub_items[value].path}><i className='glyphicon glyphicon-folder-close'></i>{value}</a>
+                        <a className='directory' data-path={file_obj.sub_items[value].path}>
+                            <i className='glyphicon glyphicon-folder-close'></i>{value}
+                        </a>
                         <ul>
                             {this.buildList(file_obj.sub_items[value])}
                         </ul>
@@ -55,12 +62,25 @@ var FileExplorer = React.createClass({
                         {(() => {
                             if (file_obj.sub_items[value].directory) {
                                 return (
-                                    <a onClick={this.loadFiles} className='directory' data-path={file_obj.sub_items[value].path}><i className='glyphicon glyphicon-folder-close'></i>{value}</a>
+                                    <a onClick={this.loadFiles} className='directory'
+                                        data-path={file_obj.sub_items[value].path}
+                                    >
+                                        <i className='glyphicon glyphicon-folder-close'></i>{value}
+                                    </a>
                                 )
                             } else {
                                 return (
-                                    <a onClick={(file_obj.name != 'empty' ? this.setFileSelected.bind(this, true) : '')} className='file' data-path={file_obj.sub_items[value].path}><i className='glyphicon glyphicon-file'></i>{value}</a>
-                                )
+                                    <a onClick={
+                                            (file_obj.name != 'empty'
+                                                ? this.setFileSelected.bind(this, true)
+                                                : '')
+                                        }
+                                        className='file'
+                                        data-path={file_obj.sub_items[value].path}
+                                    >
+                                        <i className='glyphicon glyphicon-file'></i>{value}
+                                    </a>
+                                );
                             }
                         })()}
                     </li>
@@ -103,7 +123,11 @@ var FileExplorer = React.createClass({
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={this.cacheFile} disabled={!this.state.file_selected}>Open</button>
+                            <button type="button" className="btn btn-primary" onClick={this.cacheFile}
+                                disabled={!this.state.file_selected}
+                            >
+                                Open
+                            </button>
                         </div>
                     </div>
                 </div>

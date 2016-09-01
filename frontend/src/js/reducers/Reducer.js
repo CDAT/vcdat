@@ -8,7 +8,7 @@ import {getStore} from '../Store.js';
 var test_vars = ['clt', 'u', 'v'];
 
 var default_plot = {
-    variables: [], //testing inspector
+    variables: [], // testing inspector
     graphics_method_parent: 'boxfill',
     graphics_method: 'default',
     template: 'default'
@@ -75,7 +75,7 @@ const createCellGrid = (sheet) => {
         }
         rows.push(col);
     }
-    //update selected cells
+    // update selected cells
     var new_arr = [];
     sheet.selected_cell_indices.forEach((value, index, arr) => {
         if (!value[0] >= row_count) {
@@ -278,7 +278,8 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             var new_state = jQuery.extend(true, {}, state);
             if (action.sheet_index < new_state.cur_sheet_index) {
                 new_state.cur_sheet_index -= 1;
-            } else if ((action.sheet_index === new_state.cur_sheet_index) && new_state.cur_sheet_index === new_state.sheets.length - 1) {
+            } else if ((action.sheet_index === new_state.cur_sheet_index)
+                && new_state.cur_sheet_index === new_state.sheets.length - 1) {
                 new_state.cur_sheet_index -= 1;
             }
             new_state.sheets.splice(action.sheet_index, 1);
@@ -299,11 +300,14 @@ const reducers = combineReducers({
     templates:templateListReducer,
     sheets_model: sheetsModelReducer
 
-})
+});
 
 const undoableReducer = undoable(reducers,{
-    filter: excludeAction(['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES', 'INITIALIZE_GRAPHICS_METHODS_VALUES', 'ADD_FILE_TO_CACHE'])
-})
+    filter: excludeAction(
+        ['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES',
+        'INITIALIZE_GRAPHICS_METHODS_VALUES', 'ADD_FILE_TO_CACHE']
+    )
+});
 
 export default undoableReducer
 

@@ -1,17 +1,29 @@
 import React from 'react'
-
+/* global $ */
 var Plot = React.createClass({
+    propTypes: {
+        plot: React.PropTypes.object,
+        plotIndex: React.PropTypes.number,
+        plotName: React.PropTypes.string,
+        swapVariableInPlot: React.PropTypes.func,
+        swapGraphicsMethodInPlot: React.PropTypes.func,
+        swapTemplateInPlot: React.PropTypes.func,
 
+    },
     addToPlotter(event, ui) {
         switch (ui.draggable.attr('data-type')) {
             case 'variable':
-                this.props.swapVariableInPlot(ui.draggable.attr('data-name'), this.props.plotIndex);
+                let var_name = ui.draggable.attr('data-name');
+                this.props.swapVariableInPlot(var_name, this.props.plotIndex);
                 break;
             case 'graphics_method':
-                this.props.swapGraphicsMethodInPlot(ui.draggable.attr('data-parent'), ui.draggable.attr('data-name'), this.props.plotIndex)
+                let gm_parent = ui.draggable.attr('data-parent');
+                let gm_name = ui.draggable.attr('data-name');
+                this.props.swapGraphicsMethodInPlot(gm_parent, gm_name, this.props.plotIndex)
                 break
             case 'template':
-                this.props.swapTemplateInPlot(ui.draggable.attr('data-name'), this.props.plotIndex);
+                let tm_name = ui.draggable.attr('data-name');
+                this.props.swapTemplateInPlot(tm_name, this.props.plotIndex);
             default:
                 break;
         }
@@ -38,7 +50,7 @@ var Plot = React.createClass({
                 plot.removeClass('plot-hover')
                 $(event.target).addClass('second-var-highlight');
             },
-            out: (event, ui) => {
+            out: (event) => {
                 plot.addClass('plot-hover')
                 plot.droppable("enable");
                 $(event.target).removeClass('second-var-highlight');
@@ -76,10 +88,15 @@ var Plot = React.createClass({
                     <h4>Variables:</h4>
                     <div className='plot-var first-var'>{(this.props.plot.variables.length > 0
                             ? this.props.plot.variables[0]
-                            : '')}</div>
-                        <div className={'plot-var second-var ' + (this.isVector() ? 'colored-second-var' : '')}>{(this.props.plot.variables.length > 1
-                            ? this.props.plot.variables[1]
-                            : '')}</div>
+                            : '')}
+                    </div>
+                    <div className={'plot-var second-var ' + (this.isVector()
+                            ? 'colored-second-var'
+                            : '')}>
+                                {(this.props.plot.variables.length > 1
+                                    ? this.props.plot.variables[1]
+                                    : '')}
+                    </div>
                 </div>
                 <div>
                     <h4>Graphics method:</h4>

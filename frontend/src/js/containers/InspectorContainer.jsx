@@ -7,8 +7,23 @@ import GraphicsMethodInspector from '../components/inspectoritems/GraphicsMethod
 import TemplateInspector from '../components/inspectoritems/TemplateInspector.jsx'
 
 var InspectorContainer = React.createClass({
+    propTypes: {
+        changePlot: React.PropTypes.func,
+        changePlotGM: React.PropTypes.func,
+        changePlotTemplate: React.PropTypes.func,
+        changePlotVar: React.PropTypes.func,
+        graphics_methods: React.PropTypes.object,
+        non_vector: React.PropTypes.bool,
+        plot_being_edited: React.PropTypes.number,
+        populate_inspector: React.PropTypes.bool,
+        selected_cell: React.PropTypes.object,
+        templates: React.PropTypes.array,
+        variables: React.PropTypes.oneOfType([
+            React.PropTypes.array,
+            React.PropTypes.object
+        ]),
+    },
     render() {
-
         var template = '';
         var graphics_method_parent = '';
         var graphics_method = '';
@@ -27,10 +42,33 @@ var InspectorContainer = React.createClass({
         return (
             <div id='inspector' className=' scroll-area-list-parent right-side-list'>
                 <div className='scroll-area'>
-                    <PlotInspector populateInspector={this.props.populate_inspector} selectedCell={this.props.selected_cell} plotBeingEdited={this.props.plot_being_edited} changePlot={this.props.changePlot}/>
-                    <VariableInspector populateInspector={this.props.populate_inspector} variables={this.props.variables} nonVector={this.props.non_vector} variable1={variable1} variable2={variable2} changePlotVar={this.props.changePlotVar}/>
-                    <GraphicsMethodInspector populateInspector={this.props.populate_inspector} graphicsMethods={this.props.graphics_methods} graphicsMethod={graphics_method} graphicsMethodParent={graphics_method_parent} changePlotGM={this.props.changePlotGM}/>
-                    <TemplateInspector populateInspector={this.props.populate_inspector} template={template} templates={this.props.templates} changePlotTemplate={this.props.changePlotTemplate}/>
+                    <PlotInspector
+                        populateInspector={this.props.populate_inspector}
+                        selectedCell={this.props.selected_cell}
+                        plotBeingEdited={this.props.plot_being_edited}
+                        changePlot={this.props.changePlot}
+                    />
+                    <VariableInspector
+                        populateInspector={this.props.populate_inspector}
+                        variables={this.props.variables}
+                        nonVector={this.props.non_vector}
+                        variable1={variable1}
+                        variable2={variable2}
+                        changePlotVar={this.props.changePlotVar}
+                    />
+                    <GraphicsMethodInspector
+                        populateInspector={this.props.populate_inspector}
+                        graphicsMethods={this.props.graphics_methods}
+                        graphicsMethod={graphics_method}
+                        graphicsMethodParent={graphics_method_parent}
+                        changePlotGM={this.props.changePlotGM}
+                    />
+                    <TemplateInspector
+                        populateInspector={this.props.populate_inspector}
+                        template={template}
+                        templates={this.props.templates}
+                        changePlotTemplate={this.props.changePlotTemplate}
+                    />
                 </div>
             </div>
         )
@@ -40,7 +78,9 @@ var InspectorContainer = React.createClass({
 const mapStateToProps = (state) => {
     var cur_sheet_index = state.present.sheets_model.cur_sheet_index;
     var selected_cell_indices = state.present.sheets_model.sheets[cur_sheet_index].selected_cell_indices;
-    var populate_inspector = (selected_cell_indices.length === 1 && selected_cell_indices[0][0] !== -1 && selected_cell_indices[0][0] !== -1);
+    var populate_inspector = (selected_cell_indices.length === 1 &&
+                              selected_cell_indices[0][0] !== -1 &&
+                              selected_cell_indices[0][0] !== -1);
     var cell = null;
     var plot_being_edited = null;
     var non_vector = null;

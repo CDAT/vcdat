@@ -1,6 +1,14 @@
 import React from 'react'
+/* global $*/
 
 var Spinner = React.createClass({
+    propTypes: {
+            max: React.PropTypes.string,
+            min: React.PropTypes.string,
+            update: React.PropTypes.func,
+            value: React.PropTypes.number
+
+    },
     incrementValue(event) {
         let input = $(this.refs.input);
         let value = parseInt(input.val(), 10) + 1;
@@ -20,7 +28,10 @@ var Spinner = React.createClass({
     render() {
         return (
             <div className="spinner">
-                <input ref='input' type="text" onChange={(event) => {this.props.update(event.target.value)}} value={this.props.value}/>
+                <input ref='input' type="text"
+                    onChange={ (event) => {this.props.update(event.target.value)}}
+                    value={this.props.value}
+                />
                 <div className="input-group-btn-vertical">
                     <button onClick={this.incrementValue} className="btn btn-default" type="button">
                         <i className="glyphicon glyphicon-chevron-up"></i>

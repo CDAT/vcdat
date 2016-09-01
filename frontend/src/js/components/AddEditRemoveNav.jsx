@@ -1,6 +1,11 @@
 import React from 'react'
 
+
 var AddEditRemoveNav = React.createClass({
+    propTypes:{
+        addAction: React.PropTypes.func,
+        title: React.PropTypes.string
+    },
     render() {
         return (
             <nav className="navbar navbar-default">
@@ -8,7 +13,9 @@ var AddEditRemoveNav = React.createClass({
                         <div>
                             <ul className="nav navbar-nav navbar-right side-nav">
                                 <li>
-                                    <a href='#' onClick={this.props.addAction}><i className='glyphicon glyphicon-plus-sign'></i></a>
+                                    <a href='#' onClick={this.props.addAction}>
+                                        <i className='glyphicon glyphicon-plus-sign'></i>
+                                    </a>
                                 </li>
                                 <li>
                                     <a href="#"><i className='glyphicon glyphicon-edit'></i></a>

@@ -3,9 +3,15 @@ import Cell from '../components/Cell.jsx'
 import {connect} from 'react-redux'
 import Actions from '../actions/Actions.js'
 import Spinner from '../components/Spinner.jsx'
+/* global $ */
 
 var Row = React.createClass({
-
+    propTypes: {
+        col: React.PropTypes.number,
+        colCount: React.PropTypes.number,
+        resizeHeader: React.PropTypes.func,
+        row: React.PropTypes.number
+    },
     render() {
         var cols = [];
         for (var i = 0; i < this.props.colCount; i++) {
@@ -52,6 +58,23 @@ var Row = React.createClass({
 })
 
 var SpreadsheetContainer = React.createClass({
+    propTypes: {
+        addSheet: React.PropTypes.func,
+        changeCurSheetIndex: React.PropTypes.func,
+        colCountChanged: React.PropTypes.func,
+        cur_sheet: React.PropTypes.object,
+        cur_sheet_index: React.PropTypes.number,
+        moveColumn: React.PropTypes.func,
+        moveRow: React.PropTypes.func,
+        remove_enabled: React.PropTypes.bool,
+        removeSheet: React.PropTypes.func,
+        rowCountChanged: React.PropTypes.func,
+        sheets: React.PropTypes.array,
+        shiftSheet: React.PropTypes.func,
+        updateColCount: React.PropTypes.func,
+        updateRowCount: React.PropTypes.func,
+        updateSelectedCells: React.PropTypes.func
+    },
     getInitialState() {
         return {};
     },
@@ -68,7 +91,7 @@ var SpreadsheetContainer = React.createClass({
         this.props.changeCurSheetIndex(index);
     },
     initDragAndDrop() {
-        //col rearrange
+        // col rearrange
         $(".spreadsheet-col .draggable-head").draggable({
             axis: 'x',
             opacity: 0.7,
@@ -89,7 +112,7 @@ var SpreadsheetContainer = React.createClass({
             drop: this.dropppedColHeader
         });
 
-        //row rearrange
+        // row rearrange
         $(".row-header-container .draggable-head").draggable({
             axis: 'y',
             opacity: 0.7,
@@ -109,7 +132,7 @@ var SpreadsheetContainer = React.createClass({
             drop: this.dropppedRowHeader
         });
 
-        //sortable for sheet tabs
+        // sortable for sheet tabs
         $('#sheet-list').sortable({
             helper: 'clone',
             start: (event, ui) => {
@@ -209,7 +232,15 @@ var SpreadsheetContainer = React.createClass({
         this.col_count = this.props.cur_sheet.col_count;
         var rows = [];
         for (var i = 0; i < this.row_count; i++) {
-            rows.push(<Row resizeHeader={this.resizeHeader} key={'row' + i} colCount={this.col_count} row={i} className='row-element'/>);
+            rows.push(
+                <Row
+                    resizeHeader={this.resizeHeader}
+                    key={'row' + i}
+                    colCount={this.col_count}
+                    row={i}
+                    className='row-element'
+                />
+            );
         }
         return (
             <div id='spreadsheet-container'>
@@ -222,21 +253,24 @@ var SpreadsheetContainer = React.createClass({
                     <ul id='sheet-list' className='nav nav-tabs'>
                         {this.props.sheets.map((item, index) => {
                             return (
-                                <li role='presentation' className={'sheet-list-item ' + (index === this.props.cur_sheet_index
-                                    ? 'active'
-                                    : '')} key={'Sheet' + (index + 1)}>
+                                <li role='presentation'
+                                    className={
+                                        'sheet-list-item ' + (index === this.props.cur_sheet_index
+                                            ? 'active'
+                                            : '')
+                                    }
+                                    key={'Sheet' + (index + 1)}>
                                     <a onClick={this.changeCurSheetIndex.bind(this, index)}>
                                         <span>{item.name}</span>
-                                        <button onClick={this.removeSheet.bind(this, index)} className="close" disabled={!this.props.remove_enabled} type="button">×</button>
+                                        <button onClick={this.removeSheet.bind(this, index)} className="close"
+                                            disabled={!this.props.remove_enabled} type="button">×</button>
                                     </a>
                                 </li>
                             )
                         })}
                     </ul>
                 </div>
-                <div id='spreadsheet-div' className=''>
-                    {rows}
-                </div>
+                <div id='spreadsheet-div' className=''>{rows}</div>
             </div>
         )
     }
@@ -259,8 +293,12 @@ const mapDispatchToProps = (dispatch) => {
         changeCurSheetIndex: (index) => dispatch(Actions.changeCurSheetIndex(index)),
         removeSheet: (index) => dispatch(Actions.removeSheet(index)),
         updateSelectedCells: (selected_cells) => dispatch(Actions.updateSelectedCells(selected_cells)),
-        moveColumn: (dragged_index, dropped_index, position) => dispatch(Actions.moveColumn(dragged_index, dropped_index, position)),
-        moveRow: (dragged_index, dropped_index, position) => dispatch(Actions.moveRow(dragged_index, dropped_index, position)),
+        moveColumn: function(dragged_index, dropped_index, position) {
+            dispatch(Actions.moveColumn(dragged_index, dropped_index, position));
+        },
+        moveRow: function(dragged_index, dropped_index, position) {
+            dispatch(Actions.moveRow(dragged_index, dropped_index, position));
+        },
         shiftSheet: (old_position, new_position) => dispatch(Actions.shiftSheet(old_position, new_position))
     }
 }
