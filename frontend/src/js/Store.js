@@ -9,6 +9,6 @@ const configureStore = (initialState = {}) => {
     return store;
 }
 const getStore = () => {
-        return store;
-    }
+    return store;
+}
 export {configureStore, getStore};

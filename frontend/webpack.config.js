@@ -1,3 +1,4 @@
+/* global __dirname */
 module.exports = {
     entry: __dirname + "/src/js/App.js",
     devtool: 'inline-source-map',
