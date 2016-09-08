@@ -25,7 +25,6 @@ def serve_resource_file(path):
     if path in ['Bundle.js', 'Bundle.js.map']:
         return send_from_directory(dir_path, 'dist/' + path)
     else:
-        print 'Unable to serve file ', path
         return send_from_directory(dir_path, 'taco')
 
 
