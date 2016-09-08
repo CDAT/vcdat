@@ -77,5 +77,5 @@ def load_variables_from_file():
     f = cdms2.open(file_path)
     return json.dumps({'variables': f.listvariables()})
 
-if __name__ == "__main__":
+if __name__ == "__main__":   # pragma: no cover
     app.run()
