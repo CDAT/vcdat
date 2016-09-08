@@ -73,7 +73,7 @@ class FlaskTests(unittest.TestCase):  # pragma: no cover
         os.mkdir(folder)
         result = self.app.get('/browseFiles', query_string='path=' + folder)
         os.rmdir(folder)
-        self.assertEqual(result.status_code, 200)
+        self.assertNotEqual(result.data, "[]")
 
     def test_browseFilesItems(self):
         cur_dir_items = '{"directory": true, "path": "emptyFolder/", "sub_items": {"empty": ' + \
