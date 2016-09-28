@@ -46,7 +46,6 @@
     "mocha-jsdom": "^1.1.0",
     "react-addons-test-utils": "^15.3.1",
     "sinon": "^1.17.5",
-    "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   },
   "config": {
@@ -63,7 +62,7 @@
   "scripts": {
     "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
     "coverage": "mocha --require blanket --reporter html-file-cov test/mocha --recursive > coverage.html",
-    "test": "mocha test/mocha --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive",
+    "test": "mocha test/mocha --grep '/.*Test.jsx?$/' --compilers jsx:babel-core/register --recursive",
     "lint": "$(npm bin)/eslint -f table src/*.js* src/*/*.js* src/*/*/*.js* src/*/*/*/*.js*",
     "lint_silent": "npm run lint > lint.out; vim lint.out"
   },
