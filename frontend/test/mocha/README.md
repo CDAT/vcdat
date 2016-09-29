@@ -44,7 +44,7 @@ This runs on top of our ```npm test``` script. The combination is great, because
 babel and webpack, which we already use for building vCDAT, and nyc eliminates the need for hooking our mocha tests
 into a karma test runner, thus avoiding a boatload of extra dependencies.
 
-We have an npm script set up for code coverage, so run run ```npm coverage``` to see our current test coverage info.
+We have an npm script set up for code coverage, so run ```npm run coverage``` to see our current test coverage info.
 
 If you want to run it by hand, make sure to change the NODE_ENV to test mode, and run the mocha tests through nyc:
 
