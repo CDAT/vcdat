@@ -3,6 +3,7 @@
 ##### Table of Contents
 
 * [Running Tests](#running-tests)
+* [Code Coverage](#code-coverage)
 * [Developing Tests](#developing-tests)
     * [Testing Stack](#vcdats-testing-stack)
     * [Naming Convention](#directory-structure-and-naming)
@@ -36,6 +37,18 @@ The '-g' option tells mocha to only run tests whose names match the given patter
 React component and Javascript tests follow naming guidelines which ensures that they will be caught by this
 expression.
 
+## Code coverage
+
+We generate code coverage using [Babel's istanbul plugin][babel-plugin-istanbul] along with [istanbul nyc][nyc].
+This runs on top of our ```npm test``` script. The combination is great, because babel-istanbul utilizes
+babel and webpack, which we already use for building vCDAT, and nyc eliminates the need for hooking our mocha tests
+into a karma test runner, thus avoiding a boatload of extra dependencies.
+
+We have an npm script set up for code coverage, so run ```npm run coverage``` to see our current test coverage info.
+
+If you want to run it by hand, make sure to change the NODE_ENV to test mode, and run the mocha tests through nyc:
+
+```NODE_ENV=test nyc [nyc_opts] mocha [mocha-opts]```
 
 ## Developing tests
 
@@ -233,6 +246,7 @@ var divText = TestUtils.findRenderedDOMComponentWithTag(myDiv, 'span');
 Check out the official [documentation][test-utils] for more information.
 
 [babel]: https://babeljs.io/docs/plugins/preset-react/
+[babel-plugin-istanbul]: https://github.com/istanbuljs/babel-plugin-istanbul
 [chai]: http://chaijs.com/
 [chai-assert]: http://chaijs.com/guide/styles/#assert
 [chai-assert-api]: http://chaijs.com/api/assert/
@@ -250,6 +264,7 @@ Check out the official [documentation][test-utils] for more information.
 [mocha-cli]: https://mochajs.org/#usage
 [mocha-hooks]: https://mochajs.org/#hooks
 [mocha-reporter]: https://mochajs.org/#reporters
+[nyc]: https://github.com/istanbuljs/nyc
 [plotter]: https://github.com/UV-CDAT/vcdat/blob/master/frontend/src/js/components/Plotter.jsx
 [test-actions]: https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/actions
 [test-app]: https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/app

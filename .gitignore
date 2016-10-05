@@ -10,3 +10,5 @@ npm-debug.log
 *.swp
 lint.out
 *.coverage*
+frontend/.nyc_output
+frontend/coverage
