@@ -1,11 +1,14 @@
-if True:  # pragma: no cover
-    from app import app
-    from Files import isValidFile
-    import unittest
-    import os
+import unittest
+import os
+import sys
+import os.path
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+from app import app
+from Files import isValidFile
 
 
-class FlaskTests(unittest.TestCase):  # pragma: no cover
+class FlaskTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         pass
