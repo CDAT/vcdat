@@ -4,8 +4,8 @@ import sys
 import os.path
 sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-from app import app
-from Files import isValidFile
+from vcdat.app import app
+from vcdat.Files import isValidFile
 
 
 class FlaskTests(unittest.TestCase):
