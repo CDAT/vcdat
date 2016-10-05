@@ -25,7 +25,6 @@ def serve_resource_file(path):
     if path in ['Bundle.js', 'Bundle.js.map']:
         return send_from_directory(dir_path, 'dist/' + path)
     else:
-        print 'Unable to serve file ', path
         return send_from_directory(dir_path, 'taco')
 
 
@@ -78,5 +77,5 @@ def load_variables_from_file():
     f = cdms2.open(file_path)
     return json.dumps({'variables': f.listvariables()})
 
-if __name__ == "__main__":
+if __name__ == "__main__":   # pragma: no cover
     app.run()
