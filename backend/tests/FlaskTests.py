@@ -103,5 +103,5 @@ class FlaskTests(unittest.TestCase):
 
 
 # runs the unit tests in the module
-if __name__ == '__main__':  # pragma: no cover
+if __name__ == '__main__':
     unittest.main()
