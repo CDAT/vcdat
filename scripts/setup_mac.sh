@@ -3,11 +3,10 @@
 CONDA_ENV="vcdat"
 # Following install uvcdat nightly
 #CONDA_CHANNELS="-c uvcdat/label/nightly/ -c uvcdat -c cpcloud"
-CONDA_CHANNELS=" -c uvcdat -c cpcloud"
-CONDA_EXTRA_PACKAGES="hdf5=1.8.16 pyqt=4.11.3"
+CONDA_CHANNELS=" -c uvcdat -c conda-forge"
+NODE_PKG_URL="https://nodejs.org/dist/v4.6.0/node-v4.6.0.tar.gz"
 
-CERT=""
-
+CERT=$1
 if [ -z $CERT ]; then
     echo "NO CERT?"
 fi
@@ -63,14 +62,12 @@ if [[ $current_dir == */vcdat* ]]; then
     echo $current_dir
     echo "Installing requirements"
     pushd $current_dir
-    cd backend
-    conda create -y -n ${CONDA_ENV} ${CONDA_CHANNELS} uvcdat npm ${CONDA_EXTRA_PACKAGES} `more requirements.txt | tr "\n" " "`
-    # in case env already existed
+    # Delete the old one, if it exists.
+    conda env remove -y -n ${CONDA_ENV}
+    conda create -y -n ${CONDA_ENV} ${CONDA_CHANNELS} --file $current_dir/backend/requirements.txt
     source activate ${CONDA_ENV}
-    conda install -y ${CONDA_CHANNELS} uvcdat ${CONDA_EXTRA_PACKAGES} `more requirements.txt | tr "\n" " "`
-    #source deactivate
-    cd ..
     cd frontend
+    echo "prefix=$envdir" > $HOME/.npmrc
     if [ -z $CERT ]; then
         npm install
     else
