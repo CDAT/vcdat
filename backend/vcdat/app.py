@@ -78,4 +78,4 @@ def load_variables_from_file():
     return json.dumps({'variables': f.listvariables()})
 
 if __name__ == "__main__":   # pragma: no cover
-    app.run()
+    app.run(debug=True)
