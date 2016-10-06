@@ -99,3 +99,5 @@ zonalmeans=2.6.1=UVCDAT
 wheel=0.29.0=py27_0
 xz=5.2.2=0
 zlib=1.2.8=3
+nodejs
+flask
