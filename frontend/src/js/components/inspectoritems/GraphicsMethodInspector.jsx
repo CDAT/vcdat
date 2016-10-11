@@ -1,4 +1,7 @@
 import React from 'react'
+import GraphicsMethodEditor from '../modals/GraphicsMethodEditor.jsx'
+
+/* global $ */
 
 var GraphicsMethodInspector = React.createClass({
     propTypes: {
@@ -23,21 +26,21 @@ var GraphicsMethodInspector = React.createClass({
         }
         return;
     },
+    gmEditor(){
+        $('#graphics-method-editor').modal('show');
+    },
     render(){
-
+        let that = this;
         return (
-
             <div className='inspector-selector btn-group'>
                 <h5 className='black'>Graphics Method:</h5>
                 <table>
                     <tbody>
                     <tr>
                         <td>
-
                             <div className='dropdown-container'>
                                 <button type="button" className="btn btn-info dropdown-toggle dropdown-button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
                                     <span className='inspector-dropdown-title'>{this.props.graphicsMethodParent}</span>
                                     <span className="caret"></span>
                                 </button>
@@ -72,15 +75,18 @@ var GraphicsMethodInspector = React.createClass({
                                 <ul className="dropdown-menu">
                                     {this.getGMS()}
                                 </ul>
-
                             </div>
                         </td>
                         <td className='edit-button'>
-                            <button type='button' className='btn btn-default'>Edit</button>
+                            <button type='button' className='btn btn-default' onClick={this.gmEditor}>Edit</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <GraphicsMethodEditor
+                    graphicsMethod={that.props.graphicsMethod}
+                    graphicsMethodParent={that.props.graphicsMethodParent}
+                />
             </div>
         )
     }
