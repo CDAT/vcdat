@@ -74,8 +74,48 @@ def browse_files():
 @app.route("/loadVariablesFromFile")
 def load_variables_from_file():
     file_path = request.args.get('path')
+
     f = cdms2.open(file_path)
-    return json.dumps({'variables': f.listvariables()})
+    returned = []
+    f_var = f.getVariables()
+    f_var.sort(key=lambda x: len(x.getAxisList()), reverse=True)
+    for var in f_var:
+        output = var.id
+        output += " " + str(var.shape)
+        try:
+            var.long_name
+        except:
+            try:
+                var.title
+            except:
+                ln = ""
+            else:
+                ln = var.title
+        else:
+            ln = var.long_name
+
+        output += " [" + ln
+        output += " " + var.units
+        output += "]"
+        returned.append(output)
+
+    for ax in f.axes:
+        axes_name = ax
+        axes_length = len(f.axes[ax])
+        try:
+            f.axes[ax].units
+        except:
+            axes_units = 'none'
+        else:
+            axes_units = f.axes[ax].units
+
+        axes_lower = f.axes[ax][0]
+        axes_upper = f.axes[ax][-1]
+        output = axes_name + " (" + str(axes_length) + ") - [" + axes_units + ": ("
+        output += str(axes_lower) + ", " + str(axes_upper) + ")]"
+        returned.append(output)
+
+    return json.dumps({'variables': returned})
 
 if __name__ == "__main__":   # pragma: no cover
     app.run(debug=True)
