@@ -1,7 +1,7 @@
 {
   "name": "vCDAT",
   "version": "0.1.0",
-  "description": "Front-end GUI for CDAT using React and Redux",
+  "description": "Front-end GUI for CDAT",
   "main": "src/js/app.js",
   "private": true,
   "dependencies": {
@@ -10,7 +10,7 @@
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
-    "redux": "^3.5.2",
+    "redux": "=3.5.2",
     "redux-undo": "^0.6.1",
     "webpack": "^1.12.11"
   },

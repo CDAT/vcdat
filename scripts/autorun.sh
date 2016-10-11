@@ -1,9 +1,6 @@
 #!/bin/bash
 
 CONDA_ENV="vcdat"
-#CONDA_CHANNELS="-c uvcdat/label/nightly/ -c uvcdat -c cpcloud"
-CONDA_CHANNELS="-c uvcdat -c cpcloud"
-CONDA_EXTRA_PACKAGES="hdf5=1.8.16 pyqt=4.11.3 npm"
 
 curpath=`pwd`
 while [ -n $curpath ] && [ `basename $curpath` != "vcdat" ]; do
@@ -17,29 +14,12 @@ else
     source activate ${CONDA_ENV}
 fi
 
-be_pid=0
+python $curpath/backend/vcdat/app.py &
+be_pid=$!
+cd frontend
+$(npm bin)/webpack --progress --colors --watch &
+fe_pid=$!
 
-refresh_backend() {
-   if [ $be_pid -ne 0 ]; then
-      kill $be_pid
-   fi
-   python $curpath/backend/vcdat/app.py &
-   be_pid=$!
-}
+trap "{ kill $be_pid; kill $fe_pid; }" INT
 
-refresh_frontend() {
-   pushd $curpath/frontend
-   $(npm bin)/webpack
-   popd
-}
-
-route_notification() {
-   refresh_frontend
-   refresh_backend
-}
-
-trap "{ kill $be_pid; }" INT
-
-route_notification
-
-fswatch -r -o -e "pyc" -e 'css' -e 'html' -e "$curpath/frontend/dist" $curpath/backend $curpath/frontend | (while read; do route_notification; done;)
+cat # Wait until trapped ctrl+c
