@@ -80,42 +80,31 @@ def load_variables_from_file():
     f_var = f.getVariables()
     f_var.sort(key=lambda x: len(x.getAxisList()), reverse=True)
     for var in f_var:
-        output = var.id
-        output += " " + str(var.shape)
-        try:
-            var.long_name
-        except:
-            try:
-                var.title
-            except:
-                ln = ""
-            else:
-                ln = var.title
-        else:
-            ln = var.long_name
+        var_id = getattr(var, 'id', "")
+        var_shape = getattr(var, 'shape', "")
+        var_name = ""
+        for att in ["long_name", "title"]:
+            if hasattr(var, att):
+                var_name = getattr(var, att)
+                break
 
-        output += " [" + ln
-        output += " " + var.units
-        output += "]"
+        var_units = getattr(var, 'units', "")
+
+        output = var_id + " " + str(var_shape) + " [" + var_name + " " + var_units + "]"
         returned.append(output)
 
     for ax in f.axes:
         axes_name = ax
         axes_length = len(f.axes[ax])
-        try:
-            f.axes[ax].units
-        except:
-            axes_units = 'none'
-        else:
-            axes_units = f.axes[ax].units
-
+        axes_units = getattr(f.axes[ax], 'units', "")
         axes_lower = f.axes[ax][0]
         axes_upper = f.axes[ax][-1]
-        output = axes_name + " (" + str(axes_length) + ") - [" + axes_units + ": ("
-        output += str(axes_lower) + ", " + str(axes_upper) + ")]"
+
+        output = axes_name + " (" + str(axes_length) + ") - [" + axes_units + ": (" + str(axes_lower) + ", " + str(axes_upper) + ")]"
         returned.append(output)
 
     return json.dumps({'variables': returned})
+
 
 if __name__ == "__main__":   # pragma: no cover
     app.run(debug=True)
