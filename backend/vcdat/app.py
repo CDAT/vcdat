@@ -90,7 +90,7 @@ def load_variables_from_file():
 
         var_units = getattr(var, 'units', "")
 
-        output = var_id + " " + str(var_shape) + " [" + var_name + " " + var_units + "]"
+        output = var_id + " " + str(var_shape) + " [" + var_name + ": " + var_units + "]"
         returned.append(output)
 
     for ax in f.axes:
@@ -104,6 +104,17 @@ def load_variables_from_file():
         returned.append(output)
 
     return json.dumps({'variables': returned})
+
+
+@app.route("/getVariableProvenance")
+def get_variable_provenance():
+    path = request.args.get('path')
+    varname = request.args.get('varname')
+    f = cdms2.open(path)
+    v = f[varname]
+    ep = v.export_provenance()
+    print ep
+    return json.dumps(ep)
 
 
 if __name__ == "__main__":   # pragma: no cover
