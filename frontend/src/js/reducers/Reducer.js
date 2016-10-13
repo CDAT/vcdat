@@ -297,7 +297,7 @@ const reducers = combineReducers({
     cached_files: cachedFilesReducer,
     variables: varListReducer,
     graphics_methods: gmListReducer,
-    templates:templateListReducer,
+    templates: templateListReducer,
     sheets_model: sheetsModelReducer
 
 });
