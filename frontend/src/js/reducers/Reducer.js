@@ -4,9 +4,34 @@ import { combineReducers } from 'redux';
 import Actions from '../actions/Actions.js';
 import {getStore} from '../Store.js';
 
+// non-complex reducers
+const cachedFilesReducer = (state = {}, action) => {
+    switch(action.type){
+        case 'ADD_FILE_TO_CACHE':
+            var new_state = jQuery.extend(true, {}, state)
+            new_state[action.filename] = {
+                filepath: action.filepath,
+                variables: action.variables
+            }
+            return new_state;
+        default: return state;
+    }
+}
 
-var test_vars = ['clt', 'u', 'v'];
+const varListReducer = (state = [], action) => {
+    switch (action.type) {
+        case 'LOAD_VARIABLES':
+            var new_list = jQuery.extend(true, {}, state);
+            action.var_list.forEach((var_obj) => {
+                let key = Object.keys(var_obj)[0];
+                new_list[key] = var_obj[key];
+            })
+            return new_list;
+        default: return state
+    }
+}
 
+// gmListReducer + helpers
 var default_plot = {
     variables: [], // testing inspector
     graphics_method_parent: 'boxfill',
@@ -94,30 +119,12 @@ const createCellGrid = (sheet) => {
     return rows
 }
 
-const cachedFilesReducer = (state = {}, action) => {
-    switch(action.type){
-        case 'ADD_FILE_TO_CACHE':
-            var new_state = jQuery.extend(true, {}, state)
-            new_state[action.filename] = {
-                filepath: action.filepath,
-                variables: action.variables
-            }
-            return new_state;
-        default: return state;
-    }
-}
-
-const varListReducer = (state = [], action) => {
-    switch (action.type) {
-        case 'LOAD_VARIABLES':
-            var new_list = jQuery.extend(true, {}, state);
-            action.var_list.forEach((var_obj) => {
-                let key = Object.keys(var_obj)[0];
-                new_list[key] = var_obj[key];
-            })
-            return new_list;
-        default: return state
-    }
+const getGraphicsMethods = () => {
+    $.get("getGraphicsMethods").then(
+        function(gm){
+            getStore().dispatch(Actions.initializeGraphicsMethodsValues(JSON.parse(gm)))
+        }
+    )
 }
 
 const gmListReducer = (state = {}, action) => {
@@ -132,13 +139,15 @@ const gmListReducer = (state = {}, action) => {
     }
 }
 
-const getGraphicsMethods = () => {
-    $.get("getGraphicsMethods").then(
-        function(gm){
-            getStore().dispatch(Actions.initializeGraphicsMethodsValues(JSON.parse(gm)))
+// templateListReducer + helpers
+const getTemplates = () => {
+    $.get("getTemplates").then(
+        function(templates){
+            getStore().dispatch(Actions.initializeTemplateValues(JSON.parse(templates)));
         }
-    )
+    );
 }
+
 const templateListReducer = (state = [], action) => {
     if (!state.length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
         getTemplates();
@@ -151,14 +160,7 @@ const templateListReducer = (state = [], action) => {
     }
 }
 
-const getTemplates = () => {
-    $.get("getTemplates").then(
-        function(templates){
-            getStore().dispatch(Actions.initializeTemplateValues(JSON.parse(templates)));
-        }
-    );
-}
-
+// sheetsModelReducer + helpers
 const updateCell = (cell, action) => {
     switch (action.type) {
         case 'CHANGE_PLOT':
@@ -194,7 +196,7 @@ const updateCell = (cell, action) => {
                 plot.graphics_method_parent = action.graphics_method_parent;
                 plot.graphics_method = 'default';
 
-                //remove second var if not vector
+                // remove second var if not vector
                 if(plot.graphics_method_parent !== 'vector'){
                     plot.variables.splice(1, 1);
                 }
@@ -293,6 +295,7 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
     }
 }
 
+// combined reducers + undoable
 const reducers = combineReducers({
     cached_files: cachedFilesReducer,
     variables: varListReducer,
