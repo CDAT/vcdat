@@ -4,6 +4,7 @@ import GraphicsMethodEditor from './modals/GraphicsMethodEditor.jsx';
 require('../../../deps/quicktree.js');
 /* global $ */
 
+var el = null;
 var GMList = React.createClass({
     propTypes: {
         graphicsMethods: React.PropTypes.object,
@@ -25,15 +26,20 @@ var GMList = React.createClass({
         $('#graphics-method-editor').modal('show')
     },
     selectedChild(val) {
-        var el = $(val.target);
+        if (el) {
+            el.removeClass('bg-primary');
+        }
+        el = $(val.target);
         while (el.prop("tagName").toLowerCase() !== "li") {
             el = el.parent();
         }
+        el.addClass('bg-primary')
         this.setState({
             gmObj: this.props.graphicsMethods[el.attr("data-parent")][el.attr("data-name")],
             graphicsMethodParent: el.attr("data-parent"),
             graphicsMethod: el.attr("data-name")
         });
+        console.log(this.props.graphicsMethods[el.attr("data-parent")][el.attr("data-name")],el.attr("data-parent"),el.attr("data-name"))
     },
     render() {
         return (
@@ -48,7 +54,9 @@ var GMList = React.createClass({
                                     <ul className='no-bullets'>
                                         {Object.keys(this.props.graphicsMethods[parent_value]).map((value) => {
                                             return (
-                                                <li key={value} onClick={this.selectedChild} className='sub-left-list-item draggable-list-item'
+                                                <li key={value}
+                                                    onClick={this.selectedChild} 
+                                                    className='sub-left-list-item draggable-list-item'
                                                     data-type='graphics_method' data-name={value}
                                                     data-parent={parent_value} style={{'display':'none'}}>
                                                         <a>{value}</a>

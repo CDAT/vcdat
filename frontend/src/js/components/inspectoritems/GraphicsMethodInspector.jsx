@@ -1,6 +1,4 @@
 import React from 'react'
-
-
 /* global $ */
 
 var GraphicsMethodInspector = React.createClass({
@@ -27,7 +25,6 @@ var GraphicsMethodInspector = React.createClass({
         return;
     },
     render(){
-        let that = this;
         return (
             <div className='inspector-selector btn-group'>
                 <h5 className='black'>Graphics Method:</h5>
