@@ -1,5 +1,5 @@
 import React from 'react'
-import GraphicsMethodEditor from '../modals/GraphicsMethodEditor.jsx'
+
 
 /* global $ */
 
@@ -25,9 +25,6 @@ var GraphicsMethodInspector = React.createClass({
             });
         }
         return;
-    },
-    gmEditor(){
-        $('#graphics-method-editor').modal('show');
     },
     render(){
         let that = this;
@@ -78,15 +75,11 @@ var GraphicsMethodInspector = React.createClass({
                             </div>
                         </td>
                         <td className='edit-button'>
-                            <button type='button' className='btn btn-default' onClick={this.gmEditor}>Edit</button>
+                            <button type='button' className='btn btn-default'>Edit</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <GraphicsMethodEditor
-                    graphicsMethod={that.props.graphicsMethod}
-                    graphicsMethodParent={that.props.graphicsMethodParent}
-                />
             </div>
         )
     }
