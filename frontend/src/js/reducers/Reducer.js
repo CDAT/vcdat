@@ -310,8 +310,8 @@ const updateActiveGMReducer = (state = {}, action) => {
         default:
             return {
                 gmProps: {},
-                gmParent: 'boxfill',
-                gm: 'default'
+                gmParent: 'to start.',
+                gm: 'Select a Graphics Method from the list'
             }
     }
 };

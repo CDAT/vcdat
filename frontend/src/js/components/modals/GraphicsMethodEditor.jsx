@@ -17,7 +17,7 @@ var GraphicsMethodEditor = React.createClass({
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <h4 className="modal-title">
-                                {'Editing    ' + this.props.graphicsMethod + '    ' + this.props.graphicsMethodParent}
+                                {this.props.graphicsMethod+'\t'+this.props.graphicsMethodParent}
                             </h4>
                         </div>
                         <div className="modal-body">
