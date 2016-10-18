@@ -295,13 +295,34 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
     }
 }
 
+// updateActiveGMReducer + helpers
+const updateActiveGMReducer = (state = {}, action) => {
+    switch(action.type) {
+        case 'UPDATE_ACTIVE_GM':
+            var new_state = Object.assign({}, state, {
+                gmProps: action.gmProps,
+                gmParent: action.gmParent,
+                gm: action.gm
+            });
+            console.log('UPDATE_ACTIVE_GM', new_state);
+            return new_state;
+            break;
+        default:
+            return {
+                gmProps: {},
+                gmParent: 'boxfill',
+                gm: 'default'
+            }
+    }
+};
 // combined reducers + undoable
 const reducers = combineReducers({
     cached_files: cachedFilesReducer,
     variables: varListReducer,
     graphics_methods: gmListReducer,
     templates: templateListReducer,
-    sheets_model: sheetsModelReducer
+    sheets_model: sheetsModelReducer,
+    active_GM: updateActiveGMReducer
 
 });
 

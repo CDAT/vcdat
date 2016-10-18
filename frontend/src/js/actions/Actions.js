@@ -152,6 +152,14 @@ var Actions = {
             filepath: filepath,
             variables: variables
         }
+    },
+    updateActiveGM(gmProps, gmParent, gm) {
+        return {
+            type: 'UPDATE_ACTIVE_GM',
+            gmProps: gmProps,
+            gmParent: gmParent,
+            gm: gm
+        }
     }
 }
 
