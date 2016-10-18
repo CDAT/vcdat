@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import $ from 'jquery'
 
 var cur_gmProps = null;
-
+var gmProps_jsx = null;
 var GraphicsMethodEditForm = React.createClass({
     propTypes: {
         graphicsMethod: React.PropTypes.string,
@@ -27,6 +27,7 @@ var GraphicsMethodEditForm = React.createClass({
     populateTable() {
         console.log("populateTable()");
         var gmProps = this.props.gmProps
+        gmProps_jsx = Object.assign({}, gmProps);
         var table_contents = Object.keys(gmProps).map((key, index) => {
             switch(key) {
                 case 'boxfill_type':
@@ -40,7 +41,7 @@ var GraphicsMethodEditForm = React.createClass({
                     else if (gmProps[key] === 'custom')
                         custom_checked = true;
                     return (
-                        <tr key={key+index+Date.now()}>
+                        <tr key={key+index+(Date.now()/new Date().getMilliseconds())}>
                             <td>
                                 Boxfill type:
                             </td>
@@ -96,15 +97,21 @@ var GraphicsMethodEditForm = React.createClass({
                     );
                 case 'color_1':
                     return (
-                        <tr key={'colors'+index+Date.now()}>
+                        <tr key={'colors'+index+(Date.now()/new Date().getMilliseconds())}>
                             <td>
-                                Color 1: <input type="number"
+                                Color 1:
+                            </td>
+                            <td>
+                                <input type="number"
                                                 name="color_1"
                                                 defaultValue={gmProps["color_1"]}
                                                 onChange={this.onChange} />
                             </td>
                             <td>
-                                Color 2: <input type="number"
+                                Color 2:
+                            </td>
+                            <td>
+                                <input type="number"
                                                 name="color_2"
                                                 defaultValue={gmProps["color_2"]}
                                                 onChange={this.onChange} />
@@ -114,27 +121,81 @@ var GraphicsMethodEditForm = React.createClass({
                 case 'colormap':
                     // need to have a list of available colormaps here
                     break;
-                // ASSUMPTION: all datawc fields will be present in any GM with one datawc field
                 case 'datawc_calendar':
-                case 'datawc_timeunits':
-                case 'datawc_x1':
-                    // datawcs here
                     break;
+                case 'datawc_timeunits':
+                    break;
+                case 'datawc_x1':
+                    // worldcoordinates here
+                    return (
+                            <tr key={"worldcoordinates"+index+(Date.now()/new Date().getMilliseconds())}>
+                                <td> datawc_x1: </td>
+                                <td>
+                                    <input type="number"
+                                        name="datawc_x1"
+                                        defaultValue={
+                                            gmProps["datawc_x1"] > 1e4
+                                            ? gmProps["datawc_x1"].toExponential()
+                                            : gmProps["datawc_x1"]
+                                        }
+                                        onChange={this.onChange}/>
+                                </td>
+                                <td>datawc_x2: </td>
+                                <td>
+                                    <input type="number"
+                                        name="datawc_x2"
+                                        defaultValue={
+                                            gmProps["datawc_x2"] > 1e4
+                                            ? gmProps["datawc_x2"].toExponential()
+                                            : gmProps["datawc_x2"]
+                                        }
+                                        onChange={this.onChange}/>
+                                </td>
+                                <td>datawc_y1: </td>
+                                <td>
+                                    <input type="number"
+                                        name="datawc_y1"
+                                        defaultValue={
+                                            gmProps["datawc_y1"] > 1e4
+                                            ? gmProps["datawc_y1"].toExponential()
+                                            : gmProps["datawc_y1"]
+                                        }
+                                        onChange={this.onChange}/>
+                                </td>
+                                <td>datawc_y2: </td>
+                                <td>
+                                    <input type="number"
+                                        name="datawc_y2"
+                                        defaultValue={
+                                            gmProps["datawc_y2"] > 1e4
+                                            ? gmProps["datawc_y2"].toExponential()
+                                            : gmProps["datawc_y2"]
+                                        }
+                                        onChange={this.onChange}/>
+                                </td>
+                            </tr>
+                    );
                 case 'ext_1':
                     var ext1 = gmProps['ext_1'];
                     var ext2 = gmProps['ext_2'];
-                    var key = 'exts'+Date.now()
+                    var uniq_key = 'exts'+(Date.now()/new Date().getMilliseconds())
                     if (ext1 && ext2) {
                         return (
-                            <tr key={key}>
+                            <tr key={uniq_key}>
                                 <td>
-                                    Ext 1: <input type="checkbox"
+                                    Ext 1:
+                                </td>
+                                <td>
+                                    <input type="checkbox"
                                         name="ext_1"
                                         onChange={this.onChange}
                                         defaultChecked/>
                                 </td>
                                 <td>
-                                    Ext 2: <input type="checkbox"
+                                    Ext 2:
+                                </td>
+                                <td>
+                                    <input type="checkbox"
                                         name="ext_2"
                                         onChange={this.onChange}
                                         defaultChecked/>
@@ -144,15 +205,21 @@ var GraphicsMethodEditForm = React.createClass({
                     }
                     else if (ext1) {
                         return (
-                            <tr key={key}>
+                            <tr key={uniq_key}>
                                 <td>
-                                    Ext 1: <input type="checkbox"
+                                    Ext 1:
+                                </td>
+                                <td>
+                                    <input type="checkbox"
                                         name="ext_1"
                                         onChange={this.onChange}
                                         defaultChecked/>
                                 </td>
                                 <td>
-                                    Ext 2: <input type="checkbox"
+                                    Ext 2:
+                                </td>
+                                <td>
+                                    <input type="checkbox"
                                         name="ext_2"
                                         onChange={this.onChange}/>
                                 </td>
@@ -161,14 +228,20 @@ var GraphicsMethodEditForm = React.createClass({
                     }
                     else if (ext2) {
                         return (
-                            <tr key={key}>
+                            <tr key={uniq_key}>
                                 <td>
-                                    Ext 1: <input type="checkbox"
+                                    Ext 1:
+                                </td>
+                                <td>
+                                    <input type="checkbox"
                                         name="ext_1"
                                         onChange={this.onChange}/>
                                 </td>
                                 <td>
-                                    Ext 2: <input type="checkbox"
+                                    Ext 2:
+                                </td>
+                                <td>
+                                    <input type="checkbox"
                                         name="ext_2"
                                         onChange={this.onChange}
                                         defaultChecked/>
@@ -178,14 +251,20 @@ var GraphicsMethodEditForm = React.createClass({
                     }
                     else {
                         return (
-                            <tr key={key}>
+                            <tr key={uniq_key}>
                                 <td>
-                                    Ext 1: <input type="checkbox"
+                                    Ext 1:
+                                </td>
+                                <td>
+                                    <input type="checkbox"
                                         name="ext_1"
                                         onChange={this.onChange}/>
                                 </td>
                                 <td>
-                                    Ext 2: <input type="checkbox"
+                                    Ext 2:
+                                </td>
+                                <td>
+                                    <input type="checkbox"
                                         name="ext_2"
                                         onChange={this.onChange}/>
                                 </td>
@@ -204,9 +283,12 @@ var GraphicsMethodEditForm = React.createClass({
                     break;
                 case 'level_1':
                     return (
-                        <tr key={"level_1_2"+index+Date.now()}>
+                        <tr key={"level_1_2"+index+(Date.now()/new Date().getMilliseconds())}>
                             <td>
-                                Level 1: <input type="number"
+                                Level 1:
+                            </td>
+                            <td>
+                                <input type="number"
                                     name="level_1"
                                     defaultValue={
                                         gmProps["level_1"] > 1e4
@@ -216,7 +298,10 @@ var GraphicsMethodEditForm = React.createClass({
                                     onChange={this.onChange}/>
                             </td>
                             <td>
-                                Level 2: <input type="number"
+                                Level 2:
+                            </td>
+                            <td>
+                                <input type="number"
                                     name="level_2"
                                     defaultValue={
                                         gmProps["level_2"] > 1e4
@@ -231,15 +316,16 @@ var GraphicsMethodEditForm = React.createClass({
                     break;
                 case 'missing':
                     return (
-                        <tr key={key+index+Date.now()}>
+                        <tr key={key+index+(Date.now()/new Date().getMilliseconds())}>
                             <td>Missing: </td>
                             <td><input type='number'
                                             name='missing'
                                             defaultValue={gmProps[key]}
                                             onChange={this.onChange}/></td>
                         </tr>
-                    )
+                    );
                 case 'projection':
+                    // need a valid list of projections here
                     break;
                 case 'xaxisconvert':
                 case 'yaxisconvert':
@@ -254,13 +340,17 @@ var GraphicsMethodEditForm = React.createClass({
                 case "yticlabels1":
                 case "yticlabels2":
                     break;
+                default:
+                    return;
             }
         });
         return table_contents;
     },
+    // should change render to return multiple tables,
+    // with certain contents from the array returned from populateTables()
     render() {
         return(
-            <table className={this.props.graphicsMethod}>
+            <table className={this.props.graphicsMethod+'_'+this.props.graphicsMethodParent}>
                 <tbody>
                     {this.populateTable()}
                 </tbody>
@@ -273,8 +363,20 @@ const mapStateToProps = (state) => {
     return {
         gmProps: state.present.active_GM.gmProps,
         graphicsMethod: state.present.active_GM.gm,
-        graphicsMethodParent: state.present.active_GM.gmParent
+        graphicsMethodParent: state.present.active_GM.gmParent,
+
     }
 }
+// Add these to
+// colormaps: state.present.colormaps,
+// projections: state.present.projections
+
+/* const mapDispatchToProps = (dispatch) => {
+    return {
+        getValidLists: () => {
+            dispatch(Actions.getValidLists());
+        }
+    }
+}*/
 
 export default connect(mapStateToProps)(GraphicsMethodEditForm);

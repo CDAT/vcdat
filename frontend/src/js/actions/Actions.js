@@ -67,7 +67,10 @@ var Actions = {
     initializeGraphicsMethodsValues(gm) {
         return {
             type: 'INITIALIZE_GRAPHICS_METHODS_VALUES',
-            graphics_methods: gm
+            graphics_methods: gm,
+            gmProps: gm['boxfill']['default'],
+            gmParent: 'boxfill',
+            gm: 'default'
         }
     },
     updateSelectedCells(selected_cells) {
