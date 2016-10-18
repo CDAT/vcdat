@@ -8,13 +8,7 @@ var el = null;
 var GMList = React.createClass({
     propTypes: {
         graphicsMethods: React.PropTypes.object,
-    },
-    getInitialState() {
-        return ({
-            gmObj: {},
-            graphicsMethodParent: 'boxfill',
-            graphicsMethod: 'default'
-        });
+        updateActiveGM: React.PropTypes.func
     },
     componentDidUpdate(){
         $('#gm-list').quicktree();
@@ -34,11 +28,11 @@ var GMList = React.createClass({
             el = el.parent();
         }
         el.addClass('bg-primary')
-        this.setState({
-            gmObj: this.props.graphicsMethods[el.attr("data-parent")][el.attr("data-name")],
-            graphicsMethodParent: el.attr("data-parent"),
-            graphicsMethod: el.attr("data-name")
-        });
+        let gmProps = this.props.graphicsMethods[el.attr("data-parent")][el.attr("data-name")];
+        let gmParent = el.attr("data-parent");
+        let gm = el.attr("data-name");
+        // call updateActiveGM
+        this.props.updateActiveGM(gmProps, gmParent, gm)
         console.log(this.props.graphicsMethods[el.attr("data-parent")][el.attr("data-name")],el.attr("data-parent"),el.attr("data-name"))
     },
     render() {
@@ -55,7 +49,7 @@ var GMList = React.createClass({
                                         {Object.keys(this.props.graphicsMethods[parent_value]).map((value) => {
                                             return (
                                                 <li key={value}
-                                                    onClick={this.selectedChild} 
+                                                    onClick={this.selectedChild}
                                                     className='sub-left-list-item draggable-list-item'
                                                     data-type='graphics_method' data-name={value}
                                                     data-parent={parent_value} style={{'display':'none'}}>
@@ -70,9 +64,9 @@ var GMList = React.createClass({
                     </ul>
                 </div>
                 <GraphicsMethodEditor
-                    graphicsMethod={this.state.graphicsMethod}
-                    grphicsMethodParent={this.state.graphicsMethodParent}
-                    gmProps={this.state.gmObj}/>
+                    graphicsMethod={this.props.graphicsMethod}
+                    graphicsMethodParent={this.props.graphicsMethodParent}
+                    gmProps={this.props.gmProps}/>
             </div>
         )
     }

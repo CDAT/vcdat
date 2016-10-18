@@ -42,6 +42,7 @@ var LeftSideBar = React.createClass({
     componentDidUpdate(){
         this.initDragListItems();
     },
+
     render() {
         return (
             <div id='left-side-bar' className=''>
@@ -49,9 +50,12 @@ var LeftSideBar = React.createClass({
                     variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     addFileToCache={this.props.addFileToCache}
-                    cachedFiles={this.props.cached_files}
-                />
-                <GMList graphicsMethods={this.props.graphics_methods}/>
+                    cachedFiles={this.props.cached_files}/>
+                <GMList graphicsMethods={this.props.graphics_methods}
+                    updateActiveGM={this.props.updateActiveGM}
+                    gmProps={this.props.gmProps}
+                    graphicsMethod={this.props.graphicsMethod}
+                    graphicsMethodParent={this.props.graphicsMethodParent}/>
                 <TemplateList templates={this.props.templates}/>
             </div>
         )
@@ -63,7 +67,10 @@ const mapStateToProps = (state) => {
         variables: state.present.variables,
         graphics_methods: state.present.graphics_methods,
         templates: Object.keys(state.present.templates),
-        cached_files: state.present.cached_files
+        cached_files: state.present.cached_files,
+        gmProps: state.present.active_GM.gmProps,
+        graphicsMethod: state.present.active_GM.gm,
+        graphicsMethodParent: state.present.active_GM.gmParent
     }
 }
 
@@ -72,7 +79,8 @@ const mapDispatchToProps = (dispatch) => {
         addFileToCache: function(filename, filepath, variables) {
             dispatch(Actions.addFileToCache(filename, filepath, variables));
         },
-        loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list))
+        loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list)),
+        updateActiveGM: (gmProps, gmParent, gm) => dispatch(Actions.updateActiveGM(gmProps, gmParent, gm))
     }
 }
 
