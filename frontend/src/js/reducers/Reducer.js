@@ -304,14 +304,12 @@ const updateActiveGMReducer = (state = {}, action) => {
                 gmParent: action.gmParent,
                 gm: action.gm
             });
-            console.log('UPDATE_ACTIVE_GM', new_state);
             return new_state;
-            break;
         default:
             return {
                 gmProps: {},
-                gmParent: 'to start.',
-                gm: 'Select a Graphics Method from the list'
+                gmParent: '...',
+                gm: 'Select a Graphics Method from the list to start'
             }
     }
 };
