@@ -121,14 +121,14 @@ var GraphicsMethodEditForm = React.createClass({
                                     name="color_1"
                                     defaultValue={gmProps["color_1"]}
                                     onChange={NOP}
-									onBlur={this.handleChange} />
+                                    onBlur={this.handleChange} />
                             <h5>Color 2:</h5>
 
                                 <input type="number"
                                     name="color_2"
                                     defaultValue={gmProps["color_2"]}
                                     onChange={NOP}
-									onBlur={this.handleChange} />
+                                    onBlur={this.handleChange} />
                         </div>
                     );
                 case 'colormap':
@@ -168,7 +168,7 @@ var GraphicsMethodEditForm = React.createClass({
                                 type='number'
                                 defaultValue={gmProps[key]}
                                 onChange={NOP}
-								onBlur={this.handleChange}/>
+                                onBlur={this.handleChange}/>
                         </div>
                     );
                 case 'datawc_timeunits':
@@ -179,7 +179,7 @@ var GraphicsMethodEditForm = React.createClass({
                                 type='text'
                                 defaultValue={gmProps[key]}
                                 onChange={NOP}
-								onBlur={this.handleChange}/>
+                                onBlur={this.handleChange}/>
                         </div>
                     );
                 case 'datawc_x1':
@@ -282,7 +282,7 @@ var GraphicsMethodEditForm = React.createClass({
                                 name={key}
                                 defaultValue={gmProps[key]}
                                 onChange={NOP}
-								onBlur={this.handleChange}/>
+                                onBlur={this.handleChange}/>
                         </div>
                     );
                 case 'fillareaopacity':
@@ -337,7 +337,7 @@ var GraphicsMethodEditForm = React.createClass({
                                         : gmProps["level_1"]
                                     }
                                     onChange={NOP}
-									onBlur={this.handleChange}/>
+                                    onBlur={this.handleChange}/>
                                 <br/>
                             <h5>
                                 Level 2:
@@ -351,7 +351,7 @@ var GraphicsMethodEditForm = React.createClass({
                                         : gmProps["level_2"]
                                     }
                                     onChange={NOP}
-									onBlur={this.handleChange}/>
+                                    onBlur={this.handleChange}/>
 
                         </div>
                     );
@@ -397,7 +397,7 @@ var GraphicsMethodEditForm = React.createClass({
                                 name='missing'
                                 defaultValue={gmProps[key]}
                                 onChange={NOP}
-								onBlur={this.handleChange}/><br/>
+                                onBlur={this.handleChange}/><br/>
                         </div>
                     );
                 case 'projection':
@@ -478,25 +478,25 @@ var GraphicsMethodEditForm = React.createClass({
                                 type='text'
                                 defaultValue={gmProps['xmtics1']}
                                 onChange={NOP}
-								onBlur={this.handleChange}/>
+                                onBlur={this.handleChange}/>
                             <h5>xmtics2: </h5>
                             <input name='xmtics2'
                                 type='text'
                                 defaultValue={gmProps['xmtics2']}
                                 onChange={NOP}
-								onBlur={this.handleChange}/>
+                                onBlur={this.handleChange}/>
                             <h5>ymtics1: </h5>
                             <input name='ymtics1'
                                 type='text'
                                 defaultValue={gmProps['ymtics1']}
                                 onChange={NOP}
-								onBlur={this.handleChange}/>
+                                onBlur={this.handleChange}/>
                             <h5>ymtics2: </h5>
                             <input name='ymtics2'
                                 type='text'
                                 defaultValue={gmProps['ymtics2']}
                                 onChange={NOP}
-								onBlur={this.handleChange}/>
+                                onBlur={this.handleChange}/>
                         </div>
                     );
                 case "xticlabels1":
@@ -507,19 +507,19 @@ var GraphicsMethodEditForm = React.createClass({
                                 type='text'
                                 defaultValue={gmProps['xticlabels1']}
                                 onChange={NOP}
-								onBlur={this.handleChange}/>
+                                onBlur={this.handleChange}/>
                             <h5>xticlabels2: </h5>
                             <input name='xticlabels2'
                                 type='text'
                                 defaultValue={gmProps['xticlabels2']}
                                 onChange={NOP}
-								onBlur={this.handleChange}/>
+                                onBlur={this.handleChange}/>
                             <h5>yticlabels1: </h5>
                             <input name='yticlabels1'
                                 type='text'
                                 defaultValue={gmProps['yticlabels1']}
                                 onChange={NOP}
-								onBlur={this.handleChange}/>
+                                onBlur={this.handleChange}/>
                             <h5>yticlabels2: </h5>
                             <input name='yticlabels2'
                                 type='text'
