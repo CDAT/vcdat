@@ -20,17 +20,10 @@ var GraphicsMethodEditor = React.createClass({
                                 {this.props.graphicsMethod+'\t'+this.props.graphicsMethodParent}
                             </h4>
                         </div>
-                        <div className="modal-body">
-                            <GraphicsMethodEditForm
-                                graphicsMethod={this.props.graphicsMethod}
-                                graphicsMethodParent={this.props.graphicsMethodParent}
-                                gmProps={this.props.gmProps}
-                            />
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
-                        </div>
+                        <GraphicsMethodEditForm
+                            graphicsMethod={this.props.graphicsMethod}
+                            graphicsMethodParent={this.props.graphicsMethodParent}
+                            gmProps={this.props.gmProps}/>
                     </div>
                 </div>
             </div>
