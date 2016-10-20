@@ -2,6 +2,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Actions from '../../actions/Actions.js'
 import $ from 'jquery'
+import ColormapField from './ColormapField.jsx'
+import BoxfillType from './BoxfillType.jsx'
+import ColorOneTwo from './ColorOneTwo.jsx'
+import DatawcCoordinates from './DatawcCoordinates.jsx'
+import Exts from './Exts.jsx'
+import TicsAndLabels from './TicsAndLabels.jsx'
+import AxisTransforms from './AxisTransforms.jsx'
+import Levels from './Levels.jsx'
+import FillareaFields from './FillareaFields.jsx'
+import LevelOneTwo from './LevelOneTwo.jsx'
+import Missing from './Missing.jsx'
+import Projection from './Projection.jsx'
 
 var NOP = ()=>{}
 var GraphicsMethodEditForm = React.createClass({
@@ -30,135 +42,46 @@ var GraphicsMethodEditForm = React.createClass({
         cur_gmProps['levels'] = new_levels;
         this.props.updateActiveGM(cur_gmProps, this.props.graphicsMethodParent, this.props.graphicsMethod);
     },
-    handleChange(event) {
+    handleChange: function(event) {
         let property_name = event.target.name;
         let cur_gmProps = Object.assign({}, this.props.gmProps);
         if (event.target.type === 'checkbox') {
             cur_gmProps[property_name] = event.target.checked;
-        }
-        else if (property_name.match(/levels_[0-9]+/)) {
+        } else if (property_name.match(/levels_[0-9]+/)) {
             let level_index = Number.parseInt(property_name.split('_')[1]);
-            cur_gmProps['levels'][level_index] = event.target.value
-        }
-        else {
+            cur_gmProps['levels'][level_index] = event.target.value;
+            console.log(cur_gmProps['levels'][level_index])
+        } else {
             cur_gmProps[property_name] = event.target.value;
         }
         this.props.updateActiveGM(cur_gmProps, this.props.graphicsMethodParent, this.props.graphicsMethod);
-        // console.log(cur_gmProps[property_name], typeof(cur_gmProps[property_name]));
+        console.log(cur_gmProps[property_name], typeof(cur_gmProps[property_name]));
+    },
+    commitEdits() {
+
     },
     populateForm() {
         var gmProps = this.props.gmProps
         var form_contents = Object.keys(gmProps).map((key, index) => {
             switch(key) {
                 case 'boxfill_type':
-                    let linear_checked = false;
-                    let log10_checked = false;
-                    let custom_checked = false;
-                    if (gmProps[key] === 'linear')
-                        linear_checked = true;
-                    else if (gmProps[key] === 'log10')
-                        log10_checked = true;
-                    else if (gmProps[key] === 'custom')
-                        custom_checked = true;
                     return (
-                        <div key={key+index+(Date.now()/Math.random())}>
-                            <h5>
-                                Boxfill type:
-                            </h5>
-
-                                {
-                                    linear_checked
-                                        ?   <input type='radio'
-                                                name='boxfill_type'
-                                                value='linear'
-                                                id="bf-linear"
-                                                onChange={this.handleChange}
-                                                defaultChecked/>
-                                        :  <input type='radio'
-                                                name='boxfill_type'
-                                                value='linear'
-                                                id="bf-linear"
-                                                onChange={this.handleChange}/>
-                                        } linear
-
-                                {
-                                    log10_checked
-                                        ?   <input type='radio'
-                                                name='boxfill_type'
-                                                value='log10'
-                                                id="bf-log10"
-                                                onChange={this.handleChange}
-                                                defaultChecked/>
-                                        :  <input type='radio'
-                                                name='boxfill_type'
-                                                value='log10'
-                                                id="bf-log10"
-                                                onChange={this.handleChange}/>
-                                }  log10
-                                {
-                                    custom_checked
-                                        ?   <input type='radio'
-                                                name='boxfill_type'
-                                                value='custom'
-                                                id="bf-custom"
-                                                onChange={this.handleChange}
-                                                defaultChecked/>
-                                        :  <input type='radio'
-                                                name='boxfill_type'
-                                                value='custom'
-                                                id="bf-custom"
-                                                onChange={this.handleChange}/>
-                                } custom
-                        </div>
+                        <BoxfillType key={key+index+(Date.now()/Math.random())}
+                            handleChange={this.handleChange}
+                            type={gmProps[key]} />
                     );
                 case 'color_1':
                     return (
-                        <div key={'colors'+index+(Date.now()/Math.random())}>
-                            <h5>
-                                Color 1:
-                            </h5>
-                                <input type="number"
-                                    name="color_1"
-                                    defaultValue={gmProps["color_1"]}
-                                    onChange={NOP}
-                                    onBlur={this.handleChange} />
-                            <h5>Color 2:</h5>
-
-                                <input type="number"
-                                    name="color_2"
-                                    defaultValue={gmProps["color_2"]}
-                                    onChange={NOP}
-                                    onBlur={this.handleChange} />
-                        </div>
+                         <ColorOneTwo key={'colors'+index+(Date.now()/Math.random())}
+                             handleChange={this.handleChange}
+                             colorOne={gmProps['color_1']}
+                             colorTwo={gmProps['color_2']}/>
                     );
                 case 'colormap':
                     return (
-                        <div key={'colormaps'+(Date.now()/Math.random())}>
-                            <h5>Colormap: </h5>
-                            <select name="colormap" defaultValue={gmProps[key]} onChange={this.handleChange}>
-                                <option value='AMIP'>AMIP</option>
-                                <option value='NCAR'>NCAR</option>
-                                <option value='bl_to_darkred'>bl_to_darkred</option>
-                                <option value='bl_to_drkorang'>bl_to_drkorang</option>
-                                <option value='blue_to_grey'>blue_to_grey</option>
-                                <option value='blue_to_grn'>blue_to_grn</option>
-                                <option value='blue_to_orange'>blue_to_orange</option>
-                                <option value='blue_to_orgred'>blue_to_orgred</option>
-                                <option value='brown_to_blue'>brown_to_blue</option>
-                                <option value='categorical'>categorical</option>
-                                <option value='default'>Default</option>
-                                <option value='grn_to_magenta'>grn_to_magenta</option>
-                                <option value='ltbl_to_drkbl'>ltbl_to_drkbl</option>
-                                <option value='rainbow'>rainbow</option>
-                                <option value='rainbow_no_grn'>rainbow_no_grn</option>
-                                <option value='sequential'>sequential</option>
-                                <option value='white_to_blue'>white_to_blue</option>
-                                <option value='white_to_green'>white_to_green</option>
-                                <option value='white_to_magenta'>white_to_magenta</option>
-                                <option value='white_to_red'>white_to_red</option>
-                                <option value='white_to_yellow'>white_to_yellow</option>
-                            </select>
-                        </div>
+                        <ColormapField key={'colormaps'+(Date.now()/Math.random())}
+                            defaultValue={this.props.gmProps[key]}
+                            handleChange={this.handleChange}/>
                     );
                 case 'datawc_calendar':
                     return (
@@ -185,131 +108,35 @@ var GraphicsMethodEditForm = React.createClass({
                 case 'datawc_x1':
                     // worldcoordinates here
                     return (
-                            <div key={"worldcoordinates"+index+(Date.now()/Math.random())}>
-                                <h5> datawc_x1: </h5>
-                                    <input type="text"
-                                        name="datawc_x1"
-                                        defaultValue={
-                                            Number.isInteger(gmProps["datawc_x1"]) && gmProps["datawc_x1"] > 1e4
-                                            ? gmProps["datawc_x1"].toExponential()
-                                            : gmProps["datawc_x1"]
-                                        }
-                                        onChange={NOP}
-                                        onBlur={this.handleChange}/> <br/>
-                                    <h5>datawc_x2: </h5>
-                                    <input type="text"
-                                        name="datawc_x2"
-                                        defaultValue={
-                                            Number.isInteger(gmProps["datawc_x2"]) && gmProps["datawc_x2"] > 1e4
-                                            ? gmProps["datawc_x2"].toExponential()
-                                            : gmProps["datawc_x2"]
-                                        }
-                                        onChange={NOP}
-                                        onBlur={this.handleChange}/> <br/>
-
-                                    <h5>datawc_y1: </h5>
-                                    <input type="text"
-                                        name="datawc_y1"
-                                        defaultValue={
-                                            Number.isInteger(gmProps["datawc_y1"]) && gmProps["datawc_y1"] > 1e4
-                                            ? gmProps["datawc_y1"].toExponential()
-                                            : gmProps["datawc_y1"]
-                                        }
-                                        onChange={NOP}
-                                        onBlur={this.handleChange}/> <br/>
-                                    <h5>datawc_y2: </h5>
-                                    <input type="text"
-                                        name="datawc_y2"
-                                        defaultValue={
-                                            Number.isInteger(gmProps["datawc_y2"]) && gmProps["datawc_y2"] > 1e4
-                                            ? gmProps["datawc_y2"].toExponential()
-                                            : gmProps["datawc_y2"]
-                                        }
-                                        onChange={NOP}
-                                        onBlur={this.handleChange}/> <br/>
-                            </div>
+                        <DatawcCoordinates key={"worldcoordinates"+index+(Date.now()/Math.random())}
+                            handleChange={this.handleChange}
+                            x1={gmProps['datawc_x1']}
+                            x2={gmProps['datawc_x2']}
+                            y1={gmProps['datawc_y1']}
+                            y2={gmProps['datawc_y2']}/>
                     );
                 case 'ext_1':
                     var ext1 = gmProps['ext_1'];
                     var ext2 = gmProps['ext_2'];
-                    var uniq_key = 'exts'+(Date.now()/Math.random())
                     return (
-                        <div key={uniq_key}>
-                            <h5>
-                                Ext 1:
-                            </h5>
-                                {
-                                    ext1
-                                        ? <input type="checkbox"
-                                            name="ext_1"
-                                            onChange={this.handleChange}
-                                            defaultChecked/>
-                                        : <input type="checkbox"
-                                            name="ext_1"
-                                            onChange={this.handleChange}/>
-                                }
-                            <h5>
-                                Ext 2:
-                            </h5>
-                                {
-                                    ext2
-                                        ? <input type="checkbox"
-                                            name="ext_2"
-                                            onChange={this.handleChange}
-                                            defaultChecked/>
-                                        : <input type="checkbox"
-                                            name="ext_2"
-                                            onChange={this.handleChange}/>
-                                }
-                        </div>
+                        <Exts key={'exts'+(Date.now()/Math.random())}
+                            handleChange={this.handleChange}
+                            ext1={ext1}
+                            ext2={ext2}/>
                     );
                 case 'fillareacolors':
                     return (
-                        <div key={key+index+(Date.now()/Math.random())}>
-                            <h5>Fillareacolors: </h5>
-                            <input type='text'
-                                name={key}
-                                defaultValue={gmProps[key]}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                        </div>
-                    );
-                case 'fillareaindices':
-                    return (
-                        <div key={key+index+(Date.now()/Math.random())}>
-                            <h5>Fillareaindices: </h5>
-                            <input type='text'
-                                name={key}
-                                defaultValue={gmProps[key]}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                        </div>
-                    );
-                case 'fillareaopacity':
-                    return (
-                        <div key={key+index+(Date.now()/Math.random())}>
-                            <h5>Fillareaopacity: </h5>
-                            <input type='text'
-                                name={key}
-                                defaultValue={gmProps[key]}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                        </div>
-                    );
-                case 'fillareastyle':
-                    return (
-                        <div key={key+index+(Date.now()/Math.random())}
+                        <FillareaFields key={'fillarea-fields'+(Date.now()/Math.random())}
                             className={
                                 gmProps['boxfill_type'] === 'custom'
-                                ? ''
-                                :'hide'}>
-                            <h5>Fillareastyle: </h5>
-                            <select name={key} defaultValue={gmProps[key]} onChange={this.handleChange}>
-                                <option value='solid'>solid</option>
-                                <option value='hatch'>hatch</option>
-                                <option value='pattern'>pattern</option>
-                            </select>
-                        </div>
+                                    ? ''
+                                    :'hide'}
+                            colors={gmProps['fillareacolors']}
+                            indices={gmProps['fillareaindices']}
+                            opacity={gmProps['fillareaopacity']}
+                            style={gmProps['fillareastyle']}
+                            handleChange={this.handleChange}/>
+
                     );
                 case 'legend':
                     return(
@@ -324,208 +151,51 @@ var GraphicsMethodEditForm = React.createClass({
                     );
                 case 'level_1':
                     return (
-                        <div key={"level_1_2"+index+(Date.now()/Math.random())}>
-                            <h5>
-                                Level 1:
-                            </h5>
-
-                                <input type="text"
-                                    name="level_1"
-                                    defaultValue={
-                                        Number.isInteger(gmProps["level_1"]) && gmProps["level_1"] > 1e4
-                                        ? gmProps["level_1"].toExponential()
-                                        : gmProps["level_1"]
-                                    }
-                                    onChange={NOP}
-                                    onBlur={this.handleChange}/>
-                                <br/>
-                            <h5>
-                                Level 2:
-                            </h5>
-
-                                <input type="text"
-                                    name="level_2"
-                                    defaultValue={
-                                        Number.isInteger(gmProps["level_2"]) && gmProps["level_2"] > 1e4
-                                        ? gmProps["level_2"].toExponential()
-                                        : gmProps["level_2"]
-                                    }
-                                    onChange={NOP}
-                                    onBlur={this.handleChange}/>
-
-                        </div>
+                        <LevelOneTwo key={"level-1-2"+index+(Date.now()/Math.random())}
+                            handleChange={this.handleChange}
+                            level1={gmProps['level_1']}
+                            level2={gmProps['level_2']}/>
                     );
                 case 'levels':
                     return (
-                        <div key={'levels'+(Date.now()/Math.random())}>
-                            <h5>Levels: </h5>
-                            {
-                                gmProps['levels'].length > 0
-                                ? gmProps['levels'].map((value, index) => {
-                                    return (
-                                        <div key={'levels_'+index+(Date.now()/Math.random())}>
-                                            <input name={'levels_'+index}
-                                                type="text"
-                                                defaultValue={
-                                                    Number.isInteger(value) && value > 1e4
-                                                    ? value.toExponential()
-                                                    : value
-                                                }
-                                                onChange={NOP}
-                                                onBlur={this.handleChange}/> <button onClick={this.removeLevel}
-                                                        data-index={index}>
-                                                        -
-                                                    </button><br/>
-                                            {
-                                                index === (gmProps['levels'].length - 1)
-                                                ? <button onClick={this.addLevel}> + </button>
-                                                : ''
-                                            }
-                                        </div>
-                                    );
-                                 })
-                                : <button onClick={this.addLevel}> + </button>
-
-                            }
-                        </div>
+                        <Levels key={'levels'+(Date.now()/Math.random())}
+                            levels={gmProps['levels']}
+                            addLevel={this.addLevel}
+                            removeLevel={this.removeLevel}
+                            handleChange={this.handleChange}/>
                     );
                 case 'missing':
                     return (
-                        <div key={key+index+(Date.now()/Math.random())}>
-                            <h5>Missing: </h5>
-                            <input type='number'
-                                name='missing'
-                                defaultValue={gmProps[key]}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/><br/>
-                        </div>
+                        <Missing key={key+index+(Date.now()/Math.random())}
+                            handleChange={this.handleChange}
+                            missing={gmProps['missing']}/>
                     );
                 case 'projection':
                     return (
-                        <div key={'projections'+(Date.now()/Math.random())}>
-                            <h5>Projection: </h5>
-                            <select name="projection" defaultValue={gmProps[key]} onChange={this.handleChange}>
-                                <option value='default'>Default</option>
-                                <option value='lambert'>Lambert</option>
-                                <option value='linear'>Linear</option>
-                                <option value='mercator'>Mercator</option>
-                                <option value='mollweide'>Mollweide</option>
-                                <option value='orthographic'>Orthographic</option>
-                                <option value='polar'>Polar</option>
-                                <option value='polyconic'>Polyconic</option>
-                                <option value='robinson'>Robinson</option>
-                            </select>
-                        </div>
+                        <Projection key={'projection-selector'+(Date.now()/Math.random())}
+                            projection={gmProps['projection']}
+                            handleChange={this.handleChange} />
                     );
                 case 'xaxisconvert':
-                    let converts = ['linear', 'log10', 'ln', 'exp', 'area_wt']
-                    var defaultXConvert = gmProps['xaxisconvert'];
-                    var defaultYConvert = gmProps['yaxisconvert'];
-                    var that = this;
                     return (
-                        <div key={'axisconvert'+Date.now()/Math.random()}>
-                            <h5>X axis transform: </h5>
-                            {
-                                converts.map((convert) => {
-                                    return (
-                                            <span key={'xconvert'+Date.now()/Math.random()}>
-                                                {
-                                                    convert === defaultXConvert
-                                                    ? <input name='xaxisconvert'
-                                                        type='radio'
-                                                        value={convert}
-                                                        onChange={that.handleChange}
-                                                        defaultChecked/>
-                                                    : <input name='xaxisconvert'
-                                                        type='radio'
-                                                        value={convert}
-                                                        onChange={that.handleChange}/>
-                                                }
-                                                {convert}
-                                              </span>
-                                    );
-                                })
-                            }
-                            <h5>Y axis transform: </h5>
-                            {
-                                converts.map((convert) => {
-                                    return (
-                                            <span key={'yconvert'+Date.now()/Math.random()}>
-                                                {
-                                                    convert === defaultYConvert
-                                                    ? <input name='yaxisconvert'
-                                                        type='radio'
-                                                        value={convert}
-                                                        onChange={that.handleChange}
-                                                        defaultChecked/>
-                                                    : <input name='yaxisconvert'
-                                                        type='radio'
-                                                        value={convert}
-                                                        onChange={that.handleChange}/>
-                                                }
-                                                {convert}
-                                              </span>
-                                    );
-                                })
-                            }
-                        </div>
+                        <AxisTransforms key={'axis-transforms'+Date.now()/Math.random()}
+                            handleChange={this.handleChange}
+                            converts={['linear', 'log10', 'ln', 'exp', 'area_wt']}
+                            defaultX={gmProps['xaxisconvert']}
+                            defaultY={gmProps['yaxisconvert']} />
                     );
                 case 'xmtics1':
                     return (
-                        <div key={'mtics'+Date.now()/Math.random()}>
-                            <h5>xmtics1: </h5>
-                            <input name='xmtics1'
-                                type='text'
-                                defaultValue={gmProps['xmtics1']}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                            <h5>xmtics2: </h5>
-                            <input name='xmtics2'
-                                type='text'
-                                defaultValue={gmProps['xmtics2']}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                            <h5>ymtics1: </h5>
-                            <input name='ymtics1'
-                                type='text'
-                                defaultValue={gmProps['ymtics1']}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                            <h5>ymtics2: </h5>
-                            <input name='ymtics2'
-                                type='text'
-                                defaultValue={gmProps['ymtics2']}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                        </div>
-                    );
-                case "xticlabels1":
-                    return (
-                        <div key={'ticlabels'+Date.now()/Math.random()}>
-                            <h5>xticlabels1: </h5>
-                            <input name='xticlabels1'
-                                type='text'
-                                defaultValue={gmProps['xticlabels1']}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                            <h5>xticlabels2: </h5>
-                            <input name='xticlabels2'
-                                type='text'
-                                defaultValue={gmProps['xticlabels2']}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                            <h5>yticlabels1: </h5>
-                            <input name='yticlabels1'
-                                type='text'
-                                defaultValue={gmProps['yticlabels1']}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                            <h5>yticlabels2: </h5>
-                            <input name='yticlabels2'
-                                type='text'
-                                defaultValue={gmProps['yticlabels2']}
-                                onBlur={this.handleChange}/>
-                        </div>
+                        <TicsAndLabels key={'tics-and-labels'+Date.now()/Math.random()}
+                            handleChange={this.handleChange}
+                            xmt1={gmProps['xmtics1']}
+                            xmt2={gmProps['xmtics2']}
+                            ymt1={gmProps['ymtics1']}
+                            ymt2={gmProps['ymtics2']}
+                            xtl1={gmProps['xticlabels1']}
+                            xtl2={gmProps['xticlabels2']}
+                            ytl1={gmProps['yticlabels1']}
+                            ytl2={gmProps['yticlabels2']} />
                     );
                 default:
                     return;
@@ -537,6 +207,34 @@ var GraphicsMethodEditForm = React.createClass({
         return(
             <div>
                 <div className='modal-body'>
+                    <div className="container-fluid">
+                        <div className='col-md-12'>
+                            <h4>Boxfill Settings:</h4>
+                            <BoxfillType handleChange={this.handleChange}
+                                type={this.props.gmProps['boxfill_type']}
+                                headerClass='col-md-3'
+                                radioClass='col-md-3'/>
+                            <div className='row'>
+                                <Missing handleChange={this.handleChange}
+                                    missing={this.props.gmProps['missing']}
+                                    className='col-md-6'/>
+                                <Exts handleChange={this.handleChange}
+                                    ext1={this.props.gmProps['ext_1']}
+                                    ext2={this.props.gmProps['ext_2']}
+                                    className='col-md-3'/>
+                            </div>
+                            <div className='row'>
+                                <div className='col-md-12'>
+                                    <h5>Legend Labels: </h5>
+                                    <input type='text'
+                                        name='legend'
+                                        defaultValue={this.props.gmProps['legend']}
+                                        onChange={NOP}
+                                        onBlur={this.handleChange}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {this.populateForm()}
                 </div>
                 <div className="modal-footer">
