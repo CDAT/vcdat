@@ -2,8 +2,8 @@
 
 CONDA_ENV="vcdat"
 # Following install uvcdat nightly
-#CONDA_CHANNELS="-c uvcdat/label/nightly/ -c uvcdat -c cpcloud"
-CONDA_CHANNELS=" -c uvcdat -c conda-forge"
+#CONDA_CHANNELS="-c uvcdat/label/nightly/ -c uvcdat -c conda-forge"
+CONDA_CHANNELS="-c chaosphere2112 -c uvcdat -c conda-forge"
 NODE_PKG_URL="https://nodejs.org/dist/v4.6.0/node-v4.6.0.tar.gz"
 
 CERT=$1
@@ -40,18 +40,6 @@ EOF
 CERT=$HOME/ca.llnl.gov.pem
 fi
 
-
-FSWATCH_bin=`which fswatch`
-if [ -z $FSWATCH_bin ]; then
-    echo "Installing fswatch..."
-    brew install fswatch
-    if [ $? -eq 0 ]; then
-        echo "Installed fswatch"
-    else
-        echo "Failed to install fswatch, exiting."
-        exit 1
-    fi
-fi
 
 current_dir=`pwd`
 
