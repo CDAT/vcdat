@@ -7,6 +7,20 @@ var BoxfillType = React.createClass({
         headerClass: React.PropTypes.string,
         radioClass: React.PropTypes.string
     },
+    getInitialState() {
+        return {
+            type: '',
+        }
+    },
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            type: nextProps.type
+        })
+    },
+    handleChange(event) {
+        this.setState({type:event.target.value});
+        this.props.handleChange(event);
+    },
     render(){
         return (
             <div className='row'>
@@ -16,54 +30,39 @@ var BoxfillType = React.createClass({
                     </h5>
                 </div>
                 <div className={this.props.radioClass}>
-
-                    {
-                        this.props.type === 'linear'
-                            ?   <input type='radio'
-                                    name='boxfill_type'
-                                    value='linear'
-                                    id="bf-linear"
-                                    onChange={this.props.handleChange}
-                                    defaultChecked/>
-                            :  <input type='radio'
-                                    name='boxfill_type'
-                                    value='linear'
-                                    id="bf-linear"
-                                    onChange={this.props.handleChange}/>
-                            } linear
+                    <input type='radio'
+                        name='boxfill_type'
+                        value='linear'
+                        id="bf-linear"
+                        onChange={this.handleChange}
+                        checked={
+                            this.state.type === 'linear'
+                            ? true
+                            :false
+                        }/> linear
                 </div>
                 <div className={this.props.radioClass}>
-
-                    {
-                        this.props.type === 'log10'
-                            ?   <input type='radio'
-                                    name='boxfill_type'
-                                    value='log10'
-                                    id="bf-log10"
-                                    onChange={this.props.handleChange}
-                                    defaultChecked/>
-                            :  <input type='radio'
-                                    name='boxfill_type'
-                                    value='log10'
-                                    id="bf-log10"
-                                    onChange={this.props.handleChange}/>
-                    }  log10
+                    <input type='radio'
+                        name='boxfill_type'
+                        value='log10'
+                        id="bf-log10"
+                        onChange={this.handleChange}
+                        checked={
+                            this.state.type === 'log10'
+                            ? true
+                            : false
+                        }/> log10
                 </div>
                 <div className={this.props.radioClass}>
-                    {
-                        this.props.type === 'custom'
-                            ?   <input type='radio'
-                                    name='boxfill_type'
-                                    value='custom'
-                                    id="bf-custom"
-                                    onChange={this.props.handleChange}
-                                    defaultChecked/>
-                            :  <input type='radio'
-                                    name='boxfill_type'
-                                    value='custom'
-                                    id="bf-custom"
-                                    onChange={this.props.handleChange}/>
-                    } custom
+                    <input type='radio'
+                        name='boxfill_type'
+                        value='custom'
+                        id="bf-custom"
+                        onChange={this.handleChange}
+                        checked={
+                            this.state.type === 'custom'
+                            ? true
+                            : false}/> custom
                 </div>
             </div>
         );

@@ -1,11 +1,54 @@
 import React from 'react'
 
-var NOP = ()=>{}
+function verify(value) {
+    if (typeof(value) === 'string') {
+        if (value === '1e+20') {
+            return Number.parseFloat(value)
+        } else if(!value.match(/[\+-]{0,1}[0-9]+/) || value === '') {
+                return false;
+        } else {
+            return Number.parseInt(value);
+        }
+    } else {
+        console.log( "level_(1|2) is not a string")
+    }
+}
 var LevelOneTwo = React.createClass({
     propTypes: {
         handleChange: React.PropTypes.func,
         level1: React.PropTypes.number,
         level2: React.PropTypes.number
+    },
+    getInitialState() {
+        return {
+            level1: '',
+            level2: ''
+        }
+    },
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            level1: nextProps.level1,
+            level2: nextProps.level2
+        })
+    },
+    handleChange(event) {
+        let property_name = event.target.name
+        let value = verify(event.target.value);
+        if (value === 0 || value) {
+            this.props.handleChange(property_name, value)
+        } else {
+            // indicate user entered wrong value
+            console.log(property_name + " must be an integer or 1e+20");
+            if (property_name === 'level_1') {
+                this.setState({
+                    level1: this.props.level1
+                });
+            } else {
+                this.setState({
+                    level2: this.props.level2
+                });
+            }
+        }
     },
     render() {
         return (
@@ -16,13 +59,15 @@ var LevelOneTwo = React.createClass({
 
                     <input type="text"
                         name="level_1"
-                        defaultValue={
-                            Number.isInteger(this.props.level1) && this.props.level1 > 1e4
-                            ? this.props.level1.toExponential()
-                            : this.props.level1
+                        value={
+                            this.state.level1 === 0 || this.state.level1
+                            ? Number.isInteger(this.state.level1) && this.state.level1 === 1e20
+                                ? this.state.level1.toExponential()
+                                : this.state.level1
+                            : ''
                         }
-                        onChange={NOP}
-                        onBlur={this.props.handleChange}/>
+                        onChange={(event)=> {this.setState({level1:event.target.value})}}
+                        onBlur={this.handleChange}/>
                     <br/>
                 <h5>
                     Level 2:
@@ -30,13 +75,15 @@ var LevelOneTwo = React.createClass({
 
                     <input type="text"
                         name="level_2"
-                        defaultValue={
-                            Number.isInteger(this.props.level2) && this.props.level2 > 1e4
-                            ? this.props.level2.toExponential()
-                            : this.props.level2
+                        value={
+                            this.state.level2 === 0 || this.state.level2
+                            ? Number.isInteger(this.state.level2) && this.state.level2 === 1e20
+                                ? this.state.level2.toExponential()
+                                : this.state.level2
+                            : ''
                         }
-                        onChange={NOP}
-                        onBlur={this.props.handleChange}/>
+                        onChange={(event)=> {this.setState({level2:event.target.value})}}
+                        onBlur={this.handleChange}/>
 
             </div>
         );
