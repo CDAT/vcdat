@@ -112,7 +112,7 @@ def get_variable_provenance():
     varname = request.args.get('varname')
     f = cdms2.open(path)
     v = f[varname]
-    ep = v.export_provenance()
+    ep = v.exportProvenance()
     return json.dumps(ep)
 
 

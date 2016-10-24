@@ -87,14 +87,14 @@ var Plot = React.createClass({
                 <div>
                     <h4>Variables:</h4>
                     <div className='plot-var first-var'>{(this.props.plot.variables.length > 0
-                            ? this.props.plot.variables[0]
+                            ? this.props.plot.variables[0].cdms_var_name
                             : '')}
                     </div>
                     <div className={'plot-var second-var ' + (this.isVector()
                             ? 'colored-second-var'
                             : '')}>
                                 {(this.props.plot.variables.length > 1
-                                    ? this.props.plot.variables[1]
+                                    ? this.props.plot.variables[1].cdms_var_name
                                     : '')}
                     </div>
                 </div>

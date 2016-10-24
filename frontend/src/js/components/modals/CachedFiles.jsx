@@ -39,7 +39,7 @@ var CachedFiles = React.createClass({
             this.props.loadVariables([var_obj])
             $('#cached-files').modal('hide');
          })
-         .catch((error) => 'fail');
+         .fail((error) => 'fail');
   },
     render() {
         return (
