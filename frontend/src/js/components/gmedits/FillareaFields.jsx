@@ -1,6 +1,5 @@
 import React from 'react'
 
-var NOP = ()=>{}
 var FillareaFields = React.createClass({
     propTypes: {
         handleChange: React.PropTypes.func,
@@ -12,45 +11,65 @@ var FillareaFields = React.createClass({
         opacity: React.PropTypes.array
 
     },
-    getDefaultProps() {
+    getInitialState() {
         return {
-            colors: []
+            colors: [],
+            style: '',
+            indices: [],
+            opacity: []
         }
+    },
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            colors: nextProps.colors,
+            style: nextProps.style,
+            indices: nextProps.indices,
+            opacity: nextProps.opacity
+        })
+    },
+    handleChange(event) {
+
+        this.props.handleChange(event);
     },
     render(){
         return (
             <div id='fillarea-fields' className={this.props.className}>
-                <div>
-                    <h5>Fillareacolors: </h5>
-                    <input type='text'
-                        name='fillareacolors'
-                        defaultValue={this.props.colors}
-                        onChange={NOP}
-                        onBlur={this.props.handleChange}/>
+                <div className='row'>
+                    <div className='col-md-6'>
+                        <h5>Patterns: </h5>
+                        <input type='text'
+                            name='fillareaindices'
+                            value={this.state.indices? this.state.indices : []}
+                            onChange={(event)=> {this.setState({indices:event.target.value})}}
+                            onBlur={this.props.handleChange}/>
+                    </div>
+                    <div className='col-md-6'>
+                        <h5>Type: </h5>
+                        <select name='fillareastyle' value={this.state.style ?this.state.style :'solid'}
+                            onChange={this.handleChange}>
+                            <option value='solid'>solid</option>
+                            <option value='hatch'>hatch</option>
+                            <option value='pattern'>pattern</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <h5>Fillareaindices: </h5>
-                    <input type='text'
-                        name='fillareaindices'
-                        defaultValue={this.props.indices}
-                        onChange={NOP}
-                        onBlur={this.props.handleChange}/>
-                </div>
-                <div>
-                    <h5>Fillareaopacity: </h5>
-                    <input type='text'
-                        name='fillareaopacity'
-                        defaultValue={this.props.opacity}
-                        onChange={NOP}
-                        onBlur={this.props.handleChange}/>
-                </div>
-                <div >
-                    <h5>Fillareastyle: </h5>
-                    <select name='fillareastyle' defaultValue={this.props.style} onChange={this.props.handleChange}>
-                        <option value='solid'>solid</option>
-                        <option value='hatch'>hatch</option>
-                        <option value='pattern'>pattern</option>
-                    </select>
+                <div className='row'>
+                    <div className='col-md-6'>
+                        <h5>Colors: </h5>
+                        <input type='text'
+                            name='fillareacolors'
+                            value={this.state.colors? this.state.colors : []}
+                            onChange={(event)=> {this.setState({colors:event.target.value})}}
+                            onBlur={this.props.handleChange}/>
+                    </div>
+                    <div className='col-md-6'>
+                        <h5>Fillareaopacity: </h5>
+                        <input type='text'
+                            name='fillareaopacity'
+                            value={this.state.opacity? this.state.opacity : []}
+                            onChange={(event)=> {this.setState({opacity:event.target.value})}}
+                            onBlur={this.props.handleChange}/>
+                    </div>
                 </div>
             </div>
         );

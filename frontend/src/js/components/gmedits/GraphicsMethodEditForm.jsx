@@ -14,6 +14,7 @@ import FillareaFields from './FillareaFields.jsx'
 import LevelOneTwo from './LevelOneTwo.jsx'
 import Missing from './Missing.jsx'
 import Projection from './Projection.jsx'
+import Legend from './Legend.jsx'
 
 var NOP = ()=>{}
 var GraphicsMethodEditForm = React.createClass({
@@ -53,6 +54,17 @@ var GraphicsMethodEditForm = React.createClass({
             console.log(cur_gmProps['levels'][level_index])
         } else {
             cur_gmProps[property_name] = event.target.value;
+        }
+        this.props.updateActiveGM(cur_gmProps, this.props.graphicsMethodParent, this.props.graphicsMethod);
+        console.log(cur_gmProps[property_name], typeof(cur_gmProps[property_name]));
+    },
+    changeState(property_name, value, index=null) {
+        let cur_gmProps = Object.assign({}, this.props.gmProps);
+        if(!index) {
+            cur_gmProps[property_name] = value;
+        } else {
+            console.log(index)
+            cur_gmProps[property_name][index] = value;
         }
         this.props.updateActiveGM(cur_gmProps, this.props.graphicsMethodParent, this.props.graphicsMethod);
         console.log(cur_gmProps[property_name], typeof(cur_gmProps[property_name]));
@@ -209,13 +221,13 @@ var GraphicsMethodEditForm = React.createClass({
                 <div className='modal-body'>
                     <div className="container-fluid">
                         <div className='col-md-12'>
-                            <h4>Boxfill Settings:</h4>
+                            <h4>Boxfill Settings</h4>
                             <BoxfillType handleChange={this.handleChange}
                                 type={this.props.gmProps['boxfill_type']}
                                 headerClass='col-md-3'
                                 radioClass='col-md-3'/>
                             <div className='row'>
-                                <Missing handleChange={this.handleChange}
+                                <Missing handleChange={this.changeState}
                                     missing={this.props.gmProps['missing']}
                                     className='col-md-6'/>
                                 <Exts handleChange={this.handleChange}
@@ -224,18 +236,39 @@ var GraphicsMethodEditForm = React.createClass({
                                     className='col-md-3'/>
                             </div>
                             <div className='row'>
-                                <div className='col-md-12'>
-                                    <h5>Legend Labels: </h5>
-                                    <input type='text'
-                                        name='legend'
-                                        defaultValue={this.props.gmProps['legend']}
-                                        onChange={NOP}
-                                        onBlur={this.handleChange}/>
-                                </div>
+                                <Legend handleChange={this.handleChange}
+                                    legend={this.props.gmProps['legend']}
+                                    className='col-md-12'/>
                             </div>
                         </div>
+                        <div className={
+                            this.props.gmProps['boxfill_type'] !== 'custom'
+                            ? 'col-md-12'
+                            : 'hide'}>
+                            <h4>Linear and Log Settings</h4>
+                            <div className="col-md-6">
+                                <LevelOneTwo handleChange={this.changeState}
+                                    level1={this.props.gmProps['level_1']}
+                                    level2={this.props.gmProps['level_2']} />
+                            </div>
+                            <div className="col-md-6">
+                                <ColorOneTwo handleChange={this.handleChange}
+                                    color1={this.props.gmProps['color_1']}
+                                    color2={this.props.gmProps['color_2']} />
+                            </div>
+                        </div>
+                        <div className={
+                            this.props.gmProps['boxfill_type'] === 'custom'
+                            ? 'col-md-12'
+                            : 'hide'}>
+                            <h4>Custom Settings</h4>
+                            <FillareaFields handleChange={this.handleChange}
+                                colors={this.props.gmProps['fillareacolors']}
+                                style={this.props.gmProps['fillareastyle']}
+                                indices={this.props.gmProps['fillareaindices']}
+                                opacity={this.props.gmProps['fillareaopacity']} />
+                        </div>
                     </div>
-                    {this.populateForm()}
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
