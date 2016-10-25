@@ -45,8 +45,10 @@ var FillareaFields = React.createClass({
                     </div>
                     <div className='col-md-6'>
                         <h5>Type: </h5>
-                        <select name='fillareastyle' value={this.state.style ?this.state.style :'solid'}
-                            onChange={this.handleChange}>
+                        <select name='fillareastyle'
+                            value={this.state.style ?this.state.style :'solid'}
+                            onChange={this.handleChange}
+                            className='form-control'>
                             <option value='solid'>solid</option>
                             <option value='hatch'>hatch</option>
                             <option value='pattern'>pattern</option>

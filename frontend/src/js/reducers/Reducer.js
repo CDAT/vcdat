@@ -313,6 +313,17 @@ const updateActiveGMReducer = (state = {}, action) => {
             }
     }
 };
+
+// plotActiveGM + helpers
+// this will need to change a lot. Ajax call to plot, more.
+const plotActiveGM = (state={}, action) => {
+    switch(action.type) {
+        case 'PLOT_ACTIVE_GM':
+            var new_state = Object.assign({}, state, {
+                gmProps: action.gmProps
+            })
+    }
+}
 // combined reducers + undoable
 const reducers = combineReducers({
     cached_files: cachedFilesReducer,
@@ -320,7 +331,8 @@ const reducers = combineReducers({
     graphics_methods: gmListReducer,
     templates: templateListReducer,
     sheets_model: sheetsModelReducer,
-    active_GM: updateActiveGMReducer
+    active_GM: updateActiveGMReducer,
+
 
 });
 

@@ -33,7 +33,7 @@ var Missing = React.createClass({
             missing: nextProps.missing
         })
     },
-    handleChange(event) {
+    handleBlur(event) {
         let value = verify(event.target.value);
         if (value === 0 || value) {
             this.props.handleChange('missing', value)
@@ -53,7 +53,7 @@ var Missing = React.createClass({
                     name='missing'
                     value={this.state.missing === 0 || this.state.missing ?this.state.missing :''}
                     onChange={(event)=>{this.setState({missing:event.target.value})}}
-                    onBlur={this.handleChange}/>
+                    onBlur={this.handleBlur}/>
             </div>
         );
     }

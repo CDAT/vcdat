@@ -44,18 +44,6 @@ var BoxfillType = React.createClass({
                 <div className={this.props.radioClass}>
                     <input type='radio'
                         name='boxfill_type'
-                        value='log10'
-                        id="bf-log10"
-                        onChange={this.handleChange}
-                        checked={
-                            this.state.type === 'log10'
-                            ? true
-                            : false
-                        }/> log10
-                </div>
-                <div className={this.props.radioClass}>
-                    <input type='radio'
-                        name='boxfill_type'
                         value='custom'
                         id="bf-custom"
                         onChange={this.handleChange}
