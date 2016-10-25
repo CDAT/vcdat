@@ -183,7 +183,7 @@ const updateCell = (cell, action) => {
             if(action.plot_index){
                 plot = cell.plots[action.plot_index]
             }
-            plot.variables[action.var_being_changed] = getStore().getState().present.variables[action.value];
+            plot.variables[action.var_being_changed] = action.value;
             break
         case 'CHANGE_PLOT_GM':
             var plot = cell.plots[cell.plot_being_edited]
