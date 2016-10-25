@@ -1,8 +1,8 @@
 import React from 'react';
-import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import {connect} from 'react-redux';
 import Actions from '../actions/Actions.js';
 import Plotter from './Plotter.jsx';
+import Canvas from './Canvas.jsx';
 import $ from 'jquery';
 
 var Cell = React.createClass({
@@ -11,27 +11,9 @@ var Cell = React.createClass({
         row: React.PropTypes.number,
         col: React.PropTypes.number,
         addPlot: React.PropTypes.func,
-        resizeHeader: React.PropTypes.func,
         swapVariableInPlot: React.PropTypes.func,
         swapGraphicsMethodInPlot: React.PropTypes.func,
         swapTemplateInPlot: React.PropTypes.func
-    },
-    resizeCells() {
-        $('.cell-image').each((index, el) => {
-            el = $(el);
-            var height = el.parent().innerHeight();
-            el.height(height);
-            var border = el.next();
-            border.outerHeight(height);
-        })
-        this.props.resizeHeader($('.cell-image')[0]);
-    },
-    componentDidMount() {
-        this.resizeCells();
-        let element = $('.cell')[0];
-        new ResizeSensor(element, () => {
-            this.resizeCells();
-        })
     },
     render() {
         this.cell = this.props.cells[this.props.row][this.props.col];
@@ -48,10 +30,7 @@ var Cell = React.createClass({
                     swapGraphicsMethodInPlot={this.props.swapGraphicsMethodInPlot}
                     swapTemplateInPlot={this.props.swapTemplateInPlot}
                 />
-                <div className='cell-stack-top'>
-                    <img className='cell-image' src='deps/clt_image.png' alt='climate_data'></img>
-                    <div className={'border border-' + this.props.row + this.props.col}></div>
-                </div>
+                <Canvas plots={this.cell.plots} row={this.props.row} col={this.props.col} />
             </div>
         )
     }
