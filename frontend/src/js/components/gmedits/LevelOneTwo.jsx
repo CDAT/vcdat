@@ -4,7 +4,7 @@ function verify(value) {
     if (typeof(value) === 'string') {
         if (value === '1e+20') {
             return Number.parseFloat(value)
-        } else if(!value.match(/[\+-]{0,1}[0-9]+/) || value === '') {
+        } else if(!value.match(/[\+-]{0,1}[0-9]+$/) || value === '') {
                 return false;
         } else {
             return Number.parseInt(value);
@@ -31,7 +31,7 @@ var LevelOneTwo = React.createClass({
             level2: nextProps.level2
         })
     },
-    handleChange(event) {
+    handleBlur(event) {
         let property_name = event.target.name
         let value = verify(event.target.value);
         if (value === 0 || value) {
@@ -67,7 +67,7 @@ var LevelOneTwo = React.createClass({
                             : ''
                         }
                         onChange={(event)=> {this.setState({level1:event.target.value})}}
-                        onBlur={this.handleChange}/>
+                        onBlur={this.handleBlur}/>
                     <br/>
                 <h5>
                     Level 2:
@@ -83,7 +83,7 @@ var LevelOneTwo = React.createClass({
                             : ''
                         }
                         onChange={(event)=> {this.setState({level2:event.target.value})}}
-                        onBlur={this.handleChange}/>
+                        onBlur={this.handleBlur}/>
 
             </div>
         );

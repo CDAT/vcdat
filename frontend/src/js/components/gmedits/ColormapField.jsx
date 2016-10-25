@@ -9,8 +9,13 @@ var ColormapField = React.createClass({
         return (
             <div>
                 <h5>Colormap: </h5>
-                <select name="colormap" value={this.props.defaultValue? this.props.defaultValue:'rainbow'}
-                    onChange={this.props.handleChange}>
+                <select name="colormap"
+                    value={
+                        this.props.defaultValue
+                        ? this.props.defaultValue
+                        : 'rainbow'}
+                    onChange={this.props.handleChange}
+                    className='form-control'>
                     <option value='AMIP'>AMIP</option>
                     <option value='NCAR'>NCAR</option>
                     <option value='bl_to_darkred'>bl_to_darkred</option>

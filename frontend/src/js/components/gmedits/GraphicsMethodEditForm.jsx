@@ -16,12 +16,12 @@ import Missing from './Missing.jsx'
 import Projection from './Projection.jsx'
 import Legend from './Legend.jsx'
 
-var NOP = ()=>{}
 var GraphicsMethodEditForm = React.createClass({
     propTypes: {
         graphicsMethod: React.PropTypes.string,
         graphicsMethodParent: React.PropTypes.string,
         gmProps: React.PropTypes.object,
+        plotActiveGM: React.PropTypes.func,
         updateActiveGM: React.PropTypes.func
     },
     componentWillUpdate() {
@@ -32,7 +32,7 @@ var GraphicsMethodEditForm = React.createClass({
     },
     addLevel() {
         let cur_gmProps = Object.assign({}, this.props.gmProps);
-        cur_gmProps['levels'] = cur_gmProps['levels'].concat('');
+        cur_gmProps['levels'] = cur_gmProps['levels'].concat(1e+20);
         this.props.updateActiveGM(cur_gmProps, this.props.graphicsMethodParent, this.props.graphicsMethod);
     },
     removeLevel(event) {
@@ -51,7 +51,7 @@ var GraphicsMethodEditForm = React.createClass({
         } else if (property_name.match(/levels_[0-9]+/)) {
             let level_index = Number.parseInt(property_name.split('_')[1]);
             cur_gmProps['levels'][level_index] = event.target.value;
-            console.log(cur_gmProps['levels'][level_index])
+            console.log(cur_gmProps['levels'][level_index], typeof(cur_gmProps['levels'][level_index]))
         } else {
             cur_gmProps[property_name] = event.target.value;
         }
@@ -70,9 +70,103 @@ var GraphicsMethodEditForm = React.createClass({
         console.log(cur_gmProps[property_name], typeof(cur_gmProps[property_name]));
     },
     commitEdits() {
-
+        this.props.plotActiveGM(this.props.gmProps);
     },
-    populateForm() {
+    render() {
+        return(
+            <div>
+                <div className='modal-body'>
+                    <div className="container-fluid">
+                        <div className='col-md-12'>
+                            <h4>Boxfill Settings</h4>
+                            <BoxfillType handleChange={this.handleChange}
+                                type={this.props.gmProps['boxfill_type']}
+                                headerClass='col-md-4'
+                                radioClass='col-md-4'/>
+                            <div className='row'>
+                                <Missing handleChange={this.changeState}
+                                    missing={this.props.gmProps['missing']}
+                                    className='col-md-6'/>
+                                <Exts handleChange={this.handleChange}
+                                    ext1={this.props.gmProps['ext_1']}
+                                    ext2={this.props.gmProps['ext_2']}
+                                    className='col-md-3'/>
+                            </div>
+                            <div className='row'>
+                                <Legend handleChange={this.handleChange}
+                                    legend={this.props.gmProps['legend']}
+                                    className='col-md-12'/>
+                            </div>
+                        </div>
+                        <div className={
+                            this.props.gmProps['boxfill_type'] !== 'custom'
+                            ? 'col-md-12'
+                            : 'hide'}>
+                            <h4>Linear and Log Settings</h4>
+                            <div className="col-md-6">
+                                <LevelOneTwo handleChange={this.changeState}
+                                    level1={this.props.gmProps['level_1']}
+                                    level2={this.props.gmProps['level_2']} />
+                            </div>
+                            <div className="col-md-6">
+                                <ColorOneTwo handleChange={this.changeState}
+                                    color1={this.props.gmProps['color_1']}
+                                    color2={this.props.gmProps['color_2']} />
+                            </div>
+                        </div>
+                        <div className={
+                            this.props.gmProps['boxfill_type'] === 'custom'
+                            ? 'col-md-12'
+                            : 'hide'}>
+                            <h4>Custom Settings</h4>
+                            <Levels handleChange={this.changeState}
+                                levels={this.props.gmProps['levels']}
+                                addLevel={this.addLevel}
+                                removeLevel={this.removeLevel} />
+                            <FillareaFields handleChange={this.handleChange}
+                                colors={this.props.gmProps['fillareacolors']}
+                                style={this.props.gmProps['fillareastyle']}
+                                indices={this.props.gmProps['fillareaindices']}
+                                opacity={this.props.gmProps['fillareaopacity']} />
+                        </div>
+                    </div>
+                </div>
+                <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button"
+                        className="btn btn-primary"
+                        id="commit-gm-edits"
+                        onClick={this.commitEdits}>
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        )
+    }
+});
+
+const mapStateToProps = (state) => {
+    return {
+        gmProps: state.present.active_GM.gmProps,
+        graphicsMethod: state.present.active_GM.gm,
+        graphicsMethodParent: state.present.active_GM.gmParent,
+    }
+}
+// Add these to the state with a dispatch that calls backend to get valid colormap/projection lists
+// colormaps: state.present.colormaps,
+// projections: state.present.projections
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateActiveGM: (gmProps, gmParent, gm) => dispatch(Actions.updateActiveGM(gmProps, gmParent, gm)),
+        plotActiveGM: (gmProps) => dispatch(Actions.plotActiveGM(gmProps))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GraphicsMethodEditForm);
+
+/* in case I need it later. Don't judge me.
+populateForm() {
         var gmProps = this.props.gmProps
         var form_contents = Object.keys(gmProps).map((key, index) => {
             switch(key) {
@@ -214,91 +308,4 @@ var GraphicsMethodEditForm = React.createClass({
             }
         });
         return form_contents;
-    },
-    render() {
-        return(
-            <div>
-                <div className='modal-body'>
-                    <div className="container-fluid">
-                        <div className='col-md-12'>
-                            <h4>Boxfill Settings</h4>
-                            <BoxfillType handleChange={this.handleChange}
-                                type={this.props.gmProps['boxfill_type']}
-                                headerClass='col-md-3'
-                                radioClass='col-md-3'/>
-                            <div className='row'>
-                                <Missing handleChange={this.changeState}
-                                    missing={this.props.gmProps['missing']}
-                                    className='col-md-6'/>
-                                <Exts handleChange={this.handleChange}
-                                    ext1={this.props.gmProps['ext_1']}
-                                    ext2={this.props.gmProps['ext_2']}
-                                    className='col-md-3'/>
-                            </div>
-                            <div className='row'>
-                                <Legend handleChange={this.handleChange}
-                                    legend={this.props.gmProps['legend']}
-                                    className='col-md-12'/>
-                            </div>
-                        </div>
-                        <div className={
-                            this.props.gmProps['boxfill_type'] !== 'custom'
-                            ? 'col-md-12'
-                            : 'hide'}>
-                            <h4>Linear and Log Settings</h4>
-                            <div className="col-md-6">
-                                <LevelOneTwo handleChange={this.changeState}
-                                    level1={this.props.gmProps['level_1']}
-                                    level2={this.props.gmProps['level_2']} />
-                            </div>
-                            <div className="col-md-6">
-                                <ColorOneTwo handleChange={this.handleChange}
-                                    color1={this.props.gmProps['color_1']}
-                                    color2={this.props.gmProps['color_2']} />
-                            </div>
-                        </div>
-                        <div className={
-                            this.props.gmProps['boxfill_type'] === 'custom'
-                            ? 'col-md-12'
-                            : 'hide'}>
-                            <h4>Custom Settings</h4>
-                            <FillareaFields handleChange={this.handleChange}
-                                colors={this.props.gmProps['fillareacolors']}
-                                style={this.props.gmProps['fillareastyle']}
-                                indices={this.props.gmProps['fillareaindices']}
-                                opacity={this.props.gmProps['fillareaopacity']} />
-                        </div>
-                    </div>
-                </div>
-                <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button"
-                        className="btn btn-primary"
-                        id="commit-gm-edits"
-                        onClick={this.commitEdits}>
-                        Save changes
-                    </button>
-                </div>
-            </div>
-        )
-    }
-});
-
-const mapStateToProps = (state) => {
-    return {
-        gmProps: state.present.active_GM.gmProps,
-        graphicsMethod: state.present.active_GM.gm,
-        graphicsMethodParent: state.present.active_GM.gmParent,
-    }
-}
-// Add these to the state with a dispatch that calls backend to get valid colormap/projection lists
-// colormaps: state.present.colormaps,
-// projections: state.present.projections
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        updateActiveGM: (gmProps, gmParent, gm) => dispatch(Actions.updateActiveGM(gmProps, gmParent, gm))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(GraphicsMethodEditForm);
+    }, */

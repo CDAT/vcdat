@@ -163,6 +163,12 @@ var Actions = {
             gmParent: gmParent,
             gm: gm
         }
+    },
+    plotActiveGM(gmProps) {
+        return {
+            type: 'PLOT_ACTIVE_GM',
+            gmProps: gmProps
+        }
     }
 }
 
