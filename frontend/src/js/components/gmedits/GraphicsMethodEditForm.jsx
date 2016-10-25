@@ -79,23 +79,29 @@ var GraphicsMethodEditForm = React.createClass({
                     <div className="container-fluid">
                         <div className='col-md-12'>
                             <h4>Boxfill Settings</h4>
-                            <BoxfillType handleChange={this.handleChange}
-                                type={this.props.gmProps['boxfill_type']}
-                                headerClass='col-md-4'
-                                radioClass='col-md-4'/>
-                            <div className='row'>
-                                <Missing handleChange={this.changeState}
-                                    missing={this.props.gmProps['missing']}
-                                    className='col-md-6'/>
-                                <Exts handleChange={this.handleChange}
-                                    ext1={this.props.gmProps['ext_1']}
-                                    ext2={this.props.gmProps['ext_2']}
-                                    className='col-md-3'/>
+                            <div className='col-md-12'>
+                                <BoxfillType handleChange={this.handleChange}
+                                    type={this.props.gmProps['boxfill_type']}
+                                    headerClass='col-md-4'
+                                    radioClass='col-md-4'/>
                             </div>
                             <div className='row'>
-                                <Legend handleChange={this.handleChange}
-                                    legend={this.props.gmProps['legend']}
-                                    className='col-md-12'/>
+                                <div className='col-md-12'>
+                                    <Missing handleChange={this.changeState}
+                                        missing={this.props.gmProps['missing']}
+                                        className='col-md-6'/>
+                                    <Exts handleChange={this.handleChange}
+                                        ext1={this.props.gmProps['ext_1']}
+                                        ext2={this.props.gmProps['ext_2']}
+                                        className='col-md-3'/>
+                                </div>
+                            </div>
+                            <div className='row'>
+                                <div className='col-md-12'>
+                                    <Legend handleChange={this.handleChange}
+                                        legend={this.props.gmProps['legend']}
+                                        className='col-md-12'/>
+                                </div>
                             </div>
                         </div>
                         <div className={
@@ -119,15 +125,19 @@ var GraphicsMethodEditForm = React.createClass({
                             ? 'col-md-12'
                             : 'hide'}>
                             <h4>Custom Settings</h4>
-                            <Levels handleChange={this.changeState}
-                                levels={this.props.gmProps['levels']}
-                                addLevel={this.addLevel}
-                                removeLevel={this.removeLevel} />
-                            <FillareaFields handleChange={this.handleChange}
-                                colors={this.props.gmProps['fillareacolors']}
-                                style={this.props.gmProps['fillareastyle']}
-                                indices={this.props.gmProps['fillareaindices']}
-                                opacity={this.props.gmProps['fillareaopacity']} />
+                            <div className='col-md-12'>
+                                <Levels handleChange={this.changeState}
+                                    levels={this.props.gmProps['levels']}
+                                    addLevel={this.addLevel}
+                                    removeLevel={this.removeLevel} />
+                            </div>
+                            <div className='col-md-12'>
+                                <FillareaFields handleChange={this.handleChange}
+                                    colors={this.props.gmProps['fillareacolors']}
+                                    style={this.props.gmProps['fillareastyle']}
+                                    indices={this.props.gmProps['fillareaindices']}
+                                    opacity={this.props.gmProps['fillareaopacity']} />
+                            </div>
                         </div>
                     </div>
                 </div>
