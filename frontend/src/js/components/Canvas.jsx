@@ -11,8 +11,9 @@ var Canvas = React.createClass({
         this.canvas = vcs.init(this.refs.div);
     },
     componentDidUpdate(prevProps, prevState) {
-        //this.canvas.clear()
+        this.canvas.clear()
         this.props.plots.map((plot) => {
+            console.log(plot);
             if (plot.variables.length > 0) {
                 this.canvas.plot(plot.variables.map((v) => { return v.provenance; }), {"g_name": "Gfb"});
             }
