@@ -52,7 +52,6 @@ var LeftSideBar = React.createClass({
                     addFileToCache={this.props.addFileToCache}
                     cachedFiles={this.props.cached_files}/>
                 <GMList graphicsMethods={this.props.graphics_methods}
-                    updateActiveGM={this.props.updateActiveGM}
                     gmProps={this.props.gmProps}
                     graphicsMethod={this.props.graphicsMethod}
                     graphicsMethodParent={this.props.graphicsMethodParent}/>
@@ -80,7 +79,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(Actions.addFileToCache(filename, filepath, variables));
         },
         loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list)),
-        updateActiveGM: (gmProps, gmParent, gm) => dispatch(Actions.updateActiveGM(gmProps, gmParent, gm))
+        
     }
 }
 

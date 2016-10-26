@@ -16,6 +16,26 @@ import Missing from './Missing.jsx'
 import Projection from './Projection.jsx'
 import Legend from './Legend.jsx'
 
+let new_name = (that, graphics_methods, gm, parent) => {
+    // replace this with some sort of call that gets the base gm names for the specific gm
+    let base_gms = [
+        'a_boxfill', 'a_lambert_boxfill', 'a_mollweide_boxfill',
+        'a_polar_boxfill', 'a_robinson_boxfill', 'default', 'polar', 'quick', 'robinson'
+    ]
+    let name = that.state.gmEditName ?that.state.gmEditName :gm;
+    let i;
+    if (base_gms.includes(name)) {
+        i=0;
+        do {
+            ++i;
+        } while(graphics_methods[parent][name+'__edit__'+i])
+        return (name+'__edit__'+i);
+    } else {
+        return name;
+    }
+
+
+};
 var GraphicsMethodEditForm = React.createClass({
     propTypes: {
         graphicsMethod: React.PropTypes.string,
@@ -35,6 +55,12 @@ var GraphicsMethodEditForm = React.createClass({
     },
     componentDidUpdate() {
         $("#commit-gm-edits").prop("disabled", false)
+    },
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            gmEditName: nextProps.graphicsMethod
+
+        })
     },
     addLevel() {
         let cur_gmProps = Object.assign({}, this.props.gmProps);
@@ -80,27 +106,11 @@ var GraphicsMethodEditForm = React.createClass({
         let gm = this.props.graphicsMethod;
         let new_props = this.props.gmProps;
         let graphics_methods = this.props.graphics_methods;
-        let i;
-        let new_name = () => {
-            if (this.state.gmEditName) {
-                if (graphics_methods[parent][this.state.gmEditName]) {
-                    i=1
-                    while(graphics_methods[parent][this.state.gmEditName+"_edit_"+i]) {
-                        ++i;
-                    }
-                    return (this.state.gmEditName+"_edit_"+i);
-                } else {
-                    return (this.state.gmEditName);
-                }
-            } else {
-                i=1
-                while(graphics_methods[parent][gm+"_edit_"+i]) {
-                    ++i;
-                }
-                return (gm+"_edit_"+i);
-            }
-        };
-        this.props.updateGraphicsMethods(graphics_methods, new_props, parent, gm, new_name());
+        let gm_name = new_name(this, graphics_methods, gm, parent)
+        this.props.updateGraphicsMethods(graphics_methods, new_props, parent, gm, gm_name);
+        this.setState({
+            gmEditName: ''
+        });
     },
     gmEditNameChange(event) {
         this.setState({
@@ -216,7 +226,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateActiveGM: (gmProps, gmParent, gm) => dispatch(Actions.updateActiveGM(gmProps, gmParent, gm)),
         updateGraphicsMethods: (graphics_methods, gmProps, gmParent, gm, new_name) => {
             dispatch(Actions.updateGraphicsMethods(graphics_methods, gmProps, gmParent, gm, new_name))
         }
