@@ -8,7 +8,7 @@ import {getStore} from '../Store.js';
 const cachedFilesReducer = (state = {}, action) => {
     switch(action.type){
         case 'ADD_FILE_TO_CACHE':
-            var new_state = jQuery.extend(true, {}, state)
+            new_state = jQuery.extend(true, {}, state)
             new_state[action.filename] = {
                 filepath: action.filepath,
                 variables: action.variables
@@ -230,26 +230,28 @@ const getCell = (sheet, action) => {
 }
 
 const sheetsModelReducer = (state = default_sheets_model, action) => {
+    let new_state;
+    let sheet;
     switch (action.type) {
         case 'SHIFT_SHEET':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets.splice(action.old_position, 1)[0];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets.splice(action.old_position, 1)[0];
             new_state.sheets.splice(action.new_position, 0, sheet);
             new_state.cur_sheet_index = action.new_position;
             return new_state;
         case 'MOVE_ROW':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[state.cur_sheet_index];
             moveRow(sheet.cells, action);
             return new_state;
         case 'MOVE_COLUMN':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[state.cur_sheet_index];
             moveCol(sheet.cells, action);
             return new_state;
         case 'UPDATE_SELECTED_CELLS':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[state.cur_sheet_index];
             sheet.selected_cell_indices = action.selected_cells;
             return new_state;
         case 'ADD_PLOT':
@@ -257,31 +259,31 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
         case 'CHANGE_PLOT_VAR':
         case 'CHANGE_PLOT_GM':
         case 'CHANGE_PLOT_TEMPLATE':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[state.cur_sheet_index];
             updateCell(getCell(sheet, action), action)
             return new_state;
         case 'ROW_COUNT_CHANGED':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[new_state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[new_state.cur_sheet_index];
             sheet.row_count = action.count;
             sheet.cells = createCellGrid(sheet);
             return new_state;
         case 'COL_COUNT_CHANGED':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[new_state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[new_state.cur_sheet_index];
             sheet.col_count = action.count;
             sheet.cells = createCellGrid(sheet);
             return new_state;
         case 'ADD_SHEET':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = jQuery.extend(true, {}, default_sheet);
+            new_state = jQuery.extend(true, {}, state);
+            sheet = jQuery.extend(true, {}, default_sheet);
             sheet.name += new_state.sheets.length;
             new_state.sheets.push(sheet);
             new_state.cur_sheet_index = new_state.sheets.length - 1;
             return new_state;
         case 'REMOVE_SHEET':
-            var new_state = jQuery.extend(true, {}, state);
+            new_state = jQuery.extend(true, {}, state);
             if (action.sheet_index < new_state.cur_sheet_index) {
                 new_state.cur_sheet_index -= 1;
             } else if ((action.sheet_index === new_state.cur_sheet_index)
@@ -291,7 +293,7 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             new_state.sheets.splice(action.sheet_index, 1);
             return new_state;
         case 'CHANGE_CUR_SHEET_INDEX':
-            var new_state = jQuery.extend(true, {}, state);
+            new_state = jQuery.extend(true, {}, state);
             new_state.cur_sheet_index = action.index;
             return new_state;
         default:
@@ -318,16 +320,6 @@ const updateActiveGMReducer = (state = {}, action) => {
     }
 };
 
-// plotActiveGM + helpers
-// this will need to change a lot. Ajax call to plot, more.
-const plotActiveGM = (state={}, action) => {
-    switch(action.type) {
-        case 'PLOT_ACTIVE_GM':
-            var new_state = Object.assign({}, state, {
-                gmProps: action.gmProps
-            })
-    }
-}
 // combined reducers + undoable
 const reducers = combineReducers({
     cached_files: cachedFilesReducer,

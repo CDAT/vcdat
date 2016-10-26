@@ -19,49 +19,9 @@ var Canvas = React.createClass({
         canvas.attr("height", div.height());
         this.canvas.clear()
         this.props.plots.map((plot, index) => {
-            // Stub until we get real graphics method integration
-            var gm = {"g_name": "Gfb"};
-            switch (plot.graphics_method_parent) {
-                case "isofill":
-                    gm.g_name = "Gfi";
-                    break;
-                case "isoline":
-                    gm.g_name = "Gi";
-                    break;
-                case "3d_dual_scalar":
-                    gm.g_name = "Gfdv3d";
-                    break;
-                case "3d_scalar":
-                    gm.g_name = "Gfdv3d";
-                    break;
-                case "3d_vector":
-                    gm.g_name = "Gfdv3d";
-                    break;
-                case "yxvsx":
-                    gm.g_name = "G1d";
-                    break
-                case "xyvsy":
-                    gm.g_name = "G1d";
-                    gm.flip = true;
-                    break
-                case "xvsy":
-                    gm.g_name = "G1d";
-                    break
-                case "scatter":
-                    gm.linewidth = 0;
-                    gm.g_name = "G1d";
-                    break
-                case "1d":
-                    gm.g_name = "G1d";
-                    break
-                case "meshfill":
-                    gm.g_name = "Gmf";
-                    break;
-                default:
-                    break;
-            }
+
             if (plot.variables.length > 0) {
-                this.canvas.plot(this.props.plotVariables[index], gm, plot.template);
+                this.canvas.plot(this.props.plotVariables[index], this.props.plotGMs[index], plot.template);
             }
         });
     },
@@ -101,7 +61,7 @@ const mapStateToProps = (state, ownProps) => {
 
     return {
         plotVariables: ownProps.plots.map(get_vars_for_plot),
-        //plotGMs: ownProps.plots.map(get_gm_for_plot),
+        plotGMs: ownProps.plots.map(get_gm_for_plot),
     }
 }
 const mapDispatchToProps = (dispatch) => {

@@ -7,15 +7,15 @@ require('../../../deps/quicktree.js');
 var el = null;
 function siblingsVisible(element_name, parent_gm) {
     let first=$('#gm-list-'+parent_gm).children().children()[0]
-    if ($(first).css("display")==='list-item')
-        return true;
-    else
-        return false;
+     return $(first).css("display")==='list-item' ?true :false;
 }
 var GMList = React.createClass({
     propTypes: {
         graphicsMethods: React.PropTypes.object,
         updateActiveGM: React.PropTypes.func
+    },
+    getInitialState() {
+        return {active_GM: {}};
     },
     componentWillUpdate(nextProps, nextState) {
         $('#gm-list').quicktree();
@@ -42,8 +42,17 @@ var GMList = React.createClass({
         let gmParent = el.attr("data-parent");
         let gm = el.attr("data-name");
         // call updateActiveGM
-        this.props.updateActiveGM(gmProps, gmParent, gm)
+        this.updateActiveGM(gmProps, gmParent, gm)
         console.log(this.props.graphicsMethods[el.attr("data-parent")][el.attr("data-name")],el.attr("data-parent"),el.attr("data-name"))
+    },
+    updateActiveGM(props, parent, gm) {
+        this.setState({
+            active_GM: {
+                gmProps: props,
+                gmParent: parent,
+                gm: gm
+            }
+        });
     },
     render() {
         return (
@@ -80,22 +89,12 @@ var GMList = React.createClass({
                     </ul>
                 </div>
                 <GraphicsMethodEditor
-                    graphicsMethod={this.props.graphicsMethod}
-                    graphicsMethodParent={this.props.graphicsMethodParent}
-                    gmProps={this.props.gmProps}/>
+                    graphicsMethod={this.state.active_GM.graphicsMethod}
+                    graphicsMethodParent={this.state.active_GM.graphicsMethodParent}
+                    gmProps={this.state.active_GM.gmProps}/>
             </div>
         )
     }
 });
-
-const mapStateToProps = (state) => {
-    return {
-        gmProps: state.present.active_GM.gmProps,
-        graphicsMethod: state.present.active_GM.gm,
-        graphicsMethodParent: state.present.active_GM.gmParent,
-        graphics_methods: state.present.graphics_methods,
-        new_gm: state.present.new_GM
-    }
-}
 
 export default GMList;
