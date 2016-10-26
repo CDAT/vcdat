@@ -164,10 +164,14 @@ var Actions = {
             gm: gm
         }
     },
-    plotActiveGM(gmProps) {
+    updateGraphicsMethods(graphics_methods, gmProps, gmParent, gm, new_name) {
         return {
-            type: 'PLOT_ACTIVE_GM',
-            gmProps: gmProps
+            type: 'UPDATE_GRAPHICS_METHODS',
+            graphics_methods: graphics_methods,
+            gmProps: gmProps,
+            gmParent: gmParent,
+            gm: gm,
+            new_name: new_name
         }
     }
 }

@@ -134,6 +134,10 @@ const gmListReducer = (state = {}, action) => {
     switch (action.type) {
         case "INITIALIZE_GRAPHICS_METHODS_VALUES":
             return action.graphics_methods;
+        case "UPDATE_GRAPHICS_METHODS":
+            let new_graphics_methods = Object.assign({}, action.graphics_methods)
+            new_graphics_methods[action.gmParent][action.new_name] = action.gmProps
+            return new_graphics_methods;
         default:
             return state
     }
@@ -299,12 +303,12 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
 const updateActiveGMReducer = (state = {}, action) => {
     switch(action.type) {
         case 'UPDATE_ACTIVE_GM':
-            var new_state = Object.assign({}, state, {
+            var active_GM = Object.assign({}, state, {
                 gmProps: action.gmProps,
                 gmParent: action.gmParent,
                 gm: action.gm
             });
-            return new_state;
+            return active_GM;
         default:
             return {
                 gmProps: {},

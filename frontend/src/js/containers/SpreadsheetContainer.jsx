@@ -212,8 +212,8 @@ var SpreadsheetContainer = React.createClass({
         var selected_cells = [];
         $(event.target).find('.ui-selected').each((integer, value) => {
             var value = $(value);
-            var row = value.attr('data-row');
-            var col = value.attr('data-col');
+            var row = Number.parseInt(value.attr('data-row'));
+            var col = Number.parseInt(value.attr('data-col'));
             selected_cells.push([row, col]);
         })
         if (selected_cells.length === 0) {

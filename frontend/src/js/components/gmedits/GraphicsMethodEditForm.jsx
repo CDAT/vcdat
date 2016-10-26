@@ -21,8 +21,14 @@ var GraphicsMethodEditForm = React.createClass({
         graphicsMethod: React.PropTypes.string,
         graphicsMethodParent: React.PropTypes.string,
         gmProps: React.PropTypes.object,
-        plotActiveGM: React.PropTypes.func,
+        graphics_methods: React.PropTypes.object,
+        updateGraphicsMethods: React.PropTypes.func,
         updateActiveGM: React.PropTypes.func
+    },
+    getInitialState() {
+        return {
+            gmEditName: ''
+        }
     },
     componentWillUpdate() {
         $("#commit-gm-edits").prop("disabled", true)
@@ -70,13 +76,50 @@ var GraphicsMethodEditForm = React.createClass({
         console.log(cur_gmProps[property_name], typeof(cur_gmProps[property_name]));
     },
     commitEdits() {
-        this.props.plotActiveGM(this.props.gmProps);
+        let parent = this.props.graphicsMethodParent;
+        let gm = this.props.graphicsMethod;
+        let new_props = this.props.gmProps;
+        let graphics_methods = this.props.graphics_methods;
+        let i;
+        let new_name = () => {
+            if (this.state.gmEditName) {
+                if (graphics_methods[parent][this.state.gmEditName]) {
+                    i=1
+                    while(graphics_methods[parent][this.state.gmEditName+"_edit_"+i]) {
+                        ++i;
+                    }
+                    return (this.state.gmEditName+"_edit_"+i);
+                } else {
+                    return (this.state.gmEditName);
+                }
+            } else {
+                i=1
+                while(graphics_methods[parent][gm+"_edit_"+i]) {
+                    ++i;
+                }
+                return (gm+"_edit_"+i);
+            }
+        };
+        this.props.updateGraphicsMethods(graphics_methods, new_props, parent, gm, new_name());
+    },
+    gmEditNameChange(event) {
+        this.setState({
+            gmEditName: event.target.value
+        });
     },
     render() {
         return(
             <div>
                 <div className='modal-body'>
                     <div className="container-fluid">
+                        <div className='col-md-12'>
+                            <div className='row'>
+                                <h3>{"Name for new GM"}</h3>
+                                <input type='text'
+                                    value={this.state.gmEditName}
+                                    onChange={this.gmEditNameChange}/>
+                            </div>
+                        </div>
                         <div className='col-md-12'>
                             <h4>Boxfill Settings</h4>
                             <div className='col-md-12'>
@@ -93,7 +136,10 @@ var GraphicsMethodEditForm = React.createClass({
                                     <Exts handleChange={this.handleChange}
                                         ext1={this.props.gmProps['ext_1']}
                                         ext2={this.props.gmProps['ext_2']}
-                                        className='col-md-3'/>
+                                        className={
+                                            this.props.gmProps['boxfill_type'] !== 'custom'
+                                            ? 'col-md-3'
+                                            : 'hide'}/>
                                 </div>
                             </div>
                             <div className='row'>
@@ -146,7 +192,8 @@ var GraphicsMethodEditForm = React.createClass({
                     <button type="button"
                         className="btn btn-primary"
                         id="commit-gm-edits"
-                        onClick={this.commitEdits}>
+                        onClick={this.commitEdits}
+                        data-dismiss="modal">
                         Save changes
                     </button>
                 </div>
@@ -160,6 +207,7 @@ const mapStateToProps = (state) => {
         gmProps: state.present.active_GM.gmProps,
         graphicsMethod: state.present.active_GM.gm,
         graphicsMethodParent: state.present.active_GM.gmParent,
+        graphics_methods: state.present.graphics_methods
     }
 }
 // Add these to the state with a dispatch that calls backend to get valid colormap/projection lists
@@ -169,7 +217,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         updateActiveGM: (gmProps, gmParent, gm) => dispatch(Actions.updateActiveGM(gmProps, gmParent, gm)),
-        plotActiveGM: (gmProps) => dispatch(Actions.plotActiveGM(gmProps))
+        updateGraphicsMethods: (graphics_methods, gmProps, gmParent, gm, new_name) => {
+            dispatch(Actions.updateGraphicsMethods(graphics_methods, gmProps, gmParent, gm, new_name))
+        }
     }
 }
 
