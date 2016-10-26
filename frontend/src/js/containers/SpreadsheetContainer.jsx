@@ -179,7 +179,7 @@ var SpreadsheetContainer = React.createClass({
         $(':regex(class, border-' + row.toString() + '[0-9])').css('background-color', 'transparent');
     },
     componentDidMount() {
-        $('#spreadsheet-div').selectable({filter: '.cell', stop: this.updateSelectedCells});
+        //$('#spreadsheet-div').selectable({filter: '.cell', stop: this.updateSelectedCells});
         this.initDragAndDrop();
     },
     componentDidUpdate() {

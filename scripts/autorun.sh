@@ -14,12 +14,12 @@ else
     source activate ${CONDA_ENV}
 fi
 
-python $curpath/backend/vcdat/app.py &
+vcs-server > $curpath/vcs.log &
+vcs_pid=$!
+python $curpath/backend/vcdat/app.py > $curpath/vcdat.log &
 be_pid=$!
 cd frontend
 $(npm bin)/webpack --progress --colors --watch &
 fe_pid=$!
 
-trap "{ kill $be_pid; kill $fe_pid; }" INT
-
-cat # Wait until trapped ctrl+c
+python $curpath/scripts/monitor_procs.py $vcs_pid $be_pid $fe_pid
