@@ -1,5 +1,17 @@
 import React from 'react'
 
+function validate(type, value) {
+    switch(type) {
+        case 'fillareaindices':
+            break;
+        case 'fillareaopacity':
+            break;
+        case 'fillareacolors':
+            break;
+        case 'fillareafields':
+            break;
+    }
+}
 var FillareaFields = React.createClass({
     propTypes: {
         handleChange: React.PropTypes.func,
@@ -9,7 +21,6 @@ var FillareaFields = React.createClass({
         style: React.PropTypes.string,
         indices: React.PropTypes.array,
         opacity: React.PropTypes.array
-
     },
     getInitialState() {
         return {
@@ -27,8 +38,7 @@ var FillareaFields = React.createClass({
             opacity: nextProps.opacity
         })
     },
-    handleChange(event) {
-
+    handleBlur(event) {
         this.props.handleChange(event);
     },
     render(){
@@ -41,7 +51,7 @@ var FillareaFields = React.createClass({
                             name='fillareaindices'
                             value={this.state.indices? this.state.indices : []}
                             onChange={(event)=> {this.setState({indices:event.target.value})}}
-                            onBlur={this.props.handleChange}/>
+                            onBlur={this.handleBlur}/>
                     </div>
                     <div className='col-md-6'>
                         <h5>Type: </h5>
@@ -62,7 +72,7 @@ var FillareaFields = React.createClass({
                             name='fillareacolors'
                             value={this.state.colors? this.state.colors : []}
                             onChange={(event)=> {this.setState({colors:event.target.value})}}
-                            onBlur={this.props.handleChange}/>
+                            onBlur={this.handleBlur}/>
                     </div>
                     <div className='col-md-6'>
                         <h5>Fillareaopacity: </h5>
@@ -70,7 +80,7 @@ var FillareaFields = React.createClass({
                             name='fillareaopacity'
                             value={this.state.opacity? this.state.opacity : []}
                             onChange={(event)=> {this.setState({opacity:event.target.value})}}
-                            onBlur={this.props.handleChange}/>
+                            onBlur={this.handleBlur}/>
                     </div>
                 </div>
             </div>

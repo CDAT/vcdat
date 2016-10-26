@@ -5,10 +5,20 @@ require('../../../deps/quicktree.js');
 /* global $ */
 
 var el = null;
+function siblingsVisible(element_name, parent_gm) {
+    let first=$('#gm-list-'+parent_gm).children().children()[0]
+    if ($(first).css("display")==='list-item')
+        return true;
+    else
+        return false;
+}
 var GMList = React.createClass({
     propTypes: {
         graphicsMethods: React.PropTypes.object,
         updateActiveGM: React.PropTypes.func
+    },
+    componentWillUpdate(nextProps, nextState) {
+        $('#gm-list').quicktree();
     },
     componentDidUpdate(){
         $('#gm-list').quicktree();
@@ -43,7 +53,8 @@ var GMList = React.createClass({
                     <ul id='gm-list' className='no-bullets left-list'>
                         {Object.keys(this.props.graphicsMethods).map((parent_value) => {
                             return (
-                                <li key={parent_value} className='main-left-list-item'>
+                                <li key={parent_value} className='main-left-list-item'
+                                    id={'gm-list-'+parent_value}>
                                     <a>{parent_value}</a>
                                     <ul className='no-bullets'>
                                         {Object.keys(this.props.graphicsMethods[parent_value]).map((value) => {
@@ -52,7 +63,12 @@ var GMList = React.createClass({
                                                     onClick={this.selectedChild}
                                                     className='sub-left-list-item draggable-list-item'
                                                     data-type='graphics_method' data-name={value}
-                                                    data-parent={parent_value} style={{'display':'none'}}>
+                                                    data-parent={parent_value}
+                                                    style={
+                                                        siblingsVisible(value, parent_value)
+                                                        ? {'display': 'list-item'}
+                                                        : {'display':'none'}
+                                                    }>
                                                         <a>{value}</a>
                                                 </li>
                                             )
@@ -71,5 +87,15 @@ var GMList = React.createClass({
         )
     }
 });
+
+const mapStateToProps = (state) => {
+    return {
+        gmProps: state.present.active_GM.gmProps,
+        graphicsMethod: state.present.active_GM.gm,
+        graphicsMethodParent: state.present.active_GM.gmParent,
+        graphics_methods: state.present.graphics_methods,
+        new_gm: state.present.new_GM
+    }
+}
 
 export default GMList;
