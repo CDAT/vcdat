@@ -3,15 +3,13 @@ import React from 'react'
 
 function verify(value) {
     if (typeof(value) === 'string') {
-        if (value === '1e+20') {
-            return Number.parseFloat(value)
-        } else if(!value.match(/[\+-]{0,1}[0-9]+$/) || value === '') {
-                return false;
+        if(value.match(/^[\+-]?[0-9]+(e\+?[0-9]+)?$/)) {
+            return Number.parseFloat(value);
         } else {
-            return Number.parseInt(value);
+            return false;
         }
     } else {
-        console.log( "level_(1|2) is not a string")
+        console.log( "levels is not a string")
     }
 }
 function focus(node_type, node_name) {
@@ -71,7 +69,7 @@ var Levels = React.createClass({
                                 <input name={'levels_'+index}
                                     type="text"
                                     value={
-                                        Number.isInteger(value) && value > 1e4
+                                        Number.isInteger(value) && Math.abs(value) > 1e4
                                         ? value.toExponential()
                                         : value
                                     }

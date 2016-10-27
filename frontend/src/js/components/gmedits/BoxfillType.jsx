@@ -7,18 +7,7 @@ var BoxfillType = React.createClass({
         headerClass: React.PropTypes.string,
         radioClass: React.PropTypes.string
     },
-    getInitialState() {
-        return {
-            type: '',
-        }
-    },
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            type: nextProps.type
-        })
-    },
     handleChange(event) {
-        this.setState({type:event.target.value});
         this.props.handleChange(event);
     },
     render(){
@@ -36,7 +25,7 @@ var BoxfillType = React.createClass({
                         id="bf-linear"
                         onChange={this.handleChange}
                         checked={
-                            this.state.type === 'linear'
+                            this.props.type === 'linear'
                             ? true
                             :false
                         }/> linear
@@ -48,7 +37,7 @@ var BoxfillType = React.createClass({
                         id="bf-custom"
                         onChange={this.handleChange}
                         checked={
-                            this.state.type === 'custom'
+                            this.props.type === 'custom'
                             ? true
                             : false}/> custom
                 </div>

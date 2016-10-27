@@ -7,7 +7,7 @@ require('../../../deps/quicktree.js');
 var el = null;
 function siblingsVisible(element_name, parent_gm) {
     let first=$('#gm-list-'+parent_gm).children().children()[0]
-     return $(first).css("display")==='list-item' ?true :false;
+    return $(first).css("display")==='list-item' ?true :false;
 }
 var GMList = React.createClass({
     propTypes: {
@@ -17,7 +17,7 @@ var GMList = React.createClass({
     getInitialState() {
         return {active_GM: {}};
     },
-    componentWillUpdate(nextProps, nextState) {
+    componentWillUpdate() {
         $('#gm-list').quicktree();
     },
     componentDidUpdate(){
@@ -89,9 +89,12 @@ var GMList = React.createClass({
                     </ul>
                 </div>
                 <GraphicsMethodEditor
-                    graphicsMethod={this.state.active_GM.graphicsMethod}
-                    graphicsMethodParent={this.state.active_GM.graphicsMethodParent}
-                    gmProps={this.state.active_GM.gmProps}/>
+                    graphicsMethod={this.state.active_GM.gm}
+                    graphicsMethodParent={this.state.active_GM.gmParent}
+                    gmProps={this.state.active_GM.gmProps}
+                    graphicsMethods={this.props.graphicsMethods}
+                    updateGraphicsMethods={this.props.updateGraphicsMethods}
+                    updateActiveGM={this.updateActiveGM}/>
             </div>
         )
     }

@@ -8,7 +8,7 @@ var Legend = React.createClass({
     },
     getInitialState() {
         return {
-            legend: '',
+            legend: this.props.legend,
         }
     },
     componentWillReceiveProps(nextProps) {
