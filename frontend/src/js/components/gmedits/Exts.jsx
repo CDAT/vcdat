@@ -9,8 +9,8 @@ var Exts = React.createClass({
     },
     getInitialState() {
         return {
-            ext1: false,
-            ext2: false
+            ext1: this.props.ext1,
+            ext2: this.props.ext2
         }
     },
     componentWillReceiveProps(nextProps) {

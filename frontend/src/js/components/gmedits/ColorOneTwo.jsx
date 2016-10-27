@@ -26,8 +26,8 @@ var ColorOneTwo = React.createClass({
     },
     getInitialState() {
         return {
-            color1: '',
-            color2: ''
+            color1: this.props.color1,
+            color2: this.props.color2
         }
     },
     componentWillReceiveProps(nextProps) {
@@ -43,16 +43,10 @@ var ColorOneTwo = React.createClass({
             this.props.handleChange(name, value)
         } else {
             // indicate user entered wrong value and reset to last valid value
-            console.log(name+" property must be an integer >= 0 and <=255. Value provided was " + event.target.value)
-            if (name === 'color_1') {
-                this.setState({
-                    color1: this.props.color1
-                });
-            } else {
-                this.setState({
-                    color2: this.props.color2
-                });
-            }
+            console.log(
+                name+" property must be an integer >= 0 and <=255."
+                +" Value provided was " + event.target.value+" of type "+typeof(event.target.value)
+            )
         }
     },
     render(){

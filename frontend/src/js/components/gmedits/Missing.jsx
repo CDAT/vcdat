@@ -25,7 +25,7 @@ var Missing = React.createClass({
     },
     getInitialState() {
         return {
-            missing: '',
+            missing: this.props.missing,
         }
     },
     componentWillReceiveProps(nextProps) {
