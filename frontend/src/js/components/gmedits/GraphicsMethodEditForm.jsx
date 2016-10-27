@@ -46,7 +46,7 @@ var GraphicsMethodEditForm = React.createClass({
     },
     getInitialState() {
         return {
-            gmEditName: ''
+            gmEditName: this.props.graphicsMethod
         }
     },
     componentWillUpdate() {
@@ -213,7 +213,7 @@ var GraphicsMethodEditForm = React.createClass({
         else {
             return (
                 <div>
-                    <h5>Please select one of the Graphics Methods from the list on the left side bar.</h5>
+                    <h5> Please select one of the Graphics Methods from the list on the left side bar. </h5>
                 </div>
             )
         }

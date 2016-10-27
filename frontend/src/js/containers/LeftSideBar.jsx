@@ -17,6 +17,7 @@ var LeftSideBar = React.createClass({
             React.PropTypes.array,
             React.PropTypes.object
         ]),
+        sheets_model: React.PropTypes.object
 
     },
     initDragListItems(){
@@ -52,9 +53,6 @@ var LeftSideBar = React.createClass({
                     addFileToCache={this.props.addFileToCache}
                     cachedFiles={this.props.cached_files}/>
                 <GMList graphicsMethods={this.props.graphics_methods}
-                    gmProps={this.props.gmProps}
-                    graphicsMethod={this.props.graphicsMethod}
-                    graphicsMethodParent={this.props.graphicsMethodParent}
                     updateGraphicsMethods={this.props.updateGraphicsMethods}/>
                 <TemplateList templates={this.props.templates}/>
             </div>
@@ -68,9 +66,7 @@ const mapStateToProps = (state) => {
         graphics_methods: state.present.graphics_methods,
         templates: Object.keys(state.present.templates),
         cached_files: state.present.cached_files,
-        gmProps: state.present.active_GM.gmProps,
-        graphicsMethod: state.present.active_GM.gm,
-        graphicsMethodParent: state.present.active_GM.gmParent
+        sheets_model: state.present.sheets_model
     }
 }
 

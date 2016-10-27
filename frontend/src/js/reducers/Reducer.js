@@ -32,6 +32,52 @@ const varListReducer = (state = [], action) => {
 }
 
 // gmListReducer + helpers
+const getGraphicsMethods = () => {
+    $.get("getGraphicsMethods").then(
+        function(gm){
+            getStore().dispatch(Actions.initializeGraphicsMethodsValues(JSON.parse(gm)))
+        }
+    )
+}
+
+const gmListReducer = (state = {}, action) => {
+    if (!Object.keys(state).length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
+        getGraphicsMethods();
+    }
+    switch (action.type) {
+        case "INITIALIZE_GRAPHICS_METHODS_VALUES":
+            return action.graphics_methods;
+        case "UPDATE_GRAPHICS_METHODS":
+            let new_graphics_methods = Object.assign({}, action.graphics_methods)
+            new_graphics_methods[action.gmParent][action.new_name] = action.gmProps
+            return new_graphics_methods;
+        default:
+            return state
+    }
+}
+
+// templateListReducer + helpers
+const getTemplates = () => {
+    $.get("getTemplates").then(
+        function(templates){
+            getStore().dispatch(Actions.initializeTemplateValues(JSON.parse(templates)));
+        }
+    );
+}
+
+const templateListReducer = (state = [], action) => {
+    if (!state.length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
+        getTemplates();
+    }
+    switch (action.type) {
+        case 'INITIALIZE_TEMPLATE_VALUES':
+            return action.templates;
+        default:
+            return state
+    }
+}
+
+// sheetsModelReducer + helpers
 var default_plot = {
     variables: [], // testing inspector
     graphics_method_parent: 'boxfill',
@@ -119,52 +165,6 @@ const createCellGrid = (sheet) => {
     return rows
 }
 
-const getGraphicsMethods = () => {
-    $.get("getGraphicsMethods").then(
-        function(gm){
-            getStore().dispatch(Actions.initializeGraphicsMethodsValues(JSON.parse(gm)))
-        }
-    )
-}
-
-const gmListReducer = (state = {}, action) => {
-    if (!Object.keys(state).length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
-        getGraphicsMethods();
-    }
-    switch (action.type) {
-        case "INITIALIZE_GRAPHICS_METHODS_VALUES":
-            return action.graphics_methods;
-        case "UPDATE_GRAPHICS_METHODS":
-            let new_graphics_methods = Object.assign({}, action.graphics_methods)
-            new_graphics_methods[action.gmParent][action.new_name] = action.gmProps
-            return new_graphics_methods;
-        default:
-            return state
-    }
-}
-
-// templateListReducer + helpers
-const getTemplates = () => {
-    $.get("getTemplates").then(
-        function(templates){
-            getStore().dispatch(Actions.initializeTemplateValues(JSON.parse(templates)));
-        }
-    );
-}
-
-const templateListReducer = (state = [], action) => {
-    if (!state.length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
-        getTemplates();
-    }
-    switch (action.type) {
-        case 'INITIALIZE_TEMPLATE_VALUES':
-            return action.templates;
-        default:
-            return state
-    }
-}
-
-// sheetsModelReducer + helpers
 const updateCell = (cell, action) => {
     switch (action.type) {
         case 'CHANGE_PLOT':
@@ -227,6 +227,20 @@ const getCell = (sheet, action) => {
     else{
         return sheet.cells[sheet.selected_cell_indices[0][0]][sheet.selected_cell_indices[0][1]]
     }
+}
+
+// capture the previous sheets_model to ensure we don't clobber the sheets_model
+// in the sheetsModelReducer's default case
+var prev_state;
+try {
+    prev_state = getStore().getState().past;
+} catch(err) {
+    console.log(err)
+}
+
+var prev_sheets;
+if (prev_state){
+    prev_sheets = prev_state[prev_state.length-1].sheets_model;
 }
 
 const sheetsModelReducer = (state = default_sheets_model, action) => {
@@ -297,28 +311,12 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             new_state.cur_sheet_index = action.index;
             return new_state;
         default:
-            return state;
+            if (state === default_sheets_model && prev_sheets)
+                return prev_sheets;
+            else
+                return state;
     }
 }
-
-// updateActiveGMReducer + helpers
-const updateActiveGMReducer = (state = {}, action) => {
-    switch(action.type) {
-        case 'UPDATE_ACTIVE_GM':
-            var active_GM = Object.assign({}, state, {
-                gmProps: action.gmProps,
-                gmParent: action.gmParent,
-                gm: action.gm
-            });
-            return active_GM;
-        default:
-            return {
-                gmProps: {},
-                gmParent: '...',
-                gm: 'Select a Graphics Method from the list to start'
-            }
-    }
-};
 
 // combined reducers + undoable
 const reducers = combineReducers({
@@ -326,8 +324,7 @@ const reducers = combineReducers({
     variables: varListReducer,
     graphics_methods: gmListReducer,
     templates: templateListReducer,
-    sheets_model: sheetsModelReducer,
-    active_GM: updateActiveGMReducer,
+    sheets_model: sheetsModelReducer
 
 
 });

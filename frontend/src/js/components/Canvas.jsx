@@ -19,7 +19,6 @@ var Canvas = React.createClass({
         canvas.attr("height", div.height());
         this.canvas.clear()
         this.props.plots.map((plot, index) => {
-
             if (plot.variables.length > 0) {
                 this.canvas.plot(this.props.plotVariables[index], this.props.plotGMs[index], plot.template);
             }

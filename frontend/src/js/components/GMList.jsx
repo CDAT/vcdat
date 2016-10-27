@@ -15,7 +15,7 @@ var GMList = React.createClass({
         updateActiveGM: React.PropTypes.func
     },
     getInitialState() {
-        return {active_GM: {}};
+        return {active_GM: null};
     },
     componentWillUpdate() {
         $('#gm-list').quicktree();
@@ -55,6 +55,12 @@ var GMList = React.createClass({
         });
     },
     render() {
+        let default_GM_props = {
+            no_gm_selected: true
+        }
+        let gm_props = this.state.active_GM ?this.state.active_GM.gmProps :default_GM_props;
+        let gm_name = this.state.active_GM ?this.state.active_GM.gm :"Graphics Method Edit Menu";
+        let parent_name = this.state.active_GM ?this.state.active_GM.gmParent :"";
         return (
             <div className='left-side-list scroll-area-list-parent'>
                 <AddEditRemoveNav editAction={this.clickedEdit} title='Graphics Methods'/>
@@ -89,9 +95,9 @@ var GMList = React.createClass({
                     </ul>
                 </div>
                 <GraphicsMethodEditor
-                    graphicsMethod={this.state.active_GM.gm}
-                    graphicsMethodParent={this.state.active_GM.gmParent}
-                    gmProps={this.state.active_GM.gmProps}
+                    graphicsMethod={gm_name}
+                    graphicsMethodParent={parent_name}
+                    gmProps={gm_props}
                     graphicsMethods={this.props.graphicsMethods}
                     updateGraphicsMethods={this.props.updateGraphicsMethods}
                     updateActiveGM={this.updateActiveGM}/>
