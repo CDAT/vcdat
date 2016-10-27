@@ -94,7 +94,7 @@ const mapStateToProps = (state) => {
     return {
         variables: state.present.variables,
         graphics_methods: state.present.graphics_methods,
-        templates: state.present.templates,
+        templates: Object.keys(state.present.templates),
         selected_cell: cell,
         plot_being_edited: plot_being_edited,
         non_vector: non_vector,
