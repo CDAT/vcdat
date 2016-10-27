@@ -37,7 +37,7 @@ def get_templates():
 @app.route("/getGraphicsMethods")
 def get_graphics_methods():
     graphics_methods = get_gm()
-    return graphics_methods
+    return json.dumps(graphics_methods)
 
 
 @app.route("/getInitialFileTree")

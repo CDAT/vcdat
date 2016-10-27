@@ -70,8 +70,7 @@ var CachedFiles = React.createClass({
                                                     return (
                                                         <li key={index} data-filename={filename}
                                                             data-path={this.props.cachedFiles[filename].filepath}
-                                                            style={{'display': 'none'}}
-                                                        >
+                                                            style={{'display': 'none'}}>
                                                             <a>{var_name}</a>
                                                         </li>);})
                                                 }
