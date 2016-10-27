@@ -82,23 +82,19 @@ var GraphicsMethodEditForm = React.createClass({
         } else if (property_name.match(/levels_[0-9]+/)) {
             let level_index = Number.parseInt(property_name.split('_')[1]);
             cur_gmProps['levels'][level_index] = event.target.value;
-            console.log(cur_gmProps['levels'][level_index], typeof(cur_gmProps['levels'][level_index]))
         } else {
             cur_gmProps[property_name] = event.target.value;
         }
         this.props.updateActiveGM(cur_gmProps, this.props.graphicsMethodParent, this.props.graphicsMethod);
-        console.log(cur_gmProps[property_name], typeof(cur_gmProps[property_name]));
     },
     changeState(property_name, value, index=null) {
         let cur_gmProps = Object.assign({}, this.props.gmProps);
         if(!index) {
             cur_gmProps[property_name] = value;
         } else {
-            console.log(index)
             cur_gmProps[property_name][index] = value;
         }
         this.props.updateActiveGM(cur_gmProps, this.props.graphicsMethodParent, this.props.graphicsMethod);
-        console.log(cur_gmProps[property_name], typeof(cur_gmProps[property_name]));
     },
     commitEdits() {
         let parent = this.props.graphicsMethodParent;
@@ -222,148 +218,3 @@ var GraphicsMethodEditForm = React.createClass({
 });
 
 export default GraphicsMethodEditForm;
-
-/* in case I need it later. Don't judge me.
-populateForm() {
-        var gmProps = this.props.gmProps
-        var form_contents = Object.keys(gmProps).map((key, index) => {
-            switch(key) {
-                case 'boxfill_type':
-                    return (
-                        <BoxfillType key={key+index+(Date.now()/Math.random())}
-                            handleChange={this.handleChange}
-                            type={gmProps[key]} />
-                    );
-                case 'color_1':
-                    return (
-                         <ColorOneTwo key={'colors'+index+(Date.now()/Math.random())}
-                             handleChange={this.handleChange}
-                             colorOne={gmProps['color_1']}
-                             colorTwo={gmProps['color_2']}/>
-                    );
-                case 'colormap':
-                    return (
-                        <ColormapField key={'colormaps'+(Date.now()/Math.random())}
-                            defaultValue={this.props.gmProps[key]}
-                            handleChange={this.handleChange}/>
-                    );
-                case 'datawc_calendar':
-                    return (
-                        <div key={'datawc_calendar'+(Date.now()/Math.random())}>
-                            <h5>datawc_calendar: </h5>
-                            <input name='datawc_calendar'
-                                type='number'
-                                defaultValue={gmProps[key]}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                        </div>
-                    );
-                case 'datawc_timeunits':
-                    return (
-                        <div key={'datawc_timeunits'+(Date.now()/Math.random())}>
-                            <h5>datawc_timeunits: </h5>
-                            <input name='datawc_timeunits'
-                                type='text'
-                                defaultValue={gmProps[key]}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                        </div>
-                    );
-                case 'datawc_x1':
-                    // worldcoordinates here
-                    return (
-                        <DatawcCoordinates key={"worldcoordinates"+index+(Date.now()/Math.random())}
-                            handleChange={this.handleChange}
-                            x1={gmProps['datawc_x1']}
-                            x2={gmProps['datawc_x2']}
-                            y1={gmProps['datawc_y1']}
-                            y2={gmProps['datawc_y2']}/>
-                    );
-                case 'ext_1':
-                    var ext1 = gmProps['ext_1'];
-                    var ext2 = gmProps['ext_2'];
-                    return (
-                        <Exts key={'exts'+(Date.now()/Math.random())}
-                            handleChange={this.handleChange}
-                            ext1={ext1}
-                            ext2={ext2}/>
-                    );
-                case 'fillareacolors':
-                    return (
-                        <FillareaFields key={'fillarea-fields'+(Date.now()/Math.random())}
-                            className={
-                                gmProps['boxfill_type'] === 'custom'
-                                    ? ''
-                                    :'hide'}
-                            colors={gmProps['fillareacolors']}
-                            indices={gmProps['fillareaindices']}
-                            opacity={gmProps['fillareaopacity']}
-                            style={gmProps['fillareastyle']}
-                            handleChange={this.handleChange}/>
-
-                    );
-                case 'legend':
-                    return(
-                        <div key={key+index+(Date.now()/Math.random())}>
-                            <h5>Legend: </h5>
-                            <input type='text'
-                                name={key}
-                                defaultValue={gmProps[key]}
-                                onChange={NOP}
-                                onBlur={this.handleChange}/>
-                        </div>
-                    );
-                case 'level_1':
-                    return (
-                        <LevelOneTwo key={"level-1-2"+index+(Date.now()/Math.random())}
-                            handleChange={this.handleChange}
-                            level1={gmProps['level_1']}
-                            level2={gmProps['level_2']}/>
-                    );
-                case 'levels':
-                    return (
-                        <Levels key={'levels'+(Date.now()/Math.random())}
-                            levels={gmProps['levels']}
-                            addLevel={this.addLevel}
-                            removeLevel={this.removeLevel}
-                            handleChange={this.handleChange}/>
-                    );
-                case 'missing':
-                    return (
-                        <Missing key={key+index+(Date.now()/Math.random())}
-                            handleChange={this.handleChange}
-                            missing={gmProps['missing']}/>
-                    );
-                case 'projection':
-                    return (
-                        <Projection key={'projection-selector'+(Date.now()/Math.random())}
-                            projection={gmProps['projection']}
-                            handleChange={this.handleChange} />
-                    );
-                case 'xaxisconvert':
-                    return (
-                        <AxisTransforms key={'axis-transforms'+Date.now()/Math.random()}
-                            handleChange={this.handleChange}
-                            converts={['linear', 'log10', 'ln', 'exp', 'area_wt']}
-                            defaultX={gmProps['xaxisconvert']}
-                            defaultY={gmProps['yaxisconvert']} />
-                    );
-                case 'xmtics1':
-                    return (
-                        <TicsAndLabels key={'tics-and-labels'+Date.now()/Math.random()}
-                            handleChange={this.handleChange}
-                            xmt1={gmProps['xmtics1']}
-                            xmt2={gmProps['xmtics2']}
-                            ymt1={gmProps['ymtics1']}
-                            ymt2={gmProps['ymtics2']}
-                            xtl1={gmProps['xticlabels1']}
-                            xtl2={gmProps['xticlabels2']}
-                            ytl1={gmProps['yticlabels1']}
-                            ytl2={gmProps['yticlabels2']} />
-                    );
-                default:
-                    return;
-            }
-        });
-        return form_contents;
-    }, */

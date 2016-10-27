@@ -3,7 +3,7 @@ import React from 'react'
 var Legend = React.createClass({
     propTypes: {
         handleChange: React.PropTypes.func,
-        legend: React.PropTypes.string,
+        legend: React.PropTypes.object,
         className: React.PropTypes.string
     },
     getInitialState() {
