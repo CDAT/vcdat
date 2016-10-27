@@ -59,7 +59,7 @@ var LevelOneTwo = React.createClass({
                         name="level_1"
                         value={
                             this.state.level1 === 0 || this.state.level1
-                            ? Number.isInteger(this.state.level1) && this.state.level1 === 1e20
+                            ? Number.isInteger(this.state.level1) && Math.abs(this.state.level1) > 1e4
                                 ? this.state.level1.toExponential()
                                 : this.state.level1
                             : ''
@@ -75,7 +75,7 @@ var LevelOneTwo = React.createClass({
                         name="level_2"
                         value={
                             this.state.level2 === 0 || this.state.level2
-                            ? Number.isInteger(this.state.level2) && this.state.level2 === 1e20
+                            ? Number.isInteger(this.state.level2) && Math.abs(this.state.level2) > 1e4
                                 ? this.state.level2.toExponential()
                                 : this.state.level2
                             : ''
