@@ -1,5 +1,5 @@
 import React from 'react'
-import GraphicsMethodEditForm from '../gmedits/GraphicsMethodEditForm.jsx'
+import VCSWidgets from 'vcs-widgets'
 
 var GraphicsMethodEditor = React.createClass({
     propTypes: {
@@ -8,6 +8,7 @@ var GraphicsMethodEditor = React.createClass({
         gmProps: React.PropTypes.object
     },
     render() {
+        var GMForm = VCSWidgets.GMEdit;
         return (
             <div className="modal fade" id='graphics-method-editor'>
                 <div className="modal-dialog" role="document">
@@ -20,7 +21,7 @@ var GraphicsMethodEditor = React.createClass({
                                 {this.props.graphicsMethod} &emsp; {this.props.graphicsMethodParent}
                             </h4>
                         </div>
-                        <GraphicsMethodEditForm
+                        <GMForm
                             graphicsMethod={this.props.graphicsMethod}
                             graphicsMethodParent={this.props.graphicsMethodParent}
                             gmProps={this.props.gmProps}
