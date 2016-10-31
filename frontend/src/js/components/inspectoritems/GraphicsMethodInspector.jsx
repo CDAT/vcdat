@@ -1,4 +1,5 @@
 import React from 'react'
+/* global $ */
 
 var GraphicsMethodInspector = React.createClass({
     propTypes: {
@@ -24,20 +25,16 @@ var GraphicsMethodInspector = React.createClass({
         return;
     },
     render(){
-
         return (
-
             <div className='inspector-selector btn-group'>
                 <h5 className='black'>Graphics Method:</h5>
                 <table>
                     <tbody>
                     <tr>
                         <td>
-
                             <div className='dropdown-container'>
                                 <button type="button" className="btn btn-info dropdown-toggle dropdown-button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
                                     <span className='inspector-dropdown-title'>{this.props.graphicsMethodParent}</span>
                                     <span className="caret"></span>
                                 </button>
@@ -72,7 +69,6 @@ var GraphicsMethodInspector = React.createClass({
                                 <ul className="dropdown-menu">
                                     {this.getGMS()}
                                 </ul>
-
                             </div>
                         </td>
                         <td className='edit-button'>

@@ -67,7 +67,10 @@ var Actions = {
     initializeGraphicsMethodsValues(gm) {
         return {
             type: 'INITIALIZE_GRAPHICS_METHODS_VALUES',
-            graphics_methods: gm
+            graphics_methods: gm,
+            gmProps: gm['boxfill']['default'],
+            gmParent: 'boxfill',
+            gm: 'default'
         }
     },
     updateSelectedCells(selected_cells) {
@@ -151,6 +154,24 @@ var Actions = {
             filename: filename,
             filepath: filepath,
             variables: variables
+        }
+    },
+    updateActiveGM(gmProps, gmParent, gm) {
+        return {
+            type: 'UPDATE_ACTIVE_GM',
+            gmProps: gmProps,
+            gmParent: gmParent,
+            gm: gm
+        }
+    },
+    updateGraphicsMethods(graphics_methods, gmProps, gmParent, gm, new_name) {
+        return {
+            type: 'UPDATE_GRAPHICS_METHODS',
+            graphics_methods: graphics_methods,
+            gmProps: gmProps,
+            gmParent: gmParent,
+            gm: gm,
+            new_name: new_name
         }
     }
 }

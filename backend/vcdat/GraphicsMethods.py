@@ -11,7 +11,8 @@ def get_gm():
     for t in vcs.graphicsmethodlist():
         _methods[t] = {}
         for m in vcs.elements[t].keys():
-            _methods[t][m] = {'nvars': detect_nvars(t, m, vcs.elements[t][m])}
+            _methods[t][m] = vcs.dumpToDict(vcs.elements[t][m])[0]
+            _methods[t][m]["nvars"] = detect_nvars(t, m, vcs.elements[t][m])
     return json.dumps(_methods)
 
 

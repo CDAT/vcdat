@@ -17,6 +17,7 @@ var LeftSideBar = React.createClass({
             React.PropTypes.array,
             React.PropTypes.object
         ]),
+        sheets_model: React.PropTypes.object
 
     },
     initDragListItems(){
@@ -42,6 +43,7 @@ var LeftSideBar = React.createClass({
     componentDidUpdate(){
         this.initDragListItems();
     },
+
     render() {
         return (
             <div id='left-side-bar' className=''>
@@ -49,9 +51,9 @@ var LeftSideBar = React.createClass({
                     variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     addFileToCache={this.props.addFileToCache}
-                    cachedFiles={this.props.cached_files}
-                />
-                <GMList graphicsMethods={this.props.graphics_methods}/>
+                    cachedFiles={this.props.cached_files}/>
+                <GMList graphicsMethods={this.props.graphics_methods}
+                    updateGraphicsMethods={this.props.updateGraphicsMethods}/>
                 <TemplateList templates={this.props.templates}/>
             </div>
         )
@@ -63,7 +65,8 @@ const mapStateToProps = (state) => {
         variables: state.present.variables,
         graphics_methods: state.present.graphics_methods,
         templates: state.present.templates,
-        cached_files: state.present.cached_files
+        cached_files: state.present.cached_files,
+        sheets_model: state.present.sheets_model
     }
 }
 
@@ -72,7 +75,10 @@ const mapDispatchToProps = (dispatch) => {
         addFileToCache: function(filename, filepath, variables) {
             dispatch(Actions.addFileToCache(filename, filepath, variables));
         },
-        loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list))
+        loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list)),
+        updateGraphicsMethods: (graphics_methods, gmProps, gmParent, gm, new_name) => {
+            dispatch(Actions.updateGraphicsMethods(graphics_methods, gmProps, gmParent, gm, new_name))
+        }
     }
 }
 
