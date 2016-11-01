@@ -62,7 +62,7 @@ const mapStateToProps = (state) => {
     return {
         variables: state.present.variables,
         graphics_methods: state.present.graphics_methods,
-        templates: state.present.templates,
+        templates: Object.keys(state.present.templates),
         cached_files: state.present.cached_files
     }
 }

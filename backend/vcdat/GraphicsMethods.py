@@ -12,7 +12,7 @@ def get_gm():
         _methods[t] = {}
         for m in vcs.elements[t].keys():
             _methods[t][m] = {'nvars': detect_nvars(t, m, vcs.elements[t][m])}
-    return json.dumps(_methods)
+    return _methods
 
 
 def detect_nvars(g_type, g_method, g_obj):
