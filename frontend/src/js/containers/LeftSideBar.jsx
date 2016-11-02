@@ -10,6 +10,7 @@ var LeftSideBar = React.createClass({
     propTypes: {
         addFileToCache: React.PropTypes.func,
         cached_files: React.PropTypes.object,
+        getColormaps: React.PropTypes.func,
         graphics_methods: React.PropTypes.object,
         loadVariables: React.PropTypes.func,
         templates: React.PropTypes.array,
@@ -17,7 +18,9 @@ var LeftSideBar = React.createClass({
             React.PropTypes.array,
             React.PropTypes.object
         ]),
-        sheets_model: React.PropTypes.object
+        colormaps: React.PropTypes.array,
+        sheets_model: React.PropTypes.object,
+        updateGraphicsMethods: React.PropTypes.func
 
     },
     initDragListItems(){
@@ -43,7 +46,6 @@ var LeftSideBar = React.createClass({
     componentDidUpdate(){
         this.initDragListItems();
     },
-
     render() {
         return (
             <div id='left-side-bar' className=''>
@@ -53,7 +55,8 @@ var LeftSideBar = React.createClass({
                     addFileToCache={this.props.addFileToCache}
                     cachedFiles={this.props.cached_files}/>
                 <GMList graphicsMethods={this.props.graphics_methods}
-                    updateGraphicsMethods={this.props.updateGraphicsMethods}/>
+                    updateGraphicsMethods={this.props.updateGraphicsMethods}
+                    colormaps={this.props.colormaps}/>
                 <TemplateList templates={this.props.templates}/>
             </div>
         )
@@ -66,7 +69,8 @@ const mapStateToProps = (state) => {
         graphics_methods: state.present.graphics_methods,
         templates: Object.keys(state.present.templates),
         cached_files: state.present.cached_files,
-        sheets_model: state.present.sheets_model
+        sheets_model: state.present.sheets_model,
+        colormaps: state.present.colormaps
     }
 }
 

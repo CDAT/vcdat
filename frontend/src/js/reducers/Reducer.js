@@ -318,13 +318,43 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
     }
 }
 
+var prev_colormaps = null;
+if (prev_state){
+    prev_colormaps = prev_state[prev_state.length-1].colormaps;
+}
+
+// gmListReducer + helpers
+const getColormaps = () => {
+    $.get("getColormaps").then(
+        function(cmaps){
+            getStore().dispatch(Actions.initializeColormaps(JSON.parse(cmaps)['colormaps']))
+        }
+    )
+}
+
+const colormapsListReducer = (state=[], action) => {
+    if (!state.length && action.type !== "INITIALIZE_COLORMAPS") {
+        getColormaps();
+    }
+    switch(action.type){
+        case "INITIALIZE_COLORMAPS":
+            return action.colormaps
+        default:
+            if(prev_colormaps)
+                return prev_colormaps
+            else
+                return state
+    }
+}
+
 // combined reducers + undoable
 const reducers = combineReducers({
     cached_files: cachedFilesReducer,
     variables: varListReducer,
     graphics_methods: gmListReducer,
     templates: templateListReducer,
-    sheets_model: sheetsModelReducer
+    sheets_model: sheetsModelReducer,
+    colormaps: colormapsListReducer
 
 
 });

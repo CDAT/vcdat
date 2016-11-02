@@ -67,10 +67,7 @@ var Actions = {
     initializeGraphicsMethodsValues(gm) {
         return {
             type: 'INITIALIZE_GRAPHICS_METHODS_VALUES',
-            graphics_methods: gm,
-            gmProps: gm['boxfill']['default'],
-            gmParent: 'boxfill',
-            gm: 'default'
+            graphics_methods: gm
         }
     },
     updateSelectedCells(selected_cells) {
@@ -172,6 +169,12 @@ var Actions = {
             gmParent: gmParent,
             gm: gm,
             new_name: new_name
+        }
+    },
+    initializeColormaps(colormaps) {
+        return {
+            type: 'INITIALIZE_COLORMAPS',
+            colormaps: colormaps
         }
     }
 }

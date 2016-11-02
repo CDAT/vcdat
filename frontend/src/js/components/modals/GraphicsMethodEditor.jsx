@@ -1,14 +1,15 @@
 import React from 'react'
-import VCSWidgets from 'vcs-widgets'
+import widgets from 'vcs-widgets'
 
 var GraphicsMethodEditor = React.createClass({
     propTypes: {
         graphicsMethod: React.PropTypes.string,
         graphicsMethodParent: React.PropTypes.string,
-        gmProps: React.PropTypes.object
+        gmProps: React.PropTypes.object,
+        colormaps: React.PropTypes.array
     },
     render() {
-        var GMForm = VCSWidgets.GMEdit;
+        var GMForm = widgets.GMEdit;
         return (
             <div className="modal fade" id='graphics-method-editor'>
                 <div className="modal-dialog" role="document">
@@ -27,7 +28,8 @@ var GraphicsMethodEditor = React.createClass({
                             gmProps={this.props.gmProps}
                             updateGraphicsMethods={this.props.updateGraphicsMethods}
                             updateActiveGM={this.props.updateActiveGM}
-                            graphicsMethods={this.props.graphicsMethods}/>
+                            graphicsMethods={this.props.graphicsMethods}
+                            colormaps={this.props.colormaps}/>
                     </div>
                 </div>
             </div>

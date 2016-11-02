@@ -12,7 +12,8 @@ function siblingsVisible(element_name, parent_gm) {
 var GMList = React.createClass({
     propTypes: {
         graphicsMethods: React.PropTypes.object,
-        updateActiveGM: React.PropTypes.func
+        updateActiveGM: React.PropTypes.func,
+        colormaps: React.PropTypes.array
     },
     getInitialState() {
         return {active_GM: null};
@@ -43,7 +44,6 @@ var GMList = React.createClass({
         let gm = el.attr("data-name");
         // call updateActiveGM
         this.updateActiveGM(gmProps, gmParent, gm)
-        console.log(this.props.graphicsMethods[el.attr("data-parent")][el.attr("data-name")],el.attr("data-parent"),el.attr("data-name"))
     },
     updateActiveGM(props, parent, gm) {
         this.setState({
@@ -100,7 +100,8 @@ var GMList = React.createClass({
                     gmProps={gm_props}
                     graphicsMethods={this.props.graphicsMethods}
                     updateGraphicsMethods={this.props.updateGraphicsMethods}
-                    updateActiveGM={this.updateActiveGM}/>
+                    updateActiveGM={this.updateActiveGM}
+                    colormaps={this.props.colormaps}/>
             </div>
         )
     }
