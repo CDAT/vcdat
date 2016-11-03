@@ -25,7 +25,6 @@ var AppContainer = React.createClass({
                     redoEnabled={this.props.redoEnabled}
                 />
                 <div id='main-container'>
-                    <RightSideBar resizeSpreadsheet={this.resizeSpreadsheet}/>
                     <LeftSideBar resizeSpreadsheet={this.resizeSpreadsheet}/>
                     <SpreadsheetContainer/>
                 </div>

@@ -10,6 +10,7 @@ var LeftSideBar = React.createClass({
     propTypes: {
         addFileToCache: React.PropTypes.func,
         cached_files: React.PropTypes.object,
+        getColormaps: React.PropTypes.func,
         graphics_methods: React.PropTypes.object,
         loadVariables: React.PropTypes.func,
         templates: React.PropTypes.array,
@@ -17,6 +18,9 @@ var LeftSideBar = React.createClass({
             React.PropTypes.array,
             React.PropTypes.object
         ]),
+        colormaps: React.PropTypes.array,
+        sheets_model: React.PropTypes.object,
+        updateGraphicsMethods: React.PropTypes.func
 
     },
     initDragListItems(){
@@ -49,9 +53,10 @@ var LeftSideBar = React.createClass({
                     variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     addFileToCache={this.props.addFileToCache}
-                    cachedFiles={this.props.cached_files}
-                />
-                <GMList graphicsMethods={this.props.graphics_methods}/>
+                    cachedFiles={this.props.cached_files}/>
+                <GMList graphicsMethods={this.props.graphics_methods}
+                    updateGraphicsMethods={this.props.updateGraphicsMethods}
+                    colormaps={this.props.colormaps}/>
                 <TemplateList templates={this.props.templates}/>
             </div>
         )
@@ -63,7 +68,9 @@ const mapStateToProps = (state) => {
         variables: state.present.variables,
         graphics_methods: state.present.graphics_methods,
         templates: Object.keys(state.present.templates),
-        cached_files: state.present.cached_files
+        cached_files: state.present.cached_files,
+        sheets_model: state.present.sheets_model,
+        colormaps: state.present.colormaps
     }
 }
 
@@ -72,7 +79,10 @@ const mapDispatchToProps = (dispatch) => {
         addFileToCache: function(filename, filepath, variables) {
             dispatch(Actions.addFileToCache(filename, filepath, variables));
         },
-        loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list))
+        loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list)),
+        updateGraphicsMethods: (graphics_methods, gmProps, gmParent, gm, new_name) => {
+            dispatch(Actions.updateGraphicsMethods(graphics_methods, gmProps, gmParent, gm, new_name))
+        }
     }
 }
 
