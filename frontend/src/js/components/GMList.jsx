@@ -58,6 +58,7 @@ var GMList = React.createClass({
         let default_GM_props = {
             no_gm_selected: true
         }
+        console.log(this.props.graphicsMethods);
         let gm_props = this.state.active_GM ?this.state.active_GM.gmProps :default_GM_props;
         let gm_name = this.state.active_GM ?this.state.active_GM.gm :"Graphics Method Edit Menu";
         let parent_name = this.state.active_GM ?this.state.active_GM.gmParent :"";
