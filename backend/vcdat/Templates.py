@@ -1,5 +1,9 @@
 import vcs
+import json
 
+_templates = {}
 
 def get_t():
-        return sorted(vcs.elements['template'].keys())
+        for tname in vcs.elements['template'].keys():
+            _templates[tname] = vcs.utils.dumpToDict(vcs.elements['template'][tname])[0]
+        return _templates

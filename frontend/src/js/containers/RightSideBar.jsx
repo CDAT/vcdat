@@ -15,8 +15,6 @@ var RightSideBar = React.createClass({
     render(){
         return (
             <div id='right-side-bar'>
-                <InspectorContainer />
-                <Animation />
             </div>
         )
     }

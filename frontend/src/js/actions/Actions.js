@@ -152,6 +152,30 @@ var Actions = {
             filepath: filepath,
             variables: variables
         }
+    },
+    updateActiveGM(gmProps, gmParent, gm) {
+        return {
+            type: 'UPDATE_ACTIVE_GM',
+            gmProps: gmProps,
+            gmParent: gmParent,
+            gm: gm
+        }
+    },
+    updateGraphicsMethods(graphics_methods, gmProps, gmParent, gm, new_name) {
+        return {
+            type: 'UPDATE_GRAPHICS_METHODS',
+            graphics_methods: graphics_methods,
+            gmProps: gmProps,
+            gmParent: gmParent,
+            gm: gm,
+            new_name: new_name
+        }
+    },
+    initializeColormaps(colormaps) {
+        return {
+            type: 'INITIALIZE_COLORMAPS',
+            colormaps: colormaps
+        }
     }
 }
 
