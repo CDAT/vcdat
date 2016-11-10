@@ -323,7 +323,7 @@ if (prev_state){
     prev_colormaps = prev_state[prev_state.length-1].colormaps;
 }
 
-// gmListReducer + helpers
+// colormapsListReducer + helpers
 const getColormaps = () => {
     $.get("getColormaps").then(
         function(cmaps){
@@ -347,9 +347,39 @@ const colormapsListReducer = (state=[], action) => {
     }
 }
 
+// defaultMethodsReducer + helpers
+var prev_defaults = null;
+if (prev_state){
+    prev_defaults = prev_state[prev_state.length-1].default_methods;
+}
+
+const getDefaultMethods = () => {
+    $.get("getDefaultMethods").then(
+        function(defaults){
+            getStore().dispatch(Actions.initializeDefaultMethods(JSON.parse(defaults)))
+        }
+    )
+}
+
+const defaultMethodsReducer = (state={}, action) => {
+    if (!Object.keys(state).length && action.type !== "INITIALIZE_DEFAULT_METHODS") {
+        getDefaultMethods();
+    }
+    switch(action.type){
+        case "INITIALIZE_DEFAULT_METHODS":
+            return action.defaultmethods
+        default:
+            if(prev_colormaps)
+                return prev_defaults
+            else
+                return state
+    }
+}
+
 // combined reducers + undoable
 const reducers = combineReducers({
     cached_files: cachedFilesReducer,
+    default_methods: defaultMethodsReducer,
     variables: varListReducer,
     graphics_methods: gmListReducer,
     templates: templateListReducer,
@@ -362,7 +392,8 @@ const reducers = combineReducers({
 const undoableReducer = undoable(reducers,{
     filter: excludeAction(
         ['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES',
-        'INITIALIZE_GRAPHICS_METHODS_VALUES', 'ADD_FILE_TO_CACHE']
+        'INITIALIZE_GRAPHICS_METHODS_VALUES', 'INITIALIZE_COLORMAPS',
+        'INITIALIZE_DEFAULT_METHODS','ADD_FILE_TO_CACHE']
     )
 });
 

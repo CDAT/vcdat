@@ -13,7 +13,7 @@ var LeftSideBar = React.createClass({
         getColormaps: React.PropTypes.func,
         graphics_methods: React.PropTypes.object,
         loadVariables: React.PropTypes.func,
-        templates: React.PropTypes.array,
+        templates: React.PropTypes.object,
         variables: React.PropTypes.oneOfType([
             React.PropTypes.array,
             React.PropTypes.object
@@ -49,15 +49,15 @@ var LeftSideBar = React.createClass({
     render() {
         return (
             <div id='left-side-bar' className=''>
-                <VarList
-                    variables={this.props.variables}
+                <VarList variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     addFileToCache={this.props.addFileToCache}
                     cachedFiles={this.props.cached_files}/>
                 <GMList graphicsMethods={this.props.graphics_methods}
                     updateGraphicsMethods={this.props.updateGraphicsMethods}
-                    colormaps={this.props.colormaps}/>
-                <TemplateList templates={this.props.templates}/>
+                    colormaps={this.props.colormaps}
+                    defaultMethods={this.props.default_methods}/>
+                <TemplateList templates={Object.keys(this.props.templates)}/>
             </div>
         )
     }
@@ -67,10 +67,11 @@ const mapStateToProps = (state) => {
     return {
         variables: state.present.variables,
         graphics_methods: state.present.graphics_methods,
-        templates: Object.keys(state.present.templates),
+        templates: state.present.templates,
         cached_files: state.present.cached_files,
         sheets_model: state.present.sheets_model,
-        colormaps: state.present.colormaps
+        colormaps: state.present.colormaps,
+        default_methods: state.present.default_methods
     }
 }
 

@@ -176,6 +176,12 @@ var Actions = {
             type: 'INITIALIZE_COLORMAPS',
             colormaps: colormaps
         }
+    },
+    initializeDefaultMethods(defaults) {
+        return {
+            type: 'INITIALIZE_DEFAULT_METHODS',
+            defaultmethods: defaults
+        }
     }
 }
 

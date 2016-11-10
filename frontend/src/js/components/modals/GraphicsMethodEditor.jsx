@@ -1,5 +1,5 @@
 import React from 'react'
-import widgets from 'vcs-widgets'
+import widgets from '../../../../deps/vcs-widgets'
 
 var GraphicsMethodEditor = React.createClass({
     propTypes: {
@@ -22,14 +22,14 @@ var GraphicsMethodEditor = React.createClass({
                                 {this.props.graphicsMethod} &emsp; {this.props.graphicsMethodParent}
                             </h4>
                         </div>
-                        <GMForm
+                        <GMForm colormaps={this.props.colormaps}
+                            defaultMethods={this.props.defaultMethods}
                             graphicsMethod={this.props.graphicsMethod}
                             graphicsMethodParent={this.props.graphicsMethodParent}
                             gmProps={this.props.gmProps}
                             updateGraphicsMethods={this.props.updateGraphicsMethods}
                             updateActiveGM={this.props.updateActiveGM}
-                            graphicsMethods={this.props.graphicsMethods}
-                            colormaps={this.props.colormaps}/>
+                            graphicsMethods={this.props.graphicsMethods}/>
                     </div>
                 </div>
             </div>

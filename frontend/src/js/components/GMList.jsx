@@ -58,9 +58,8 @@ var GMList = React.createClass({
         let default_GM_props = {
             no_gm_selected: true
         }
-        console.log(this.props.graphicsMethods);
         let gm_props = this.state.active_GM ?this.state.active_GM.gmProps :default_GM_props;
-        let gm_name = this.state.active_GM ?this.state.active_GM.gm :"Graphics Method Edit Menu";
+        let gm_name = this.state.active_GM ?this.state.active_GM.gm :"";
         let parent_name = this.state.active_GM ?this.state.active_GM.gmParent :"";
         return (
             <div className='left-side-list scroll-area-list-parent'>
@@ -95,14 +94,14 @@ var GMList = React.createClass({
                         })}
                     </ul>
                 </div>
-                <GraphicsMethodEditor
+                <GraphicsMethodEditor colormaps={this.props.colormaps}
+                    defaultMethods={this.props.defaultMethods}
                     graphicsMethod={gm_name}
                     graphicsMethodParent={parent_name}
                     gmProps={gm_props}
                     graphicsMethods={this.props.graphicsMethods}
                     updateGraphicsMethods={this.props.updateGraphicsMethods}
-                    updateActiveGM={this.updateActiveGM}
-                    colormaps={this.props.colormaps}/>
+                    updateActiveGM={this.updateActiveGM}/>
             </div>
         )
     }
