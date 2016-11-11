@@ -1,5 +1,5 @@
 import React from 'react'
-import widgets from '../../../../deps/vcs-widgets'
+import widgets from 'vcs-widgets'
 
 var GraphicsMethodEditor = React.createClass({
     propTypes: {
