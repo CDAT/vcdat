@@ -44,7 +44,7 @@ asciidata=2.6=UVCDAT
 binaryio=2.6=UVCDAT
 cdat_info=2.6.1=UVCDAT
 cdms2=2016.10.21=Provenance
-vcs-js=0.1
+vcs-js<1
 cdtime=2.6.1=UVCDAT
 cdutil=2.6=UVCDAT
 clapack=3.2.1=UVCDAT
