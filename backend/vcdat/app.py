@@ -3,9 +3,11 @@ import vcs
 import cdms2
 import json
 from flask import Flask, send_from_directory, request
-from GraphicsMethods import get_gm
+from GraphicsMethods import get_gm, get_default_gms
 from Templates import get_t
 from Files import getFilesObject
+from Colormaps import get_cmaps
+
 app = Flask(__name__, static_url_path='')
 
 _ = vcs.init()
@@ -37,7 +39,17 @@ def get_templates():
 @app.route("/getGraphicsMethods")
 def get_graphics_methods():
     graphics_methods = get_gm()
-    return graphics_methods
+    return json.dumps(graphics_methods)
+
+@app.route("/getDefaultMethods")
+def get_default_methods():
+    default_gms = get_default_gms()
+    return json.dumps(default_gms)
+
+@app.route("/getColormaps")
+def get_colormaps():
+    colormaps = get_cmaps()
+    return json.dumps({"colormaps": colormaps})
 
 
 @app.route("/getInitialFileTree")

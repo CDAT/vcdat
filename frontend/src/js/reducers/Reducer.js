@@ -4,9 +4,80 @@ import { combineReducers } from 'redux';
 import Actions from '../actions/Actions.js';
 import {getStore} from '../Store.js';
 
+// non-complex reducers
+const cachedFilesReducer = (state = {}, action) => {
+    switch(action.type){
+        case 'ADD_FILE_TO_CACHE':
+            let new_state = jQuery.extend(true, {}, state)
+            new_state[action.filename] = {
+                filepath: action.filepath,
+                variables: action.variables
+            }
+            return new_state;
+        default: return state;
+    }
+}
 
-var test_vars = ['clt', 'u', 'v'];
+const varListReducer = (state = [], action) => {
+    switch (action.type) {
+        case 'LOAD_VARIABLES':
+            var new_list = jQuery.extend(true, {}, state);
+            action.var_list.forEach((var_obj) => {
+                let key = Object.keys(var_obj)[0];
+                new_list[key] = var_obj[key];
+            })
+            return new_list;
+        default: return state
+    }
+}
 
+// gmListReducer + helpers
+const getGraphicsMethods = () => {
+    $.get("getGraphicsMethods").then(
+        function(gm){
+            getStore().dispatch(Actions.initializeGraphicsMethodsValues(JSON.parse(gm)))
+        }
+    )
+}
+
+const gmListReducer = (state = {}, action) => {
+    if (!Object.keys(state).length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
+        getGraphicsMethods();
+    }
+    switch (action.type) {
+        case "INITIALIZE_GRAPHICS_METHODS_VALUES":
+            return action.graphics_methods;
+        case "UPDATE_GRAPHICS_METHODS":
+            let new_graphics_methods = Object.assign({}, action.graphics_methods)
+            new_graphics_methods[action.gmParent][action.new_name] = action.gmProps
+            return new_graphics_methods;
+        default:
+            return state
+    }
+}
+
+// templateListReducer + helpers
+const getTemplates = () => {
+    $.get("getTemplates").then(
+        function(templates){
+            getStore().dispatch(Actions.initializeTemplateValues(JSON.parse(templates)));
+        }
+    );
+}
+
+const templateListReducer = (state = [], action) => {
+    if (!state.length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
+        getTemplates();
+    }
+    switch (action.type) {
+        case 'INITIALIZE_TEMPLATE_VALUES':
+            return action.templates;
+        default:
+            return state
+    }
+}
+
+// sheetsModelReducer + helpers
 var default_plot = {
     variables: [], // testing inspector
     graphics_method_parent: 'boxfill',
@@ -94,71 +165,6 @@ const createCellGrid = (sheet) => {
     return rows
 }
 
-const cachedFilesReducer = (state = {}, action) => {
-    switch(action.type){
-        case 'ADD_FILE_TO_CACHE':
-            var new_state = jQuery.extend(true, {}, state)
-            new_state[action.filename] = {
-                filepath: action.filepath,
-                variables: action.variables
-            }
-            return new_state;
-        default: return state;
-    }
-}
-
-const varListReducer = (state = [], action) => {
-    switch (action.type) {
-        case 'LOAD_VARIABLES':
-            var new_list = jQuery.extend(true, {}, state);
-            action.var_list.forEach((var_obj) => {
-                let key = Object.keys(var_obj)[0];
-                new_list[key] = var_obj[key];
-            })
-            return new_list;
-        default: return state
-    }
-}
-
-const gmListReducer = (state = {}, action) => {
-    if (!Object.keys(state).length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
-        getGraphicsMethods();
-    }
-    switch (action.type) {
-        case "INITIALIZE_GRAPHICS_METHODS_VALUES":
-            return action.graphics_methods;
-        default:
-            return state
-    }
-}
-
-const getGraphicsMethods = () => {
-    $.get("getGraphicsMethods").then(
-        function(gm){
-            getStore().dispatch(Actions.initializeGraphicsMethodsValues(JSON.parse(gm)))
-        }
-    )
-}
-const templateListReducer = (state = [], action) => {
-    if (!state.length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
-        getTemplates();
-    }
-    switch (action.type) {
-        case 'INITIALIZE_TEMPLATE_VALUES':
-            return action.templates;
-        default:
-            return state
-    }
-}
-
-const getTemplates = () => {
-    $.get("getTemplates").then(
-        function(templates){
-            getStore().dispatch(Actions.initializeTemplateValues(JSON.parse(templates)));
-        }
-    );
-}
-
 const updateCell = (cell, action) => {
     switch (action.type) {
         case 'CHANGE_PLOT':
@@ -194,7 +200,7 @@ const updateCell = (cell, action) => {
                 plot.graphics_method_parent = action.graphics_method_parent;
                 plot.graphics_method = 'default';
 
-                //remove second var if not vector
+                // remove second var if not vector
                 if(plot.graphics_method_parent !== 'vector'){
                     plot.variables.splice(1, 1);
                 }
@@ -223,27 +229,43 @@ const getCell = (sheet, action) => {
     }
 }
 
+// capture the previous sheets_model to ensure we don't clobber the sheets_model
+// in the sheetsModelReducer's default case
+var prev_state;
+try {
+    prev_state = getStore().getState().past;
+} catch(err) {
+    console.log(err)
+}
+
+var prev_sheets;
+if (prev_state){
+    prev_sheets = prev_state[prev_state.length-1].sheets_model;
+}
+
 const sheetsModelReducer = (state = default_sheets_model, action) => {
+    let new_state;
+    let sheet;
     switch (action.type) {
         case 'SHIFT_SHEET':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets.splice(action.old_position, 1)[0];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets.splice(action.old_position, 1)[0];
             new_state.sheets.splice(action.new_position, 0, sheet);
             new_state.cur_sheet_index = action.new_position;
             return new_state;
         case 'MOVE_ROW':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[state.cur_sheet_index];
             moveRow(sheet.cells, action);
             return new_state;
         case 'MOVE_COLUMN':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[state.cur_sheet_index];
             moveCol(sheet.cells, action);
             return new_state;
         case 'UPDATE_SELECTED_CELLS':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[state.cur_sheet_index];
             sheet.selected_cell_indices = action.selected_cells;
             return new_state;
         case 'ADD_PLOT':
@@ -251,31 +273,31 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
         case 'CHANGE_PLOT_VAR':
         case 'CHANGE_PLOT_GM':
         case 'CHANGE_PLOT_TEMPLATE':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[state.cur_sheet_index];
             updateCell(getCell(sheet, action), action)
             return new_state;
         case 'ROW_COUNT_CHANGED':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[new_state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[new_state.cur_sheet_index];
             sheet.row_count = action.count;
             sheet.cells = createCellGrid(sheet);
             return new_state;
         case 'COL_COUNT_CHANGED':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = new_state.sheets[new_state.cur_sheet_index];
+            new_state = jQuery.extend(true, {}, state);
+            sheet = new_state.sheets[new_state.cur_sheet_index];
             sheet.col_count = action.count;
             sheet.cells = createCellGrid(sheet);
             return new_state;
         case 'ADD_SHEET':
-            var new_state = jQuery.extend(true, {}, state);
-            var sheet = jQuery.extend(true, {}, default_sheet);
+            new_state = jQuery.extend(true, {}, state);
+            sheet = jQuery.extend(true, {}, default_sheet);
             sheet.name += new_state.sheets.length;
             new_state.sheets.push(sheet);
             new_state.cur_sheet_index = new_state.sheets.length - 1;
             return new_state;
         case 'REMOVE_SHEET':
-            var new_state = jQuery.extend(true, {}, state);
+            new_state = jQuery.extend(true, {}, state);
             if (action.sheet_index < new_state.cur_sheet_index) {
                 new_state.cur_sheet_index -= 1;
             } else if ((action.sheet_index === new_state.cur_sheet_index)
@@ -285,27 +307,93 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             new_state.sheets.splice(action.sheet_index, 1);
             return new_state;
         case 'CHANGE_CUR_SHEET_INDEX':
-            var new_state = jQuery.extend(true, {}, state);
+            new_state = jQuery.extend(true, {}, state);
             new_state.cur_sheet_index = action.index;
             return new_state;
         default:
-            return state;
+            if (state === default_sheets_model && prev_sheets)
+                return prev_sheets;
+            else
+                return state;
     }
 }
 
+var prev_colormaps = null;
+if (prev_state){
+    prev_colormaps = prev_state[prev_state.length-1].colormaps;
+}
+
+// colormapsListReducer + helpers
+const getColormaps = () => {
+    $.get("getColormaps").then(
+        function(cmaps){
+            getStore().dispatch(Actions.initializeColormaps(JSON.parse(cmaps)['colormaps']))
+        }
+    )
+}
+
+const colormapsListReducer = (state=[], action) => {
+    if (!state.length && action.type !== "INITIALIZE_COLORMAPS") {
+        getColormaps();
+    }
+    switch(action.type){
+        case "INITIALIZE_COLORMAPS":
+            return action.colormaps
+        default:
+            if(prev_colormaps)
+                return prev_colormaps
+            else
+                return state
+    }
+}
+
+// defaultMethodsReducer + helpers
+var prev_defaults = null;
+if (prev_state){
+    prev_defaults = prev_state[prev_state.length-1].default_methods;
+}
+
+const getDefaultMethods = () => {
+    $.get("getDefaultMethods").then(
+        function(defaults){
+            getStore().dispatch(Actions.initializeDefaultMethods(JSON.parse(defaults)))
+        }
+    )
+}
+
+const defaultMethodsReducer = (state={}, action) => {
+    if (!Object.keys(state).length && action.type !== "INITIALIZE_DEFAULT_METHODS") {
+        getDefaultMethods();
+    }
+    switch(action.type){
+        case "INITIALIZE_DEFAULT_METHODS":
+            return action.defaultmethods
+        default:
+            if(prev_colormaps)
+                return prev_defaults
+            else
+                return state
+    }
+}
+
+// combined reducers + undoable
 const reducers = combineReducers({
     cached_files: cachedFilesReducer,
+    default_methods: defaultMethodsReducer,
     variables: varListReducer,
     graphics_methods: gmListReducer,
-    templates:templateListReducer,
-    sheets_model: sheetsModelReducer
+    templates: templateListReducer,
+    sheets_model: sheetsModelReducer,
+    colormaps: colormapsListReducer
+
 
 });
 
 const undoableReducer = undoable(reducers,{
     filter: excludeAction(
         ['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES',
-        'INITIALIZE_GRAPHICS_METHODS_VALUES', 'ADD_FILE_TO_CACHE']
+        'INITIALIZE_GRAPHICS_METHODS_VALUES', 'INITIALIZE_COLORMAPS',
+        'INITIALIZE_DEFAULT_METHODS','ADD_FILE_TO_CACHE']
     )
 });
 

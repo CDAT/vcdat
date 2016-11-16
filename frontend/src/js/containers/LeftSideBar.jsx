@@ -10,13 +10,17 @@ var LeftSideBar = React.createClass({
     propTypes: {
         addFileToCache: React.PropTypes.func,
         cached_files: React.PropTypes.object,
+        getColormaps: React.PropTypes.func,
         graphics_methods: React.PropTypes.object,
         loadVariables: React.PropTypes.func,
-        templates: React.PropTypes.array,
+        templates: React.PropTypes.object,
         variables: React.PropTypes.oneOfType([
             React.PropTypes.array,
             React.PropTypes.object
         ]),
+        colormaps: React.PropTypes.array,
+        sheets_model: React.PropTypes.object,
+        updateGraphicsMethods: React.PropTypes.func
 
     },
     initDragListItems(){
@@ -45,14 +49,15 @@ var LeftSideBar = React.createClass({
     render() {
         return (
             <div id='left-side-bar' className=''>
-                <VarList
-                    variables={this.props.variables}
+                <VarList variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     addFileToCache={this.props.addFileToCache}
-                    cachedFiles={this.props.cached_files}
-                />
-                <GMList graphicsMethods={this.props.graphics_methods}/>
-                <TemplateList templates={this.props.templates}/>
+                    cachedFiles={this.props.cached_files}/>
+                <GMList graphicsMethods={this.props.graphics_methods}
+                    updateGraphicsMethods={this.props.updateGraphicsMethods}
+                    colormaps={this.props.colormaps}
+                    defaultMethods={this.props.default_methods}/>
+                <TemplateList templates={Object.keys(this.props.templates)}/>
             </div>
         )
     }
@@ -63,7 +68,10 @@ const mapStateToProps = (state) => {
         variables: state.present.variables,
         graphics_methods: state.present.graphics_methods,
         templates: state.present.templates,
-        cached_files: state.present.cached_files
+        cached_files: state.present.cached_files,
+        sheets_model: state.present.sheets_model,
+        colormaps: state.present.colormaps,
+        default_methods: state.present.default_methods
     }
 }
 
@@ -72,7 +80,10 @@ const mapDispatchToProps = (dispatch) => {
         addFileToCache: function(filename, filepath, variables) {
             dispatch(Actions.addFileToCache(filename, filepath, variables));
         },
-        loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list))
+        loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list)),
+        updateGraphicsMethods: (graphics_methods, gmProps, gmParent, gm, new_name) => {
+            dispatch(Actions.updateGraphicsMethods(graphics_methods, gmProps, gmParent, gm, new_name))
+        }
     }
 }
 
