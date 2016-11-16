@@ -47,6 +47,8 @@ asciidata=2.6=UVCDAT
 binaryio=2.6=UVCDAT
 cdat_info=2.6.1=UVCDAT
 cdms2=2.6.1=UVCDAT
+cdms2=2016.10.21=Provenance
+vcs-js<1
 cdtime=2.6.1=UVCDAT
 cdutil=2.6=UVCDAT
 clapack=3.2.1=UVCDAT
@@ -99,3 +101,5 @@ zonalmeans=2.6.1=UVCDAT
 wheel=0.29.0=py27_0
 xz=5.2.2=0
 zlib=1.2.8=3
+nodejs
+flask
