@@ -8,6 +8,9 @@ var CachedFiles = React.createClass({
         cachedFiles: React.PropTypes.object,
         loadVariables: React.PropTypes.func
     },
+    getProvenance(path, var_name){
+        return $.get('getVariableProvenance', {'path': path, 'varname': var_name})
+    },
     componentDidUpdate(){
         $('#cache-tree').quicktree();
     },
@@ -15,19 +18,29 @@ var CachedFiles = React.createClass({
         $('#cache-tree').quicktree();
     },
     loadVariable(event){
-       let selected = $('#cache-tree').find('.active');
-       let var_name = selected.text();
-       let filename = selected.parent().attr('data-filename');
-       let path = selected.parent().attr('data-path');
-       let var_obj = {};
-       var_obj[var_name] = {
-               cdms_var_name: var_name,
-               filename: filename,
-               path: path
-           }
-       this.props.loadVariables([var_obj])
-       $('#cached-files').modal('hide');
-   },
+        let selected = $('#cache-tree').find('.active');
+        let var_long_name = selected.text();
+        let var_name = var_long_name.split(' (')[0]
+        let filename = selected.parent().attr('data-filename');
+        let path = selected.parent().attr('data-path');
+
+        let var_obj = {};
+        let var_provenance = {};
+        this.getProvenance(path, var_name)
+        .then((result) => {
+            let obj = JSON.parse(result);
+            var_provenance = obj;
+            var_obj[var_name] = {
+                cdms_var_name: var_name,
+                filename: filename,
+                path: path,
+                provenance: var_provenance
+            };
+            this.props.loadVariables([var_obj])
+            $('#cached-files').modal('hide');
+         })
+         .fail((error) => 'fail');
+  },
     render() {
         return (
             <div className="modal fade" id='cached-files' data-backdrop='static' data-keyboard='false'>
@@ -57,8 +70,7 @@ var CachedFiles = React.createClass({
                                                     return (
                                                         <li key={index} data-filename={filename}
                                                             data-path={this.props.cachedFiles[filename].filepath}
-                                                            style={{'display': 'none'}}
-                                                        >
+                                                            style={{'display': 'none'}}>
                                                             <a>{var_name}</a>
                                                         </li>);})
                                                 }

@@ -10,3 +10,7 @@ npm-debug.log
 *.swp
 lint.out
 *.coverage*
+htmlcov/
+frontend/.nyc_output
+frontend/coverage
+*.log

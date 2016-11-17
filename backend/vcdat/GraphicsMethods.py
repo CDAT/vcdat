@@ -11,9 +11,14 @@ def get_gm():
     for t in vcs.graphicsmethodlist():
         _methods[t] = {}
         for m in vcs.elements[t].keys():
-            _methods[t][m] = {'nvars': detect_nvars(t, m, vcs.elements[t][m])}
-    return json.dumps(_methods)
+            _methods[t][m] = vcs.dumpToDict(vcs.elements[t][m])[0]
+    return _methods
 
+def get_default_gms():
+    _defaults = {}
+    for t in vcs.graphicsmethodlist():
+        _defaults[t] = vcs.elements[t].keys()
+    return _defaults
 
 def detect_nvars(g_type, g_method, g_obj):
     """Try to return the number of variables required for the plot method.
