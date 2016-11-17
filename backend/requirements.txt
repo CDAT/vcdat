@@ -97,8 +97,4 @@ wheel=0.29.0=py27_0
 xz=5.2.2=0
 zlib=1.2.8=3
 nodejs
-<<<<<<< HEAD
 flask
-=======
-flask
->>>>>>> d6e6504a58b6da5ee99129212595c663682f45fe
