@@ -65,8 +65,8 @@ const getTemplates = () => {
     );
 }
 
-const templateListReducer = (state = [], action) => {
-    if (!state.length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
+const templateListReducer = (state = {}, action) => {
+    if (!Object.keys(state).length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
         getTemplates();
     }
     switch (action.type) {
