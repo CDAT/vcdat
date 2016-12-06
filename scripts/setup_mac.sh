@@ -3,13 +3,10 @@
 CONDA_ENV="vcdat"
 # Following install uvcdat nightly
 #CONDA_CHANNELS="-c uvcdat/label/nightly/ -c uvcdat -c conda-forge"
-CONDA_CHANNELS="-c chaosphere2112 -c uvcdat -c conda-forge"
+CONDA_CHANNELS="-c chaosphere2112 -c conda-forge -c uvcdat"
 NODE_PKG_URL="https://nodejs.org/dist/v4.6.0/node-v4.6.0.tar.gz"
 
 CERT=$1
-if [ -z $CERT ]; then
-    echo "NO CERT?"
-fi
 if [ "-"$CERT"-" == "-auto-" ]; then
     cat <<EOF > $HOME/ca.llnl.gov.pem
 -----BEGIN CERTIFICATE-----
