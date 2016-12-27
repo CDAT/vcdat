@@ -57,7 +57,7 @@ var LeftSideBar = React.createClass({
                     updateGraphicsMethods={this.props.updateGraphicsMethods}
                     colormaps={this.props.colormaps}
                     defaultMethods={this.props.default_methods}/>
-                <TemplateList templates={Object.keys(this.props.templates)}/>
+                <TemplateList templates={this.props.templates}/>
             </div>
         )
     }
