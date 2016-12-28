@@ -64,6 +64,8 @@ var LeftSideBar = React.createClass({
 })
 
 const mapStateToProps = (state) => {
+    console.log("Mapping state to props");
+    console.log(state);
     return {
         variables: state.present.variables,
         graphics_methods: state.present.graphics_methods,

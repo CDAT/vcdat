@@ -64,7 +64,7 @@ def get_default_methods():
 @jsonresp
 def get_colormaps():
     colormaps = get_cmaps()
-    return json.dumps({"colormaps": colormaps})
+    return json.dumps(colormaps)
 
 
 @app.route("/getInitialFileTree")

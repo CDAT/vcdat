@@ -23,7 +23,6 @@ var GraphicsMethodEditor = React.createClass({
                             </h4>
                         </div>
                         <GMForm colormaps={this.props.colormaps}
-                            defaultMethods={this.props.defaultMethods}
                             graphicsMethod={this.props.graphicsMethod}
                             graphicsMethodParent={this.props.graphicsMethodParent}
                             gmProps={this.props.gmProps}

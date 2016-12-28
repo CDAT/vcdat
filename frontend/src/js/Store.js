@@ -1,22 +1,51 @@
-import { createStore } from 'redux'
-import undoableReducer from './reducers/Reducer.js'
+import undoable, { distinctState, combineFilters, excludeAction } from 'redux-undo'
+import { createStore, combineReducers } from 'redux'
+import CachedFileModel from './models/CachedFiles.js';
+import ColormapModel from './models/Colormaps.js';
+import GraphicsMethodModel from './models/GraphicsMethods.js';
+import TemplateModel from './models/Templates.js';
+import VariableModel from './models/Variables.js';
+import SpreadsheetModel from './models/Spreadsheet.js';
+
 /* global $ */
 
-var store;
+// combined reducers + undoable
+const reducers = combineReducers({
+    cached_files: CachedFileModel.reduce,
+    variables: VariableModel.reduce,
+    graphics_methods: GraphicsMethodModel.reduce,
+    templates: TemplateModel.reduce,
+    sheets_model: SpreadsheetModel.reduce,
+    colormaps: ColormapModel.reduce
+});
+
+const undoableReducer = undoable(reducers,{
+    filter: excludeAction(
+        ['CHANGE_CUR_SHEET_INDEX', 'INITIALIZE_TEMPLATE_VALUES',
+        'INITIALIZE_GRAPHICS_METHODS_VALUES', 'INITIALIZE_COLORMAPS',
+        'INITIALIZE_DEFAULT_METHODS','ADD_FILE_TO_CACHE']
+    )
+});
+
+var store = null;
 const configureStore = (initialState = {}) => {
     let state = Promise.resolve(initialState);
-    if (Object.keys(state).length === 0) {
-        const default_method_promise = $.get("getDefaultMethods");
-        const tmpl_promise = $.get("getTemplates");
-        const gm_promise = $.get("getGraphicsMethods");
-        const cmap_promise = $.get("getColormaps");
-        state = Promise.all([default_method_promise, tmpl_promise, gm_promise, cmap_promise]).then((values) => {
-            const def_meth = values[0], tmpls = values[1], gms = values[2], cmaps = values[3];
+    if (Object.keys(initialState).length === 0) {
+        const models = [CachedFileModel, VariableModel, GraphicsMethodModel, TemplateModel, SpreadsheetModel, ColormapModel]
+        const initialStates = models.map((m) => {
+            return m.getInitialState();
+        });
+        state = Promise.all(initialStates).then((values) => {
+            const cached_files = values[0], variables = values[1], graphics_methods = values[2], templates = values[3], sheets_model = values[4], colormaps = values[5];
             return {
-                graphics_methods: gms,
-                default_methods: def_meth,
-                templates: tmpls,
-                colormaps: cmaps
+                present: {
+                    cached_files,
+                    variables,
+                    graphics_methods,
+                    templates,
+                    sheets_model,
+                    colormaps
+                },
             };
         });
     }
