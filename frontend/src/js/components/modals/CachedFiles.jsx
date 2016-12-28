@@ -28,7 +28,7 @@ var CachedFiles = React.createClass({
         let var_provenance = {};
         this.getProvenance(path, var_name)
         .then((result) => {
-            let obj = JSON.parse(result);
+            let obj = result;
             var_provenance = obj;
             var_obj[var_name] = {
                 cdms_var_name: var_name,

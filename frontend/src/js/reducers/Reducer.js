@@ -2,7 +2,6 @@
 import undoable, { distinctState, combineFilters, excludeAction } from 'redux-undo'
 import { combineReducers } from 'redux';
 import Actions from '../actions/Actions.js';
-import {getStore} from '../Store.js';
 
 // non-complex reducers
 const cachedFilesReducer = (state = {}, action) => {
@@ -31,19 +30,8 @@ const varListReducer = (state = [], action) => {
     }
 }
 
-// gmListReducer + helpers
-const getGraphicsMethods = () => {
-    $.get("getGraphicsMethods").then(
-        function(gm){
-            getStore().dispatch(Actions.initializeGraphicsMethodsValues(JSON.parse(gm)))
-        }
-    )
-}
 
 const gmListReducer = (state = {}, action) => {
-    if (!Object.keys(state).length && action.type != 'INITIALIZE_GRAPHICS_METHODS_VALUES'){
-        getGraphicsMethods();
-    }
     switch (action.type) {
         case "INITIALIZE_GRAPHICS_METHODS_VALUES":
             return action.graphics_methods;
@@ -56,19 +44,7 @@ const gmListReducer = (state = {}, action) => {
     }
 }
 
-// templateListReducer + helpers
-const getTemplates = () => {
-    $.get("getTemplates").then(
-        function(templates){
-            getStore().dispatch(Actions.initializeTemplateValues(JSON.parse(templates)));
-        }
-    );
-}
-
 const templateListReducer = (state = {}, action) => {
-    if (!Object.keys(state).length && action.type != 'INITIALIZE_TEMPLATE_VALUES'){
-        getTemplates();
-    }
     switch (action.type) {
         case 'INITIALIZE_TEMPLATE_VALUES':
             return action.templates;
@@ -232,16 +208,7 @@ const getCell = (sheet, action) => {
 // capture the previous sheets_model to ensure we don't clobber the sheets_model
 // in the sheetsModelReducer's default case
 var prev_state;
-try {
-    prev_state = getStore().getState().past;
-} catch(err) {
-    console.log(err)
-}
-
 var prev_sheets;
-if (prev_state){
-    prev_sheets = prev_state[prev_state.length-1].sheets_model;
-}
 
 const sheetsModelReducer = (state = default_sheets_model, action) => {
     let new_state;
@@ -311,7 +278,14 @@ const sheetsModelReducer = (state = default_sheets_model, action) => {
             new_state.cur_sheet_index = action.index;
             return new_state;
         default:
-            if (state === default_sheets_model && prev_sheets)
+            let keys = Object.keys(state);
+            if (keys.reduce((same, key) => {
+                if (state[key] === default_sheets_model[key]) {
+                    return same;
+                } else {
+                    return false;
+                }
+            }, true) && prev_sheets)
                 return prev_sheets;
             else
                 return state;
@@ -323,19 +297,8 @@ if (prev_state){
     prev_colormaps = prev_state[prev_state.length-1].colormaps;
 }
 
-// colormapsListReducer + helpers
-const getColormaps = () => {
-    $.get("getColormaps").then(
-        function(cmaps){
-            getStore().dispatch(Actions.initializeColormaps(JSON.parse(cmaps)['colormaps']))
-        }
-    )
-}
 
 const colormapsListReducer = (state=[], action) => {
-    if (!state.length && action.type !== "INITIALIZE_COLORMAPS") {
-        getColormaps();
-    }
     switch(action.type){
         case "INITIALIZE_COLORMAPS":
             return action.colormaps
@@ -353,18 +316,7 @@ if (prev_state){
     prev_defaults = prev_state[prev_state.length-1].default_methods;
 }
 
-const getDefaultMethods = () => {
-    $.get("getDefaultMethods").then(
-        function(defaults){
-            getStore().dispatch(Actions.initializeDefaultMethods(JSON.parse(defaults)))
-        }
-    )
-}
-
 const defaultMethodsReducer = (state={}, action) => {
-    if (!Object.keys(state).length && action.type !== "INITIALIZE_DEFAULT_METHODS") {
-        getDefaultMethods();
-    }
     switch(action.type){
         case "INITIALIZE_DEFAULT_METHODS":
             return action.defaultmethods

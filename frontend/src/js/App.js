@@ -4,7 +4,7 @@ import AppContainer from './containers/AppContainer.jsx'
 import {configureStore} from './Store.js'
 import {Provider} from 'react-redux'
 
-let store = configureStore();
+let s = configureStore();
 
 (function($) {
     $(document).ready(() => {
@@ -54,9 +54,11 @@ let store = configureStore();
     }
 }(jQuery));
 
-ReactDOM.render(
-    <Provider store={store}>
-        <AppContainer/>
-    </Provider>,
-    document.getElementById('app')
-);
+s.then((store) => {
+    ReactDOM.render(
+        <Provider store={store}>
+            <AppContainer/>
+        </Provider>,
+        document.getElementById('app')
+    );
+});
