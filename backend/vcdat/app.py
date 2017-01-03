@@ -1,10 +1,11 @@
 import os
+import tempfile
 import vcs
 import cdms2
 import json
 from flask import Flask, send_from_directory, request, send_file, Response
 from GraphicsMethods import get_gm, get_default_gms
-from Templates import get_t
+from Templates import get_t, templ_from_json
 from Files import getFilesObject
 from Colormaps import get_cmaps
 import weakref
@@ -19,8 +20,8 @@ def jsonresp(f):
         return r
     return wrap
 
+  
 app = Flask(__name__, static_url_path='')
-
 _ = vcs.init()
 
 
@@ -47,19 +48,42 @@ def get_templates():
     templates = get_t()
     return json.dumps(templates)
 
+  
+@app.route("/plotTemplate", methods=["POST"])
+def plot_template():
+    tmpl = request.get_json()
+    t = templ_from_json(tmpl)
+    canvas = vcs.init(bg=True)
+    g = vcs.getboxfill()
+    v = [[0] * 10] * 10
+    v = cdms2.tvariable.TransientVariable(v)
+    t.plot(canvas, v, g)
+    t.drawColorBar([(0,0,0,0)], [0, 1], x=canvas)
+    canvas.backend.renWin.Render()
+    del vcs.elements["template"][t.name]
+    _, tmp = tempfile.mkstemp(suffix=".png")
+    canvas.png(tmp)
+    resp = send_file(tmp)
+    # Clean up file automatically after request
+    wr = weakref.ref(resp, lambda x: os.remove(tmp))
+    canvas.close()
+    return resp
 
+  
 @app.route("/getGraphicsMethods")
 @jsonresp
 def get_graphics_methods():
     graphics_methods = get_gm()
     return json.dumps(graphics_methods)
 
+  
 @app.route("/getDefaultMethods")
 @jsonresp
 def get_default_methods():
     default_gms = get_default_gms()
     return json.dumps(default_gms)
 
+  
 @app.route("/getColormaps")
 @jsonresp
 def get_colormaps():
