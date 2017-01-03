@@ -14,5 +14,3 @@ htmlcov/
 frontend/.nyc_output
 frontend/coverage
 *.log
-backend/vcdat/bin/
-
