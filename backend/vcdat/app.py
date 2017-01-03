@@ -3,15 +3,25 @@ import tempfile
 import vcs
 import cdms2
 import json
-from flask import Flask, send_from_directory, request, send_file
+from flask import Flask, send_from_directory, request, send_file, Response
 from GraphicsMethods import get_gm, get_default_gms
 from Templates import get_t, templ_from_json
 from Files import getFilesObject
 from Colormaps import get_cmaps
 import weakref
+import functools
 
+
+def jsonresp(f):
+    @functools.wraps(f)
+    def wrap(*args, **kwargs):
+        response_body = f(*args, **kwargs)
+        r = Response(response_body, mimetype="application/json")
+        return r
+    return wrap
+
+  
 app = Flask(__name__, static_url_path='')
-
 _ = vcs.init()
 
 
@@ -33,10 +43,12 @@ def serve_resource_file(path):
 
 
 @app.route("/getTemplates")
+@jsonresp
 def get_templates():
     templates = get_t()
     return json.dumps(templates)
 
+  
 @app.route("/plotTemplate", methods=["POST"])
 def plot_template():
     tmpl = request.get_json()
@@ -57,23 +69,30 @@ def plot_template():
     canvas.close()
     return resp
 
+  
 @app.route("/getGraphicsMethods")
+@jsonresp
 def get_graphics_methods():
     graphics_methods = get_gm()
     return json.dumps(graphics_methods)
 
+  
 @app.route("/getDefaultMethods")
+@jsonresp
 def get_default_methods():
     default_gms = get_default_gms()
     return json.dumps(default_gms)
 
+  
 @app.route("/getColormaps")
+@jsonresp
 def get_colormaps():
     colormaps = get_cmaps()
-    return json.dumps({"colormaps": colormaps})
+    return json.dumps(colormaps)
 
 
 @app.route("/getInitialFileTree")
+@jsonresp
 def get_initial_file_tree():
     start_path = os.path.expanduser('~')
     dir_list = start_path.split('/')
@@ -98,6 +117,7 @@ def get_initial_file_tree():
 
 
 @app.route("/browseFiles")
+@jsonresp
 def browse_files():
     start_path = request.args.get('path') + '/'
     file_obj = getFilesObject(start_path)
@@ -105,6 +125,7 @@ def browse_files():
 
 
 @app.route("/loadVariablesFromFile")
+@jsonresp
 def load_variables_from_file():
     file_path = request.args.get('path')
 
@@ -140,6 +161,7 @@ def load_variables_from_file():
 
 
 @app.route("/getVariableProvenance")
+@jsonresp
 def get_variable_provenance():
     path = request.args.get('path')
     varname = request.args.get('varname')

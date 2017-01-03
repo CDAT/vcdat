@@ -17,7 +17,6 @@ var FileExplorer = React.createClass({
     componentDidMount() {
         $('#file-explorer').on('shown.bs.modal', () => {
             $.get('getInitialFileTree').then((obj) => {
-                obj = JSON.parse(obj);
                 this.setState({files: obj});
             });
         });
@@ -27,7 +26,7 @@ var FileExplorer = React.createClass({
         var item = $(event.target);
         var path = item.attr('data-path') + item.text();
         $.get('browseFiles', {'path': path}).then((obj) => {
-            let new_obj = JSON.parse(obj);
+            let new_obj = obj;
             let cur_state = this.state.files;
             let arr = new_obj.path.split('/');
             arr.splice(0, 1);
@@ -100,7 +99,7 @@ var FileExplorer = React.createClass({
         this.filepath = path;
         this.filename = selected.text();
         $.get('loadVariablesFromFile', {'path': path}).then((obj) => {
-            obj = JSON.parse(obj);
+            obj = obj;
             this.props.addFileToCache(this.filename, this.filepath, obj.variables);
             $('#file-explorer').modal('hide');
         })
