@@ -4,5 +4,6 @@
 cdms2=2.8=Provenance
 vcs=2.8
 uvcdat=2.8.0
+vcs-js
 nodejs
 flask
