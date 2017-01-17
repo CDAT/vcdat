@@ -153,22 +153,10 @@ var Actions = {
             variables: variables
         }
     },
-    updateActiveGM(gmProps, gmParent, gm) {
+    updateGraphicsMethod(graphics_method) {
         return {
-            type: 'UPDATE_ACTIVE_GM',
-            gmProps: gmProps,
-            gmParent: gmParent,
-            gm: gm
-        }
-    },
-    updateGraphicsMethods(graphics_methods, gmProps, gmParent, gm, new_name) {
-        return {
-            type: 'UPDATE_GRAPHICS_METHODS',
-            graphics_methods: graphics_methods,
-            gmProps: gmProps,
-            gmParent: gmParent,
-            gm: gm,
-            new_name: new_name
+            type: 'UPDATE_GRAPHICS_METHOD',
+            graphics_method
         }
     },
     initializeColormaps(colormaps) {

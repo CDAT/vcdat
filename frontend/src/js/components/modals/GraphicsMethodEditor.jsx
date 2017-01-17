@@ -1,12 +1,15 @@
 import React from 'react'
 import widgets from 'vcs-widgets'
+import $ from 'jquery'
 
 var GraphicsMethodEditor = React.createClass({
     propTypes: {
-        graphicsMethod: React.PropTypes.string,
-        graphicsMethodParent: React.PropTypes.string,
-        gmProps: React.PropTypes.object,
-        colormaps: React.PropTypes.array
+        graphicsMethod: React.PropTypes.object,
+        colormaps: React.PropTypes.array,
+        updateGraphicsMethod: React.PropTypes.func,
+    },
+    componentDidMount() {
+        $("#graphics-method-editor").modal();
     },
     render() {
         var GMForm = widgets.GMEdit;
@@ -19,16 +22,12 @@ var GraphicsMethodEditor = React.createClass({
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <h4 className="modal-title">
-                                {this.props.graphicsMethod} &emsp; {this.props.graphicsMethodParent}
+                                {this.props.graphicsMethod.name}
                             </h4>
                         </div>
                         <GMForm colormaps={this.props.colormaps}
                             graphicsMethod={this.props.graphicsMethod}
-                            graphicsMethodParent={this.props.graphicsMethodParent}
-                            gmProps={this.props.gmProps}
-                            updateGraphicsMethods={this.props.updateGraphicsMethods}
-                            updateActiveGM={this.props.updateActiveGM}
-                            graphicsMethods={this.props.graphicsMethods}/>
+                            updateGraphicsMethod={this.props.updateGraphicsMethod} />
                     </div>
                 </div>
             </div>

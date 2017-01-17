@@ -12,7 +12,7 @@
     "react-redux": "^4.4.5",
     "redux": "=3.5.2",
     "redux-undo": "^0.6.1",
-    "vcs-widgets": "uv-cdat/vcs-widgets"
+    "vcs-widgets": "^0.0.1"
   },
   "devDependencies": {
     "webpack": "^1.12.11",
