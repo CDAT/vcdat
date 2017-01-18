@@ -14,8 +14,6 @@ var TemplateEditor = React.createClass({
     render() {
         let template = this.props.template;
         let template_name = template ? template.name : "";
-        console.log("Template name", template_name)
-        console.log(this.props.updateTemplate);
         return (
             <div className="modal fade" id='template-editor'>
                 <div className="modal-dialog" role="document">

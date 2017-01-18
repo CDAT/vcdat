@@ -48,7 +48,6 @@ var LeftSideBar = React.createClass({
         this.initDragListItems();
     },
     render() {
-        console.log("lsb", this.props.updateTemplate);
         return (
             <div id='left-side-bar' className=''>
                 <VarList variables={this.props.variables}
