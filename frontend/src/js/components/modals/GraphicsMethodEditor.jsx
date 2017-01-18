@@ -5,7 +5,7 @@ import $ from 'jquery'
 var GraphicsMethodEditor = React.createClass({
     propTypes: {
         graphicsMethod: React.PropTypes.object,
-        colormaps: React.PropTypes.array,
+        colormaps: React.PropTypes.object,
         updateGraphicsMethod: React.PropTypes.func,
     },
     componentDidMount() {

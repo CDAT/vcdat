@@ -18,7 +18,7 @@ var LeftSideBar = React.createClass({
             React.PropTypes.array,
             React.PropTypes.object
         ]),
-        colormaps: React.PropTypes.array,
+        colormaps: React.PropTypes.object,
         sheets_model: React.PropTypes.object,
         updateGraphicsMethods: React.PropTypes.func
 
@@ -52,11 +52,11 @@ var LeftSideBar = React.createClass({
                 <VarList variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     addFileToCache={this.props.addFileToCache}
-                    cachedFiles={this.props.cached_files}/>
+                    cachedFiles={this.props.cached_files} />
                 <GMList graphicsMethods={this.props.graphics_methods}
                     updateGraphicsMethod={this.props.updateGraphicsMethod}
-                    colormaps={this.props.colormaps}/>
-                <TemplateList templates={this.props.templates}/>
+                    colormaps={this.props.colormaps} />
+                <TemplateList templates={this.props.templates} />
             </div>
         )
     }

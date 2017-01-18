@@ -13,7 +13,7 @@ var GMList = React.createClass({
     propTypes: {
         graphicsMethods: React.PropTypes.object,
         updateActiveGM: React.PropTypes.func,
-        colormaps: React.PropTypes.array,
+        colormaps: React.PropTypes.object,
     },
     componentWillUpdate() {
         $('#gm-list').quicktree();
