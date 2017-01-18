@@ -1,14 +1,21 @@
 import React from 'react'
 import TemplatePreview from '../TemplatePreview.jsx'
+import TemplateLabelsEditor from '../editors/template/TemplateLabelsEditor.jsx'
 
 
 var TemplateEditor = React.createClass({
     propTypes: {
-        template: React.PropTypes.object
+        template: React.PropTypes.object,
+        updateTemplate: React.PropTypes.func,
+    },
+    onUpdate(attribute, key, value) {
+        this.props.updateTemplate(this.props.template.name, attribute, key, value);
     },
     render() {
         let template = this.props.template;
         let template_name = template ? template.name : "";
+        console.log("Template name", template_name)
+        console.log(this.props.updateTemplate);
         return (
             <div className="modal fade" id='template-editor'>
                 <div className="modal-dialog" role="document">
@@ -22,6 +29,7 @@ var TemplateEditor = React.createClass({
                             </h4>
                         </div>
                         <TemplatePreview template={template} />
+                        <TemplateLabelsEditor template={template} updateTemplate={this.onUpdate}/>
                     </div>
                 </div>
             </div>
