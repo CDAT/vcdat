@@ -6,6 +6,10 @@ class TemplateModel extends BaseModel {
         switch (action.type) {
             case 'INITIALIZE_TEMPLATE_VALUES':
                 return action.templates;
+            case 'UPDATE_TEMPLATE':
+                const new_templates = $.extend(true, {}, state);
+                new_templates[action.template_name][action.attribute][action.key] = action.value;
+                return new_templates;
             default:
                 return state
         }
