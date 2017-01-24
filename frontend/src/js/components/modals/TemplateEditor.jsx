@@ -28,6 +28,8 @@ var TemplateEditor = React.createClass({
                         </div>
                         <TemplatePreview template={template} />
                         <TemplateLabelsEditor template={template} updateTemplate={this.onUpdate}/>
+                        <button type="button" aria-label="Save">Save</button>
+                        <button type="button" aria-label="Cancel">Cancel</button>
                     </div>
                 </div>
             </div>

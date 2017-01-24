@@ -13,8 +13,17 @@ var TemplateLabelSettings = React.createClass({
             validator = parseInt;
         }
         return (e) => {
-            self.props.update(key, validator(e.target.value));
+            self.props.update(key, validator(this.range(e.target.value)));
         };
+    },
+    range(alt){
+        if(alt < 0){
+            alt = 0;
+        }
+        else if (alt > 1){
+            alt = 1;
+        }
+        return alt;
     },
     render() {
         const x = this.props.label.x;
