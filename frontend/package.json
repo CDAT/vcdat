@@ -8,6 +8,7 @@
     "css-element-queries": "^0.3.2",
     "jquery": "^3.1.0",
     "react": "^15.1.0",
+    "react-bootstrap": "^0.30.7",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
     "redux": "=3.5.2",
@@ -64,11 +65,10 @@
   },
   "scripts": {
     "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
-    "coverage": "mocha --require blanket --compilers jsx:babel-core/register --reporter html-file-cov test/mocha --recursive > coverage.html",
+    "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text npm test",
     "test": "mocha test/mocha --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive",
     "lint": "$(npm bin)/eslint -f table src/*.js* src/*/*.js* src/*/*/*.js* src/*/*/*/*.js*",
-    "lint_silent": "npm run lint > lint.out; vim lint.out",
-    "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text npm test"
+    "lint_silent": "npm run lint > lint.out; vim lint.out"
   },
   "license": "",
   "repository": "http://github.com/UV-CDAT/vcdat"

@@ -12,7 +12,7 @@ function siblingsVisible(element_name, parent_gm) {
 var GMList = React.createClass({
     propTypes: {
         graphicsMethods: React.PropTypes.object,
-        updateActiveGM: React.PropTypes.func,
+        updateGraphicsMethod: React.PropTypes.func,
         colormaps: React.PropTypes.object,
     },
     componentWillUpdate() {
@@ -25,14 +25,16 @@ var GMList = React.createClass({
         $('#gm-list').quicktree();
     },
     clickedEdit() {
-        if (this.state.activeGM) {
-            $('#graphics-method-editor').modal('show')
-        }
+        this.setState({showModal: true});
+    },
+    closedModal() {
+        this.setState({showModal: false});
     },
     getInitialState() {
         return {
             activeGM: false,
-            activeGMParent: false
+            activeGMParent: false,
+            showModal: false
         }
     },
     selectedChild(val) {
@@ -53,14 +55,20 @@ var GMList = React.createClass({
     },
     render() {
         let gmEditor = "";
+        const self = this;
         if (this.state && this.state.activeGM) {
-            gmEditor = <GraphicsMethodEditor colormaps={this.props.colormaps}
-                    graphicsMethod={this.props.graphicsMethods[this.state.activeGMParent][this.state.activeGM]}
-                    updateGraphicsMethod={this.props.updateGraphicsMethod} />
+            gmEditor = (
+                <GraphicsMethodEditor colormaps={this.props.colormaps}
+                                      graphicsMethod={this.props.graphicsMethods[this.state.activeGMParent][this.state.activeGM]}
+                                      updateGraphicsMethod={this.props.updateGraphicsMethod}
+                                      show={this.state.showModal}
+                                      onHide={(e) => {self.closedModal();}} />
+                );
         }
         return (
             <div className='left-side-list scroll-area-list-parent'>
                 <AddEditRemoveNav editAction={this.clickedEdit} title='Graphics Methods'/>
+                {gmEditor}
                 <div className='scroll-area'>
                     <ul id='gm-list' className='no-bullets left-list'>
                         {Object.keys(this.props.graphicsMethods).map((parent_value) => {
@@ -91,7 +99,6 @@ var GMList = React.createClass({
                         })}
                     </ul>
                 </div>
-                {gmEditor}
             </div>
         )
     }

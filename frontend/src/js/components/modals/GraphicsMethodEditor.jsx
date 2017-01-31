@@ -1,37 +1,52 @@
 import React from 'react'
 import widgets from 'vcs-widgets'
 import $ from 'jquery'
+import {Modal, ButtonToolbar, Button} from 'react-bootstrap';
 
 var GraphicsMethodEditor = React.createClass({
     propTypes: {
         graphicsMethod: React.PropTypes.object,
         colormaps: React.PropTypes.object,
         updateGraphicsMethod: React.PropTypes.func,
+        show: React.PropTypes.bool,
+        onHide: React.PropTypes.func
     },
-    componentDidMount() {
-        $("#graphics-method-editor").modal();
+    getInitialState() {
+        return {
+            workingGraphicsMethod: $.extend({}, this.props.graphicsMethod)
+        }
+    },
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            workingGraphicsMethod: $.extend({}, nextProps.graphicsMethod)
+        });
+    },
+    updateGraphicsMethod(attr, value) {
+        const p = $.extend({}, this.state.workingGraphicsMethod);
+        p[attr] = value;
+        this.setState({"workingGraphicsMethod": p})
     },
     render() {
         var GMForm = widgets.GMEdit;
+        const self = this;
         return (
-            <div className="modal fade" id='graphics-method-editor'>
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 className="modal-title">
-                                {this.props.graphicsMethod.name}
-                            </h4>
-                        </div>
-                        <GMForm colormaps={this.props.colormaps}
-                            graphicsMethod={this.props.graphicsMethod}
-                            updateGraphicsMethod={this.props.updateGraphicsMethod} />
-                    </div>
-                </div>
-            </div>
-        )
+            <Modal show={this.props.show} onHide={this.props.onHide}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{this.props.graphicsMethod.name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <GMForm colormaps={this.props.colormaps}
+                            graphicsMethod={this.state.workingGraphicsMethod}
+                            updateGraphicsMethod={this.updateGraphicsMethod} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <ButtonToolbar>
+                        <Button onClick={this.props.onHide}>Cancel</Button>
+                        <Button onClick={() => {self.props.updateGraphicsMethod(self.state.workingGraphicsMethod); self.props.onHide();}}>Save</Button>
+                    </ButtonToolbar>
+                </Modal.Footer>
+            </Modal>
+        );
     }
 })
 
