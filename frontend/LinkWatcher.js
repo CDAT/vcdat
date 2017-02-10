@@ -69,14 +69,6 @@ LinkWatcher.prototype.apply = function(compiler) {
         const watchedFiles = directoryFiles(module_src);
         const outputFiles = directoryFiles(output_path);
 
-        let watching = null;
-
-        compiler.plugin("watch-run", (w, next) => {
-            // Snag this for later.
-            watching = w;
-            next();
-        });
-
         var cb = function(cb) {
             const action = exec(self.action + " " + self.args.join(" "), {}, (error, stdout, stderr) => {
                 // Show the build output
