@@ -8,7 +8,7 @@ var Actions = {
     colCountChanged(count) {
         return {
             type: 'COL_COUNT_CHANGED',
-            count: count
+            count: count,
         }
     },
     addSheet() {
