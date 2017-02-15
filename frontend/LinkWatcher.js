@@ -73,8 +73,10 @@ LinkWatcher.prototype.apply = function(compiler) {
             const action = exec(self.action + " " + self.args.join(" "), {}, (error, stdout, stderr) => {
                 // Show the build output
                 console.log(stdout);
+                console.log(stderr);
                 exec("./node_modules/.bin/webpack", (error, stdout, stderr) => {
                     console.log(stdout);
+                    console.log(stderr);
                 });
                 cb();
             });
