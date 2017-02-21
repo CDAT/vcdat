@@ -1,10 +1,15 @@
 import React from 'react'
 import TemplatePreview from '../TemplatePreview.jsx'
+import TemplateLabelsEditor from '../editors/template/TemplateLabelsEditor.jsx'
 
 
 var TemplateEditor = React.createClass({
     propTypes: {
-        template: React.PropTypes.object
+        template: React.PropTypes.object,
+        updateTemplate: React.PropTypes.func,
+    },
+    onUpdate(attribute, key, value) {
+        this.props.updateTemplate(this.props.template.name, attribute, key, value);
     },
     render() {
         let template = this.props.template;
@@ -22,6 +27,9 @@ var TemplateEditor = React.createClass({
                             </h4>
                         </div>
                         <TemplatePreview template={template} />
+                        <TemplateLabelsEditor template={template} updateTemplate={this.onUpdate}/>
+                        <button type="button" aria-label="Save">Save</button>
+                        <button type="button" aria-label="Cancel">Cancel</button>
                     </div>
                 </div>
             </div>

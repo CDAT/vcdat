@@ -182,7 +182,16 @@ var Actions = {
             type: 'INITIALIZE_DEFAULT_METHODS',
             defaultmethods: defaults
         }
-    }
+    },
+    updateTemplate(template_name, attribute, key, value) {
+        return {
+            type: 'UPDATE_TEMPLATE',
+            template_name: template_name,
+            attribute: attribute,
+            key: key,
+            value: value,
+        }
+    },
 }
 
 export default Actions;

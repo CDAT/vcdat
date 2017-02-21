@@ -7,7 +7,8 @@ var el = null;
 
 var TemplateList = React.createClass({
     propTypes: {
-        templates: React.PropTypes.object
+        templates: React.PropTypes.object,
+        updateTemplate: React.PropTypes.func,
     },
     getInitialState(){
         return {};
@@ -45,7 +46,7 @@ var TemplateList = React.createClass({
                         })}
                     </ul>
                 </div>
-                <TemplateEditor template={template}/>
+                <TemplateEditor template={template} updateTemplate={this.props.updateTemplate}/>
             </div>
         );
     }
