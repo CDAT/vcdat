@@ -8,10 +8,10 @@ class TemplateModel extends BaseModel {
                 return action.templates;
             case 'UPDATE_TEMPLATE':
                 const new_templates = $.extend(true, {}, state);
-                new_templates[action.template_name][action.attribute][action.key] = action.value;
+                new_templates[action.template.name] = action.template;
                 return new_templates;
             default:
-                return state
+                return state;
         }
     }
 

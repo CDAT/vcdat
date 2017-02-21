@@ -9,10 +9,26 @@ var TemplateEditor = React.createClass({
         updateTemplate: React.PropTypes.func,
     },
     onUpdate(attribute, key, value) {
-        this.props.updateTemplate(this.props.template.name, attribute, key, value);
+        let new_templ = $.extend(true, {}, this.state.workingTemplate);
+        new_templ[attribute][key] = value;
+        this.setState({"workingTemplate": new_templ});
+    },
+    getInitialState() {
+        return {workingTemplate: $.extend(true, {}, this.props.template)};
+    },
+    componentWillReceiveProps(nextProps) {
+        this.setState({workingTemplate: $.extend(true, {}, nextProps.template)});
+    },
+    saveWorkingTemplate(){
+        this.props.updateTemplate(this.state.workingTemplate);
+        $("#template-editor").modal('hide');
+    },
+    resetWorkingTemplate(){
+        this.setState({workingTemplate: $.extend(true, {}, this.props.template)});
+        $("#template-editor").modal('hide');
     },
     render() {
-        let template = this.props.template;
+        let template = this.state.workingTemplate;
         let template_name = template ? template.name : "";
         return (
             <div className="modal fade" id='template-editor'>
@@ -26,10 +42,14 @@ var TemplateEditor = React.createClass({
                                 Edit {template_name}
                             </h4>
                         </div>
-                        <TemplatePreview template={template} />
-                        <TemplateLabelsEditor template={template} updateTemplate={this.onUpdate}/>
-                        <button type="button" aria-label="Save">Save</button>
-                        <button type="button" aria-label="Cancel">Cancel</button>
+                        <div className="modal-body">
+                            <TemplatePreview template={template} />
+                            <TemplateLabelsEditor template={template} updateTemplate={this.onUpdate}/>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn" onClick={(e) => this.saveWorkingTemplate()}>Save</button>
+                            <button type="button" className='btn' onClick={(e) => this.resetWorkingTemplate()}>Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>
