@@ -15,14 +15,8 @@ var TemplateLabelsEditor = React.createClass({
             self.props.updateTemplate(attribute, key, value);
         }
     },
-    getInitialState() {
-        return {workingTemplate: $.extend({}, this.props.template)};
-    },
-    componentWillReceiveProps(nextProps) {
-        this.setState({workingTemplate: $.extend({}, nextProps.template)});
-    },
     render() {
-        const template = this.state.workingTemplate;
+        const template = this.props.template;
         const self = this;
         return (
             <table className="table">

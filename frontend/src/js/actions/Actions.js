@@ -183,13 +183,10 @@ var Actions = {
             defaultmethods: defaults
         }
     },
-    updateTemplate(template_name, attribute, key, value) {
+    updateTemplate(template) {
         return {
             type: 'UPDATE_TEMPLATE',
-            template_name: template_name,
-            attribute: attribute,
-            key: key,
-            value: value,
+            template:template
         }
     },
 }

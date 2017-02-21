@@ -85,8 +85,8 @@ const mapDispatchToProps = (dispatch) => {
         updateGraphicsMethods: (graphics_methods, gmProps, gmParent, gm, new_name) => {
             dispatch(Actions.updateGraphicsMethods(graphics_methods, gmProps, gmParent, gm, new_name))
         },
-        updateTemplate: (template_name, attribute, key, value) => {
-            dispatch(Actions.updateTemplate(template_name, attribute, key, value));
+        updateTemplate: (template) => {
+            dispatch(Actions.updateTemplate(template));
         }
     }
 }
