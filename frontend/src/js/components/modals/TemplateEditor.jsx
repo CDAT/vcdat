@@ -47,8 +47,8 @@ var TemplateEditor = React.createClass({
                             <TemplateLabelsEditor template={template} updateTemplate={this.onUpdate}/>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn" onClick={(e) => this.saveWorkingTemplate()}>Save</button>
-                            <button type="button" className='btn' onClick={(e) => this.resetWorkingTemplate()}>Cancel</button>
+                            <button type="button" className='btn btn-secondary' onClick={(e) => this.resetWorkingTemplate()}>Cancel</button>
+                            <button type="button" className="btn btn btn-primary" onClick={(e) => this.saveWorkingTemplate()}>Save</button>
                         </div>
                     </div>
                 </div>
