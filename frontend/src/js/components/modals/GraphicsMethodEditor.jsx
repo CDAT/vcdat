@@ -21,9 +21,8 @@ var GraphicsMethodEditor = React.createClass({
             workingGraphicsMethod: $.extend({}, nextProps.graphicsMethod)
         });
     },
-    updateGraphicsMethod(attr, value) {
-        const p = $.extend({}, this.state.workingGraphicsMethod);
-        p[attr] = value;
+    updateGraphicsMethod(gm) {
+        const p = $.extend({}, gm);
         this.setState({"workingGraphicsMethod": p})
     },
     render() {
