@@ -45,6 +45,7 @@ var TemplateEditor = React.createClass({
                         <div className="modal-body">
                             <TemplatePreview template={template} />
                             <TemplateLabelsEditor template={template} updateTemplate={this.onUpdate}/>
+                            <TemplateAxisEditor template={template} updateTemplate={this.onUpdate}/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className='btn btn-secondary' onClick={(e) => this.resetWorkingTemplate()}>Cancel</button>
