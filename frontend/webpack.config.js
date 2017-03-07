@@ -27,7 +27,7 @@ module.exports = {
         new LinkWatcher({
             module: 'vcs-widgets', // Installed module to track
             watchDirectory: 'src',  // Directory to watch for changes
-            npmCommand: "preinstall",
+            npmCommand: "prepublish",
             outputDirectory: 'built'
         }),
     ],
