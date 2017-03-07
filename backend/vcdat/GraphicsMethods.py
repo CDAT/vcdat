@@ -1,5 +1,6 @@
 import vcs
 import json
+import numpy
 
 _ = vcs.init()
 _methods = {}
@@ -11,7 +12,12 @@ def get_gm():
     for t in vcs.graphicsmethodlist():
         _methods[t] = {}
         for m in vcs.elements[t].keys():
-            _methods[t][m] = vcs.dumpToDict(vcs.elements[t][m])[0]
+            gm = vcs.elements[t][m]
+            _methods[t][m] = vcs.dumpToDict(gm)[0]
+            if hasattr(gm, "levels"):
+                arr = numpy.array(gm.levels)
+                if numpy.allclose(arr, 1e20) and arr.shape[-1] == 2:
+                    _methods[t][m]["levels"] = [1e20, 1e20]
     return _methods
 
 def get_default_gms():

@@ -22,4 +22,6 @@ cd frontend
 $(npm bin)/webpack --progress --colors --watch &
 fe_pid=$!
 
-python $curpath/scripts/monitor_procs.py $vcs_pid $be_pid $fe_pid
+pids=($vcs_pid $be_pid $fe_pid)
+
+python $curpath/scripts/monitor_procs.py ${pids[@]}

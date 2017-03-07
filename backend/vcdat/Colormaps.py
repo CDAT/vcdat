@@ -1,4 +1,9 @@
 import vcs
 
+
 def get_cmaps():
-    return vcs.listelements('colormap')
+    cmaps = {}
+    for cmap in vcs.listelements('colormap'):
+        index = vcs.getcolormap(cmap).index
+        cmaps[cmap] = [index[i] for i in range(256)]
+    return cmaps

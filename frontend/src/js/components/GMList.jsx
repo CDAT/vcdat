@@ -12,11 +12,8 @@ function siblingsVisible(element_name, parent_gm) {
 var GMList = React.createClass({
     propTypes: {
         graphicsMethods: React.PropTypes.object,
-        updateActiveGM: React.PropTypes.func,
-        colormaps: React.PropTypes.array
-    },
-    getInitialState() {
-        return {active_GM: null};
+        updateGraphicsMethod: React.PropTypes.func,
+        colormaps: React.PropTypes.object,
     },
     componentWillUpdate() {
         $('#gm-list').quicktree();
@@ -28,7 +25,17 @@ var GMList = React.createClass({
         $('#gm-list').quicktree();
     },
     clickedEdit() {
-        $('#graphics-method-editor').modal('show')
+        this.setState({showModal: true});
+    },
+    closedModal() {
+        this.setState({showModal: false});
+    },
+    getInitialState() {
+        return {
+            activeGM: false,
+            activeGMParent: false,
+            showModal: false
+        }
     },
     selectedChild(val) {
         if (el) {
@@ -39,31 +46,29 @@ var GMList = React.createClass({
             el = el.parent();
         }
         el.addClass('bg-primary')
-        let gmProps = this.props.graphicsMethods[el.attr("data-parent")][el.attr("data-name")];
-        let gmParent = el.attr("data-parent");
         let gm = el.attr("data-name");
-        // call updateActiveGM
-        this.updateActiveGM(gmProps, gmParent, gm)
-    },
-    updateActiveGM(props, parent, gm) {
+        let gm_parent = el.attr('data-parent');
         this.setState({
-            active_GM: {
-                gmProps: props,
-                gmParent: parent,
-                gm: gm
-            }
+            activeGM: gm,
+            activeGMParent: gm_parent,
         });
     },
     render() {
-        let default_GM_props = {
-            no_gm_selected: true
+        let gmEditor = "";
+        const self = this;
+        if (this.state && this.state.activeGM) {
+            gmEditor = (
+                <GraphicsMethodEditor colormaps={this.props.colormaps}
+                                      graphicsMethod={this.props.graphicsMethods[this.state.activeGMParent][this.state.activeGM]}
+                                      updateGraphicsMethod={this.props.updateGraphicsMethod}
+                                      show={this.state.showModal}
+                                      onHide={(e) => {self.closedModal();}} />
+                );
         }
-        let gm_props = this.state.active_GM ?this.state.active_GM.gmProps :default_GM_props;
-        let gm_name = this.state.active_GM ?this.state.active_GM.gm :"";
-        let parent_name = this.state.active_GM ?this.state.active_GM.gmParent :"";
         return (
             <div className='left-side-list scroll-area-list-parent'>
                 <AddEditRemoveNav editAction={this.clickedEdit} title='Graphics Methods'/>
+                {gmEditor}
                 <div className='scroll-area'>
                     <ul id='gm-list' className='no-bullets left-list'>
                         {Object.keys(this.props.graphicsMethods).map((parent_value) => {
@@ -94,14 +99,6 @@ var GMList = React.createClass({
                         })}
                     </ul>
                 </div>
-                <GraphicsMethodEditor colormaps={this.props.colormaps}
-                    defaultMethods={this.props.defaultMethods}
-                    graphicsMethod={gm_name}
-                    graphicsMethodParent={parent_name}
-                    gmProps={gm_props}
-                    graphicsMethods={this.props.graphicsMethods}
-                    updateGraphicsMethods={this.props.updateGraphicsMethods}
-                    updateActiveGM={this.updateActiveGM}/>
             </div>
         )
     }
