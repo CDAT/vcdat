@@ -13,4 +13,5 @@ lint.out
 htmlcov/
 frontend/.nyc_output
 frontend/coverage
+frontend/bin/
 *.log

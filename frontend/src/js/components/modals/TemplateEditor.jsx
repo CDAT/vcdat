@@ -1,6 +1,9 @@
 import React from 'react'
+import {Tabs} from 'react-bootstrap'
+import {Tab} from 'react-bootstrap'
 import TemplatePreview from '../TemplatePreview.jsx'
 import TemplateLabelsEditor from '../editors/template/TemplateLabelsEditor.jsx'
+import TemplateAxisEditor from '../editors/template/TemplateAxisEditor.jsx'
 
 
 var TemplateEditor = React.createClass({
@@ -14,7 +17,11 @@ var TemplateEditor = React.createClass({
         this.setState({"workingTemplate": new_templ});
     },
     getInitialState() {
+        key: 1;
         return {workingTemplate: $.extend(true, {}, this.props.template)};
+    },
+    handleSelect(key) {
+        this.setState({key});
     },
     componentWillReceiveProps(nextProps) {
         this.setState({workingTemplate: $.extend(true, {}, nextProps.template)});
@@ -44,8 +51,16 @@ var TemplateEditor = React.createClass({
                         </div>
                         <div className="modal-body">
                             <TemplatePreview template={template} />
-                            <TemplateLabelsEditor template={template} updateTemplate={this.onUpdate}/>
-                            <TemplateAxisEditor template={template} updateTemplate={this.onUpdate}/>
+
+                            <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="templateEditors">
+                                <Tab eventKey={1} title="Labels">
+                                    <TemplateLabelsEditor template={template} updateTemplate={this.onUpdate}/>
+                                </Tab>
+                                <Tab eventKey={2} title="Axes">
+                                    <TemplateAxisEditor template={template} updateTemplate={this.onUpdate}/>
+                                </Tab>
+                            </Tabs>
+
                         </div>
                         <div className="modal-footer">
                             <button type="button" className='btn btn-secondary' onClick={(e) => this.resetWorkingTemplate()}>Cancel</button>

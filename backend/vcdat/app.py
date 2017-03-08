@@ -54,7 +54,11 @@ def plot_template():
     tmpl = request.get_json()
     t = templ_from_json(tmpl)
     canvas = vcs.init(bg=True)
-    g = vcs.getboxfill()
+    g = vcs.createboxfill()
+    g.xmtics1 = {.5 * i: "" for i in range(1,20,2)}
+    g.xmtics2 = g.xmtics1
+    g.ymtics1 = g.xmtics1
+    g.ymtics2 = g.xmtics1
     v = [[0] * 10] * 10
     v = cdms2.tvariable.TransientVariable(v)
     t.plot(canvas, v, g)
