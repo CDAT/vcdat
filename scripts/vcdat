@@ -1,0 +1,12 @@
+#!/bin/bash
+
+vcs-server --port 8123 &
+vcs_pid=$!
+python -m vcdat.app --prod --port 8124 --vcs_server="localhost:8123" &
+be_pid=$!
+# Give the servers time to fire up
+sleep 3
+python -m webbrowser -t "http://localhost:8124"
+
+pids=($vcs_pid $be_pid)
+cleanup_vcdat ${pids[@]}
