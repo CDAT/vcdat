@@ -8,7 +8,7 @@ import tempfile
 logfile = tempfile.TemporaryFile()
 
 vcs_server = subprocess.Popen(["vcs-server", "--port", "8123"], stdout=logfile, stderr=logfile)
-flask = subprocess.Popen(["python", "-m", "vcdat.app", "--prod", "--port", "8124", "--vcs_server='localhost:8123'"], stdout=logfile, stderr=logfile)
+flask = subprocess.Popen(["python", "-m", "vcdat.app", "--prod", "--port", "8124", "--vcs_server=localhost:8123"], stdout=logfile, stderr=logfile)
 
 # Keep looping till we get a successful response
 while True:
