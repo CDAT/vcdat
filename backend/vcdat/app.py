@@ -54,6 +54,12 @@ def serve_resource_file(path):
             mimetype = "text/css"
         elif path.endswith("js"):
             mimetype = "text/javascript"
+        elif path.endswith("png"):
+            mimetype = "image/png"
+        elif path.endswith("svg"):
+            mimetype = "image/svg"
+        else:
+            mimetype = "text/plain"
 
         return Response(pkg_resources.resource_string(__name__, "resources/" + path), mimetype=mimetype)
 
