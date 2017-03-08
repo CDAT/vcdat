@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+import subprocess
+import time
+import requests
+import sys
+import tempfile
+
+logfile = tempfile.TemporaryFile()
+
+vcs_server = subprocess.Popen(["vcs-server", "--port", "8123"], stdout=logfile, stderr=logfile)
+flask = subprocess.Popen(["python", "-m", "vcdat.app", "--prod", "--port", "8124", "--vcs_server=localhost:8123"], stdout=logfile, stderr=logfile)
+
+# Keep looping till we get a successful response
+while True:
+    try:
+        resp = requests.get("http://localhost:8124")
+    except:
+        continue
+    if resp.status_code == 200:
+        import webbrowser
+        webbrowser.open("http://localhost:8124")
+        break
+
+# Now we'll wait till the user terminates the process.
+try:
+    for line in sys.stdin:
+        pass
+except KeyboardInterrupt:
+    print ""
+
+vcs_server.terminate()
+flask.terminate()

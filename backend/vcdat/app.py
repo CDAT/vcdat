@@ -27,19 +27,41 @@ _ = vcs.init()
 
 @app.route("/")
 def hello():
-    path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'frontend/src/'))
-    return send_from_directory(path, 'index.html')
+    if app.debug:
+        path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'frontend/src/'))
+        with open(path + "index.html") as ind:
+            index = ind.read()
+            return index.format(vcs_js_server=app.config["vcs_server"])
+    else:
+        import pkg_resources
+        # Serve using pkg_resources
+        return pkg_resources.resource_string(__name__, "resources/index.html").format(vcs_js_server=app.config["vcs_server"])
 
 
 @app.route("/deps/<path:path>")
 def serve_resource_file(path):
-    dir_path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'frontend/'))
-    if path in ['Styles.css', 'jquery-2.2.4.min.js', 'jquery-ui.min.js', 'jquery-ui.min.css', 'clt_image.png', 'bootstrap-themed.min.css', 'add_plot.svg']:
-        return send_from_directory(dir_path, 'deps/' + path)
-    if path in ['Bundle.js', 'Bundle.js.map']:
-        return send_from_directory(dir_path, 'dist/' + path)
+    if app.debug:
+        dir_path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'frontend/'))
+        if path in ['Styles.css', 'jquery-2.2.4.min.js', 'jquery-ui.min.js', 'jquery-ui.min.css', 'clt_image.png', 'bootstrap-themed.min.css', 'add_plot.svg']:
+            return send_from_directory(dir_path, 'deps/' + path)
+        if path in ['Bundle.js', 'Bundle.js.map']:
+            return send_from_directory(dir_path, 'dist/' + path)
     else:
-        return send_from_directory(dir_path, 'taco')
+        import pkg_resources
+        # Serve using pkg_resources
+
+        if path.endswith("css"):
+            mimetype = "text/css"
+        elif path.endswith("js"):
+            mimetype = "text/javascript"
+        elif path.endswith("png"):
+            mimetype = "image/png"
+        elif path.endswith("svg"):
+            mimetype = "image/svg"
+        else:
+            mimetype = "text/plain"
+
+        return Response(pkg_resources.resource_string(__name__, "resources/" + path), mimetype=mimetype)
 
 
 @app.route("/getTemplates")
@@ -172,4 +194,12 @@ def get_variable_provenance():
 
 
 if __name__ == "__main__":   # pragma: no cover
-    app.run(debug=True)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--prod", dest="production", action="store_true")
+    parser.add_argument("--port", default=5000)
+    parser.add_argument("--vcs_server")
+
+    args = parser.parse_args()
+    app.config["vcs_server"] = args.vcs_server
+    app.run(debug=(not args.production), port=int(args.port))

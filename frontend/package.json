@@ -62,6 +62,7 @@
   },
   "scripts": {
     "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
+    "release": "webpack -p --output-path=../backend/vcdat/resources && cp src/index.html ../backend/vcdat/resources",
     "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text npm test",
     "test": "mocha test/mocha --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive",
     "lint": "$(npm bin)/eslint -f table src/*.js* src/*/*.js* src/*/*/*.js* src/*/*/*/*.js*",
