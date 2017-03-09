@@ -84,7 +84,8 @@ const mapDispatchToProps = (dispatch) => {
         loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list)),
         updateGraphicsMethod: (graphics_method) => {
             dispatch(Actions.updateGraphicsMethod(graphics_method))
-        }
+        },
+        updateTemplate: (template) => dispatch(Actions.updateTemplate(template)),
     }
 }
 
