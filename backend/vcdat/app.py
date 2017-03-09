@@ -29,7 +29,7 @@ _ = vcs.init()
 def hello():
     if app.debug:
         path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'frontend/src/'))
-        with open(path + "index.html") as ind:
+        with open(os.path.join(path, "index.html")) as ind:
             index = ind.read()
             return index.format(vcs_js_server=app.config["vcs_server"])
     else:
