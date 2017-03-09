@@ -15,3 +15,8 @@ frontend/.nyc_output
 frontend/coverage
 frontend/bin/
 *.log
+backend/vcdat/resources
+build/
+dist/
+*.egg-info
+
