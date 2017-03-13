@@ -1,7 +1,6 @@
 import React from 'react'
 import AddEditRemoveNav from './AddEditRemoveNav.jsx'
-import CachedFiles from './modals/CachedFiles.jsx'
-import FileExplorer from './modals/FileExplorer.jsx'
+import VariableEditor from './modals/VariableEditor.jsx';
 /* global $ */
 
 var VarList = React.createClass({
@@ -16,9 +15,15 @@ var VarList = React.createClass({
 
     },
     openDialog(){
-        $('#cached-files').modal('show');
+        this.setState({showEditor: true});
+    },
+    getInitialState() {
+        return {
+            showEditor: false
+        };
     },
     render() {
+
         return (
             <div className='left-side-list scroll-area-list-parent'>
                 <AddEditRemoveNav title='Variables' addAction={this.openDialog} />
@@ -34,14 +39,15 @@ var VarList = React.createClass({
                         })};
                     </ul>
                 </div>
-                <CachedFiles
-                    curVariables={this.props.variables}
-                    loadVariables={this.props.loadVariables}
-                    cachedFiles={this.props.cachedFiles}
-                />
-                <FileExplorer addFileToCache={this.props.addFileToCache}/>
+                <VariableEditor variables={this.props.variables} showing={this.state.showEditor} />
             </div>
         )
+        /*
+            <CachedFiles curVariables={this.props.variables}
+                     loadVariables={this.props.loadVariables}
+                     cachedFiles={this.props.cachedFiles} />
+            <FileExplorer addFileToCache={this.props.addFileToCache}/>
+        */
     }
 });
 

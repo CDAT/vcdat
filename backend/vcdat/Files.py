@@ -1,46 +1,38 @@
 import os
 
 
-def isValidFile(start_path, item):
-    if os.path.isfile(os.path.join(start_path, item)) and item[0] != '.' and item.endswith('.nc'):
-        return True
-    return False
-
-
-def isValidDir(start_path, item):
-    if not os.path.isfile(os.path.join(start_path, item)) and item[0] != '.':
-        return True
-    return False
+def keyForDirOrFile(arr):
+    try:
+        n = arr['name']
+    except:
+        n = arr
+    return n
 
 
 def getFilesObject(start_path):
-    if start_path != '/':
-        name = start_path.split('/')[-2]
+    if start_path[-1] != '/':
+        name = os.path.basename(start_path)
     else:
-        name = '/'
+        name = os.path.dirname(start_path)
 
-    cur_dir_items = {
+    root = {
         'name': name,
-        'sub_items': {},
-        'directory': True,
+        'sub_items': [],
         'path': start_path
     }
-    for item in os.listdir(start_path):
-        if isValidFile(start_path, item) or isValidDir(start_path, item):
-            obj = {
-                'name': item,
-                'sub_items': {},
-                'directory': False,
-                'path': start_path
-            }
-            if isValidDir(start_path, item):
-                obj['directory'] = True
-            cur_dir_items['sub_items'][item] = obj
-    if len(cur_dir_items['sub_items'].keys()) == 0:
-        cur_dir_items['sub_items']['empty'] = {
-            'name': 'empty',
-            'sub_items': {},
-            'directory': False,
-            'path': start_path
-        }
-    return cur_dir_items
+
+    for r, dirs, files in os.walk(start_path):
+        # Find the current directory
+        path_components = r[len(root["path"]):].split(os.path.sep)
+        cur_dir = root
+        for p in path_components:
+            for f in cur_dir["sub_items"]:
+                if keyForDirOrFile == p:
+                    cur_dir = f
+                    break
+
+        dir_objs = [{'name': d, 'path': os.path.join(r, d), 'sub_items': []} for d in dirs]
+        cur_dir["sub_items"] = dir_objs + files
+        cur_dir["sub_items"].sort(key=keyForDirOrFile)
+
+    return root

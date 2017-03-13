@@ -91,36 +91,16 @@ def get_colormaps():
     return json.dumps(colormaps)
 
 
-@app.route("/getInitialFileTree")
-@jsonresp
-def get_initial_file_tree():
-    start_path = os.path.expanduser('~')
-    dir_list = start_path.split('/')
-    del dir_list[0]
-    dir_list.insert(0, '/')
-    base_files = {}
-    total_path = ''
-    prev_obj = {}
-    for index, directory in enumerate(dir_list):
-        total_path += directory
-        if index:
-            total_path += '/'
-        files = getFilesObject(total_path)
-
-        if index:
-            prev_obj['sub_items'][directory] = files
-        else:
-            base_files = files
-        prev_obj = files
-
-    return json.dumps(base_files)
-
-
 @app.route("/browseFiles")
 @jsonresp
 def browse_files():
-    start_path = request.args.get('path') + '/'
-    file_obj = getFilesObject(start_path)
+    if "data_root" in app.config:
+        starting_path = app.config["data_root"]
+    elif os.path.exists(vcs.sample_data):
+        starting_path = vcs.sample_data
+    else:
+        starting_path = os.getcwd()
+    file_obj = getFilesObject(starting_path)
     return json.dumps(file_obj)
 
 

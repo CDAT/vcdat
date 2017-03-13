@@ -1,6 +1,5 @@
 import React from 'react'
 import FileExplorer from './FileExplorer.jsx'
-require('../../../../deps/quicktree.js');
 /* global $ */
 
 var CachedFiles = React.createClass({
@@ -10,12 +9,6 @@ var CachedFiles = React.createClass({
     },
     getProvenance(path, var_name){
         return $.get('getVariableProvenance', {'path': path, 'varname': var_name})
-    },
-    componentDidUpdate(){
-        $('#cache-tree').quicktree();
-    },
-    componentDidMount(){
-        $('#cache-tree').quicktree();
     },
     loadVariable(event){
         let selected = $('#cache-tree').find('.active');
@@ -37,7 +30,6 @@ var CachedFiles = React.createClass({
                 provenance: var_provenance
             };
             this.props.loadVariables([var_obj])
-            $('#cached-files').modal('hide');
          })
          .fail((error) => 'fail');
   },
