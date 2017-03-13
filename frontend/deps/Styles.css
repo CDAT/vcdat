@@ -192,26 +192,6 @@ button:focus {
 .edit-button {
     width: 60.55px;
 }
-.inspector-selector {
-    width: 100%;
-}
-.inspector-selector table {
-    width: 100%;
-}
-.inspector-dropdown-title {
-    float: left;
-}
-.inspector-dropdown-item {
-    cursor: pointer;
-    padding-left: 10px;
-}
-.inspector-dropdown-item:hover, .inspector-dropdown-item.active:hover {
-    background-color: white;
-    color: black;
-}
-.inspector-dropdown-item.active {
-    background-color: #6D7F91;
-}
 .dropdown-menu {
     background-color: #31b0d5;
     position: absolute;
@@ -369,7 +349,32 @@ button:focus {
 #file{
     display: none;
 }
-.tree-view{
+
+.tree>ul {
+    padding-left:2em;
+    cursor: pointer;
+}
+
+.tree {
+    color: black;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+li.tree-leaf.active {
+    background-color: #df691a;
+}
+
+.tree li {
+    padding: .1em .25em;
+}
+
+li.tree-leaf {
+    list-style-type: none;
+}
+
+.tree-view {
     max-height:80vh;
     overflow:auto;
 }

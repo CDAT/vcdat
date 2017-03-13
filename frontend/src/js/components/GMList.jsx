@@ -29,9 +29,9 @@ var GMList = React.createClass({
         }
     },
     selectedChild(path) {
-        if (path.length === 3) {
-            let gm = path[2];
-            let gm_parent = path[1];
+        if (path.length === 2) {
+            let gm = path[1];
+            let gm_parent = path[0];
             this.setState({
                 activeGM: gm,
                 activeGMParent: gm_parent,
@@ -64,7 +64,7 @@ var GMList = React.createClass({
                 <AddEditRemoveNav editAction={this.clickedEdit} title='Graphics Methods'/>
                 {gmEditor}
                 <div className='scroll-area'>
-                    <Tree contents={gmModel} title="" disclosed activate={(activatePath) => {
+                    <Tree contents={gmModel} activate={(activatePath) => {
                         self.selectedChild(activatePath);
                     }}/>
                 </div>
