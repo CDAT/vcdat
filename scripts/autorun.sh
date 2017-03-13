@@ -16,7 +16,7 @@ fi
 
 vcs-server > $curpath/vcs.log &
 vcs_pid=$!
-python $curpath/backend/vcdat/app.py > $curpath/vcdat.log &
+python $curpath/backend/vcdat/app.py --vcs_server="localhost:8888" > $curpath/vcdat.log &
 be_pid=$!
 cd frontend
 $(npm bin)/webpack --progress --colors --watch &

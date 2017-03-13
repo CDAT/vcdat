@@ -1,7 +1,7 @@
 import React from 'react';
 import AddEditRemoveNav from './AddEditRemoveNav.jsx';
 import GraphicsMethodEditor from './modals/GraphicsMethodEditor.jsx';
-require('../../../deps/quicktree.js');
+import Tree from './Tree.jsx';
 /* global $ */
 
 var el = null;
@@ -14,15 +14,6 @@ var GMList = React.createClass({
         graphicsMethods: React.PropTypes.object,
         updateGraphicsMethod: React.PropTypes.func,
         colormaps: React.PropTypes.object,
-    },
-    componentWillUpdate() {
-        $('#gm-list').quicktree();
-    },
-    componentDidUpdate(){
-        $('#gm-list').quicktree();
-    },
-    componentDidMount() {
-        $('#gm-list').quicktree();
     },
     clickedEdit() {
         this.setState({showModal: true});
@@ -37,21 +28,15 @@ var GMList = React.createClass({
             showModal: false
         }
     },
-    selectedChild(val) {
-        if (el) {
-            el.removeClass('bg-primary');
+    selectedChild(path) {
+        if (path.length === 3) {
+            let gm = path[2];
+            let gm_parent = path[1];
+            this.setState({
+                activeGM: gm,
+                activeGMParent: gm_parent,
+            });
         }
-        el = $(val.target);
-        while (el.prop("tagName").toLowerCase() !== "li") {
-            el = el.parent();
-        }
-        el.addClass('bg-primary')
-        let gm = el.attr("data-name");
-        let gm_parent = el.attr('data-parent');
-        this.setState({
-            activeGM: gm,
-            activeGMParent: gm_parent,
-        });
     },
     render() {
         let gmEditor = "";
@@ -65,39 +50,23 @@ var GMList = React.createClass({
                                       onHide={(e) => {self.closedModal();}} />
                 );
         }
+
+        const gmModel = Object.keys(this.props.graphicsMethods).map((gmType) => {
+            const gms = Object.keys(this.props.graphicsMethods[gmType]);
+            return {
+                'title': gmType,
+                'contents': gms
+            };
+        });
+
         return (
             <div className='left-side-list scroll-area-list-parent'>
                 <AddEditRemoveNav editAction={this.clickedEdit} title='Graphics Methods'/>
                 {gmEditor}
                 <div className='scroll-area'>
-                    <ul id='gm-list' className='no-bullets left-list'>
-                        {Object.keys(this.props.graphicsMethods).map((parent_value) => {
-                            return (
-                                <li key={parent_value} className='main-left-list-item'
-                                    id={'gm-list-'+parent_value}>
-                                    <a>{parent_value}</a>
-                                    <ul className='no-bullets'>
-                                        {Object.keys(this.props.graphicsMethods[parent_value]).map((value) => {
-                                            return (
-                                                <li key={value}
-                                                    onClick={this.selectedChild}
-                                                    className='sub-left-list-item draggable-list-item'
-                                                    data-type='graphics_method' data-name={value}
-                                                    data-parent={parent_value}
-                                                    style={
-                                                        siblingsVisible(value, parent_value)
-                                                        ? {'display': 'list-item'}
-                                                        : {'display':'none'}
-                                                    }>
-                                                        <a>{value}</a>
-                                                </li>
-                                            )
-                                        })}
-                                    </ul>
-                                </li>
-                            )
-                        })}
-                    </ul>
+                    <Tree contents={gmModel} title="" disclosed activate={(activatePath) => {
+                        self.selectedChild(activatePath);
+                    }}/>
                 </div>
             </div>
         )
