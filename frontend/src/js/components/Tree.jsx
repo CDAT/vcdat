@@ -22,6 +22,16 @@ export default class Tree extends Component {
             'disclosed': this.props.disclosed ? true : false,
             'active': this.props.active ? true : false
         }
+        if (props.titleAttribute === undefined) {
+            this.state.titleAttribute = "title";
+        } else {
+            this.state.titleAttribute = props.titleAttribute;
+        }
+        if (props.contentsAttribute === undefined) {
+            this.state.contentsAttribute = "contents";
+        } else {
+            this.state.contentsAttribute = props.contentsAttribute;
+        }
     }
     componentWillReceiveProps(nextProps) {
         const new_state = {};
@@ -41,30 +51,38 @@ export default class Tree extends Component {
             this.setState({'disclosed': true, 'active': true});
             if (this.props.onActivate) {
                 // Now bubble up an activation
-                this.props.onActivate(this.props.title);
+                this.props.onActivate([this.props.title]);
             }
         }
     }
-    onActivate(child) {
-        this.setState({"active": true, "activeChild": child});
+    onActivate(activatePath) {
+        this.setState({"active": true, "activeChild": activatePath[0]});
+        if (this.props.activate) {
+            activatePath.unshift(this.props.title);
+            this.props.activate(activatePath);
+        }
     }
     render() {
         let activate = this.onActivate.bind(this);
         let children = this.props.contents.map((con, ind) => {
             if (typeof con === "string") {
-                return <li key={ind} onClick={(e) => {activate(con);}}>{con}</li>;
+                let className = "";
+                if (this.state.active && this.state.activeChild == con) {
+                    className = "active";
+                }
+                return <li className={className} key={ind} onClick={(e) => {activate([con]);}}>{con}</li>;
             } else {
                 // Use props to determine which keys to use for what
-                const title = con[this.props.titleAttribute];
-                const contents = con[this.props.contentsAttribute];
+                const title = con[this.state.titleAttribute];
+                const contents = con[this.state.contentsAttribute];
                 const props = { title, contents };
                 if (!this.state.disclosed) {
                     props["active"] = false;
                 }
-                if (this.state.active && this.state.activeChild == c) {
+                if (this.state.active && this.state.activeChild === title) {
                     props["active"] = true;
                 }
-                props["onActivate"] = activate;
+                props["activate"] = activate;
                 return <li key={ind}><Tree {...props} /></li>
             }
         });
