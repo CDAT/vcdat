@@ -1,6 +1,6 @@
 import {Nav, NavItem, Modal} from 'react-bootstrap'
 import React, { Component } from 'react';
-import FileExplorer from '../variables/FileExplorer.jsx';
+import FilesystemExplorer from '../variables/FilesystemExplorer.jsx';
 
 export default class VariableEditor extends Component {
     constructor(props) {
@@ -23,11 +23,16 @@ export default class VariableEditor extends Component {
     handleSelect(newKey) {
         this.setState({currentTab: newKey});
     }
+    loadedVariable(variable) {
+        console.log(variable);
+    }
     render() {
         let widget = null;
+        // Fixes the "self" issue for this function
+        const load = this.loadedVariable.bind(this);
         switch (this.state.currentTab) {
             case "filesystem":
-                widget = (<FileExplorer />);
+                widget = (<FilesystemExplorer loadedVariable={load} />);
                 break;
             case "derived":
             case "esgf":

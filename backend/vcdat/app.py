@@ -29,7 +29,7 @@ _ = vcs.init()
 def hello():
     if app.debug:
         path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'frontend/src/'))
-        with open(path + "index.html") as ind:
+        with open(os.path.join(path, "index.html")) as ind:
             index = ind.read()
             return index.format(vcs_js_server=app.config["vcs_server"])
     else:
@@ -131,7 +131,7 @@ def browse_files():
 def load_variables_from_file():
     file_path = request.args.get('path')
 
-    f = cdms2.open(file_path)
+    f = cdms2.open(str(file_path))
     returned = []
     f_var = f.getVariables()
     f_var.sort(key=lambda x: len(x.getAxisList()), reverse=True)
@@ -147,7 +147,7 @@ def load_variables_from_file():
         var_units = getattr(var, 'units', "")
 
         output = var_id + " " + str(var_shape) + " [" + var_name + ": " + var_units + "]"
-        returned.append(output)
+        returned.append({"type": "variable", "id": var_id, "label": output})
 
     for ax in f.axes:
         axes_name = ax
@@ -157,8 +157,9 @@ def load_variables_from_file():
         axes_upper = f.axes[ax][-1]
 
         output = axes_name + " (" + str(axes_length) + ") - [" + axes_units + ": (" + str(axes_lower) + ", " + str(axes_upper) + ")]"
-        returned.append(output)
+        returned.append({"type": "axis", "id": axes_name, "label": output})
 
+    f.close()
     return json.dumps({'variables': returned})
 
 
@@ -170,6 +171,7 @@ def get_variable_provenance():
     f = cdms2.open(path)
     v = f[varname]
     ep = v.exportProvenance()
+    f.close()
     return json.dumps(ep)
 
 

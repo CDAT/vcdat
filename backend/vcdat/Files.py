@@ -32,7 +32,9 @@ def getFilesObject(start_path):
                     break
 
         dir_objs = [{'name': d, 'path': os.path.join(r, d), 'sub_items': []} for d in dirs]
-        cur_dir["sub_items"] = dir_objs + files
+        file_objs = [{'name': f, 'path': os.path.join(r, f), 'sub_items': []} for f in files]
+        cur_dir["sub_items"] = dir_objs + file_objs
         cur_dir["sub_items"].sort(key=keyForDirOrFile)
 
     return root
+

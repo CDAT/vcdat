@@ -8,10 +8,11 @@ class TreeNode extends Component {
         };
     }
     clicked() {
+        if (!this.state.disclosed || !this.props.children.length) {
+            this.props.activate([this.props.title]);
+        }
         if (this.props.children) {
             this.setState({"disclosed": !this.state.disclosed});
-        } else {
-            this.props.activate([this.props.title]);
         }
     }
     activateChild(path) {
@@ -21,24 +22,21 @@ class TreeNode extends Component {
     render() {
         var disclosed = this.state.disclosed;
         var active = this.props.active;
-        var classnames = [this.props.children ? "tree-node":"tree-leaf"];
+        var is_node = this.props.children && this.props.children.length;
+        var classnames = [is_node ? "tree-node":"tree-leaf"];
         if (disclosed) {
             classnames.push("disclosed");
         }
-        if (active === true && !this.props.children) {
+        if (active === true && !is_node) {
             classnames.push("active");
         }
 
-        if (this.props.children) {
-            return (
-                <li className={classnames.join(" ")}>
-                    <a onClick={(e) => this.clicked()}>{this.props.title}</a>
-                    <Tree disclosed={disclosed} activate={(p) => this.activateChild(p)} contents={this.props.children} />
-                </li>
-            );
-        } else {
-            return (<li onClick={(e) => {this.clicked();}} className={classnames.join(" ")}>{this.props.title}</li>);
-        }
+        return (
+            <li className={classnames.join(" ")}>
+                <a onClick={(e) => this.clicked()}>{this.props.title}</a>
+                {is_node ? <Tree disclosed={disclosed} activate={(p) => this.activateChild(p)} contents={this.props.children} /> : "" }
+            </li>
+        );
     }
 }
 
