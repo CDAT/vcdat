@@ -22,7 +22,7 @@ var TemplatePreview = React.createClass({
     render() {
         return (
             <div id='tmpl-preview'>
-                <img id='tmpl-img' />
+                <img id='tmpl-img' style={{maxWidth: "100%"}} />
             </div>
         )
     }
