@@ -1,6 +1,5 @@
 import React from 'react'
-import {Tabs} from 'react-bootstrap'
-import {Tab} from 'react-bootstrap'
+import {Tabs, Tab} from 'react-bootstrap'
 import TemplatePreview from '../TemplatePreview.jsx'
 import TemplateLabelsEditor from '../editors/template/TemplateLabelsEditor.jsx'
 import TemplateAxisEditor from '../editors/template/TemplateAxisEditor.jsx'

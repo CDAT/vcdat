@@ -1,8 +1,6 @@
 import React from 'react'
-import {Tabs} from 'react-bootstrap'
-import {Tab} from 'react-bootstrap'
-import TemplateAxisSettingsX from './TemplateAxisSettingsX.jsx'
-import TemplateAxisSettingsY from './TemplateAxisSettingsY.jsx'
+import {Tabs, Tab} from 'react-bootstrap'
+import TemplateAxisSettings from './TemplateAxisSettings.jsx'
 
 
 const x1 = ["xlabel1", "xtic1", "xmintic1"];
@@ -22,7 +20,6 @@ var TemplateAxisEditor = React.createClass({
         }
     },
     getInitialState() {
-
         key: 1;
         return {workingTemplate: $.extend({}, this.props.template)};
     },
@@ -40,25 +37,25 @@ var TemplateAxisEditor = React.createClass({
                 <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="templateAxisEditors">
                     <Tab eventKey={1} title="First Set X">
                         {x1.map((axis_name) => {
-                            return <TemplateAxisSettingsX key={axis_name} axis={template[axis_name]} page="1"
+                            return <TemplateAxisSettings key={axis_name} axis={template[axis_name]} page="1"
                                                           update={self.updateTemplateAttribute(axis_name)}/>
                         })}
                     </Tab>
                     <Tab eventKey={2} title="Second Set X">
                         {x2.map((axis_name) => {
-                            return <TemplateAxisSettingsX key={axis_name} axis={template[axis_name]} page="2"
+                            return <TemplateAxisSettings key={axis_name} axis={template[axis_name]} page="2"
                                                           update={self.updateTemplateAttribute(axis_name)}/>
                         })}
                     </Tab>
                     <Tab eventKey={3} title="First Set Y">
                         {y1.map((axis_name) => {
-                            return <TemplateAxisSettingsY key={axis_name} axis={template[axis_name]} page="3"
+                            return <TemplateAxisSettings key={axis_name} axis={template[axis_name]} page="3"
                                                           update={self.updateTemplateAttribute(axis_name)}/>
                         })}
                     </Tab>
                     <Tab eventKey={4} title="Second Set Y">
                         {y2.map((axis_name) => {
-                            return <TemplateAxisSettingsY key={axis_name} axis={template[axis_name]} page="4"
+                            return <TemplateAxisSettings key={axis_name} axis={template[axis_name]} page="4"
                                                           update={self.updateTemplateAttribute(axis_name)}/>
                         })}
                     </Tab>

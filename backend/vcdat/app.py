@@ -81,12 +81,21 @@ def plot_template():
     g.xmtics2 = g.xmtics1
     g.ymtics1 = g.xmtics1
     g.ymtics2 = g.xmtics1
+    ticlabels = {i: str(i) for i in range(10)}
+    g.xticlabels1 = ticlabels
+    g.yticlabels1 = ticlabels
+    g.yticlabels2 = ticlabels
+    g.xticlabels2 = ticlabels
     v = [[0] * 10] * 10
     v = cdms2.tvariable.TransientVariable(v)
+
     t.plot(canvas, v, g)
     t.drawColorBar([(0,0,0,0)], [0, 1], x=canvas)
+
     canvas.backend.renWin.Render()
+
     del vcs.elements["template"][t.name]
+
     _, tmp = tempfile.mkstemp(suffix=".png")
     canvas.png(tmp)
     resp = send_file(tmp)
