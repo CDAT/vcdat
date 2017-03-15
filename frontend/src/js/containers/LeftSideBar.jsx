@@ -55,7 +55,7 @@ var LeftSideBar = React.createClass({
                     addFileToCache={this.props.addFileToCache}
                     cachedFiles={this.props.cached_files} />
                 <GMList graphicsMethods={this.props.graphics_methods}
-                    updateGraphicsMethods={this.props.updateGraphicsMethods}
+                    updateGraphicsMethod={this.props.updateGraphicsMethod}
                     colormaps={this.props.colormaps}
                     defaultMethods={this.props.default_methods}/>
                 <TemplateList templates={this.props.templates} updateTemplate={this.props.updateTemplate}/>
