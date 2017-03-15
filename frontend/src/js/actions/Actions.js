@@ -170,7 +170,13 @@ var Actions = {
             type: 'INITIALIZE_DEFAULT_METHODS',
             defaultmethods: defaults
         }
-    }
+    },
+    updateTemplate(template) {
+        return {
+            type: 'UPDATE_TEMPLATE',
+            template:template
+        }
+    },
 }
 
 export default Actions;

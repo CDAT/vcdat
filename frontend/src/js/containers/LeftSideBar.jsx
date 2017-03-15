@@ -20,7 +20,8 @@ var LeftSideBar = React.createClass({
         ]),
         colormaps: React.PropTypes.object,
         sheets_model: React.PropTypes.object,
-        updateGraphicsMethods: React.PropTypes.func
+        updateGraphicsMethods: React.PropTypes.func,
+        updateTemplate: React.PropTypes.func,
 
     },
     initDragListItems(){
@@ -54,17 +55,16 @@ var LeftSideBar = React.createClass({
                     addFileToCache={this.props.addFileToCache}
                     cachedFiles={this.props.cached_files} />
                 <GMList graphicsMethods={this.props.graphics_methods}
-                    updateGraphicsMethod={this.props.updateGraphicsMethod}
-                    colormaps={this.props.colormaps} />
-                <TemplateList templates={this.props.templates} />
+                    updateGraphicsMethods={this.props.updateGraphicsMethods}
+                    colormaps={this.props.colormaps}
+                    defaultMethods={this.props.default_methods}/>
+                <TemplateList templates={this.props.templates} updateTemplate={this.props.updateTemplate}/>
             </div>
         )
     }
 })
 
 const mapStateToProps = (state) => {
-    console.log("Mapping state to props");
-    console.log(state);
     return {
         variables: state.present.variables,
         graphics_methods: state.present.graphics_methods,
@@ -84,7 +84,8 @@ const mapDispatchToProps = (dispatch) => {
         loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list)),
         updateGraphicsMethod: (graphics_method) => {
             dispatch(Actions.updateGraphicsMethod(graphics_method))
-        }
+        },
+        updateTemplate: (template) => dispatch(Actions.updateTemplate(template)),
     }
 }
 

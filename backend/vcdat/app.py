@@ -29,7 +29,7 @@ _ = vcs.init()
 def hello():
     if app.debug:
         path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'frontend/src/'))
-        with open(path + "index.html") as ind:
+        with open(os.path.join(path, "index.html")) as ind:
             index = ind.read()
             return index.format(vcs_js_server=app.config["vcs_server"])
     else:
@@ -76,13 +76,27 @@ def plot_template():
     tmpl = request.get_json()
     t = templ_from_json(tmpl)
     canvas = vcs.init(bg=True)
-    g = vcs.getboxfill()
+    g = vcs.createboxfill()
+    g.xmtics1 = {.5 * i: "" for i in range(1,20,2)}
+    g.xmtics2 = g.xmtics1
+    g.ymtics1 = g.xmtics1
+    g.ymtics2 = g.xmtics1
+    ticlabels = {i: str(i) for i in range(10)}
+    g.xticlabels1 = ticlabels
+    g.yticlabels1 = ticlabels
+    g.yticlabels2 = ticlabels
+    g.xticlabels2 = ticlabels
     v = [[0] * 10] * 10
     v = cdms2.tvariable.TransientVariable(v)
+
     t.plot(canvas, v, g)
-    t.drawColorBar([(0,0,0,0)], [0, 1], x=canvas)
+    if t.legend.priority:
+        t.drawColorBar([(0,0,0,0)], [0, 1], x=canvas)
+
     canvas.backend.renWin.Render()
+
     del vcs.elements["template"][t.name]
+
     _, tmp = tempfile.mkstemp(suffix=".png")
     canvas.png(tmp)
     resp = send_file(tmp)
