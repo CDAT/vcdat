@@ -260,7 +260,10 @@ button:focus {
 .cell-stack-bottom {
     z-index: 0;
 }
-
+.plotter {
+    display:flex;
+    color: black;
+}
 .plotter-plots {
     width: 100%;
     display: flex;

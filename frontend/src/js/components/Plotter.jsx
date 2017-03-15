@@ -55,7 +55,7 @@ var Plotter = React.createClass({
     },
     render() {
         return (
-            <div className={this.props.onTop ? 'cell-stack-top' : 'cell-stack-bottom'}>
+            <div className={this.props.onTop ? 'cell-stack-top plotter' : 'cell-stack-bottom plotter'}>
                 <div className='plotter-plots'>
                     {(() => {
                         let plotters = [];
