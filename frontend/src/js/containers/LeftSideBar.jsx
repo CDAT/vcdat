@@ -2,7 +2,7 @@ import React from 'react'
 import VarList from '../components/VarList.jsx'
 import GMList from '../components/GMList.jsx'
 import TemplateList from '../components/TemplateList.jsx'
-import Actions from '../actions/Actions.js'
+import Actions from '../constants/Actions.js'
 import {connect} from 'react-redux'
 /* global $ */
 

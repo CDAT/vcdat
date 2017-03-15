@@ -2,7 +2,26 @@ import React from 'react';
 import AddEditRemoveNav from './AddEditRemoveNav.jsx';
 import GraphicsMethodEditor from './modals/GraphicsMethodEditor.jsx';
 import Tree from './Tree.jsx';
+import DragAndDropTypes from '../constants/DragAndDropTypes.js';
 /* global $ */
+
+//Drag and Drop integration; passed down to the Tree object
+var gmSource = {
+    beginDrag: function(props) {
+        return {
+            'gmType': props.gmType,
+            'gmName': props.title
+        };
+    }
+}
+
+function collect(connect, monitor) {
+    return {
+        connectDragSource: connect.dragSource(),
+        isDragging: monitor.isDragging()
+    };
+}
+
 
 var el = null;
 function siblingsVisible(element_name, parent_gm) {
@@ -52,10 +71,16 @@ var GMList = React.createClass({
         }
 
         const gmModel = Object.keys(this.props.graphicsMethods).map((gmType) => {
-            const gms = Object.keys(this.props.graphicsMethods[gmType]);
+            const gms = Object.keys(this.props.graphicsMethods[gmType]).map((gmname) => {
+                return {
+                    'title': gmname,
+                    'gmType': gmType
+                }
+            });
+
             return {
                 'title': gmType,
-                'contents': gms
+                'contents': gms,
             };
         });
 
@@ -64,7 +89,7 @@ var GMList = React.createClass({
                 <AddEditRemoveNav editAction={this.clickedEdit} title='Graphics Methods'/>
                 {gmEditor}
                 <div className='scroll-area'>
-                    <Tree contents={gmModel} activate={(activatePath) => {
+                    <Tree dragSource={gmSource} dragCollect={collect} dragType={DragAndDropTypes.GM} contents={gmModel} activate={(activatePath) => {
                         self.selectedChild(activatePath);
                     }}/>
                 </div>

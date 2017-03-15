@@ -1,7 +1,7 @@
 import React from 'react'
 import Cell from '../components/Cell.jsx'
 import {connect} from 'react-redux'
-import Actions from '../actions/Actions.js'
+import Actions from '../constants/Actions.js'
 import Spinner from '../components/Spinner.jsx'
 /* global $ */
 

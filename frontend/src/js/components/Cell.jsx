@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Actions from '../actions/Actions.js';
+import Actions from '../constants/Actions.js';
 import Plotter from './Plotter.jsx';
 import Canvas from './Canvas.jsx';
 import $ from 'jquery';
