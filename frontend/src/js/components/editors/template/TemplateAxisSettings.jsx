@@ -38,17 +38,17 @@ var TemplateAxisSettings = React.createClass({
             var axis = this.props.axis.x;
             var axis1 = this.props.axis.x1;
             var axis2 = this.props.axis.x2;
-            var label = "y";
-            var label1 = "y1";
-            var label2 = "y2";
+            var label = "x";
+            var label1 = "x1";
+            var label2 = "x2";
         }
         else if (name.includes('x')){
             var axis = this.props.axis.y;
             var axis1 = this.props.axis.y1;
             var axis2 = this.props.axis.y2;
-            var label = "x";
-            var label1 = "x1";
-            var label2 = "x2";
+            var label = "y";
+            var label1 = "y1";
+            var label2 = "y2";
         }
 
         return (
@@ -60,12 +60,12 @@ var TemplateAxisSettings = React.createClass({
                                 <tbody>
                                 <tr>
                                     <td>{label}</td>
-                                    <td><input type="number" value={axis} name="{name}_{label}"
-                                               onChange={this.updateAxisValue({label})}/></td>
+                                    <td><input type="number" value={axis} name={name + "_" + label}
+                                               onChange={this.updateAxisValue(label)}/></td>
                                 </tr>
                                 <tr>
                                     <td>Priority</td>
-                                    <td><input type="number" value={priority} name="{name}_priority"
+                                    <td><input type="number" value={priority} name={name + "_priority"}
                                                onChange={this.updateAxisValue("priority")}/></td>
                                 </tr>
                                 </tbody>
@@ -79,17 +79,17 @@ var TemplateAxisSettings = React.createClass({
 
                                 <tr>
                                     <td>{label}1</td>
-                                    <td><input type="number" value={axis1} name="{name}_{label}1"
-                                               onChange={this.updateAxisValue({label1})}/></td>
+                                    <td><input type="number" value={axis1} name={name + "_" + label1}
+                                               onChange={this.updateAxisValue(label1)}/></td>
                                 </tr>
                                 <tr>
                                     <td>{label}2</td>
-                                    <td><input type="number" value={axis2} name="{name}_{label}2"
-                                               onChange={this.updateAxisValue({label2})}/></td>
+                                    <td><input type="number" value={axis2} name={name + "_" + label2}
+                                               onChange={this.updateAxisValue(label2)}/></td>
                                 </tr>
                                 <tr>
                                     <td>Priority</td>
-                                    <td><input type="number" value={priority} name="{name}_priority"
+                                    <td><input type="number" value={priority} name={name + "_priority"}
                                                onChange={this.updateAxisValue("priority")}/></td>
                                 </tr>
                                 </tbody>

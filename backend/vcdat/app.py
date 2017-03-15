@@ -90,7 +90,8 @@ def plot_template():
     v = cdms2.tvariable.TransientVariable(v)
 
     t.plot(canvas, v, g)
-    t.drawColorBar([(0,0,0,0)], [0, 1], x=canvas)
+    if t.legend.priority:
+        t.drawColorBar([(0,0,0,0)], [0, 1], x=canvas)
 
     canvas.backend.renWin.Render()
 
