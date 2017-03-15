@@ -246,23 +246,21 @@ button:focus {
     display: flex;
     flex-direction: column;
 }
-.cell-stack-top {
+.cell-stack-top, .cell-stack-bottom {
     position: absolute;
     background-color:white;
     height: 100%;
     width: 100%;
 }
-.cell-stack-bottom {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    color: black;
-    display: flex;
-}
-.plotter-to-top {
+
+.cell-stack-top {
     z-index: 1;
 }
+
+.cell-stack-bottom {
+    z-index: 0;
+}
+
 .plotter-plots {
     width: 100%;
     display: flex;

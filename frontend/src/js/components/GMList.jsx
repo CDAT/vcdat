@@ -23,11 +23,6 @@ function collect(connect, monitor) {
 }
 
 
-var el = null;
-function siblingsVisible(element_name, parent_gm) {
-    let first=$('#gm-list-'+parent_gm).children().children()[0]
-    return $(first).css("display")==='list-item' ?true :false;
-}
 var GMList = React.createClass({
     propTypes: {
         graphicsMethods: React.PropTypes.object,

@@ -1,5 +1,27 @@
-import React from 'react'
-/* global $ */
+import React from 'react';
+import {DropTarget} from 'react-dnd';
+import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+
+
+const plotTarget = {
+    drop(props, monitor, component) {
+        const item = monitor.getItem();
+        switch (monitor.getItemType()) {
+            case DragAndDropTypes.GM:
+                props.swapGraphicsMethodInPlot(item.gmType, item.gmName, props.plotIndex);
+                break;
+        }
+    }
+};
+
+function collect(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver(),
+    };
+}
+
+
 var Plot = React.createClass({
     propTypes: {
         plot: React.PropTypes.object,
@@ -16,11 +38,6 @@ var Plot = React.createClass({
                 let var_name = ui.draggable.attr('data-name');
                 this.props.swapVariableInPlot(var_name, this.props.plotIndex);
                 break;
-            case 'graphics_method':
-                let gm_parent = ui.draggable.attr('data-parent');
-                let gm_name = ui.draggable.attr('data-name');
-                this.props.swapGraphicsMethodInPlot(gm_parent, gm_name, this.props.plotIndex)
-                break
             case 'template':
                 let tm_name = ui.draggable.attr('data-name');
                 this.props.swapTemplateInPlot(tm_name, this.props.plotIndex);
@@ -82,7 +99,7 @@ var Plot = React.createClass({
         this.initDrop();
     },
     render() {
-        return (
+        return this.props.connectDropTarget(
             <div className='plot' id={this.props.plotName} data-plot-index={this.props.plotIndex}>
                 <div>
                     <h4>Variables:</h4>
@@ -112,4 +129,4 @@ var Plot = React.createClass({
     }
 })
 
-export default Plot;
+export default DropTarget([DragAndDropTypes.GM], plotTarget, collect)(Plot);

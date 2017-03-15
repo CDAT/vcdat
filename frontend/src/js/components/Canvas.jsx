@@ -7,6 +7,7 @@ var Canvas = React.createClass({
     propTypes: {
         plots: React.PropTypes.array,
         plotVariables: React.PropTypes.array,
+        onTop: React.PropTypes.bool,
     },
     componentDidMount() {
         this.canvas = vcs.init(this.refs.div);
@@ -29,7 +30,7 @@ var Canvas = React.createClass({
     },
     render() {
         return (
-            <div className="cell-stack-top" ref="div"></div>
+            <div className={this.props.onTop ? "cell-stack-top" : "cell-stack-bottom"} ref="div"></div>
         )
     }
 });

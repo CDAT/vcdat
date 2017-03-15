@@ -3,7 +3,19 @@ import {connect} from 'react-redux';
 import Actions from '../constants/Actions.js';
 import Plotter from './Plotter.jsx';
 import Canvas from './Canvas.jsx';
-import $ from 'jquery';
+import {DropTarget} from 'react-dnd';
+import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+
+
+
+function collect(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver(),
+    };
+}
+
+const cellTarget = {};
 
 var Cell = React.createClass({
     propTypes: {
@@ -19,9 +31,10 @@ var Cell = React.createClass({
         this.cell = this.props.cells[this.props.row][this.props.col];
         this.row = this.props.row;
         this.col = this.props.col;
-        return (
+        return this.props.connectDropTarget(
             <div className='cell' data-row={this.props.row} data-col={this.props.col}>
                 <Plotter
+                    onTop={this.props.isOver}
                     cell={this.cell}
                     row={this.props.row}
                     col={this.props.col}
@@ -30,9 +43,9 @@ var Cell = React.createClass({
                     swapGraphicsMethodInPlot={this.props.swapGraphicsMethodInPlot}
                     swapTemplateInPlot={this.props.swapTemplateInPlot}
                 />
-                <Canvas plots={this.cell.plots} row={this.props.row} col={this.props.col} />
+                <Canvas onTop={!this.props.isOver} plots={this.cell.plots} row={this.props.row} col={this.props.col} />}
             </div>
-        )
+        );
     }
 });
 const mapStateToProps = (state) => {
@@ -57,4 +70,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Cell);
+export default DropTarget([DragAndDropTypes.GM], cellTarget, collect)(connect(mapStateToProps, mapDispatchToProps)(Cell));

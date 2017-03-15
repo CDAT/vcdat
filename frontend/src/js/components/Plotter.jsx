@@ -1,5 +1,46 @@
 import React from 'react'
 import Plot from './Plot.jsx'
+import {DropTarget} from 'react-dnd';
+import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+
+
+function AddPlot(props) {
+    return props.connectDropTarget(
+        <div className='plotter-add-plot'>
+            <img src='deps/add_plot.svg' alt='Add Plot'></img>
+        </div>
+    );
+}
+
+const addPlotTarget = {
+    drop(props, monitor, component) {
+        const item = monitor.getItem();
+        let var_name = null;
+        let graphics_method_parent = null;
+        let graphics_method = null;
+        let template = null;
+        let row = props.row;
+        let col = props.col;
+
+        switch (monitor.getItemType()) {
+            case DragAndDropTypes.GM:
+                graphics_method_parent = item.gmType;
+                graphics_method = item.gmName;
+                break;
+        }
+        props.addPlot(var_name, graphics_method_parent, graphics_method, template, row, col);
+    }
+};
+
+const DropPlot = DropTarget([DragAndDropTypes.GM], addPlotTarget, collect)(AddPlot);
+
+function collect(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver(),
+    };
+}
+
 /* global $*/
 
 var Plotter = React.createClass({
@@ -11,63 +52,10 @@ var Plotter = React.createClass({
         swapTemplateInPlot: React.PropTypes.func,
         swapVariableInPlot: React.PropTypes.func,
         swapGraphicsMethodInPlot: React.PropTypes.func
-
-    },
-    initDrop() {
-        $('.cell-stack-bottom').droppable({
-            accept: '.draggable-list-item',
-            over: (event, ui) => {
-                $(event.target).addClass('plotter-to-top');
-            },
-            out: (event, ui) => {
-                $(event.target).removeClass('plotter-to-top');
-            }
-        })
-    },
-    addPlot(event, ui) {
-        let variable = null;
-        let graphics_method_parent = null;
-        let graphics_method = null;
-        let template = null;
-        switch (ui.draggable.attr('data-type')) {
-            case 'variable':
-                let var_name = ui.draggable.attr('data-name');
-                let var_row = this.props.row;
-                let var_col = this.props.col;
-                this.props.addPlot(var_name, graphics_method_parent, graphics_method, template, var_row, var_col);
-                break
-            case 'graphics_method':
-                let gm_parent = ui.draggable.attr('data-parent');
-                let gm_name = ui.draggable.attr('data-name');
-                let gm_row = this.props.row;
-                let gm_col = this.props.col;
-                this.props.addPlot(variable, gm_parent, gm_name, template, gm_row, gm_col);
-                break
-            case 'template':
-                let tm_name = ui.draggable.attr('data-name');
-                let tm_row = this.props.row;
-                let tm_col = this.props.col;
-                this.props.addPlot(variable, graphics_method_parent, graphics_method, tm_name, tm_row, tm_col);
-                break
-            default:
-                break
-        }
-        $('.cell-stack-bottom').removeClass('plotter-to-top');
-    },
-    componentDidMount(){
-        this.initDrop();
-        $('#add-plot-' + this.props.row + this.props.col).droppable({
-            tolerance: 'pointer',
-            hoverClass: 'plot-hover',
-            drop: this.addPlot
-        })
-    },
-    componentDidUpdate(){
-        this.initDrop();
     },
     render() {
         return (
-            <div className='cell-stack-bottom'>
+            <div className={this.props.onTop ? 'cell-stack-top' : 'cell-stack-bottom'}>
                 <div className='plotter-plots'>
                     {(() => {
                         let plotters = [];
@@ -76,6 +64,8 @@ var Plotter = React.createClass({
                             let plot_name = 'plot' + this.props.row + this.props.col + i;
                             plotters.push(
                                 <Plot
+                                    onHover={this.props.onHover}
+                                    onDrop={this.props.onDrop}
                                     key={i}
                                     plotName={plot_name}
                                     plot={plot}
@@ -92,9 +82,7 @@ var Plotter = React.createClass({
                         }
                         return plotters;
                     })()}
-                    <div className='plotter-add-plot' id={'add-plot-' + this.props.row + this.props.col}>
-                        <img src='deps/add_plot.svg' alt='Add Plot'></img>
-                    </div>
+                    <DropPlot onHover={this.props.onHover} onDrop={this.props.onDrop} addPlot={this.props.addPlot} row={this.props.row} col={this.props.col}/>
                 </div>
             </div>
         )
