@@ -27,12 +27,15 @@ const addPlotTarget = {
                 graphics_method_parent = item.gmType;
                 graphics_method = item.gmName;
                 break;
+            case DragAndDropTypes.VAR:
+                var_name = item.variable;
+                break;
         }
         props.addPlot(var_name, graphics_method_parent, graphics_method, template, row, col);
     }
 };
 
-const DropPlot = DropTarget([DragAndDropTypes.GM], addPlotTarget, collect)(AddPlot);
+const DropPlot = DropTarget(DragAndDropTypes.PLOT_COMPONENTS, addPlotTarget, collect)(AddPlot);
 
 function collect(connect, monitor) {
     return {

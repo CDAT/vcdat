@@ -4,7 +4,7 @@ import GMList from '../components/GMList.jsx'
 import TemplateList from '../components/TemplateList.jsx'
 import Actions from '../constants/Actions.js'
 import {connect} from 'react-redux'
-/* global $ */
+
 
 var LeftSideBar = React.createClass({
     propTypes: {
@@ -23,29 +23,6 @@ var LeftSideBar = React.createClass({
         updateGraphicsMethods: React.PropTypes.func,
         updateTemplate: React.PropTypes.func,
 
-    },
-    initDragListItems(){
-        $('.draggable-list-item').draggable({
-            opacity: 0.7,
-            helper: 'clone',
-            zIndex:2,
-            cursorAt: {
-                left:0,
-                bot: 0
-            },
-            cursor: 'pointer',
-            stop(){
-                $('.cell-stack-bottom').removeClass('plotter-to-top');
-            }
-
-        })
-    },
-    componentDidMount() {
-        $('#left-side-bar').resizable({ghost: true, handles: 'e', minWidth: 100, maxWidth: 500})
-        this.initDragListItems();
-    },
-    componentDidUpdate(){
-        this.initDragListItems();
     },
     render() {
         return (

@@ -70,4 +70,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default DropTarget([DragAndDropTypes.GM], cellTarget, collect)(connect(mapStateToProps, mapDispatchToProps)(Cell));
+export default DropTarget(DragAndDropTypes.PLOT_COMPONENTS, cellTarget, collect)(connect(mapStateToProps, mapDispatchToProps)(Cell));

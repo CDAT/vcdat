@@ -10,6 +10,9 @@ const plotTarget = {
             case DragAndDropTypes.GM:
                 props.swapGraphicsMethodInPlot(item.gmType, item.gmName, props.plotIndex);
                 break;
+            case DragAndDropTypes.VAR:
+                props.swapVariableInPlot(item.variable, props.plotIndex);
+                break;
         }
     }
 };
@@ -129,4 +132,4 @@ var Plot = React.createClass({
     }
 })
 
-export default DropTarget([DragAndDropTypes.GM], plotTarget, collect)(Plot);
+export default DropTarget(DragAndDropTypes.PLOT_COMPONENTS, plotTarget, collect)(Plot);
