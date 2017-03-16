@@ -1,9 +1,40 @@
-import React from 'react'
-import AddEditRemoveNav from './AddEditRemoveNav.jsx'
-import TemplateEditor from './modals/TemplateEditor.jsx'
-/* global $ */
+import React from 'react';
+import AddEditRemoveNav from './AddEditRemoveNav.jsx';
+import TemplateEditor from './modals/TemplateEditor.jsx';
+import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+import {DragSource} from 'react-dnd';
 
-var el = null;
+
+// Use a simple function-based component, rather than a fancy class one.
+function TemplateItem(props) {
+    // This function is injected by the Dra
+    return props.connectDragSource(
+        <li className={props.active ? "active" : ""} onClick={(e) => {props.selectTemplate(props.template)}}>
+            <a>{props.template}</a>
+        </li>
+    );
+}
+
+// Formats the data object passed to drop targets using the draggable component's props
+const templateSource = {
+    beginDrag(props) {
+        return {
+            template: props.template
+        };
+    }
+};
+
+// Assemble the functions and properties to inject into the TemplateItem
+function collect(connect, monitor) {
+    return {
+        connectDragSource: connect.dragSource(),
+        isDragging: monitor.isDragging()
+    };
+}
+
+// Create a draggable version of the TemplateItem
+const DraggableTemplateItem = DragSource(DragAndDropTypes.TMPL, templateSource, collect)(TemplateItem);
+
 
 var TemplateList = React.createClass({
     propTypes: {
@@ -12,19 +43,6 @@ var TemplateList = React.createClass({
     },
     getInitialState(){
         return {};
-    },
-    selectedChild(val) {
-        if (el !== null) {
-            el.removeClass('bg-primary');
-        }
-        el = $(val.currentTarget);
-        while (el.prop("tagName").toLowerCase() !== "li") {
-            el = el.parent();
-        }
-        el.addClass('bg-primary')
-        this.setState({
-            active_template: el.attr("data-name")
-        });
     },
     editTemplate() {
         $('#template-editor').modal('show')
@@ -37,12 +55,9 @@ var TemplateList = React.createClass({
                 <div className='scroll-area'>
                     <ul id='temp-list' className='no-bullets left-list'>
                         {Object.keys(this.props.templates).map((value, index) => {
-                            let class_name = 'main-left-list-item draggable-list-item';
-                            return (
-                                <li key={value} className={class_name} onClick={this.selectedChild} data-type='template' data-name={value}>
-                                    <a>{value}</a>
-                                </li>
-                            );
+                            return (<DraggableTemplateItem template={value}
+                                                           active={value === this.state.active_template}
+                                                           selectTemplate={(t) => {this.setState({active_template: t});}} />);
                         })}
                     </ul>
                 </div>

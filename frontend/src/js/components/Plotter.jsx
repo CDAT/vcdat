@@ -30,6 +30,9 @@ const addPlotTarget = {
             case DragAndDropTypes.VAR:
                 var_name = item.variable;
                 break;
+            case DragAndDropTypes.TMPL:
+                template = item.template;
+                break;
         }
         props.addPlot(var_name, graphics_method_parent, graphics_method, template, row, col);
     }
