@@ -55,7 +55,7 @@ var TemplateList = React.createClass({
                 <div className='scroll-area'>
                     <ul id='temp-list' className='no-bullets left-list'>
                         {Object.keys(this.props.templates).map((value, index) => {
-                            return (<DraggableTemplateItem template={value}
+                            return (<DraggableTemplateItem template={value} key={index}
                                                            active={value === this.state.active_template}
                                                            selectTemplate={(t) => {this.setState({active_template: t});}} />);
                         })}
