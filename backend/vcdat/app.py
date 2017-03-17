@@ -199,12 +199,11 @@ def load_variables_from_file():
 @app.route("/getVariableProvenance")
 @jsonresp
 def get_variable_provenance():
+    # We'll upgrade this to have real provenance at some point.
+    # For now, we're just doing straight reads.
     path = request.args.get('path')
     varname = request.args.get('varname')
-    f = cdms2.open(path)
-    v = f[varname]
-    ep = v.exportProvenance()
-    return json.dumps(ep)
+    return json.dumps({"uri": path, "variable": varname})
 
 
 if __name__ == "__main__":   # pragma: no cover
