@@ -1,5 +1,6 @@
 import os
 import tempfile
+import logging
 import vcs
 import cdms2
 import json
@@ -71,9 +72,9 @@ def get_templates():
     return json.dumps(templates)
 
   
-@app.route("/plotTemplate", methods=["POST"])
+@app.route("/plotTemplate")
 def plot_template():
-    tmpl = request.get_json()
+    tmpl = json.loads(request.args["tmpl"])
     t = templ_from_json(tmpl)
     canvas = vcs.init(bg=True)
     g = vcs.createboxfill()
