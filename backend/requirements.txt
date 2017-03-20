@@ -1,7 +1,7 @@
 # This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
 # platform: osx-64
-cdms2=2.8=Provenance
+cdms2=2.8
 vcs=2.8
 uvcdat=2.8.0
 vcs-js
