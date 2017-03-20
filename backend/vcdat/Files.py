@@ -21,7 +21,7 @@ def getFilesObject(start_path):
 
     cur_dir_items = {
         'name': name,
-        'sub_items': {},
+        'subItems': {},
         'directory': True,
         'path': start_path
     }
@@ -29,17 +29,17 @@ def getFilesObject(start_path):
         if isValidFile(start_path, item) or isValidDir(start_path, item):
             obj = {
                 'name': item,
-                'sub_items': {},
+                'subItems': {},
                 'directory': False,
                 'path': start_path
             }
             if isValidDir(start_path, item):
                 obj['directory'] = True
-            cur_dir_items['sub_items'][item] = obj
-    if len(cur_dir_items['sub_items'].keys()) == 0:
-        cur_dir_items['sub_items']['empty'] = {
+            cur_dir_items['subItems'][item] = obj
+    if len(cur_dir_items['subItems'].keys()) == 0:
+        cur_dir_items['subItems']['empty'] = {
             'name': 'empty',
-            'sub_items': {},
+            'subItems': {},
             'directory': False,
             'path': start_path
         }

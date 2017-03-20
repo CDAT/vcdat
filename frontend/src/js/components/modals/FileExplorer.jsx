@@ -1,6 +1,30 @@
-import React from 'react'
+import React from 'react';
+import Tree from '../Tree.jsx';
 /* global $ */
-require('../../../../deps/quicktree.js')
+
+function treeifyFiles(f) {
+    return {
+        'title': f.name,
+        'contents': Object.keys(f.subItems).map((s) => { return treeifyFiles(f.subItems[s]); })
+    };
+}
+
+function navigatePath(f, p) {
+    const next_f = Object.keys(f.subItems).reduce((prev, cur) => {
+        if (prev !== null) {
+            return prev;
+        }
+        if (cur === p[0]) {
+            return f.subItems[cur];
+        }
+        return null;
+    }, null);
+    if (p.length == 1) {
+        return next_f;
+    } else {
+        return navigatePath(next_f, p.slice(1));
+    }
+}
 
 var FileExplorer = React.createClass({
     propTypes: {
@@ -9,9 +33,9 @@ var FileExplorer = React.createClass({
     getInitialState() {
         return {
             files: {
-                sub_items: {},
-                file_selected: false
-            }
+                subItems: {}
+            },
+            file_selected: false
         };
     },
     componentDidMount() {
@@ -21,90 +45,39 @@ var FileExplorer = React.createClass({
             });
         });
     },
-    loadFiles(event) {
-        this.setFileSelected(false);
-        var item = $(event.target);
-        var path = item.attr('data-path') + item.text();
-        $.get('browseFiles', {'path': path}).then((obj) => {
-            let new_obj = obj;
-            let cur_state = this.state.files;
-            let arr = new_obj.path.split('/');
-            arr.splice(0, 1);
-            arr.splice(-2, 2);
-            let cur_tree = cur_state;
-            arr.forEach((value) => {
-                cur_tree = cur_tree.sub_items[value];
-            })
-            cur_tree.sub_items[new_obj.name] = new_obj;
-            this.setState({files: cur_state});
+    cacheFile() {
+        const selectedFile = navigatePath(this.state.files, this.state.file_selected);
+        const path = selectedFile.path + "/" + selectedFile.name;
+        $.get('/loadVariablesFromFile', {'path': path}).then((obj) => {
+            this.props.addFileToCache(selectedFile.name, path, obj.variables);
+            $('#file-explorer').modal('hide');
+        }).catch((error) => {
+            alert("Unable to open selected file.");
         });
     },
-    componentDidUpdate() {
-        $('#file-tree').quicktree();
-    },
-    buildList(file_obj) {
-        var list_items = Object.keys(file_obj.sub_items).map((value, index) => {
-            if (Object.keys(file_obj.sub_items[value].sub_items).length) {
-                return (
-                    <li key={index}>
-                        <a className='directory' data-path={file_obj.sub_items[value].path}>
-                            <i className='glyphicon glyphicon-folder-close'></i>{value}
-                        </a>
-                        <ul>
-                            {this.buildList(file_obj.sub_items[value])}
-                        </ul>
-                    </li>
-                )
-            } else {
-                return (
-                    <li key={index}>
-                        {(() => {
-                            if (file_obj.sub_items[value].directory) {
-                                return (
-                                    <a onClick={this.loadFiles} className='directory'
-                                        data-path={file_obj.sub_items[value].path}
-                                    >
-                                        <i className='glyphicon glyphicon-folder-close'></i>{value}
-                                    </a>
-                                )
-                            } else {
-                                return (
-                                    <a onClick={
-                                            (file_obj.name != 'empty'
-                                                ? this.setFileSelected.bind(this, true)
-                                                : '')
-                                        }
-                                        className='file'
-                                        data-path={file_obj.sub_items[value].path}
-                                    >
-                                        <i className='glyphicon glyphicon-file'></i>{value}
-                                    </a>
-                                );
-                            }
-                        })()}
-                    </li>
-                )
+    activatePath(path) {
+        const f = navigatePath(this.state.files, path);
+        if (f.directory) {
+            // Check if we've already loaded this path.
+            if (Object.keys(f.subItems).length === 0) {
+                // Load it (if it's a zero length file we'll wind up reloading, but that's fine.)
+                $.get("/browseFiles", {'path': f.path + "/" + f.name}).then((obj) => {
+                    const newFiles = $.extend(true, {}, this.state.files);
+                    let parent = newFiles;
+                    if (path.length > 1) {
+                        parent = navigatePath(newFiles, path.slice(0, -1));
+                    }
+                    parent.subItems[obj.name] = obj;
+                    this.setState({'files': newFiles});
+                });
             }
-        })
-        return list_items;
-    },
-    setFileSelected(value){
-        let state = this.state;
-        state.file_selected = value;
-        this.setState(state);
-    },
-    cacheFile(event) {
-        let selected = $('#file-tree').find('.active');
-        let path = selected.attr('data-path') + selected.text();
-        this.filepath = path;
-        this.filename = selected.text();
-        $.get('loadVariablesFromFile', {'path': path}).then((obj) => {
-            obj = obj;
-            this.props.addFileToCache(this.filename, this.filepath, obj.variables);
-            $('#file-explorer').modal('hide');
-        })
+        } else {
+            this.setState({"file_selected": path});
+        }
     },
     render() {
+        const files = Object.keys(this.state.files.subItems).map((k) => {return treeifyFiles(this.state.files.subItems[k]);});
+
         return (
             <div className="modal fade" id='file-explorer' data-backdrop='static' data-keyboard='false'>
                 <div className="modal-dialog" role="document">
@@ -116,15 +89,12 @@ var FileExplorer = React.createClass({
                             <h4 className="modal-title">File Explorer</h4>
                         </div>
                         <div className="modal-body">
-                            <ul id='file-tree' className='tree-view no-bullets'>
-                                {this.buildList(this.state.files)}
-                            </ul>
+                            <Tree contents={files} activate={(path) => {this.activatePath(path);}}/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={this.cacheFile}
-                                disabled={!this.state.file_selected}
-                            >
+                            <button type="button" className="btn btn-primary" onClick={(e) => {this.cacheFile()}}
+                                disabled={!this.state.file_selected}>
                                 Open
                             </button>
                         </div>
@@ -133,6 +103,6 @@ var FileExplorer = React.createClass({
             </div>
         )
     }
-})
+});
 
 export default FileExplorer;

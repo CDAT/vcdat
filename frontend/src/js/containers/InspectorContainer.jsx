@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Actions from '../actions/Actions.js'
+import Actions from '../constants/Actions.js'
 import VariableInspector from '../components/inspectoritems/VariableInspector.jsx'
 import PlotInspector from '../components/inspectoritems/PlotInspector.jsx'
 import GraphicsMethodInspector from '../components/inspectoritems/GraphicsMethodInspector.jsx'

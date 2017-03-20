@@ -1,11 +1,13 @@
-import React from 'react'
-import Toolbar from '../components/Toolbar.jsx'
-import LeftSideBar from './LeftSideBar.jsx'
-import RightSideBar from './RightSideBar.jsx'
-import SpreadsheetContainer from './SpreadsheetContainer.jsx'
-import ResizeSensor from 'css-element-queries/src/ResizeSensor'
-import {ActionCreators as UndoActionCreators} from 'redux-undo'
-import {connect} from 'react-redux'
+import React from 'react';
+import Toolbar from '../components/Toolbar.jsx';
+import LeftSideBar from './LeftSideBar.jsx';
+import RightSideBar from './RightSideBar.jsx';
+import SpreadsheetContainer from './SpreadsheetContainer.jsx';
+import ResizeSensor from 'css-element-queries/src/ResizeSensor';
+import {ActionCreators as UndoActionCreators} from 'redux-undo';
+import {connect} from 'react-redux';
+import {DragDropContext} from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 /* global jQuery */
 
 var AppContainer = React.createClass({
@@ -49,4 +51,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
+export default DragDropContext(HTML5Backend)(connect(mapStateToProps, mapDispatchToProps)(AppContainer));

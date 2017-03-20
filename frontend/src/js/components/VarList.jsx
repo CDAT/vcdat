@@ -1,8 +1,36 @@
-import React from 'react'
-import AddEditRemoveNav from './AddEditRemoveNav.jsx'
-import CachedFiles from './modals/CachedFiles.jsx'
-import FileExplorer from './modals/FileExplorer.jsx'
-/* global $ */
+import React from 'react';
+import AddEditRemoveNav from './AddEditRemoveNav.jsx';
+import CachedFiles from './modals/CachedFiles.jsx';
+import FileExplorer from './modals/FileExplorer.jsx';
+import {DragSource} from 'react-dnd';
+import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+
+
+var varSource = {
+    beginDrag: function(props) {
+        return {
+            'variable': props.variable,
+        };
+    }
+}
+
+function collect(connect, monitor) {
+    return {
+        connectDragSource: connect.dragSource(),
+        isDragging: monitor.isDragging()
+    };
+}
+
+
+function VariableItem(props) {
+    return props.connectDragSource(
+        <li>
+            <a>{props.variable}</a>
+        </li>
+    );
+}
+
+const DraggableVariable = DragSource(DragAndDropTypes.VAR, varSource, collect)(VariableItem);
 
 var VarList = React.createClass({
     propTypes: {
@@ -25,12 +53,7 @@ var VarList = React.createClass({
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {
-                            let class_name = 'main-left-list-item draggable-list-item';
-                            return (
-                                <li key={value} className={class_name} data-type='variable' data-name={value}>
-                                    <a>{value}</a>
-                                </li>
-                            );
+                            return <DraggableVariable key={index} variable={value} />
                         })};
                     </ul>
                 </div>
