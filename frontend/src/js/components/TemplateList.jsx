@@ -42,10 +42,14 @@ var TemplateList = React.createClass({
         updateTemplate: React.PropTypes.func,
     },
     getInitialState(){
-        return {};
+        return {"showTemplateEditor": false};
     },
     editTemplate() {
-        $('#template-editor').modal('show')
+        this.setState({"showTemplateEditor": true});
+    },
+    updateTemplate(t) {
+        this.setState({"showTemplateEditor": false});
+        this.props.updateTemplate(t);
     },
     render() {
         let template = this.state.active_template ? this.props.templates[this.state.active_template] : this.props.templates.default;
@@ -61,7 +65,7 @@ var TemplateList = React.createClass({
                         })}
                     </ul>
                 </div>
-                <TemplateEditor template={template} updateTemplate={this.props.updateTemplate}/>
+                <TemplateEditor show={this.state.showTemplateEditor} template={template} updateTemplate={this.updateTemplate}/>
             </div>
         );
     }

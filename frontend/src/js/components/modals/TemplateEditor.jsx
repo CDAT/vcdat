@@ -1,8 +1,6 @@
 import React from 'react'
-import {Tabs, Tab} from 'react-bootstrap'
-import TemplatePreview from '../TemplatePreview.jsx'
-import TemplateLabelsEditor from '../editors/template/TemplateLabelsEditor.jsx'
-import TemplateAxisEditor from '../editors/template/TemplateAxisEditor.jsx'
+import {Modal, ButtonToolbar, Button} from 'react-bootstrap'
+import widgets from 'vcs-widgets';
 
 
 var TemplateEditor = React.createClass({
@@ -16,59 +14,37 @@ var TemplateEditor = React.createClass({
         this.setState({"workingTemplate": new_templ});
     },
     getInitialState() {
-        key: 1;
         return {workingTemplate: $.extend(true, {}, this.props.template)};
-    },
-    handleSelect(key) {
-        this.setState({key});
     },
     componentWillReceiveProps(nextProps) {
         this.setState({workingTemplate: $.extend(true, {}, nextProps.template)});
     },
     saveWorkingTemplate(){
         this.props.updateTemplate(this.state.workingTemplate);
-        $("#template-editor").modal('hide');
     },
-    resetWorkingTemplate(){
-        this.setState({workingTemplate: $.extend(true, {}, this.props.template)});
-        $("#template-editor").modal('hide');
+    onHide() {
+        this.props.updateTemplate(this.props.template);
     },
     render() {
         let template = this.state.workingTemplate;
         let template_name = template ? template.name : "";
+        let TemplateEdit = widgets.TemplateEdit;
         return (
-            <div className="modal fade" id='template-editor'>
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 className="modal-title">
-                                Edit {template_name}
-                            </h4>
-                        </div>
-                        <div className="modal-body">
-                            <TemplatePreview template={template} />
-
-                            <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="templateEditors">
-                                <Tab eventKey={1} title="Labels">
-                                    <TemplateLabelsEditor template={template} updateTemplate={this.onUpdate}/>
-                                </Tab>
-                                <Tab eventKey={2} title="Axes">
-                                    <TemplateAxisEditor template={template} updateTemplate={this.onUpdate}/>
-                                </Tab>
-                            </Tabs>
-
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className='btn btn-secondary' onClick={(e) => this.resetWorkingTemplate()}>Cancel</button>
-                            <button type="button" className="btn btn btn-primary" onClick={(e) => this.saveWorkingTemplate()}>Save</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
+            <Modal show={this.props.show} onHide={this.onHide}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit {template_name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <TemplateEdit templatePreview={"/plotTemplate?tmpl=" + JSON.stringify(template)} template={template} updateTemplate={this.onUpdate} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <ButtonToolbar>
+                        <Button onClick={this.onHide}>Cancel</Button>
+                        <Button onClick={this.saveWorkingTemplate}>Save</Button>
+                    </ButtonToolbar>
+                </Modal.Footer>
+            </Modal>
+        );
     }
 })
 

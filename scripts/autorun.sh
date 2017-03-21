@@ -14,9 +14,9 @@ else
     source activate ${CONDA_ENV}
 fi
 
-vcs-server > $curpath/vcs.log &
+vcs-server &
 vcs_pid=$!
-python $curpath/backend/vcdat/app.py --vcs_server="localhost:8888" > $curpath/vcdat.log &
+python $curpath/backend/vcdat/app.py --vcs_server="localhost:8888" &
 be_pid=$!
 cd frontend
 $(npm bin)/webpack --progress --colors --watch &

@@ -70,6 +70,7 @@ LinkWatcher.prototype.apply = function(compiler) {
         const outputFiles = directoryFiles(output_path);
 
         var cb = function(cb) {
+            console.log("Beginning rebuild...");
             const action = exec(self.action + " " + self.args.join(" "), {}, (error, stdout, stderr) => {
                 // Show the build output
                 console.log(stdout);

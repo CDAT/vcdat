@@ -9,6 +9,8 @@
     "jquery": "^3.1.0",
     "react": "^15.1.0",
     "react-bootstrap": "^0.30.7",
+    "react-dnd": "^2.2.4",
+    "react-dnd-html5-backend": "^2.2.4",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
     "redux": "=3.5.2",
@@ -61,7 +63,7 @@
     ]
   },
   "scripts": {
-    "build": "webpack --inline --colors --progress --display-error-details --display-cached --content-base src/",
+    "build": "webpack --colors --progress",
     "release": "webpack -p --output-path=../backend/vcdat/resources && cp src/index.html ../backend/vcdat/resources",
     "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text npm test",
     "test": "mocha test/mocha --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive",
