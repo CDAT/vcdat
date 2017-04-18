@@ -2,7 +2,7 @@ about:
   home: http://gitub.com/UV-CDAT/vcdat
 package:
   name: vcdat
-  version: 0.0.1
+  version: "0.0.1"
 requirements:
   build:
   - python
