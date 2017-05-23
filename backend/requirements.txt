@@ -1,9 +1,8 @@
 # This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
 # platform: osx-64
-cdms2=2.8
-vcs=2.8
-uvcdat=2.8.0
+uvcdat=2.10
+mesalib
 vcs-js
 nodejs
 flask

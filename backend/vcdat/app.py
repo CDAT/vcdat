@@ -187,6 +187,8 @@ def get_variable_provenance():
     # For now, we're just doing straight reads.
     path = request.args.get('path')
     varname = request.args.get('varname')
+    print path
+    print varname
     return json.dumps({"uri": path, "variable": varname})
 
 

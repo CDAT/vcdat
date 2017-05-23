@@ -1,9 +1,17 @@
 #!/bin/bash
 
 CONDA_ENV="vcdat"
+
+# Following uvcdat release X
+CONDA_CHANNELS="-c conda-forge -c uvcdat"
+
 # Following install uvcdat nightly
 #CONDA_CHANNELS="-c uvcdat/label/nightly/ -c uvcdat -c conda-forge"
-CONDA_CHANNELS="-c chaosphere2112 -c conda-forge -c uvcdat"
+
+# Following Sams custom build
+#CONDA_CHANNELS="-c chaosphere2112 -c conda-forge -c uvcdat"
+
+
 NODE_PKG_URL="https://nodejs.org/dist/v4.6.0/node-v4.6.0.tar.gz"
 
 CERT=$1

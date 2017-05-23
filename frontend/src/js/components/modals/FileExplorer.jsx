@@ -48,15 +48,20 @@ var FileExplorer = React.createClass({
     cacheFile() {
         const selectedFile = navigatePath(this.state.files, this.state.file_selected);
         const path = selectedFile.path + "/" + selectedFile.name;
+        console.log('cacheFile');
+        console.log(selectedFile);
+        console.log(path);
+
         $.get('/loadVariablesFromFile', {'path': path}).then((obj) => {
             this.props.addFileToCache(selectedFile.name, path, obj.variables);
             $('#file-explorer').modal('hide');
-        }).catch((error) => {
-            alert("Unable to open selected file.");
-        });
+        })
     },
     activatePath(path) {
         const f = navigatePath(this.state.files, path);
+        console.log('activepath');
+        console.log(path);
+        console.log(f);
         if (f.directory) {
             // Check if we've already loaded this path.
             if (Object.keys(f.subItems).length === 0) {
