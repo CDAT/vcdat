@@ -1,4 +1,5 @@
 import React from 'react';
+
 import FileExplorer from './FileExplorer.jsx';
 import Tree from '../Tree.jsx';
 
@@ -34,6 +35,13 @@ var CachedFiles = React.createClass({
             })
             .fail((error) => 'fail');
     },
+    list_variables(variable_array){
+        const variables = variable_array.map((vars) =>
+            <option>{vars}</option>);
+        return (
+            <select>{variables}</select>
+        );
+    },
     render() {
         const cachedTree = Object.keys(this.props.cachedFiles).map((filename) => {
             const f = this.props.cachedFiles[filename];
@@ -42,29 +50,81 @@ var CachedFiles = React.createClass({
                 contents: f.variables
             };
         });
+
+        var var_array = [];
+        for(var key in this.props.cachedFiles){
+            var path = this.props.cachedFiles[key]['filepath'];
+            for (var subkey in this.props.cachedFiles[key]['variables']) {
+                var_array.push(this.props.cachedFiles[key]['variables'][subkey]);
+            }
+        }
+
         return (
             <div className="modal fade" id='cached-files' data-backdrop='static' data-keyboard='false'>
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 className="modal-title">Recent Files</h4>
-                            <button onClick={
-                                    () => {$('#file-explorer').modal('show')}
-                                }
-                                className='btn btn-default'
-                            >
-                                Add
-                            </button>
+                            <h4 className="modal-title">Load Variable</h4>
                         </div>
                         <div className="modal-body">
-                            <Tree contents={cachedTree} activate={(p) => { this.setState({activeFile: p[0], activeVar: p[1]}); }}/>
+                            <div>
+                                <h5> Load From </h5>
+                                <table className="table">
+                                    <tbody>
+                                    <tr>
+                                        <td width="75px"> File </td>
+                                        <td>
+                                            <input type="text" name="file_path" width="400px" value={path}/>
+                                            <button className="btn-secondary btn-link"
+                                                    onClick={() => {$('#file-explorer').modal('show')}}
+                                            >
+                                                <i className='glyphicon glyphicon-plus-sign'></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td> Variables(s): </td>
+                                        <td>
+                                             { this.list_variables(var_array) }
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table className="table">
+                                    <tbody>
+                                    <tr>
+                                        <td width="75px"> History: </td>
+                                        <td><input type="text" name="history"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td> Bookmarks: </td>
+                                        <td><input type="text" name="bookmarks"/></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <h5>Dimensions</h5>
+
+                            </div>
+
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={(e) => {this.loadVariable()}}>Open</button>
+                            <button type="button" className="btn btn-primary btn-sm" onClick={(e) => {
+                                this.loadVariable()
+                            }}>Load
+                            </button>
+                            <button type="button" className="btn btn-primary btn-sm" onClick={(e) => {
+                                this.loadVariable()
+                            }}>Load and Close
+                            </button>
+                            <button type="button" className="btn btn-primary btn-sm" onClick={(e) => {
+                                this.loadVariable()
+                            }}>Load As
+                            </button>
+                            <button type="button" className="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+
                         </div>
                     </div>
                 </div>

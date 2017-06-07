@@ -400,3 +400,11 @@ li.tree-leaf {
     padding: 0 5px 0 5px;
     background-color: white;
 }
+
+input {
+    width: 90%;
+}
+
+select {
+    width: 93%;
+}
