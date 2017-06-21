@@ -43,13 +43,6 @@ var CachedFiles = React.createClass({
         );
     },
     render() {
-        const cachedTree = Object.keys(this.props.cachedFiles).map((filename) => {
-            const f = this.props.cachedFiles[filename];
-            return {
-                title: filename,
-                contents: f.variables
-            };
-        });
 
         var var_array = [];
         for(var key in this.props.cachedFiles){
@@ -69,12 +62,12 @@ var CachedFiles = React.createClass({
                         <div className="modal-body">
                             <div>
                                 <h5> Load From </h5>
-                                <table className="table">
+                                <table className="table">x
                                     <tbody>
                                     <tr>
                                         <td width="75px"> File </td>
                                         <td>
-                                            <input type="text" name="file_path" width="400px" value={path}/>
+                                            <input type="text" name="file_path" value={path}/>
                                             <button className="btn-secondary btn-link"
                                                     onClick={() => {$('#file-explorer').modal('show')}}
                                             >
@@ -124,7 +117,6 @@ var CachedFiles = React.createClass({
                             }}>Load As
                             </button>
                             <button type="button" className="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-
                         </div>
                     </div>
                 </div>
