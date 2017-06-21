@@ -11,13 +11,15 @@ requirements:
   run:
   - python
   - flask
-  - vcs
-  - cdms2
+  - vcs 2.10
+  - cdms2 2.10
+  - cdutil 2.10
+  - genutil 2.10
+  - mesalib
   - vcs-js
-  - cdutil
-  - genutil
 source:
-  git_rev: v0.0.1
+  git_rev: v0.0.2
   git_url: git://github.com/UV-CDAT/vcdat.git
 build:
-  noarch_python: true
+  # noarch_python: true
+  number: 1

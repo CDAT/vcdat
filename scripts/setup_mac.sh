@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CONDA_ENV="vcdat"
+<<<<<<< HEAD
 
 # Following uvcdat release X
 CONDA_CHANNELS="-c conda-forge -c uvcdat"
@@ -12,6 +13,10 @@ CONDA_CHANNELS="-c conda-forge -c uvcdat"
 #CONDA_CHANNELS="-c chaosphere2112 -c conda-forge -c uvcdat"
 
 
+=======
+CONDA_CHANNELS="-c conda-forge -c uvcdat"
+
+>>>>>>> ba541865130b12a3e1d1696100bd1224f0f15c47
 NODE_PKG_URL="https://nodejs.org/dist/v4.6.0/node-v4.6.0.tar.gz"
 
 CERT=$1
