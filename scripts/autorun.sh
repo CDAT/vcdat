@@ -1,11 +1,16 @@
 #!/bin/bash
 
-CONDA_ENV="vcdat"
+CONDA_ENV="nightly"
 
 curpath=`pwd`
+echo "1"
+
 while [ -n $curpath ] && [ `basename $curpath` != "vcdat" ]; do
     curpath=`dirname $curpath`
+    echo "1.5"
 done
+
+echo "2"
 
 if [ -n $CONDA_PREFIX ] && [ "$CONDA_PREFIX" = "$curpath/backend/venv" ]; then
     echo "Virtual Environment already loaded"

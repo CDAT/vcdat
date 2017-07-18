@@ -1,7 +1,7 @@
 #!/bin/bash
 
-CONDA_ENV="vcdat"
-CONDA_CHANNELS="-c conda-forge -c uvcdat"
+CONDA_ENV="nightly"
+#CONDA_CHANNELS="-c conda-forge -c uvcdat"
 
 NODE_PKG_URL="https://nodejs.org/dist/v4.6.0/node-v4.6.0.tar.gz"
 
@@ -48,7 +48,8 @@ if [[ $current_dir == */vcdat* ]]; then
     pushd $current_dir
     # Delete the old one, if it exists.
     conda env remove -y -n ${CONDA_ENV}
-    conda create -y -n ${CONDA_ENV} ${CONDA_CHANNELS} --file $current_dir/backend/requirements.txt
+    # conda create -y -n ${CONDA_ENV} ${CONDA_CHANNELS} --file $current_dir/backend/requirements.txt
+    conda create -y -n nightly uvcdat -c uvcdat/label/nightly -c conda-forge -c uvcdat --file $current_dir/backend/requirements.txt
     source activate ${CONDA_ENV}
     cd frontend
     echo "prefix=$envdir" > $HOME/.npmrc
