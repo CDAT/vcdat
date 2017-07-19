@@ -1,8 +1,9 @@
 #!/bin/bash
 
-CONDA_ENV="vcdat"
+CONDA_ENV="nightly"
 
 curpath=`pwd`
+
 while [ -n $curpath ] && [ `basename $curpath` != "vcdat" ]; do
     curpath=`dirname $curpath`
 done
