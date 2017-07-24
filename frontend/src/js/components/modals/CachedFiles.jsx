@@ -1,12 +1,18 @@
 import React from 'react';
-import FileExplorer from './FileExplorer.jsx';
 import Tree from '../Tree.jsx';
+import FileExplorer from './FileExplorer.jsx';
 
 
 var CachedFiles = React.createClass({
     propTypes: {
         cachedFiles: React.PropTypes.object,
-        loadVariables: React.PropTypes.func
+        loadVariables: React.PropTypes.func,
+        addFileToCache: React.PropTypes.func,
+    },
+    getInitialState(){
+        return {
+            showFileExplorer: false
+        }
     },
     getProvenance(path, var_name){
         return $.get('getVariableProvenance', {'path': path, 'varname': var_name})
@@ -34,6 +40,9 @@ var CachedFiles = React.createClass({
             })
             .fail((error) => 'fail');
     },
+    handleFileExplorerTryClose(){
+        this.setState({ showFileExplorer:false });
+    },
     render() {
         const cachedTree = Object.keys(this.props.cachedFiles).map((filename) => {
             const f = this.props.cachedFiles[filename];
@@ -52,7 +61,7 @@ var CachedFiles = React.createClass({
                             </button>
                             <h4 className="modal-title">Recent Files</h4>
                             <button onClick={
-                                    () => {$('#file-explorer').modal('show')}
+                                    () => this.setState({showFileExplorer: true})
                                 }
                                 className='btn btn-default'
                             >
@@ -68,6 +77,7 @@ var CachedFiles = React.createClass({
                         </div>
                     </div>
                 </div>
+                <FileExplorer show={this.state.showFileExplorer} onTryClose={this.handleFileExplorerTryClose} addFileToCache={this.props.addFileToCache}/>
             </div>
         )
     }

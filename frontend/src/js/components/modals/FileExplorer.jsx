@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Tree from '../Tree.jsx';
+import { Modal, ButtonToolbar, Button } from 'react-bootstrap';
 /* global $ */
 
 function treeifyFiles(f) {
@@ -26,83 +27,83 @@ function navigatePath(f, p) {
     }
 }
 
-var FileExplorer = React.createClass({
-    propTypes: {
-        addFileToCache: React.PropTypes.func
-    },
-    getInitialState() {
-        return {
+
+
+class FileExplorer extends Component {
+    constructor(props) {
+        super(props);
+        this.tryClose = this.tryClose.bind(this);
+        this.state = {
             files: {
                 subItems: {}
             },
             file_selected: false
         };
-    },
+    }
     componentDidMount() {
-        $('#file-explorer').on('shown.bs.modal', () => {
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.show) {
             $.get('getInitialFileTree').then((obj) => {
-                this.setState({files: obj});
+                this.setState({ files: obj });
             });
-        });
-    },
+        }
+    }
     cacheFile() {
         const selectedFile = navigatePath(this.state.files, this.state.file_selected);
         const path = selectedFile.path + "/" + selectedFile.name;
-        $.get('/loadVariablesFromFile', {'path': path}).then((obj) => {
+        $.get('/loadVariablesFromFile', { 'path': path }).then((obj) => {
             this.props.addFileToCache(selectedFile.name, path, obj.variables);
             $('#file-explorer').modal('hide');
         }).catch((error) => {
             alert("Unable to open selected file.");
         });
-    },
+    }
     activatePath(path) {
         const f = navigatePath(this.state.files, path);
         if (f.directory) {
             // Check if we've already loaded this path.
             if (Object.keys(f.subItems).length === 0) {
                 // Load it (if it's a zero length file we'll wind up reloading, but that's fine.)
-                $.get("/browseFiles", {'path': f.path + "/" + f.name}).then((obj) => {
+                $.get("/browseFiles", { 'path': f.path + "/" + f.name }).then((obj) => {
                     const newFiles = $.extend(true, {}, this.state.files);
                     let parent = newFiles;
                     if (path.length > 1) {
                         parent = navigatePath(newFiles, path.slice(0, -1));
                     }
                     parent.subItems[obj.name] = obj;
-                    this.setState({'files': newFiles});
+                    this.setState({ 'files': newFiles });
                 });
             }
         } else {
-            this.setState({"file_selected": path});
+            this.setState({ "file_selected": path });
         }
-    },
+    }
+    tryClose() {
+        this.props.onTryClose();
+    }
     render() {
-        const files = Object.keys(this.state.files.subItems).map((k) => {return treeifyFiles(this.state.files.subItems[k]);});
+        const files = Object.keys(this.state.files.subItems).map((k) => { return treeifyFiles(this.state.files.subItems[k]); });
 
         return (
-            <div className="modal fade" id='file-explorer' data-backdrop='static' data-keyboard='false'>
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 className="modal-title">File Explorer</h4>
-                        </div>
-                        <div className="modal-body">
-                            <Tree contents={files} activate={(path) => {this.activatePath(path);}}/>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={(e) => {this.cacheFile()}}
-                                disabled={!this.state.file_selected}>
-                                Open
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Modal show={this.props.show} onHide={this.tryClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>File Explorer</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Tree contents={files} activate={(path) => { this.activatePath(path); }} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.tryClose}>Cancel</Button>
+                    <Button onClick={(e) => { this.cacheFile() }} disabled={!this.state.file_selected}>Save</Button>
+                </Modal.Footer>
+            </Modal>
         )
     }
-});
+};
+
+FileExplorer.propTypes = {
+    addFileToCache: React.PropTypes.func
+}
 
 export default FileExplorer;
