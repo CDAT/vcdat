@@ -9,15 +9,15 @@ var CachedFiles = React.createClass({
         loadVariables: React.PropTypes.func,
         addFileToCache: React.PropTypes.func,
     },
-    getInitialState(){
+    getInitialState() {
         return {
             showFileExplorer: false
         }
     },
-    getProvenance(path, var_name){
-        return $.get('getVariableProvenance', {'path': path, 'varname': var_name})
+    getProvenance(path, var_name) {
+        return $.get('getVariableProvenance', { 'path': path, 'varname': var_name })
     },
-    loadVariable(){
+    loadVariable() {
         let var_long_name = this.state.activeVar;
         let var_name = var_long_name.split(' (')[0]
         let filename = this.state.activeFile;
@@ -40,8 +40,19 @@ var CachedFiles = React.createClass({
             })
             .fail((error) => 'fail');
     },
-    handleFileExplorerTryClose(){
-        this.setState({ showFileExplorer:false });
+    handleFileExplorerTryClose() {
+        this.setState({ showFileExplorer: false });
+    },
+    handleFileSelected(file) {
+        this.handleFileExplorerTryClose();
+        const path = file.path + '/' + file.name;
+        Promise.resolve($.get('/loadVariablesFromFile', { 'path': path }))
+            .then((obj) => {
+                this.props.addFileToCache(file.name, path, obj.variables);
+            })
+            .catch((error) => {
+                alert("Unable to open selected file.");
+            });
     },
     render() {
         const cachedTree = Object.keys(this.props.cachedFiles).map((filename) => {
@@ -61,23 +72,24 @@ var CachedFiles = React.createClass({
                             </button>
                             <h4 className="modal-title">Recent Files</h4>
                             <button onClick={
-                                    () => this.setState({showFileExplorer: true})
-                                }
+                                () => this.setState({ showFileExplorer: true })
+                            }
                                 className='btn btn-default'
                             >
                                 Add
                             </button>
                         </div>
                         <div className="modal-body">
-                            <Tree contents={cachedTree} activate={(p) => { this.setState({activeFile: p[0], activeVar: p[1]}); }}/>
+                            <Tree contents={cachedTree} activate={(p) => { this.setState({ activeFile: p[0], activeVar: p[1] }); }} />
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={(e) => {this.loadVariable()}}>Open</button>
+                            <button type="button" className="btn btn-primary" onClick={(e) => { this.loadVariable() }}>Open</button>
                         </div>
                     </div>
                 </div>
-                <FileExplorer show={this.state.showFileExplorer} onTryClose={this.handleFileExplorerTryClose} addFileToCache={this.props.addFileToCache}/>
+                {this.state.showFileExplorer &&
+                    <FileExplorer show={true} onTryClose={this.handleFileExplorerTryClose} onFileSelected={this.handleFileSelected} />}
             </div>
         )
     }

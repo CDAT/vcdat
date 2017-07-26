@@ -1,4 +1,5 @@
 import os
+import datetime
 
 
 def isValidFile(start_path, item):
@@ -31,16 +32,10 @@ def getFilesObject(start_path):
                 'name': item,
                 'subItems': {},
                 'directory': False,
-                'path': start_path
+                'path': start_path,
+                'modifiedTime': datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(start_path, item)))
             }
             if isValidDir(start_path, item):
                 obj['directory'] = True
             cur_dir_items['subItems'][item] = obj
-    if len(cur_dir_items['subItems'].keys()) == 0:
-        cur_dir_items['subItems']['empty'] = {
-            'name': 'empty',
-            'subItems': {},
-            'directory': False,
-            'path': start_path
-        }
     return cur_dir_items

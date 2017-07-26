@@ -1,0 +1,53 @@
+.navigation-bar{
+    cursor: default;
+    margin-bottom: 8px;
+}
+
+.file-list {
+    height: 40vh;
+    overflow-y: scroll;
+    list-style-type: none;
+     padding-left: 0; 
+    cursor: default;
+}
+
+.file-list .file-icon{
+    font-size: 0.8em;
+    margin-right: 8px;
+}
+
+.navigation-bar .path{
+    word-wrap: break-word;
+}
+
+.navigation-bar .path-segment:hover, .file-list li:hover {
+    text-decoration: underline;
+}
+
+.navigation-bar .back-button:hover, .file-list li.selected {
+    background-color: #EDC566;
+    color: black;
+}
+
+.file-list li.selected a{
+    color: inherit;
+}
+
+.navigation-bar .sort{
+    text-align: right;
+}
+
+.navigation-bar .sort .sort-item{
+    margin: 0 5px;
+}
+
+.file-list::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: #000; /* or add it to the track */
+}
+
+.file-list::-webkit-scrollbar-thumb {
+    background: #aaa; 
+}
+

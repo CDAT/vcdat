@@ -1,89 +1,114 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import Tree from '../Tree.jsx';
-import { Modal, ButtonToolbar, Button } from 'react-bootstrap';
+import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon } from 'react-bootstrap';
+import style from './FileExplorer.css';
 /* global $ */
 
-function treeifyFiles(f) {
-    return {
-        'title': f.name,
-        'contents': Object.keys(f.subItems).map((s) => { return treeifyFiles(f.subItems[s]); })
-    };
+function cleanPath(path) {
+    return `/${path.split('/').filter(segment => segment).join('/')}/`;
 }
 
-function navigatePath(f, p) {
-    const next_f = Object.keys(f.subItems).reduce((prev, cur) => {
-        if (prev !== null) {
-            return prev;
-        }
-        if (cur === p[0]) {
-            return f.subItems[cur];
-        }
-        return null;
-    }, null);
-    if (p.length == 1) {
-        return next_f;
-    } else {
-        return navigatePath(next_f, p.slice(1));
-    }
+const SortDirection = {
+    ascending: true,
+    descending: false
 }
 
-
+const SortByType = {
+    name: true,
+    modifiedTime: false
+}
 
 class FileExplorer extends Component {
     constructor(props) {
         super(props);
         this.tryClose = this.tryClose.bind(this);
         this.state = {
-            files: {
-                subItems: {}
-            },
-            file_selected: false
+            files: [],
+            pathSegments: [],
+            selectedFile: null,
+            sortDirection: SortDirection.ascending,
+            sortBy: SortByType.name
         };
+        this.directories = new Map();
     }
+
     componentDidMount() {
-    }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.show) {
-            $.get('getInitialFileTree').then((obj) => {
-                this.setState({ files: obj });
-            });
-        }
-    }
-    cacheFile() {
-        const selectedFile = navigatePath(this.state.files, this.state.file_selected);
-        const path = selectedFile.path + "/" + selectedFile.name;
-        $.get('/loadVariablesFromFile', { 'path': path }).then((obj) => {
-            this.props.addFileToCache(selectedFile.name, path, obj.variables);
-            $('#file-explorer').modal('hide');
-        }).catch((error) => {
-            alert("Unable to open selected file.");
+        $.get('getInitialFileTree').then((files) => {
+            this.process(files);
+            this.directories.set(files.path, files);
         });
     }
-    activatePath(path) {
-        const f = navigatePath(this.state.files, path);
-        if (f.directory) {
-            // Check if we've already loaded this path.
-            if (Object.keys(f.subItems).length === 0) {
-                // Load it (if it's a zero length file we'll wind up reloading, but that's fine.)
-                $.get("/browseFiles", { 'path': f.path + "/" + f.name }).then((obj) => {
-                    const newFiles = $.extend(true, {}, this.state.files);
-                    let parent = newFiles;
-                    if (path.length > 1) {
-                        parent = navigatePath(newFiles, path.slice(0, -1));
-                    }
-                    parent.subItems[obj.name] = obj;
-                    this.setState({ 'files': newFiles });
-                });
-            }
-        } else {
-            this.setState({ "file_selected": path });
+
+    getDirectory(path) {
+        if (this.directories.has(path)) {
+            return Promise.resolve(this.directories.get(path));
+        }
+        return Promise.resolve($.get("/browseFiles", { 'path': path }))
+            .then(files => {
+                path = files.path;
+                this.directories.set(cleanPath(path), files);
+                return files;
+            })
+    }
+
+    handleFileClick(file) {
+        if (file.directory) {
+            this.getDirectory(cleanPath(`${file.path}/${file.name}`))
+                .then(files => {
+                    this.process(files);
+                })
+        }
+        else {
+            this.setState({ selectedFile: this.state.selectedFile === file ? null : file });
         }
     }
+
+    handleBackClick() {
+        var pathSegments = this.state.pathSegments.slice();
+        pathSegments.pop();
+        this.setState({ pathSegments: pathSegments });
+        this.getDirectory('/' + pathSegments.join('/') + '/')
+            .then(files => {
+                this.process(files);
+            })
+    }
+
+    handlePathSegmentClick(pathSegment) {
+        var pathSegments = this.state.pathSegments.slice();
+        pathSegments.splice(this.state.pathSegments.indexOf(pathSegment) + 1);
+        this.setState({ pathSegments: pathSegments });
+        this.getDirectory('/' + pathSegments.join('/') + '/')
+            .then(files => {
+                this.process(files);
+            })
+    }
+
     tryClose() {
         this.props.onTryClose();
     }
+
+    process(files) {
+        const pathSegments = files.path.split('/').filter(path => path);
+        this.setState({
+            pathSegments: pathSegments,
+            files: Object.values(files.subItems)
+        });
+        this._$fileList.scrollTop(0);
+    }
+
     render() {
-        const files = Object.keys(this.state.files.subItems).map((k) => { return treeifyFiles(this.state.files.subItems[k]); });
+        var files = _.sortBy(this.state.files, (file) => {
+            if (this.state.sortBy == SortByType.name) {
+                return file.name;
+            }
+            else {
+                return new Date(file.modifiedTime);
+            }
+        });
+        if (this.state.sortDirection == SortDirection.descending) {
+            files = files.reverse();
+        }
 
         return (
             <Modal show={this.props.show} onHide={this.tryClose}>
@@ -91,11 +116,41 @@ class FileExplorer extends Component {
                     <Modal.Title>File Explorer</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Tree contents={files} activate={(path) => { this.activatePath(path); }} />
+                    <Row className="navigation-bar">
+                        <Col xs={1}><Glyphicon className="back-button" glyph="chevron-left" onClick={() => this.handleBackClick()} /></Col>
+                        <Col className="path" xs={9}>
+                            {
+                                this.state.pathSegments.map((path, i) => {
+                                    return <a className="path-segment" key={i} onClick={() => this.handlePathSegmentClick(path)}>/{path}</a>
+                                })
+                            }
+                        </Col>
+                        <Col className="sort" xs={2}>
+                            <Glyphicon className="sort-item sort-direction" glyph={this.state.sortDirection === SortDirection.ascending ? "sort-by-attributes" : "sort-by-attributes-alt"} onClick={() => this.setState({ sortDirection: !this.state.sortDirection })} />
+                            <Glyphicon className="sort-item sort-by" glyph={this.state.sortBy === SortByType.name ? "font" : "time"} onClick={() => this.setState({ sortBy: !this.state.sortBy })} />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={11} xsOffset={1}>
+                            {this.state.files.length !== 0 &&
+                                <ol className="file-list" ref={(el) => { this._$fileList = $(el); }} >
+                                    {
+                                        files.map((file) => {
+                                            return <li key={file.path + '\\' + file.name} onClick={() => this.handleFileClick(file)} className={(this.state.selectedFile && this.state.selectedFile.path + this.state.selectedFile.name == file.path + file.name) ? 'selected' : ''}><a>
+                                                <Glyphicon className="file-icon" glyph={file.directory ? 'folder-open' : 'file'} />
+                                                <span>{file.name}</span></a>
+                                            </li>
+                                        })
+                                    }
+                                </ol>}
+                            {this.state.files.length === 0 &&
+                                <span>Empty</span>}
+                        </Col>
+                    </Row>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.tryClose}>Cancel</Button>
-                    <Button onClick={(e) => { this.cacheFile() }} disabled={!this.state.file_selected}>Save</Button>
+                    <Button onClick={(e) => { this.props.onFileSelected(this.state.selectedFile) }} disabled={!this.state.selectedFile}>Select</Button>
                 </Modal.Footer>
             </Modal>
         )
@@ -103,7 +158,10 @@ class FileExplorer extends Component {
 };
 
 FileExplorer.propTypes = {
-    addFileToCache: React.PropTypes.func
+    show: React.PropTypes.bool,
+    addFileToCache: React.PropTypes.func,
+    onTryClose: React.PropTypes.func,
+    onFileSelected: React.PropTypes.func
 }
 
 export default FileExplorer;
