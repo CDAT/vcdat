@@ -1,7 +1,6 @@
 import React from 'react';
 import AddEditRemoveNav from './AddEditRemoveNav.jsx';
 import CachedFiles from './modals/CachedFiles.jsx';
-import FileExplorer from './modals/FileExplorer.jsx';
 import {DragSource} from 'react-dnd';
 import DragAndDropTypes from '../constants/DragAndDropTypes.js';
 
@@ -61,8 +60,8 @@ var VarList = React.createClass({
                     curVariables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     cachedFiles={this.props.cachedFiles}
+                    addFileToCache={this.props.addFileToCache}
                 />
-                <FileExplorer addFileToCache={this.props.addFileToCache}/>
             </div>
         )
     }
