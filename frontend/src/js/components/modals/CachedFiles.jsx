@@ -1,6 +1,6 @@
 import React from 'react';
 import Tree from '../Tree.jsx';
-import FileExplorer from './FileExplorer.jsx';
+import FileExplorer from './FileExplorer/FileExplorer.jsx';
 
 
 var CachedFiles = React.createClass({

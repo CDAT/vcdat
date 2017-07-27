@@ -24,7 +24,7 @@
     text-decoration: underline;
 }
 
-.navigation-bar .back-button:hover, .file-list li.selected {
+.navigation-bar .button.back:hover, .file-list li.selected {
     background-color: #EDC566;
     color: black;
 }

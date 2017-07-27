@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import Tree from '../Tree.jsx';
 import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon } from 'react-bootstrap';
 import style from './FileExplorer.css';
 /* global $ */
@@ -24,7 +23,7 @@ class FileExplorer extends Component {
         super(props);
         this.tryClose = this.tryClose.bind(this);
         this.state = {
-            files: [],
+            files: null,
             pathSegments: [],
             selectedFile: null,
             sortDirection: SortDirection.ascending,
@@ -117,7 +116,7 @@ class FileExplorer extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <Row className="navigation-bar">
-                        <Col xs={1}><Glyphicon className="back-button" glyph="chevron-left" onClick={() => this.handleBackClick()} /></Col>
+                        <Col xs={1}><Glyphicon className="button back" glyph="chevron-left" onClick={() => this.handleBackClick()} /></Col>
                         <Col className="path" xs={9}>
                             {
                                 this.state.pathSegments.map((path, i) => {
@@ -126,13 +125,13 @@ class FileExplorer extends Component {
                             }
                         </Col>
                         <Col className="sort" xs={2}>
-                            <Glyphicon className="sort-item sort-direction" glyph={this.state.sortDirection === SortDirection.ascending ? "sort-by-attributes" : "sort-by-attributes-alt"} onClick={() => this.setState({ sortDirection: !this.state.sortDirection })} />
-                            <Glyphicon className="sort-item sort-by" glyph={this.state.sortBy === SortByType.name ? "font" : "time"} onClick={() => this.setState({ sortBy: !this.state.sortBy })} />
+                            <Glyphicon className="button sort-item sort-direction" glyph={this.state.sortDirection === SortDirection.ascending ? "sort-by-attributes" : "sort-by-attributes-alt"} onClick={() => this.setState({ sortDirection: !this.state.sortDirection })} />
+                            <Glyphicon className="button sort-item sort-by" glyph={this.state.sortBy === SortByType.name ? "font" : "time"} onClick={() => this.setState({ sortBy: !this.state.sortBy })} />
                         </Col>
                     </Row>
                     <Row>
                         <Col xs={11} xsOffset={1}>
-                            {this.state.files.length !== 0 &&
+                            {this.state.files && this.state.files.length !== 0 &&
                                 <ol className="file-list" ref={(el) => { this._$fileList = $(el); }} >
                                     {
                                         files.map((file) => {
@@ -143,14 +142,14 @@ class FileExplorer extends Component {
                                         })
                                     }
                                 </ol>}
-                            {this.state.files.length === 0 &&
+                            {this.state.files && this.state.files.length === 0 &&
                                 <span>Empty</span>}
                         </Col>
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.tryClose}>Cancel</Button>
-                    <Button onClick={(e) => { this.props.onFileSelected(this.state.selectedFile) }} disabled={!this.state.selectedFile}>Select</Button>
+                    <Button bsStyle="primary" onClick={(e) => { this.props.onFileSelected(this.state.selectedFile) }} disabled={!this.state.selectedFile}>Select</Button>
                 </Modal.Footer>
             </Modal>
         )
