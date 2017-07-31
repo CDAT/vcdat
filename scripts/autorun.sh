@@ -8,14 +8,14 @@ while [ -n $curpath ] && [ `basename $curpath` != "vcdat" ]; do
     curpath=`dirname $curpath`
 done
 
-if [ -n $CONDA_PREFIX ] && [ "$CONDA_PREFIX" = "$curpath/backend/venv" ]; then
+if [ -n $CONDA_PREFIX ]; then
     echo "Virtual Environment already loaded"
 else
     echo "Loading virtual environment..."
     source activate ${CONDA_ENV}
 fi
 
-vcs-server &
+vcs-server -p 8888 &
 vcs_pid=$!
 python $curpath/backend/vcdat/app.py --vcs_server="localhost:8888" &
 be_pid=$!
