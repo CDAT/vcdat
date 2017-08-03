@@ -1,0 +1,15 @@
+.file-path {
+    color: #333;
+}
+
+.full-width {
+    width: 100%;
+}
+
+#cached-files .row {
+    margin: 4px 0;
+}
+
+#cached-files textarea{
+    height: 100px;
+}
