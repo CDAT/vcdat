@@ -4,7 +4,6 @@
 cdms2
 vcs
 uvcdat
-mesalib
 vcs-js
 nodejs
 flask
