@@ -26,6 +26,8 @@ function LinkWatcher(config) {
 }
 
 function directoryFiles(p) {
+    if(!fs.existsSync(p))
+        return [];
     var directories = [p];
     var files = [];
     var dir_index = 0;

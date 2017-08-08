@@ -1,9 +1,9 @@
 # This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
+
 cdms2
 vcs
 uvcdat
-mesalib
 vcs-js
 nodejs
 flask

@@ -52,7 +52,7 @@ var VarList = React.createClass({
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {
-                            return <DraggableVariable key={index} variable={value} />
+                           return <DraggableVariable key={index} variable={value} />
                         })};
                     </ul>
                 </div>
