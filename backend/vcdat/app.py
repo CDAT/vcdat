@@ -4,7 +4,7 @@ import logging
 import vcs
 import cdms2
 import json
-from flask import Flask, send_from_directory, request, send_file, Response
+from flask import Flask, send_from_directory, request, send_file, Response, jsonify
 from GraphicsMethods import get_gm, get_default_gms
 from Templates import get_t, templ_from_json
 from Files import getFilesObject
@@ -129,19 +129,17 @@ def get_colormaps():
 
 
 @app.route("/getInitialFileTree")
-@jsonresp
 def get_initial_file_tree():
     start_path = os.path.expanduser('~')
     base_files = getFilesObject(start_path)
-    return json.dumps(base_files)
+    return jsonify(base_files)
 
 
 @app.route("/browseFiles")
-@jsonresp
 def browse_files():
     start_path = request.args.get('path') + '/'
     file_obj = getFilesObject(start_path)
-    return json.dumps(file_obj)
+    return jsonify(file_obj)
 
 
 @app.route("/loadVariablesFromFile")
@@ -201,4 +199,4 @@ if __name__ == "__main__":   # pragma: no cover
 
     args = parser.parse_args()
     app.config["vcs_server"] = args.vcs_server
-    app.run(debug=(not args.production), port=int(args.port))
+    app.run(host='0.0.0.0', debug=(not args.production), port=int(args.port))

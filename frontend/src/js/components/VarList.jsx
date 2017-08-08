@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import AddEditRemoveNav from './AddEditRemoveNav.jsx';
-import CachedFiles from './modals/CachedFiles.jsx';
-import FileExplorer from './modals/FileExplorer.jsx';
-import {DragSource} from 'react-dnd';
+import CachedFiles from './modals/CachedFiles/CachedFiles.jsx';
+import { DragSource } from 'react-dnd';
 import DragAndDropTypes from '../constants/DragAndDropTypes.js';
 
 
 var varSource = {
-    beginDrag: function(props) {
+    beginDrag: function (props) {
         return {
             'variable': props.variable,
         };
@@ -43,13 +42,13 @@ var VarList = React.createClass({
         ])
 
     },
-    openDialog(){
-        $('#cached-files').modal('show');
+    getInitialState: function () {
+        return { showFile: false };
     },
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent'>
-                <AddEditRemoveNav title='Variables' addAction={this.openDialog} />
+                <AddEditRemoveNav title='Variables' addAction={()=>this.setState({ showFile: true })} />
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {
@@ -58,11 +57,13 @@ var VarList = React.createClass({
                     </ul>
                 </div>
                 <CachedFiles
+                    show={this.state.showFile}
+                    onTryClose={()=>this.setState({ showFile: false })}
                     curVariables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     cachedFiles={this.props.cachedFiles}
+                    addFileToCache={this.props.addFileToCache}
                 />
-                <FileExplorer addFileToCache={this.props.addFileToCache}/>
             </div>
         )
     }
