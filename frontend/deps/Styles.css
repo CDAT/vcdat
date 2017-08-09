@@ -49,7 +49,7 @@ button:focus {
     display:inline-block
 }
 #left-side-bar {
-    min-width: 200px;
+    width: 220px;
     float: left;
     background-color: white;
     height: 100%;
@@ -57,11 +57,10 @@ button:focus {
     padding: 0;
 }
 .spreadsheet-container {
+    flex: 1;
     display: flex;
     flex-flow: column;
-    float: right;
     height: 100%;
-    width: calc(100% - 200px);
     padding-left: 2px;
 }
 #right-side-bar {
