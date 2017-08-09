@@ -2,11 +2,11 @@ import React from 'react';
 import Toolbar from '../components/Toolbar.jsx';
 import LeftSideBar from './LeftSideBar.jsx';
 import RightSideBar from './RightSideBar.jsx';
-import SpreadsheetContainer from './SpreadsheetContainer.jsx';
+import SpreadsheetContainer from 'containers/SpreadsheetContainer/SpreadsheetContainer.jsx';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
-import {ActionCreators as UndoActionCreators} from 'redux-undo';
-import {connect} from 'react-redux';
-import {DragDropContext} from 'react-dnd';
+import { ActionCreators as UndoActionCreators } from 'redux-undo';
+import { connect } from 'react-redux';
+import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 /* global jQuery */
 
@@ -26,9 +26,9 @@ var AppContainer = React.createClass({
                     undoEnabled={this.props.undoEnabled}
                     redoEnabled={this.props.redoEnabled}
                 />
-                <div id='main-container'>
-                    <LeftSideBar resizeSpreadsheet={this.resizeSpreadsheet}/>
-                    <SpreadsheetContainer/>
+                <div id="main-container">
+                    <LeftSideBar resizeSpreadsheet={this.resizeSpreadsheet} />
+                    <SpreadsheetContainer />
                 </div>
             </div>
         );

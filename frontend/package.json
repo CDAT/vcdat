@@ -40,11 +40,13 @@
     "jsdom": "^9.4.5",
     "mocha": "^3.0.2",
     "mocha-jsdom": "^1.1.0",
+    "node-sass": "^4.5.3",
     "nyc": "^8.3.0",
     "react-addons-test-utils": "^15.3.1",
+    "sass-loader": "^6.0.6",
     "sinon": "^1.17.5",
     "style-loader": "^0.18.2",
-    "webpack": "^2.2.1"
+    "webpack": "^2.7.0"
   },
   "config": {
     "blanket": {

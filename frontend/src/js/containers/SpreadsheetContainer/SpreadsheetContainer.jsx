@@ -1,11 +1,14 @@
-import React from 'react'
-import Cell from '../components/Cell.jsx'
-import {connect} from 'react-redux'
-import Actions from '../constants/Actions.js'
-import Spinner from '../components/Spinner.jsx'
+import React from 'react';
+import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
+
+import Cell from 'components/Cell.jsx';
+import { connect } from 'react-redux';
+import Actions from 'constants/Actions.js';
+import Spinner from 'components/Spinner/Spinner.jsx';
+import './SpreadsheetContainer.scss';
 /* global $ */
 
-var Row = React.createClass({
+var RenderRow = React.createClass({
     propTypes: {
         col: React.PropTypes.number,
         colCount: React.PropTypes.number,
@@ -30,7 +33,7 @@ var Row = React.createClass({
                         }
                         return;
                     })()}
-                    <Cell resizeHeader={this.props.resizeHeader} row={this.props.row} col={i}/>
+                    <Cell resizeHeader={this.props.resizeHeader} row={this.props.row} col={i} />
                 </div>
             )
         }
@@ -40,7 +43,7 @@ var Row = React.createClass({
                     {(() => {
                         if (this.props.row === 0) {
                             return (
-                                <div id='header-spacer'></div>
+                                <div className='header-spacer'></div>
                             );
                         }
 
@@ -150,30 +153,30 @@ var SpreadsheetContainer = React.createClass({
         }
         );
     },
-    overColDroppable(event, ui){
+    overColDroppable(event, ui) {
         let col = $(event.target).parent().attr('data-col');
-        if($(event.target).attr('data-position') === 'left'){
+        if ($(event.target).attr('data-position') === 'left') {
             col -= 1
         }
         $(':regex(class, border-[0-9]' + col.toString() + ')').css('background-color', '#A3E2F7');
     },
-    outColDroppable(event, ui){
+    outColDroppable(event, ui) {
         let col = $(event.target).parent().attr('data-col');
-        if($(event.target).attr('data-position') === 'left'){
+        if ($(event.target).attr('data-position') === 'left') {
             col -= 1
         }
         $(':regex(class, border-[0-9]' + col.toString() + ')').css('background-color', 'transparent');
     },
-    overRowDroppable(event, ui){
+    overRowDroppable(event, ui) {
         let row = $(event.target).parent().attr('data-row');
-        if($(event.target).attr('data-position') === 'top'){
+        if ($(event.target).attr('data-position') === 'top') {
             row -= 1
         }
         $(':regex(class, border-' + row.toString() + '[0-9])').css('background-color', '#A3E2F7');
     },
-    outRowDroppable(event, ui){
+    outRowDroppable(event, ui) {
         let row = $(event.target).parent().attr('data-row');
-        if($(event.target).attr('data-position') === 'top'){
+        if ($(event.target).attr('data-position') === 'top') {
             row -= 1
         }
         $(':regex(class, border-' + row.toString() + '[0-9])').css('background-color', 'transparent');
@@ -228,29 +231,29 @@ var SpreadsheetContainer = React.createClass({
         this.props.removeSheet(index)
     },
     render() {
-        this.row_count = this.props.cur_sheet.row_count;
-        this.col_count = this.props.cur_sheet.col_count;
+        let rowCount = this.props.cur_sheet.row_count;
+        let colCount = this.props.cur_sheet.col_count;
         var rows = [];
-        for (var i = 0; i < this.row_count; i++) {
+        for (var i = 0; i < rowCount; i++) {
             rows.push(
-                <Row
+                <RenderRow
                     resizeHeader={this.resizeHeader}
                     key={'row' + i}
-                    colCount={this.col_count}
+                    colCount={colCount}
                     row={i}
                     className='row-element'
                 />
             );
         }
         return (
-            <div id='spreadsheet-container'>
-                <div id='spreadsheet-toolbar'>
-                    <Spinner min='1' max='4' value={this.row_count} update={this.updateRowCount} />
-                    <Spinner min='1' max='4' value={this.col_count} update={this.updateColCount} />
-                    <button className='btn btn-default' id='add-sheet-button' onClick={this.addSheet}>
+            <div className='spreadsheet-container'>
+                <div className="spreadsheet-toolbar form-inline">
+                    <Spinner min={1} max={4} value={rowCount} update={this.updateRowCount} />
+                    <Spinner min={1} max={4} value={colCount} update={this.updateColCount} />
+                    <Button bsStyle="default" bsSize="small" className='add-sheet-button' onClick={this.addSheet}>
                         <i className='glyphicon glyphicon-plus'></i>
-                    </button>
-                    <ul id='sheet-list' className='nav nav-tabs'>
+                    </Button>
+                    <ul className='nav nav-tabs sheet-list'>
                         {this.props.sheets.map((item, index) => {
                             return (
                                 <li role='presentation'
@@ -270,7 +273,7 @@ var SpreadsheetContainer = React.createClass({
                         })}
                     </ul>
                 </div>
-                <div id='spreadsheet-div' className=''>{rows}</div>
+                <div className='spreadsheet-div'>{rows}</div>
             </div>
         )
     }
@@ -293,10 +296,10 @@ const mapDispatchToProps = (dispatch) => {
         changeCurSheetIndex: (index) => dispatch(Actions.changeCurSheetIndex(index)),
         removeSheet: (index) => dispatch(Actions.removeSheet(index)),
         updateSelectedCells: (selected_cells) => dispatch(Actions.updateSelectedCells(selected_cells)),
-        moveColumn: function(dragged_index, dropped_index, position) {
+        moveColumn: function (dragged_index, dropped_index, position) {
             dispatch(Actions.moveColumn(dragged_index, dropped_index, position));
         },
-        moveRow: function(dragged_index, dropped_index, position) {
+        moveRow: function (dragged_index, dropped_index, position) {
             dispatch(Actions.moveRow(dragged_index, dropped_index, position));
         },
         shiftSheet: (old_position, new_position) => dispatch(Actions.shiftSheet(old_position, new_position))
