@@ -142,13 +142,17 @@ class CachedFiles extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <div>
-                        <h4>Load From</h4>
                         <Row>
-                            <Col sm={2}>
+                            <Col className="text-right" sm={2}>
+                                <h4>Load From</h4>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="text-right" sm={2}>
                                 File:
                             </Col>
                             <Col sm={10}>
-                                <InputGroup className="input-group-sm">
+                                <InputGroup bsSize="small">
                                     <FormControl className="full-width file-path" type="text" value={this.selectedFilePath} />
                                     <InputGroup.Button>
                                         <Button bsStyle="primary" onClick={
@@ -158,7 +162,7 @@ class CachedFiles extends Component {
                             </Col>
                         </Row>
                         <Row>
-                            <Col sm={2}>
+                            <Col className="text-right" sm={2}>
                                 Variable(s):
                             </Col>
                             <Col sm={10}>
@@ -174,7 +178,7 @@ class CachedFiles extends Component {
                             </Col>
                         </Row>
                         <Row>
-                            <Col sm={2}>
+                            <Col className="text-right" sm={2}>
                                 History:
                             </Col>
                             <Col sm={10}>
@@ -182,7 +186,7 @@ class CachedFiles extends Component {
                             </Col>
                         </Row>
                         <Row>
-                            <Col sm={2}>
+                            <Col className="text-right" sm={2}>
                                 Bookmarks(s):
                             </Col>
                             <Col sm={10}>
@@ -191,7 +195,11 @@ class CachedFiles extends Component {
                         </Row>
                     </div>
                     <div>
-                        <h4>Dimensions</h4>
+                        <Row>
+                            <Col className="text-right" sm={2}>
+                                <h4>Dimensions</h4>
+                            </Col>
+                        </Row>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

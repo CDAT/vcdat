@@ -26,7 +26,7 @@ var LeftSideBar = React.createClass({
     },
     render() {
         return (
-            <div id='left-side-bar' className=''>
+            <div id='left-side-bar'>
                 <VarList variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     addFileToCache={this.props.addFileToCache}

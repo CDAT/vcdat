@@ -26,6 +26,16 @@ module.exports = {
                     { loader: "style-loader" },
                     { loader: "css-loader" }
                 ]
+            },
+            {
+                test: /\.scss$/,
+                use: [{
+                    loader: "style-loader" // creates style nodes from JS strings 
+                }, {
+                    loader: "css-loader", // translates CSS into CommonJS 
+                }, {
+                    loader: "sass-loader" // compiles Sass to CSS 
+                }]
             }
         ]
     },
@@ -45,5 +55,9 @@ module.exports = {
             'react-dom': path.join(__dirname, 'node_modules/react-dom'),
             'jquery': path.join(__dirname, 'node_modules/jquery')
         },
+        modules: [
+            path.resolve('./src/js'),
+            path.resolve('./node_modules')
+        ]
     }
 };
