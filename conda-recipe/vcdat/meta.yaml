@@ -20,5 +20,5 @@ source:
   git_rev: v0.0.3
   git_url: git://github.com/UV-CDAT/vcdat.git
 build:
-  noarch_python: true
+  noarch_python: false
   number: 1
