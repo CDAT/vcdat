@@ -1,10 +1,5 @@
-#git clone git://github.com/uv-cdat/vcs-widgets
-#cd vcs-widgets
-#npm install
-#npm link
-#cd ..
+#!/usr/bin/env bash
 cd frontend
 npm install
 cd ..
-
 python setup.py install
