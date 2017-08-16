@@ -11,10 +11,10 @@ requirements:
   run:
   - python
   - flask
-  - vcs
-  - cdms2
-  - cdutil
-  - genutil
+  - vcs 2.10
+  - cdms2 2.10
+  - cdutil 2.10
+  - genutil 2.10
   - vcs-js
 source:
   git_rev: v0.0.4

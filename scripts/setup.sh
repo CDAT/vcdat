@@ -1,11 +1,6 @@
 #!/bin/bash
 
-# Devel
 CONDA_ENV="nightly"
-
-# Release
-#CONDA_ENV="vcdat"
-#CONDA_CHANNELS="-c conda-forge -c uvcdat"
 
 CERT=$1
 if [ "-"$CERT"-" == "-auto-" ]; then
@@ -38,7 +33,6 @@ EOF
 CERT=$HOME/ca.llnl.gov.pem
 fi
 
-
 current_dir=`pwd`
 
 if [[ $current_dir == */vcdat* ]]; then
@@ -52,15 +46,12 @@ if [[ $current_dir == */vcdat* ]]; then
     # Delete the old one, if it exists.
     conda env remove -y -n ${CONDA_ENV}
 
-    # Devel
+    # Create a new one
     conda create -y -n nightly uvcdat -c uvcdat/label/nightly -c conda-forge -c uvcdat --file $current_dir/backend/requirements.txt
-
-    # Release
-    #conda create -y -n ${CONDA_ENV} ${CONDA_CHANNELS} --file $current_dir/backend/requirements.txt
 
     source activate ${CONDA_ENV}
     cd frontend
-    echo "prefix=$envdir" > $HOME/.npmrc
+    echo "prefix=frontend" > $HOME/.npmrc
     if [ -z $CERT ]; then
         npm install
     else
