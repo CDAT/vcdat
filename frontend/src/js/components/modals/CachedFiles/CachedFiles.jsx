@@ -41,6 +41,10 @@ class CachedFiles extends Component {
         }
     }
 
+    componentWillUpdate(nextProps, nextState) {
+        console.log(nextProps, nextState);
+    }
+
     getProvenance(path, var_name) {
         return Promise.resolve($.get('getVariableProvenance', { 'path': path, 'varname': var_name }))
     }
@@ -66,7 +70,7 @@ class CachedFiles extends Component {
             })
             .then(() => {
                 this.setState({ redefinedVariableName: '' })
-            })
+            });
     }
 
     load() {
@@ -122,18 +126,15 @@ class CachedFiles extends Component {
     handleFileSelected(file) {
         this.handleFileExplorerTryClose();
         var path = cleanPath(file.path + '/' + file.name);
-        return Promise.resolve($.get('/loadVariablesFromFile', { 'path': path }))
-            .then((obj) => {
-                this.setState({ selectedFile: file });
-                this.props.addFileToCache(file.name, path, obj.variables);
-            })
-            .catch((error) => {
-                alert("Unable to open selected file.");
-            });
+
+        vcs.variables(path).then((variablesAxes) => {
+            console.log(variablesAxes);
+            this.setState({ selectedFile: file, variablesAxes });
+        });
     }
 
     render() {
-        var variables = _.flatten(_.values(this.props.cachedFiles).map(file => file.variables));
+        // var variables = _.flatten(_.values(this.props.cachedFiles).map(file => file.variables));
 
         return (
             <Modal id='cached-files' bsSize="large" show={this.props.show} onHide={this.tryClose}>
@@ -171,9 +172,7 @@ class CachedFiles extends Component {
                                     componentClass="select"
                                     onChange={(e) => this.setState({ selectedVariable: e.target.value })}
                                     value={this.state.selectedVariable}>
-                                    {
-                                        variables.map((variable) => <option key={variable} value={variable}>{variable}</option>)
-                                    }
+                                    {this._formatvariablesAxes()}
                                 </FormControl>
                             </Col>
                         </Row>
@@ -194,13 +193,15 @@ class CachedFiles extends Component {
                             </Col>
                         </Row>
                     </div>
-                    <div>
-                        <Row>
-                            <Col className="text-right" sm={2}>
-                                <h4>Dimensions</h4>
-                            </Col>
-                        </Row>
-                    </div>
+                    {this.state.selectedVariable &&
+                        <div>
+                            <Row>
+                                <Col className="text-right" sm={2}>
+                                    <h4>Dimensions</h4>
+                                </Col>
+                            </Row>
+                        </div>
+                    }
                 </Modal.Body>
                 <Modal.Footer>
                     <Button bsStyle="primary" bsSize="small" onClick={(e) => {
@@ -246,6 +247,74 @@ class CachedFiles extends Component {
                     <FileExplorer show={true} onTryClose={() => this.handleFileExplorerTryClose()} onFileSelected={(file) => this.handleFileSelected(file)} />}
             </Modal>
         )
+    }
+
+    _formatvariablesAxes() {
+        return this.state.variablesAxes && [
+            <optgroup key="variables" label="------">{this._formatVariables(this.state.variablesAxes[0])}</optgroup>,
+            <optgroup key="axes" label="------">{this._formatAxes(this.state.variablesAxes[1])}</optgroup>
+        ]
+    }
+
+    _formatVariables(variables) {
+        return Object.keys(variables).map((variableName) => {
+            // let variable = variables[variableName];
+            // let label = `${variableName} (${variable.shape.join(',')}) ${variable.name}`
+            var vars = variables;
+            var v = variableName;
+            var shape = '(' + vars[v].shape[0];
+            for (let i = 1; i < vars[v].shape.length; ++i) {
+                shape += (',' + vars[v].shape[i]);
+            }
+            shape += ')';
+            // axes for the variable
+            var al = vars[v].axisList;
+            var axisList = '(' + al[0];
+            for (let i = 1; i < al.length; ++i) {
+                axisList += (', ' + al[i]);
+            }
+            axisList += ')';
+            // bounds are received for longitude and latitude
+            var boundsString = '';
+            if (vars[v].bounds) {
+                boundsString += ': (' + vars[v].bounds[0] + ', ' +
+                    vars[v].bounds[1] + ')';
+            }
+            // longitude, latitude for the variable
+            // these are different than the axes for the curvilinear or
+            // generic grids
+            var lonLat = null;
+            if (vars[v].lonLat) {
+                lonLat = '(' + vars[v].lonLat[0] + ', ' +
+                    vars[v].lonLat[1] + ')';
+            }
+            var label = v + shape + '[' + vars[v].name + ', ' +
+                vars[v].units + boundsString + ']' + ': ' + axisList;
+            if (lonLat) {
+                label += (', ' + lonLat);
+            }
+            if (vars[v].gridType) {
+                label += (', ' + vars[v].gridType);
+            }
+
+            return <option key={variableName}>{label}</option>;
+        })
+    }
+
+    _formatAxes(axes) {
+        return Object.keys(axes).map((axisName) => {
+            var v = axisName;
+            var shape = '(' + axes[v].shape[0];
+            for (let i = 1; i < axes[v].shape.length; ++i) {
+                shape += (',' + axes[v].shape[i]);
+            }
+            shape += ')';
+            var label = v + shape + '[' + axes[v].name + ', ' +
+                axes[v].units + ': (' +
+                axes[v].data[0] + ', ' +
+                axes[v].data[axes[v].data.length - 1] + ')]';
+            return <option key={axisName}>{label}</option>;
+        });
     }
 }
 CachedFiles.propTypes = {
