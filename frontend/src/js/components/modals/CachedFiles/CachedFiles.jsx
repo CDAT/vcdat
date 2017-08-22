@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
 import _ from 'lodash';
 import Dialog from 'react-bootstrap-dialog';
+import DoubleSlider from 'components/DoubleSlider/DoubleSlider.jsx';
 
 import FileExplorer from '../FileExplorer/FileExplorer.jsx';
 import './CachedFiles.css';
@@ -198,6 +199,11 @@ class CachedFiles extends Component {
                             <Row>
                                 <Col className="text-right" sm={2}>
                                     <h4>Dimensions</h4>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col sm={12}>
+                                    <DoubleSlider value1={0} value2={12} min={0} max={20} step={1} onChange={()=>console.log('123')} />
                                 </Col>
                             </Row>
                         </div>
