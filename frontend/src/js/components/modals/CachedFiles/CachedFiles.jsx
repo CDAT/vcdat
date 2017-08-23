@@ -19,6 +19,7 @@ class CachedFiles extends Component {
             showFileExplorer: false,
             showRedefineVariableModal: false,
             selectedFile: '',
+            historyFiles: [],
             variablesAxes: null,
             selectedVariable: null,
             selectedVariableName: '',
@@ -47,18 +48,6 @@ class CachedFiles extends Component {
     componentWillUpdate(nextProps, nextState) {
         if (this.state.selectedVariableName !== nextState.selectedVariableName) {
             var selectedVariable = nextState.variablesAxes[0][nextState.selectedVariableName] || nextState.variablesAxes[1][nextState.selectedVariableName];
-            // var axes = nextState.variablesAxes[1];
-            // var dimensions = selectedVariable.axisList.map((axisName) => {
-            //     axis = axes[axisName];
-            //     if(axes)
-            //     return {
-            //         name: axisName,
-            //         data: data,
-            //         type: 'date'
-            //     }
-            // });
-
-
             this.setState({
                 selectedVariable
             });
@@ -148,11 +137,16 @@ class CachedFiles extends Component {
         var path = cleanPath(file.path + '/' + file.name);
 
         vcs.variables(path).then((variablesAxes) => {
-            // console.log(variablesAxes);
+            console.log(variablesAxes);
+            var historyFiles = [file, ...this.state.historyFiles.filter(historyFile => {
+                return historyFile.path !== file.path || historyFile.name !== file.name;
+            })];
             this.setState({
                 variablesAxes,
                 selectedFile: file,
-                selectedVariableName: Object.keys(variablesAxes[0])[0]
+                historyFiles: historyFiles,
+                selectedVariableName: Object.keys(variablesAxes[0])[0],
+                selectedVariable: null
             });
         });
     }
@@ -161,7 +155,7 @@ class CachedFiles extends Component {
         // var variables = _.flatten(_.values(this.props.cachedFiles).map(file => file.variables));
 
         return (
-            <Modal id='cached-files' bsSize="large" show={this.props.show} onHide={this.tryClose}>
+            <Modal className='cached-files' bsSize="large" show={this.props.show} onHide={this.tryClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Load Variable</Modal.Title>
                 </Modal.Header>
@@ -200,15 +194,19 @@ class CachedFiles extends Component {
                                 </FormControl>
                             </Col>
                         </Row>
-                        {/* <Row>
+                        <Row>
                             <Col className="text-right" sm={2}>
                                 History:
                             </Col>
-                            <Col sm={10}>
-                                <FormControl componentClass="textarea" />
+                            <Col sm={9}>
+                                <FormControl className="history" componentClass="div">
+                                    {this.state.historyFiles.map((file, i) => {
+                                        return <div className="file" key={i} onClick={(e) => this.handleFileSelected(file)}>{cleanPath(file.path + '/' + file.name)}</div>;
+                                    })}
+                                </FormControl>
                             </Col>
                         </Row>
-                        <Row>
+                        {/* <Row>
                             <Col className="text-right" sm={2}>
                                 Bookmarks(s):
                             </Col>
@@ -225,6 +223,9 @@ class CachedFiles extends Component {
                                 </Col>
                             </Row>
                             {this.state.selectedVariable.axisList && this.state.selectedVariable.axisList.map((axisName) => {
+                                console.log(this.state.selectedVariable.axisList);
+                                console.log(axisName);
+                                console.log(this.state.variablesAxes);
                                 let axis = this.state.variablesAxes[1][axisName];
                                 return (
                                     <Row key={axisName} className="dimension">

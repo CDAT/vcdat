@@ -6,20 +6,20 @@
     width: 100%;
 }
 
-#cached-files .load-from .row {
+.cached-files .load-from .row {
     margin-top: 4px;
     margin-bottom: 4px;
 }
 
-#cached-files textarea{
+.cached-files textarea{
     height: 100px;
 }
 
-#cached-files .slider{
+.cached-files .slider{
     width: 100%;
 }
 
-#cached-files .dimensions .dimension {
+.cached-files .dimensions .dimension {
     padding-top: 15px;
 
     .right-content {
@@ -31,6 +31,22 @@
         .right-content {
             padding-bottom: 15px;
             border: none;
+        }
+    }
+}
+
+.cached-files {
+    .history {
+        min-height: 75px;
+        max-height: 120px;
+        overflow-y: auto;
+
+        .file{
+            cursor: pointer;
+
+            &:hover{
+                background-color: #68A4D5;
+            }
         }
     }
 }
