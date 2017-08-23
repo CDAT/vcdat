@@ -1,0 +1,29 @@
+.dimension-slider .slider.slider-horizontal .slider-handle {
+    width: 13px;
+    height: 17px;
+    top: 2px;
+    margin-left: -7px;
+    border-radius: 3px;
+}
+
+.dimension-slider {
+    .inverse {
+        margin-left: 8px;
+
+        input {
+            position: relative;
+            top: 2px;
+            margin: 0 3px;
+        }
+
+        .inverse-label {
+            display: none;
+        }
+
+        &:hover{
+            .inverse-label {
+                display: inline;
+            }
+        }
+    }
+}

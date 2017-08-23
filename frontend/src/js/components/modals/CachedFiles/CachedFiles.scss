@@ -1,0 +1,35 @@
+.file-path {
+    color: #333;
+}
+
+.full-width {
+    width: 100%;
+}
+
+#cached-files .load-from .row {
+    margin: 4px 0;
+}
+
+#cached-files textarea{
+    height: 100px;
+}
+
+#cached-files .slider{
+    width: 100%;
+}
+
+#cached-files .dimensions .dimension {
+    padding: 15px 0 0 0;
+
+    .right-content {
+        padding-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    &:last-child{
+        .right-content {
+            padding-bottom: 15px;
+            border: none;
+        }
+    }
+}

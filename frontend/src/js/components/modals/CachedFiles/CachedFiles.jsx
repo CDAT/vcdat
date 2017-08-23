@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
 import _ from 'lodash';
 import Dialog from 'react-bootstrap-dialog';
-import DoubleSlider from 'components/DoubleSlider/DoubleSlider.jsx';
+import DimensionSlider from './DimensionSlider/DimensionSlider.jsx';
 
 import FileExplorer from '../FileExplorer/FileExplorer.jsx';
-import './CachedFiles.css';
+
+import './CachedFiles.scss';
 
 function cleanPath(path) {
     return `/${path.split('/').filter(segment => segment).join('/')}`;
@@ -18,7 +19,9 @@ class CachedFiles extends Component {
             showFileExplorer: false,
             showRedefineVariableModal: false,
             selectedFile: '',
-            selectedVariable: '',
+            variablesAxes: null,
+            selectedVariable: null,
+            selectedVariableName: '',
             redefinedVariableName: '',
             temporaryRedefinedVariableName: ''
         }
@@ -32,18 +35,34 @@ class CachedFiles extends Component {
         if (this.state.redefinedVariableName) {
             return this.state.redefinedVariableName;
         }
-        return !this.state.selectedVariable ? '' : this.state.selectedVariable.split(' (')[0];
+        return !this.state.selectedVariableName ? '' : this.state.selectedVariableName;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.cachedFiles != this.props.cachedFiles) {
-            var something = _.flatten(_.values(nextProps.cachedFiles).map(file => file.variables))[0];
-            this.setState({ selectedVariable: _.flatten(_.values(nextProps.cachedFiles).map(file => file.variables))[0] });
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     if (nextProps.cachedFiles != this.props.cachedFiles) {
+    //         this.setState({ selectedVariable: _.flatten(_.values(nextProps.cachedFiles).map(file => file.variables))[0] });
+    //     }
+    // }
 
     componentWillUpdate(nextProps, nextState) {
-        console.log(nextProps, nextState);
+        if (this.state.selectedVariableName !== nextState.selectedVariableName) {
+            var selectedVariable = nextState.variablesAxes[0][nextState.selectedVariableName] || nextState.variablesAxes[1][nextState.selectedVariableName];
+            // var axes = nextState.variablesAxes[1];
+            // var dimensions = selectedVariable.axisList.map((axisName) => {
+            //     axis = axes[axisName];
+            //     if(axes)
+            //     return {
+            //         name: axisName,
+            //         data: data,
+            //         type: 'date'
+            //     }
+            // });
+
+
+            this.setState({
+                selectedVariable
+            });
+        }
     }
 
     getProvenance(path, var_name) {
@@ -51,7 +70,7 @@ class CachedFiles extends Component {
     }
 
     loadVariable() {
-        let variable = this.state.selectedVariable.split(' (')[0];
+        let variable = this.state.selectedVariableName;
         let filename = this.state.selectedFile;
         let path = this.selectedFilePath;
 
@@ -130,7 +149,11 @@ class CachedFiles extends Component {
 
         vcs.variables(path).then((variablesAxes) => {
             console.log(variablesAxes);
-            this.setState({ selectedFile: file, variablesAxes });
+            this.setState({
+                variablesAxes,
+                selectedFile: file,
+                selectedVariableName: Object.keys(variablesAxes[0])[0]
+            });
         });
     }
 
@@ -143,7 +166,7 @@ class CachedFiles extends Component {
                     <Modal.Title>Load Variable</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div>
+                    <div className="load-from">
                         <Row>
                             <Col className="text-right" sm={2}>
                                 <h4>Load From</h4>
@@ -171,13 +194,13 @@ class CachedFiles extends Component {
                                 <FormControl
                                     className="input-sm full-width"
                                     componentClass="select"
-                                    onChange={(e) => this.setState({ selectedVariable: e.target.value })}
-                                    value={this.state.selectedVariable}>
+                                    onChange={(e) => this.setState({ selectedVariableName: e.target.value })}
+                                    value={this.state.selectedVariableName}>
                                     {this._formatvariablesAxes()}
                                 </FormControl>
                             </Col>
                         </Row>
-                        <Row>
+                        {/* <Row>
                             <Col className="text-right" sm={2}>
                                 History:
                             </Col>
@@ -192,20 +215,26 @@ class CachedFiles extends Component {
                             <Col sm={10}>
                                 <FormControl componentClass="textarea" />
                             </Col>
-                        </Row>
+                        </Row> */}
                     </div>
                     {this.state.selectedVariable &&
-                        <div>
+                        <div className="dimensions">
                             <Row>
                                 <Col className="text-right" sm={2}>
                                     <h4>Dimensions</h4>
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col sm={12}>
-                                    <DoubleSlider value1={0} value2={12} min={0} max={20} step={1} onChange={()=>console.log('123')} />
-                                </Col>
-                            </Row>
+                            {this.state.selectedVariable.axisList.map((axisName) => {
+                                let axis = this.state.variablesAxes[1][axisName];
+                                return (
+                                    <Row key={axisName} className="dimension">
+                                        <Col sm={2} className="text-right"><span>{axis.name}</span></Col>
+                                        <Col sm={8} className="right-content">
+                                            <DimensionSlider {...axis} />
+                                        </Col>
+                                    </Row>
+                                )
+                            })}
                         </div>
                     }
                 </Modal.Body>
@@ -303,7 +332,7 @@ class CachedFiles extends Component {
                 label += (', ' + vars[v].gridType);
             }
 
-            return <option key={variableName}>{label}</option>;
+            return <option key={v} value={v}>{label}</option>;
         })
     }
 
@@ -319,7 +348,7 @@ class CachedFiles extends Component {
                 axes[v].units + ': (' +
                 axes[v].data[0] + ', ' +
                 axes[v].data[axes[v].data.length - 1] + ')]';
-            return <option key={axisName}>{label}</option>;
+            return <option key={axisName} value={axisName}>{label}</option>;
         });
     }
 }
