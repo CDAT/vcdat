@@ -9,15 +9,14 @@ import 'bootstrap-slider/dist/css/bootstrap-slider.min.css';
 class DimensionSlider extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
         this.slider = null;
         var type = 'number';
         var format = null;
         this.formatter = function (data) {
+            if (data.toFixed) {
+                return data.toFixed(5);
+            }
             return data;
-        }
-        this.valueConverter = function (data) {
-            return value;
         }
         if (_.includes(props.units, 'since')) {
             type = 'date';
@@ -80,7 +79,9 @@ class DimensionSlider extends Component {
     }
 
     componentWillUnmount() {
-        this.slider.destroy();
+        if (this.slider) {
+            this.slider.destroy();
+        }
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -98,16 +99,16 @@ class DimensionSlider extends Component {
             <div className="dimension-slider">
                 {!this.singleValue &&
                     <div>
-                        <span>{this.formatter(this.state.value[0])} : {this.formatter(this.state.value[1])}</span>
+                        <span>({this.props.data.length}) {this.formatter(this.state.value[0])} : {this.formatter(this.state.value[1])}</span>
                         <span className="inverse">
                             <input type="checkbox" checked={this.state.reversed} onChange={(e) => this.setState({ reversed: e.target.checked })} /><span className="inverse-label">Reversed</span>
                         </span>
-                        <input ref={input => this.input = input} data-abc={this.state.value[0]} />
+                        <input ref={input => this.input = input} />
                     </div>
                 }
                 {this.singleValue &&
                     <div>
-                        <span>{this.formatter(this.state.value[0])}</span>
+                        <span>({this.props.data.length}) {this.formatter(this.state.value[0])}</span>
                     </div>}
             </div>
         )

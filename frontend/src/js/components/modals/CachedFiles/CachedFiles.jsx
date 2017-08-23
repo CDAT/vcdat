@@ -148,7 +148,7 @@ class CachedFiles extends Component {
         var path = cleanPath(file.path + '/' + file.name);
 
         vcs.variables(path).then((variablesAxes) => {
-            console.log(variablesAxes);
+            // console.log(variablesAxes);
             this.setState({
                 variablesAxes,
                 selectedFile: file,
@@ -174,9 +174,9 @@ class CachedFiles extends Component {
                         </Row>
                         <Row>
                             <Col className="text-right" sm={2}>
-                                File:
+                                File
                             </Col>
-                            <Col sm={10}>
+                            <Col sm={9}>
                                 <InputGroup bsSize="small">
                                     <FormControl className="full-width file-path" type="text" value={this.selectedFilePath} />
                                     <InputGroup.Button>
@@ -188,9 +188,9 @@ class CachedFiles extends Component {
                         </Row>
                         <Row>
                             <Col className="text-right" sm={2}>
-                                Variable(s):
+                                Variable(s)
                             </Col>
-                            <Col sm={10}>
+                            <Col sm={9}>
                                 <FormControl
                                     className="input-sm full-width"
                                     componentClass="select"
@@ -224,7 +224,7 @@ class CachedFiles extends Component {
                                     <h4>Dimensions</h4>
                                 </Col>
                             </Row>
-                            {this.state.selectedVariable.axisList.map((axisName) => {
+                            {this.state.selectedVariable.axisList && this.state.selectedVariable.axisList.map((axisName) => {
                                 let axis = this.state.variablesAxes[1][axisName];
                                 return (
                                     <Row key={axisName} className="dimension">
@@ -235,6 +235,14 @@ class CachedFiles extends Component {
                                     </Row>
                                 )
                             })}
+                            {!this.state.selectedVariable.axisList &&
+                                <Row key={this.state.selectedVariable.name} className="dimension">
+                                    <Col sm={2} className="text-right"><span>{this.state.selectedVariable.name}</span></Col>
+                                    <Col sm={8} className="right-content">
+                                        <DimensionSlider {...this.state.selectedVariable} />
+                                    </Col>
+                                </Row>
+                            }
                         </div>
                     }
                 </Modal.Body>
@@ -297,7 +305,7 @@ class CachedFiles extends Component {
             // let label = `${variableName} (${variable.shape.join(',')}) ${variable.name}`
             var vars = variables;
             var v = variableName;
-            var shape = '(' + vars[v].shape[0];
+            var shape = ' (' + vars[v].shape[0];
             for (let i = 1; i < vars[v].shape.length; ++i) {
                 shape += (',' + vars[v].shape[i]);
             }
@@ -323,8 +331,8 @@ class CachedFiles extends Component {
                 lonLat = '(' + vars[v].lonLat[0] + ', ' +
                     vars[v].lonLat[1] + ')';
             }
-            var label = v + shape + '[' + vars[v].name + ', ' +
-                vars[v].units + boundsString + ']' + ': ' + axisList;
+            var label = v + shape + ' [' + vars[v].name + ', ' +
+                vars[v].units + boundsString + '] ' + ': ' + axisList;
             if (lonLat) {
                 label += (', ' + lonLat);
             }

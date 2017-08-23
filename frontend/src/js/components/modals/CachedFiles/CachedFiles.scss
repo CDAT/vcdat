@@ -7,7 +7,8 @@
 }
 
 #cached-files .load-from .row {
-    margin: 4px 0;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 #cached-files textarea{
@@ -19,7 +20,7 @@
 }
 
 #cached-files .dimensions .dimension {
-    padding: 15px 0 0 0;
+    padding-top: 15px;
 
     .right-content {
         padding-bottom: 20px;
