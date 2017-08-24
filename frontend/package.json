@@ -5,7 +5,7 @@
   "main": "src/js/app.js",
   "private": true,
   "dependencies": {
-    "bootstrap-slider": "^9.8.1",
+    "bootstrap-slider": "github:matthewma7/bootstrap-slider",
     "css-element-queries": "^0.3.2",
     "jquery": "^3.1.0",
     "lodash": "^4.17.4",

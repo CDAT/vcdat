@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon } from 'react-bootstrap';
-import style from './FileExplorer.css';
+import style from './FileExplorer.scss';
 /* global $ */
 
 function cleanPath(path) {

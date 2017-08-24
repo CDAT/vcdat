@@ -49,8 +49,7 @@ class DimensionSlider extends Component {
         this.state = {
             min: 0,
             max: props.data.length - 1,
-            value: [props.data[0], props.data[props.data.length - 1]],
-            reversed: false
+            value: [props.data[0], props.data[props.data.length - 1]]
         };
     }
 
@@ -64,13 +63,11 @@ class DimensionSlider extends Component {
             step: 1,
             value: [0, this.state.max],
             range: true,
+            across: true,
             tooltip: 'hide',
             formatter: this.formatter
         }).on('slide', (sliderValues) => {
             var value = [this.props.data[sliderValues[0]], this.props.data[sliderValues[1]]];
-            if (this.state.reversed) {
-                value = value.reverse();
-            }
             this.setState({ value });
             if (this.props.onChange) {
                 this.props.onChange(value);
@@ -84,15 +81,9 @@ class DimensionSlider extends Component {
         }
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        if (this.state.reversed !== nextState.reversed) {
-            var value = this.state.value.reverse();
-            this.setState({ value });
-            if (this.props.onChange) {
-                this.props.onChange(value);
-            }
-        }
-    }
+    // componentWillUpdate(nextProps, nextState) {
+       
+    // }
 
     render() {
         return (
@@ -100,9 +91,6 @@ class DimensionSlider extends Component {
                 {!this.singleValue &&
                     <div>
                         <span>({this.props.data.length}) {this.formatter(this.state.value[0])} : {this.formatter(this.state.value[1])}</span>
-                        <span className="inverse">
-                            <input type="checkbox" checked={this.state.reversed} onChange={(e) => this.setState({ reversed: e.target.checked })} /><span className="inverse-label">Reversed</span>
-                        </span>
                         <input ref={input => this.input = input} />
                     </div>
                 }
