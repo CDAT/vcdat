@@ -14,6 +14,7 @@
         line-height: 17px;
         display: block;
         text-align: center;
+        font-size: 12px;
     }
 
     &.min-slider-handle {
@@ -34,5 +35,28 @@
 
     .slider-selection {
         background:$lighter;
+    }
+
+    .form-inline {
+        .form-group-sm .form-control, .form-control.input-sm {
+            height: 27px;
+            padding: 0 3px;
+            border-color: #eee;
+        }
+    } 
+
+    .stride {
+        margin-left: 10px;
+
+        label {
+            font-weight: normal;
+            font-size: 12px;
+            color: #777;
+        }
+
+        input {
+            width: 45px;
+            text-align: center;
+        }
     }
 }
