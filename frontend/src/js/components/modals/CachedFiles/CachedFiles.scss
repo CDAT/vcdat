@@ -1,0 +1,55 @@
+@import 'variables';
+
+.file-path {
+    color: #333;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.cached-files .load-from .row {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.cached-files textarea{
+    height: 100px;
+}
+
+.cached-files .slider{
+    width: 100%;
+}
+
+.cached-files .dimensions .dimension {
+    padding-top: 15px;
+
+    .right-content {
+        padding-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    &:last-child{
+        .right-content {
+            padding-bottom: 15px;
+            border: none;
+        }
+    }
+}
+
+.cached-files {
+    .history {
+        min-height: 75px;
+        max-height: 120px;
+        overflow-y: auto;
+
+        .file{
+            cursor: pointer;
+
+            &:hover{
+                background-color: $lighter;
+                color: black;
+            }
+        }
+    }
+}

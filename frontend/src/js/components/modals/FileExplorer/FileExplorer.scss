@@ -1,3 +1,5 @@
+@import 'variables';
+
 .navigation-bar{
     cursor: default;
     margin-bottom: 8px;
@@ -25,7 +27,7 @@
 }
 
 .navigation-bar .button.back:hover, .file-list li.selected {
-    background-color: #68A4D5;
+    background-color: $lighter;
     color: black;
 }
 
