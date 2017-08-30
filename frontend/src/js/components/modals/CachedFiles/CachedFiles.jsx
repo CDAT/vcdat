@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
 import _ from 'lodash';
 import Dialog from 'react-bootstrap-dialog';
-import DimensionSlider from './DimensionSlider/DimensionSlider.jsx';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DropTarget, DragSource } from 'react-dnd';
+import { findDOMNode } from 'react-dom';
 
+import DimensionSlider from './DimensionSlider/DimensionSlider.jsx';
 import FileExplorer from '../FileExplorer/FileExplorer.jsx';
+import DragAndDropTypes from 'constants/DragAndDropTypes';
 
 import './CachedFiles.scss';
 
@@ -234,20 +239,21 @@ class CachedFiles extends Component {
                                     <h4>Dimensions</h4>
                                 </Col>
                             </Row>
-                            {this.state.selectedVariable.axisList && this.state.selectedVariable.axisList.map((axisName) => {
-                                {/* console.log(this.state.selectedVariable.axisList);
-                                console.log(axisName);
-                                console.log(this.state.variablesAxes); */}
-                                let axis = this.state.variablesAxes[1][axisName];
-                                return (
-                                    <Row key={axisName} className="dimension">
-                                        <Col sm={2} className="text-right"><span>{axis.name}</span></Col>
-                                        <Col sm={8} className="right-content">
-                                            <DimensionSlider {...axis} onChange={(values) => this.handleDimensionValueChange(values, axisName)} />
-                                        </Col>
-                                    </Row>
-                                )
-                            })}
+                            {this.state.selectedVariable.axisList &&
+                                this.state.selectedVariable.axisList.map((axisName, i) => {
+                                    let axis = this.state.variablesAxes[1][axisName];
+                                    return (
+                                        <DimensionDnDContainer key={axisName} index={i} moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)}>
+                                            <Row className="dimension">
+                                                <Col sm={2} className="text-right"><span>{axis.name}</span></Col>
+                                                <Col sm={8} className="right-content">
+                                                    <DimensionSlider {...axis} onChange={(values) => this.handleDimensionValueChange(values, axisName)} />
+                                                </Col>
+                                            </Row>
+                                        </DimensionDnDContainer>
+                                    )
+                                })
+                            }
                             {!this.state.selectedVariable.axisList &&
                                 <Row key={this.state.selectedVariable.name} className="dimension">
                                     <Col sm={2} className="text-right"><span>{this.state.selectedVariable.name}</span></Col>
@@ -372,6 +378,15 @@ class CachedFiles extends Component {
             return <option key={axisName} value={axisName}>{label}</option>;
         });
     }
+
+    moveDimension(dragIndex, hoverIndex) {
+        var dimensions = this.state.selectedVariable.axisList;
+        const dragDimension = dimensions[dragIndex];
+
+        dimensions = dimensions.splice(hoverIndex, 0, dimensions.splice(dragIndex, 1)[0]);
+
+        this.setState({ selectedVariable: Object.assign(this.state.selectedVariable, { dimensions }) });
+    }
 }
 CachedFiles.propTypes = {
     show: React.PropTypes.bool.isRequired,
@@ -381,5 +396,60 @@ CachedFiles.propTypes = {
     loadVariables: React.PropTypes.func,
     addFileToCache: React.PropTypes.func,
 }
+
+var DimensionDnDContainer = DragSource(DragAndDropTypes.DIMENSION,
+    {
+        beginDrag: (props) => {
+            return {
+                id: props.id,
+                index: props.index
+            }
+        }
+    },
+    (connect, monitor) => {
+        return {
+            connectDragSource: connect.dragSource(),
+            isDragging: monitor.isDragging()
+        };
+    }
+)((props) => {
+    const opacity = props.isDragging ? 0 : 1;
+    return props.connectDragSource(props.connectDropTarget(<div style={{ opacity }}>{props.children}</div>));
+});
+
+DimensionDnDContainer = DropTarget(
+    DragAndDropTypes.DIMENSION,
+    {
+        // by example of react-dnd https://github.com/react-dnd/react-dnd/blob/master/examples/04%20Sortable/Simple/Card.js#L25
+        hover(props, monitor, component) {
+            const dragIndex = monitor.getItem().index;
+            const hoverIndex = props.index;
+            if (dragIndex === hoverIndex) {
+                return;
+            }
+            const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+            const clientOffset = monitor.getClientOffset();
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+            if ((dragIndex < hoverIndex && hoverClientY < hoverMiddleY)
+                || (dragIndex > hoverIndex && hoverClientY > hoverMiddleY)) {
+                return;
+            }
+            props.moveDimension(dragIndex, hoverIndex);
+            // Note: we're mutating the monitor item here!
+            // Generally it's better to avoid mutations,
+            // but it's good here for the sake of performance
+            // to avoid expensive index searches.
+            monitor.getItem().index = hoverIndex;
+        },
+    },
+    (connect, monitor) => {
+        return {
+            connectDropTarget: connect.dropTarget(),
+            isOver: monitor.isOver(),
+        };
+    }
+)(DimensionDnDContainer);
+
 
 export default CachedFiles;
