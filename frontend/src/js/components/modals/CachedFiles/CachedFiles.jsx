@@ -20,7 +20,6 @@ function cleanPath(path) {
 class CachedFiles extends Component {
     constructor(props) {
         super(props);
-        this.dimension = null;
         this.state = {
             showFileExplorer: false,
             showRedefineVariableModal: false,
@@ -30,7 +29,8 @@ class CachedFiles extends Component {
             selectedVariable: null,
             selectedVariableName: '',
             redefinedVariableName: '',
-            temporaryRedefinedVariableName: ''
+            temporaryRedefinedVariableName: '',
+            dimension: null
         }
     }
 
@@ -47,19 +47,22 @@ class CachedFiles extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.state.selectedVariableName !== prevState.selectedVariableName || (this.state.selectedVariableName && !this.state.selectedVariable)) {
-            let selectedVariable;
+            let selectedVariable, dimension;
             if (this.state.variablesAxes[0][this.state.selectedVariableName]) {
                 // it's a variablevar 
                 selectedVariable = this.state.variablesAxes[0][this.state.selectedVariableName];
-                this.dimension = {};
+                dimension = selectedVariable.axisList.map((axisName) => {
+                    return { axisName };
+                })
             }
             else {
                 // it's a axis
                 selectedVariable = this.state.variablesAxes[1][this.state.selectedVariableName];
-                this.dimension = null;
+                dimension = { axisName: this.state.selectedVariableName };
             }
             this.setState({
-                selectedVariable
+                selectedVariable,
+                dimension
             });
         }
     }
@@ -73,21 +76,33 @@ class CachedFiles extends Component {
         let filename = this.state.selectedFile;
         let path = this.selectedFilePath;
 
-        return this.getProvenance(path, variable)
-            .then((result) => {
-                let var_obj = {};
-                var_obj[this.variableName] = {
-                    cdms_var_name: variable,
-                    filename: filename,
-                    path: path,
-                    provenance: result,
-                    dimension: this.dimension
-                };
-                this.props.loadVariables([var_obj])
-            })
-            .then(() => {
-                this.setState({ redefinedVariableName: '' })
-            });
+        let var_obj = {};
+        var_obj[this.variableName] = {
+            cdms_var_name: variable,
+            axisList: this.state.selectedVariable.axisList,
+            filename: filename,
+            path: path,
+            dimension: this.state.dimension
+        };
+        this.props.loadVariables([var_obj]);
+        this.setState({ redefinedVariableName: '' });
+
+        // return this.getProvenance(path, variable)
+        //     .then((result) => {
+        //         console.log(result);
+        //         let var_obj = {};
+        //         var_obj[this.variableName] = {
+        //             cdms_var_name: variable,
+        //             filename: filename,
+        //             path: path,
+        //             provenance: result,
+        //             dimension: this.state.dimension
+        //         };
+        //         this.props.loadVariables([var_obj])
+        //     })
+        //     .then(() => {
+        //         this.setState({ redefinedVariableName: '' })
+        //     });
     }
 
     load() {
@@ -161,15 +176,14 @@ class CachedFiles extends Component {
 
     handleDimensionValueChange(values, axisName = undefined) {
         if (axisName) {
-            this.dimension[axisName] = Object.assign(values, { axisName });
+            this.state.dimension.find(dimension => dimension.axisName === axisName).values = values;
         }
         else {
-            this.dimension = values;
+            this.state.dimension.values = values;;
         }
     }
 
     render() {
-        // var variables = _.flatten(_.values(this.props.cachedFiles).map(file => file.variables));
 
         return (
             <Modal className='cached-files' bsSize="large" show={this.props.show} onHide={this.tryClose}>
@@ -239,14 +253,16 @@ class CachedFiles extends Component {
                                     <h4>Dimensions</h4>
                                 </Col>
                             </Row>
-                            {this.state.selectedVariable.axisList &&
-                                this.state.selectedVariable.axisList.map((axisName, i) => {
+                            {/* If is a variable */}
+                            {this.state.dimension &&
+                                this.state.dimension.map(dimension => dimension.axisName).map((axisName, i) => {
                                     let axis = this.state.variablesAxes[1][axisName];
                                     return (
-                                        <DimensionDnDContainer key={axisName} index={i} axis={axis} axisName={axisName} handleDimensionValueChange={(values) => this.handleDimensionValueChange(values)} moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} />
+                                        <DimensionDnDContainer key={axisName} index={i} axis={axis} axisName={axisName} handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)} moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} />
                                     )
                                 })
                             }
+                            {/* if is an Axis */}
                             {!this.state.selectedVariable.axisList &&
                                 <Row key={this.state.selectedVariable.name} className="dimension">
                                     <Col sm={2} className="text-right"><span>{this.state.selectedVariable.name}</span></Col>
@@ -373,12 +389,9 @@ class CachedFiles extends Component {
     }
 
     moveDimension(dragIndex, hoverIndex) {
-        var dimensions = this.state.selectedVariable.axisList;
-        const dragDimension = dimensions[dragIndex];
-
-        dimensions = dimensions.splice(hoverIndex, 0, dimensions.splice(dragIndex, 1)[0]);
-
-        this.setState({ selectedVariable: Object.assign(this.state.selectedVariable, { dimensions }) });
+        var dimensions = this.state.dimension.slice();
+        dimensions.splice(hoverIndex, 0, dimensions.splice(dragIndex, 1)[0]);
+        this.setState({ dimension: dimensions });
     }
 }
 CachedFiles.propTypes = {
@@ -395,7 +408,7 @@ var DimensionContainer = (props) => {
     return props.connectDropTarget(props.connectDragPreview(<div className="row dimension" style={{ opacity }}>
         <Col sm={2} className="text-right"><span>{props.axis.name}</span></Col>
         {props.connectDragSource(<div className="sort col-sm-1"><Glyphicon glyph="menu-hamburger" /></div>)}
-        <div className="col-sm-8 right-content">
+        <div className="col-sm-7 right-content">
             <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
         </div>
     </div>));
