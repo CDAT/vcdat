@@ -243,14 +243,7 @@ class CachedFiles extends Component {
                                 this.state.selectedVariable.axisList.map((axisName, i) => {
                                     let axis = this.state.variablesAxes[1][axisName];
                                     return (
-                                        <DimensionDnDContainer key={axisName} index={i} moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)}>
-                                            <Row className="dimension">
-                                                <Col sm={2} className="text-right"><span>{axis.name}</span></Col>
-                                                <Col sm={8} className="right-content">
-                                                    <DimensionSlider {...axis} onChange={(values) => this.handleDimensionValueChange(values, axisName)} />
-                                                </Col>
-                                            </Row>
-                                        </DimensionDnDContainer>
+                                        <DimensionDnDContainer key={axisName} index={i} axis={axis} axisName={axisName} handleDimensionValueChange={(values) => this.handleDimensionValueChange(values)} moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} />
                                     )
                                 })
                             }
@@ -397,59 +390,69 @@ CachedFiles.propTypes = {
     addFileToCache: React.PropTypes.func,
 }
 
-var DimensionDnDContainer = DragSource(DragAndDropTypes.DIMENSION,
-    {
-        beginDrag: (props) => {
-            return {
-                id: props.id,
-                index: props.index
-            }
-        }
-    },
-    (connect, monitor) => {
-        return {
-            connectDragSource: connect.dragSource(),
-            isDragging: monitor.isDragging()
-        };
-    }
-)((props) => {
+var DimensionContainer = (props) => {
     const opacity = props.isDragging ? 0 : 1;
-    return props.connectDragSource(props.connectDropTarget(<div style={{ opacity }}>{props.children}</div>));
-});
+    return props.connectDropTarget(props.connectDragPreview(<div className="row dimension" style={{ opacity }}>
+        <Col sm={2} className="text-right"><span>{props.axis.name}</span></Col>
+        {props.connectDragSource(<div className="sort col-sm-1"><Glyphicon glyph="menu-hamburger" /></div>)}
+        <div className="col-sm-8 right-content">
+            <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
+        </div>
+    </div>));
+}
 
-DimensionDnDContainer = DropTarget(
-    DragAndDropTypes.DIMENSION,
-    {
-        // by example of react-dnd https://github.com/react-dnd/react-dnd/blob/master/examples/04%20Sortable/Simple/Card.js#L25
-        hover(props, monitor, component) {
-            const dragIndex = monitor.getItem().index;
-            const hoverIndex = props.index;
-            if (dragIndex === hoverIndex) {
-                return;
+var DimensionDnDContainer = _.flow(
+    DragSource(DragAndDropTypes.DIMENSION,
+        {
+            beginDrag: (props) => {
+                return {
+                    id: props.id,
+                    index: props.index
+                }
             }
-            const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
-            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-            const clientOffset = monitor.getClientOffset();
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-            if ((dragIndex < hoverIndex && hoverClientY < hoverMiddleY)
-                || (dragIndex > hoverIndex && hoverClientY > hoverMiddleY)) {
-                return;
-            }
-            props.moveDimension(dragIndex, hoverIndex);
-            // Note: we're mutating the monitor item here!
-            // Generally it's better to avoid mutations,
-            // but it's good here for the sake of performance
-            // to avoid expensive index searches.
-            monitor.getItem().index = hoverIndex;
         },
-    },
-    (connect, monitor) => {
-        return {
-            connectDropTarget: connect.dropTarget(),
-            isOver: monitor.isOver(),
-        };
-    }
-)(DimensionDnDContainer);
+        (connect, monitor) => {
+            return {
+                connectDragSource: connect.dragSource(),
+                connectDragPreview: connect.dragPreview(),
+                isDragging: monitor.isDragging()
+            };
+        }
+    ),
+    DropTarget(
+        DragAndDropTypes.DIMENSION,
+        {
+            // by example of react-dnd https://github.com/react-dnd/react-dnd/blob/master/examples/04%20Sortable/Simple/Card.js#L25
+            hover(props, monitor, component) {
+                const dragIndex = monitor.getItem().index;
+                const hoverIndex = props.index;
+                if (dragIndex === hoverIndex) {
+                    return;
+                }
+                const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+                const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+                const clientOffset = monitor.getClientOffset();
+                const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+                if ((dragIndex < hoverIndex && hoverClientY < hoverMiddleY)
+                    || (dragIndex > hoverIndex && hoverClientY > hoverMiddleY)) {
+                    return;
+                }
+                props.moveDimension(dragIndex, hoverIndex);
+                // Note: we're mutating the monitor item here!
+                // Generally it's better to avoid mutations,
+                // but it's good here for the sake of performance
+                // to avoid expensive index searches.
+                monitor.getItem().index = hoverIndex;
+            },
+        },
+        (connect, monitor) => {
+            return {
+                connectDropTarget: connect.dropTarget(),
+                isOver: monitor.isOver(),
+            };
+        }
+    ))
+    (DimensionContainer);
 
 
 export default CachedFiles;
