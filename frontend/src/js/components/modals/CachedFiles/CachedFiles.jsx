@@ -46,7 +46,7 @@ class CachedFiles extends Component {
             if (this.state.variablesAxes[0][this.state.selectedVariableName]) {
                 // it's a variablevar 
                 selectedVariable = this.state.variablesAxes[0][this.state.selectedVariableName];
-                this.dimension = [];
+                this.dimension = {};
             }
             else {
                 // it's a axis
@@ -156,7 +156,7 @@ class CachedFiles extends Component {
 
     handleDimensionValueChange(values, axisName = undefined) {
         if (axisName) {
-            this.dimension.push(Object.assign(values, { axisName }));
+            this.dimension[axisName] = Object.assign(values, { axisName });
         }
         else {
             this.dimension = values;

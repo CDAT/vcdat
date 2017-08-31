@@ -1,7 +1,8 @@
 import React from 'react';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import $ from 'jquery';
+import _ from 'lodash';
 
 var Canvas = React.createClass({
     propTypes: {
@@ -21,7 +22,21 @@ var Canvas = React.createClass({
         this.canvas.clear()
         this.props.plots.map((plot, index) => {
             if (plot.variables.length > 0) {
-                this.canvas.plot(this.props.plotVariables[index], this.props.plotGMs[index], plot.template);
+                var variables = this.props.plotVariables[index];
+                var dataSpecs = variables.map(function (variable) {
+                    var dataSpec = Object.assign({}, variable.provenance);
+                    var subRegion = {};
+                    Object.values(variable.dimension)
+                        .filter(dimension => dimension.range)
+                        .forEach((dimension) => {
+                            subRegion[dimension.axisName] = dimension.range;
+                        })
+                    if (!_.isEmpty(subRegion)) {
+                        dataSpec.operations = [{ subRegion }];
+                    }
+                    return dataSpec;
+                });
+                this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template);
             }
         });
     },
@@ -55,7 +70,7 @@ const mapStateToProps = (state, ownProps) => {
 
     var get_vars_for_plot = (plot) => {
         return plot.variables.map((variable) => {
-            return state.present.variables[variable].provenance;
+            return state.present.variables[variable];
         });
     };
 
