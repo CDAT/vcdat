@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
 import _ from 'lodash';
 import Dialog from 'react-bootstrap-dialog';
-import DimensionSlider from './DimensionSlider/DimensionSlider.jsx';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DropTarget, DragSource } from 'react-dnd';
+import { findDOMNode } from 'react-dom';
 
+import DimensionSlider from './DimensionSlider/DimensionSlider.jsx';
 import FileExplorer from '../FileExplorer/FileExplorer.jsx';
+import DragAndDropTypes from 'constants/DragAndDropTypes';
 
 import './CachedFiles.scss';
 
@@ -15,7 +20,6 @@ function cleanPath(path) {
 class CachedFiles extends Component {
     constructor(props) {
         super(props);
-        this.dimension = null;
         this.state = {
             showFileExplorer: false,
             showRedefineVariableModal: false,
@@ -25,7 +29,8 @@ class CachedFiles extends Component {
             selectedVariable: null,
             selectedVariableName: '',
             redefinedVariableName: '',
-            temporaryRedefinedVariableName: ''
+            temporaryRedefinedVariableName: '',
+            dimension: null
         }
     }
 
@@ -42,25 +47,24 @@ class CachedFiles extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.state.selectedVariableName !== prevState.selectedVariableName || (this.state.selectedVariableName && !this.state.selectedVariable)) {
-            let selectedVariable;
+            let selectedVariable, dimension;
             if (this.state.variablesAxes[0][this.state.selectedVariableName]) {
                 // it's a variablevar 
                 selectedVariable = this.state.variablesAxes[0][this.state.selectedVariableName];
-                this.dimension = {};
+                dimension = selectedVariable.axisList.map((axisName) => {
+                    return { axisName };
+                })
             }
             else {
                 // it's a axis
                 selectedVariable = this.state.variablesAxes[1][this.state.selectedVariableName];
-                this.dimension = null;
+                dimension = { axisName: this.state.selectedVariableName };
             }
             this.setState({
-                selectedVariable
+                selectedVariable,
+                dimension
             });
         }
-    }
-
-    getProvenance(path, var_name) {
-        return Promise.resolve($.get('getVariableProvenance', { 'path': path, 'varname': var_name }))
     }
 
     loadVariable() {
@@ -68,21 +72,16 @@ class CachedFiles extends Component {
         let filename = this.state.selectedFile;
         let path = this.selectedFilePath;
 
-        return this.getProvenance(path, variable)
-            .then((result) => {
-                let var_obj = {};
-                var_obj[this.variableName] = {
-                    cdms_var_name: variable,
-                    filename: filename,
-                    path: path,
-                    provenance: result,
-                    dimension: this.dimension
-                };
-                this.props.loadVariables([var_obj])
-            })
-            .then(() => {
-                this.setState({ redefinedVariableName: '' })
-            });
+        let var_obj = {};
+        var_obj[this.variableName] = {
+            cdms_var_name: variable,
+            axisList: this.state.selectedVariable.axisList,
+            filename: filename,
+            path: path,
+            dimension: this.state.dimension
+        };
+        this.props.loadVariables([var_obj]);
+        this.setState({ redefinedVariableName: '' });
     }
 
     load() {
@@ -156,15 +155,14 @@ class CachedFiles extends Component {
 
     handleDimensionValueChange(values, axisName = undefined) {
         if (axisName) {
-            this.dimension[axisName] = Object.assign(values, { axisName });
+            this.state.dimension.find(dimension => dimension.axisName === axisName).values = values;
         }
         else {
-            this.dimension = values;
+            this.state.dimension.values = values;;
         }
     }
 
     render() {
-        // var variables = _.flatten(_.values(this.props.cachedFiles).map(file => file.variables));
 
         return (
             <Modal className='cached-files' bsSize="large" show={this.props.show} onHide={this.tryClose}>
@@ -234,20 +232,16 @@ class CachedFiles extends Component {
                                     <h4>Dimensions</h4>
                                 </Col>
                             </Row>
-                            {this.state.selectedVariable.axisList && this.state.selectedVariable.axisList.map((axisName) => {
-                                {/* console.log(this.state.selectedVariable.axisList);
-                                console.log(axisName);
-                                console.log(this.state.variablesAxes); */}
-                                let axis = this.state.variablesAxes[1][axisName];
-                                return (
-                                    <Row key={axisName} className="dimension">
-                                        <Col sm={2} className="text-right"><span>{axis.name}</span></Col>
-                                        <Col sm={8} className="right-content">
-                                            <DimensionSlider {...axis} onChange={(values) => this.handleDimensionValueChange(values, axisName)} />
-                                        </Col>
-                                    </Row>
-                                )
-                            })}
+                            {/* If is a variable */}
+                            {this.state.dimension &&
+                                this.state.dimension.map(dimension => dimension.axisName).map((axisName, i) => {
+                                    let axis = this.state.variablesAxes[1][axisName];
+                                    return (
+                                        <DimensionDnDContainer key={axisName} index={i} axis={axis} axisName={axisName} handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)} moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} />
+                                    )
+                                })
+                            }
+                            {/* if is an Axis */}
                             {!this.state.selectedVariable.axisList &&
                                 <Row key={this.state.selectedVariable.name} className="dimension">
                                     <Col sm={2} className="text-right"><span>{this.state.selectedVariable.name}</span></Col>
@@ -372,6 +366,12 @@ class CachedFiles extends Component {
             return <option key={axisName} value={axisName}>{label}</option>;
         });
     }
+
+    moveDimension(dragIndex, hoverIndex) {
+        var dimensions = this.state.dimension.slice();
+        dimensions.splice(hoverIndex, 0, dimensions.splice(dragIndex, 1)[0]);
+        this.setState({ dimension: dimensions });
+    }
 }
 CachedFiles.propTypes = {
     show: React.PropTypes.bool.isRequired,
@@ -381,5 +381,70 @@ CachedFiles.propTypes = {
     loadVariables: React.PropTypes.func,
     addFileToCache: React.PropTypes.func,
 }
+
+var DimensionContainer = (props) => {
+    const opacity = props.isDragging ? 0 : 1;
+    return props.connectDropTarget(props.connectDragPreview(<div className="row dimension" style={{ opacity }}>
+        <Col sm={2} className="text-right"><span>{props.axis.name}</span></Col>
+        {props.connectDragSource(<div className="sort col-sm-1"><Glyphicon glyph="menu-hamburger" /></div>)}
+        <div className="col-sm-7 right-content">
+            <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
+        </div>
+    </div>));
+}
+
+var DimensionDnDContainer = _.flow(
+    DragSource(DragAndDropTypes.DIMENSION,
+        {
+            beginDrag: (props) => {
+                return {
+                    id: props.id,
+                    index: props.index
+                }
+            }
+        },
+        (connect, monitor) => {
+            return {
+                connectDragSource: connect.dragSource(),
+                connectDragPreview: connect.dragPreview(),
+                isDragging: monitor.isDragging()
+            };
+        }
+    ),
+    DropTarget(
+        DragAndDropTypes.DIMENSION,
+        {
+            // by example of react-dnd https://github.com/react-dnd/react-dnd/blob/master/examples/04%20Sortable/Simple/Card.js#L25
+            hover(props, monitor, component) {
+                const dragIndex = monitor.getItem().index;
+                const hoverIndex = props.index;
+                if (dragIndex === hoverIndex) {
+                    return;
+                }
+                const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+                const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+                const clientOffset = monitor.getClientOffset();
+                const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+                if ((dragIndex < hoverIndex && hoverClientY < hoverMiddleY)
+                    || (dragIndex > hoverIndex && hoverClientY > hoverMiddleY)) {
+                    return;
+                }
+                props.moveDimension(dragIndex, hoverIndex);
+                // Note: we're mutating the monitor item here!
+                // Generally it's better to avoid mutations,
+                // but it's good here for the sake of performance
+                // to avoid expensive index searches.
+                monitor.getItem().index = hoverIndex;
+            },
+        },
+        (connect, monitor) => {
+            return {
+                connectDropTarget: connect.dropTarget(),
+                isOver: monitor.isOver(),
+            };
+        }
+    ))
+    (DimensionContainer);
+
 
 export default CachedFiles;

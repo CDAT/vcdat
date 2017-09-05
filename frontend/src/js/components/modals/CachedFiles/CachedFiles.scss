@@ -1,5 +1,4 @@
 @import 'variables';
-
 .file-path {
     color: #333;
 }
@@ -13,25 +12,42 @@
     margin-bottom: 4px;
 }
 
-.cached-files textarea{
+.cached-files textarea {
     height: 100px;
 }
 
-.cached-files .slider{
+.cached-files .slider {
     width: 100%;
 }
 
-.cached-files .dimensions .dimension {
+.cached-files .dimension {
     padding-top: 15px;
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
 
-    .right-content {
-        padding-bottom: 20px;
-        border-bottom: 1px solid #ddd;
+    .sort {
+        cursor: ns-resize;
+        color: #bbb;
+        width: 5%;
+        padding-right: 0;
+        font-size: 15px;
     }
 
-    &:last-child{
+    .right-content {
+        width: 70%;
+        padding-left: 0;
+
+        &::after {
+            content: '';
+            display: block;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            top: 10px;
+        }
+    }
+    &:last-child {
         .right-content {
-            padding-bottom: 15px;
             border: none;
         }
     }
@@ -42,11 +58,9 @@
         min-height: 75px;
         max-height: 120px;
         overflow-y: auto;
-
-        .file{
+        .file {
             cursor: pointer;
-
-            &:hover{
+            &:hover {
                 background-color: $lighter;
                 color: black;
             }
