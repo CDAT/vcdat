@@ -67,10 +67,6 @@ class CachedFiles extends Component {
         }
     }
 
-    getProvenance(path, var_name) {
-        return Promise.resolve($.get('getVariableProvenance', { 'path': path, 'varname': var_name }))
-    }
-
     loadVariable() {
         let variable = this.state.selectedVariableName;
         let filename = this.state.selectedFile;
@@ -86,23 +82,6 @@ class CachedFiles extends Component {
         };
         this.props.loadVariables([var_obj]);
         this.setState({ redefinedVariableName: '' });
-
-        // return this.getProvenance(path, variable)
-        //     .then((result) => {
-        //         console.log(result);
-        //         let var_obj = {};
-        //         var_obj[this.variableName] = {
-        //             cdms_var_name: variable,
-        //             filename: filename,
-        //             path: path,
-        //             provenance: result,
-        //             dimension: this.state.dimension
-        //         };
-        //         this.props.loadVariables([var_obj])
-        //     })
-        //     .then(() => {
-        //         this.setState({ redefinedVariableName: '' })
-        //     });
     }
 
     load() {
