@@ -6,6 +6,7 @@
   "private": true,
   "dependencies": {
     "bootstrap-slider": "github:matthewma7/bootstrap-slider",
+    "core-js": "^2.5.1",
     "css-element-queries": "^0.3.2",
     "jquery": "^3.1.0",
     "lodash": "^4.17.4",
