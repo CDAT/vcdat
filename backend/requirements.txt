@@ -8,3 +8,4 @@ uvcdat
 vcs-js
 nodejs
 flask
+service_identity
