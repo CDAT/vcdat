@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-// import _ from 'lodash';
 import { Modal, Button } from 'react-bootstrap';
+
+import ColorPicker from './ColorPicker.jsx'
+
+var colorUtility = require('react-color/lib/helpers/color.js').default;
 
 class ColormapEditor extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            currentColor: colorUtility.toState("#333")
+        }
+    }
+
+    handleChange(color) {
+        this.setState({ currentColor: colorUtility.toState(color)})
     }
 
     render(){
@@ -12,12 +22,10 @@ class ColormapEditor extends Component {
             <div>
                 <Modal show={this.props.show} onHide={this.props.close}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Colormap Editor</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h4>Text in a modal</h4>
-                    <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-                    <hr />
+                    <ColorPicker color={this.state.currentColor} onChange={(color) => {this.handleChange(color)}}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.close}>Close</Button>
@@ -32,4 +40,4 @@ ColormapEditor.PropTypes = {
     show: React.PropTypes.bool.isRequired,
     close: React.PropTypes.func.isRequired
 }
-export default ColormapEditor;
+export default ColormapEditor; 
