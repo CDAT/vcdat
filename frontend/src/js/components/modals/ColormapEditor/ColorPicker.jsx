@@ -11,18 +11,17 @@ class ColorPicker extends Component {
     constructor(props) {
         super(props);
     }
-
     render(){
         const styles = reactCSS({
             'default': {
                 color: {
-                  width: '36px',
-                  height: '14px',
+                  width: '15px',
+                  height: '15px',
                   borderRadius: '2px',
-                  background: `rgba(${ this.props.color.r }, ${ this.props.color.g }, ${ this.props.color.b }, ${ this.props.color.a })`,
+                  background: this.props.color.hex
                 },
                 swatch: {
-                  padding: '5px',
+                  padding: '2px',
                   background: '#fff',
                   borderRadius: '1px',
                   boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
@@ -33,18 +32,20 @@ class ColorPicker extends Component {
                     width: "200px",
                     height: "200px",
                     position: "relative",
+                    float: "right",
                 }
             }
         });
         return(
-            <div>
-                <Saturation
-                    style={styles.saturation}
-                    {...this.props.color}
-                    onChange={ this.props.onChange }
-                />
+            <div className="clearfix">
                 <div style={ styles.swatch }>
                     <div style={ styles.color } />
+                </div>
+                <div style={styles.saturation}>
+                    <Saturation
+                        {...this.props.color}
+                        onChange={ this.props.onChange }
+                    />
                 </div>
             </div>
         )
@@ -52,8 +53,7 @@ class ColorPicker extends Component {
 }
 
 ColorPicker.PropTypes = {
-    hsl: React.PropTypes.any,
-    hsv: React.PropTypes.any,
+    color: React.PropTypes.object.isRequired,
     onChange: React.PropTypes.func.isRequired
 }
 

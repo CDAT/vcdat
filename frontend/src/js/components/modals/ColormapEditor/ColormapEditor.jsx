@@ -14,7 +14,8 @@ class ColormapEditor extends Component {
     }
 
     handleChange(color) {
-        this.setState({ currentColor: colorUtility.toState(color)})
+        this.setState({ currentColor: color})
+        console.log(this.state.currentColor)
     }
 
     render(){
