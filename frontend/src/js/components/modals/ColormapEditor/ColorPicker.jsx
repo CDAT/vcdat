@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 import reactCSS from 'reactcss'
-import {CustomPicker, SketchPicker} from 'react-color';
-// import * as Saturation from 'react-color/lib/components/common'
-// var { Saturation } = require('react-color/lib/components/common');
-var { Saturation } = require('react-color/lib/components/common');
+import {CustomPicker} from 'react-color';
+var { Saturation, Hue } = require('react-color/lib/components/common');
+
+import CustomHuePointer from './CustomHuePointer.jsx'
 
 
 class ColorPicker extends Component {
@@ -33,13 +33,28 @@ class ColorPicker extends Component {
                     height: "200px",
                     position: "relative",
                     float: "right",
-                }
+                },
+                hue:{
+                    width: "25px",
+                    height: "200px",
+                    marginLeft: "15px",
+                    position: "relative",
+                    float: "right",
+                },
             }
         });
         return(
             <div className="clearfix">
                 <div style={ styles.swatch }>
                     <div style={ styles.color } />
+                </div>
+                <div style={styles.hue}>
+                    <Hue
+                        {...this.props.color}
+                        onChange={ this.props.onChange }
+                        direction={"vertical"}
+                        pointer={ CustomHuePointer }
+                    />
                 </div>
                 <div style={styles.saturation}>
                     <Saturation
@@ -56,6 +71,5 @@ ColorPicker.PropTypes = {
     color: React.PropTypes.object.isRequired,
     onChange: React.PropTypes.func.isRequired
 }
-
 
 export default CustomPicker(ColorPicker);
