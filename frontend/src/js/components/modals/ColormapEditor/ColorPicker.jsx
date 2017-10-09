@@ -5,6 +5,7 @@ import {CustomPicker} from 'react-color';
 var { Saturation, Hue } = require('react-color/lib/components/common');
 
 import CustomHuePointer from './CustomHuePointer.jsx'
+import BasicColorSwatch from './BasicColorSwatch.jsx'
 
 
 class ColorPicker extends Component {
@@ -45,6 +46,10 @@ class ColorPicker extends Component {
         });
         return(
             <div className="clearfix">
+                <BasicColorSwatch 
+                    {...this.props.color}
+                    onChange={ this.props.onChange }
+                />
                 <div style={ styles.swatch }>
                     <div style={ styles.color } />
                 </div>
