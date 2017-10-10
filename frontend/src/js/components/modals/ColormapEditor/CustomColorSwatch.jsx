@@ -28,8 +28,6 @@ class CustomColorSwatch extends Component{
         else{
             this.props.onChange(hex)
         }
-        
-
     }
 
     render(){
