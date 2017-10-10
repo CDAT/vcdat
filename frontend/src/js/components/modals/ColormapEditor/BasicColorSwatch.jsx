@@ -1,25 +1,11 @@
 import React, { Component } from 'react';
-import map from 'lodash/map'
 import reactCSS from 'reactcss'
 
-var colorUtility = require('react-color/lib/helpers/color.js').default;
 var { CompactColor } = require('react-color/lib/components/compact/CompactColor');
 
 class BasicColorSwatch extends Component{
     constructor(props){
         super(props);
-    }
-
-    handleChange(hex, e){
-        if (data.hex) {
-            colorUtility.isValidHex(hex) && this.props.onChange({
-                hex: hex,
-                source: 'hex',
-            }, e)
-        } 
-        else{
-            this.props.onChange(hex, e)
-        }
     }
 
     render(){
@@ -50,7 +36,7 @@ class BasicColorSwatch extends Component{
                     key={ c }
                     color={ c }
                     active={ c.toLowerCase() === this.props.hex }
-                    onClick={ (hex, e) => {this.handleChange(hex, e)} }
+                    onClick={ (hex, e) => {this.props.onChange(hex, e)} }
                     />
                 ), this) }
                 <div style={ styles.clear } />
@@ -67,6 +53,8 @@ BasicColorSwatch.defaultProps = {
         '#000000', '#666666', '#B3B3B3', '#9F0500', '#C45100', '#FB9E00', '#808900', '#194D33',
         '#0C797D', '#0062B1', '#653294', '#AB149E']
 }
+
+
 
 BasicColorSwatch.PropTypes = {
     colors: React.PropTypes.arrayOf(React.PropTypes.string),

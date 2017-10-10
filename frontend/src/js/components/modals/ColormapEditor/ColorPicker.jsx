@@ -2,22 +2,25 @@ import React, { Component } from 'react';
 
 import reactCSS from 'reactcss'
 import {CustomPicker} from 'react-color';
-var { Saturation, Hue } = require('react-color/lib/components/common');
+var { Saturation, Hue} = require('react-color/lib/components/common');
 
 import CustomHuePointer from './CustomHuePointer.jsx'
 import BasicColorSwatch from './BasicColorSwatch.jsx'
+import CustomColorSwatch from './CustomColorSwatch.jsx'
+import InputFields from './InputFields.jsx'
 
 
 class ColorPicker extends Component {
     constructor(props) {
         super(props);
     }
+
     render(){
         const styles = reactCSS({
             'default': {
-                color: {
-                  width: '15px',
-                  height: '15px',
+                colorPreview: {
+                  width: '35px',
+                  height: '35px',
                   borderRadius: '2px',
                   background: this.props.color.hex
                 },
@@ -45,24 +48,36 @@ class ColorPicker extends Component {
             }
         });
         return(
-            <div className="clearfix">
-                <BasicColorSwatch 
-                    {...this.props.color}
-                    onChange={ this.props.onChange }
-                />
-                <div style={ styles.swatch }>
-                    <div style={ styles.color } />
-                </div>
-                <div style={styles.hue}>
-                    <Hue
+            <div>
+                <div className="clearfix">
+                    <BasicColorSwatch 
                         {...this.props.color}
                         onChange={ this.props.onChange }
-                        direction={"vertical"}
-                        pointer={ CustomHuePointer }
+                    />
+                    <div style={ styles.swatch }>
+                        <div style={ styles.colorPreview } />
+                    </div>
+                    <div style={styles.hue}>
+                        <Hue
+                            {...this.props.color}
+                            onChange={ this.props.onChange }
+                            direction={"vertical"}
+                            pointer={ CustomHuePointer }
+                        />
+                    </div>
+                    <div style={styles.saturation}>
+                        <Saturation
+                            {...this.props.color}
+                            onChange={ this.props.onChange }
+                        />
+                    </div>
+                    <CustomColorSwatch
+                        {...this.props.color}
+                        onChange={ this.props.onChange }
                     />
                 </div>
-                <div style={styles.saturation}>
-                    <Saturation
+                <div className="clearfix">
+                    <InputFields
                         {...this.props.color}
                         onChange={ this.props.onChange }
                     />
