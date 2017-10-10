@@ -21,16 +21,16 @@ class ColormapEditor extends Component {
         return(
             <div>
                 <Modal show={this.props.show} onHide={this.props.close}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Colormap Editor</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <ColorPicker color={this.state.currentColor} onChange={(color) => {this.handleChange(color)}}/>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.props.close}>Close</Button>
-                </Modal.Footer>
-            </Modal>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Colormap Editor</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <ColorPicker color={this.state.currentColor} onChange={(color) => {this.handleChange(color)}}/>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.props.close}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         )
     }

@@ -18,69 +18,79 @@ class ColorPicker extends Component {
     render(){
         const styles = reactCSS({
             'default': {
+                container:{
+                    display: "flex",
+                    justifyContent: "space-between"
+                },
                 colorPreview: {
-                  width: '35px',
-                  height: '35px',
-                  borderRadius: '2px',
-                  background: this.props.color.hex
+                    width: '50px',
+                    height: '100px',
+                    borderRadius: '2px',
+                    background: this.props.color.hex
                 },
                 swatch: {
-                  padding: '2px',
-                  background: '#fff',
-                  borderRadius: '1px',
-                  boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-                  display: 'inline-block',
-                  cursor: 'pointer',
+                    marginRight: "25px",
+                    padding: '2px',
+                    background: '#fff',
+                    borderRadius: '1px',
+                    boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                    display: 'inline-block',
+                    cursor: 'pointer',
                 },
                 saturation:{
+                    display: "inline-block",
                     width: "200px",
                     height: "200px",
                     position: "relative",
-                    float: "right",
                 },
                 hue:{
+                    display: "inline-block",
                     width: "25px",
                     height: "200px",
                     marginLeft: "15px",
                     position: "relative",
-                    float: "right",
                 },
             }
         });
         return(
             <div>
-                <div className="clearfix">
+                <div style={styles.container}>
                     <BasicColorSwatch 
                         {...this.props.color}
                         onChange={ this.props.onChange }
                     />
-                    <div style={ styles.swatch }>
-                        <div style={ styles.colorPreview } />
+                    <div>
+                        <div style={styles.saturation}>
+                            <Saturation
+                                {...this.props.color}
+                                onChange={ this.props.onChange }
+                            />
+                        </div>
+                        <div style={styles.hue}>
+                            <Hue
+                                {...this.props.color}
+                                onChange={ this.props.onChange }
+                                direction={"vertical"}
+                                pointer={ CustomHuePointer }
+                            />
+                        </div>
                     </div>
-                    <div style={styles.hue}>
-                        <Hue
-                            {...this.props.color}
-                            onChange={ this.props.onChange }
-                            direction={"vertical"}
-                            pointer={ CustomHuePointer }
-                        />
-                    </div>
-                    <div style={styles.saturation}>
-                        <Saturation
-                            {...this.props.color}
-                            onChange={ this.props.onChange }
-                        />
-                    </div>
+                </div>
+                <div style={styles.container}>
                     <CustomColorSwatch
                         {...this.props.color}
                         onChange={ this.props.onChange }
                     />
-                </div>
-                <div className="clearfix">
-                    <InputFields
-                        {...this.props.color}
-                        onChange={ this.props.onChange }
-                    />
+                    <div>
+                        <div style={ styles.swatch }>
+                            <div style={ styles.colorPreview } />
+                        </div>
+                        <InputFields
+                            style={styles.inputFields}
+                            {...this.props.color}
+                            onChange={ this.props.onChange }
+                        />
+                    </div>
                 </div>
             </div>
         )
