@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 import ColorPicker from './ColorPicker.jsx'
-
+import ColormapWidget from './ColormapWidget.jsx'
 var colorUtility = require('react-color/lib/helpers/color.js').default;
 
 class ColormapEditor extends Component {
@@ -26,6 +26,7 @@ class ColormapEditor extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         <ColorPicker color={this.state.currentColor} onChange={(color) => {this.handleChange(color)}}/>
+                        <ColormapWidget />
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.props.close}>Close</Button>
