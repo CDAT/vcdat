@@ -26,7 +26,7 @@ class ColormapEditor extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         <ColorPicker color={this.state.currentColor} onChange={(color) => {this.handleChange(color)}}/>
-                        <ColormapWidget />
+                        <ColormapWidget color={this.state.currentColor}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.props.close}>Close</Button>

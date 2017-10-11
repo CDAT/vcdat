@@ -9,9 +9,29 @@ class ColormapWidget extends Component {
             selectedCellsEnd: 0,
             currentColormap: undefined, // an array of arrays representing the current cells
             selectedColormapName: undefined, // a string, such as 'viridis', or 'AMIP'
+            shouldUseProps: false, // value to indicate if color should be applied from props to color map
         }
         this.fetchColormaps()
     }
+
+    componentWillReceiveProps(nextProps){
+        if(!this.state.shouldUseProps){
+            this.setState({shouldUseProps: true})
+            return
+        }
+        else{
+            let updatedColormap = this.state.currentColormap.map(function(arr) {
+                return arr.slice(); 
+                // Note: we might not need to deep copy. this could hurt performance
+            });
+            updatedColormap[this.state.selectedCellsEnd][0] = Math.round((nextProps.color.rgb.r / 255) * 100)
+            updatedColormap[this.state.selectedCellsEnd][1] = Math.round((nextProps.color.rgb.g / 255) * 100)
+            updatedColormap[this.state.selectedCellsEnd][2] = Math.round((nextProps.color.rgb.b / 255) * 100)
+
+            this.setState({currentColormap: updatedColormap})
+        }
+    }
+    
 
     fetchColormaps(){
         const xhr = new XMLHttpRequest();
@@ -44,9 +64,10 @@ class ColormapWidget extends Component {
             }
             else{
                 this.setState({selectedCellsEnd: index, selectedCellsStart: index})
-            }   
+            }
         }
     }
+
     loadColormaps(xhr){
         if(xhr.readyState === 4 && xhr.status === 200){
             this.setState((prevState, props) => {
@@ -98,7 +119,7 @@ class ColormapWidget extends Component {
                         this.state.currentColormap.map( (cell, index) => (
                         <div
                             className="cells"
-                            key={index} // Since colormaps never rearrange/add/delete we can use index
+                            key={`${index}${cell[0]}${cell[1]}${cell[2]}${cell[3]}`} // need a key that changes when the color does and is unique
                             style={{
                                 width:"30px",
                                 height: "25px", // must match line height
@@ -106,11 +127,11 @@ class ColormapWidget extends Component {
                                         "2px solid black" : "2px solid lightgrey",
                                 display: "inline-block",
                                 background: `rgb(${Math.round(cell[0]*2.55)}, ${Math.round(cell[1]*2.55)}, ${Math.round(cell[2]*2.55)}`,
-                                color: ((cell[0]*0.299 + cell[1]*0.587 + cell[2]*0.114) > 186) ? "#000000" : "#ffffff",
+                                color: ((cell[0]*0.299 + cell[1]*0.587 + cell[2]*0.114)*2.55 > 186) ? ("#000000") : ("#ffffff"),
+                                // https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color  
                                 textAlign: "center",
                                 verticalAlign: "middle",
                                 lineHeight: "25px", // Must match height
-                                // https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color  
                                 MozUserSelect: "none",
                                 WebkitUserSelect: "none",
                                 msUserSelect: "none", // Styles that prevent text highlight when selecting cells
