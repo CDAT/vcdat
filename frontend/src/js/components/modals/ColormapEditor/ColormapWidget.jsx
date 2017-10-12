@@ -105,17 +105,38 @@ class ColormapWidget extends Component {
         return false
     }
 
+    saveColormap(){
+        console.log(this.state.newColormapTemplateName)
+    }
+
+    resetColormap(){
+        if(this.state.selectedColormapName){
+            this.handleColormapSelect(this.state.selectedColormapName)
+        }
+    }
+
     render(){
         return(
             <div>
-                <div>
-                    <select onChange={(event) => {this.handleColormapSelect(event.target.value)}} value={this.state.selectedColormapName} >
-                    { this.state.colormaps ? (
-                        Object.keys(this.state.colormaps).sort().map( name => ( <option key={name} value={name}>{name}</option> ))
-                        ) : (
-                        <option value="" disabled />    
-                    )}
+                <div className="form-inline" style={{display: "flex", marginTop: "20px", marginBottom: "10px"}} >
+                    <select 
+                        className="form-control"
+                        style={{marginRight: "5px"}}
+                        onChange={(event) => {this.handleColormapSelect(event.target.value)}} value={this.state.selectedColormapName} >
+                        { this.state.colormaps ? (
+                            Object.keys(this.state.colormaps).sort().map( name => ( <option key={name} value={name}>{name}</option> ))
+                            ) : (
+                            <option value="" disabled />    
+                        )}
                     </select>
+                    <input 
+                        className="form-control"
+                        style={{flexGrow: 1}} 
+                        value={this.state.newColormapTemplateName}
+                        onChange={(event) => { this.setState({newColormapTemplateName: event.target.value}) }}
+                        >
+                    </input>
+                    <button className="form-control" style={{marginLeft: "5px"}} onClick={() => {this.saveColormap()}}>Save as...</button>
                 </div>
                 <div style={{overflowY: "scroll", maxHeight: "250px"}}>
                 { (this.state.currentColormap) ? 
