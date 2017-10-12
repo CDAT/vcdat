@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+var colorUtility = require('react-color/lib/helpers/color.js').default
 
 class ColormapWidget extends Component {
     constructor(props){
@@ -27,7 +28,6 @@ class ColormapWidget extends Component {
             updatedColormap[this.state.selectedCellsEnd][0] = Math.round((nextProps.color.rgb.r / 255) * 100)
             updatedColormap[this.state.selectedCellsEnd][1] = Math.round((nextProps.color.rgb.g / 255) * 100)
             updatedColormap[this.state.selectedCellsEnd][2] = Math.round((nextProps.color.rgb.b / 255) * 100)
-
             this.setState({currentColormap: updatedColormap})
         }
     }
@@ -65,6 +65,10 @@ class ColormapWidget extends Component {
             else{
                 this.setState({selectedCellsEnd: index, selectedCellsStart: index})
             }
+            let r = this.state.currentColormap[index][0] * 2.55
+            let g = this.state.currentColormap[index][1] * 2.55
+            let b = this.state.currentColormap[index][2] * 2.55
+            this.props.onChange(colorUtility.toState(`rgb(${r},${g},${b})`))
         }
     }
 
@@ -145,9 +149,7 @@ class ColormapWidget extends Component {
                         ), this) 
                     ) : (
                         <span></span>
-                    )
-                    }
-                    
+                    )}
                 </div>
             </div>
         )
