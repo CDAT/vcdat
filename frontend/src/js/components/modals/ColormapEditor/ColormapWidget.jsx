@@ -115,6 +115,33 @@ class ColormapWidget extends Component {
         }
     }
 
+    blendColors(){
+        let startCell = Math.min(this.state.selectedCellsStart, this.state.selectedCellsEnd)
+        let endCell = Math.max(this.state.selectedCellsStart, this.state.selectedCellsEnd)
+        let startColor = this.state.currentColormap[startCell] // rgba array
+        let endColor = this.state.currentColormap[endCell] // rgba array
+        let numCells = Math.abs(this.state.selectedCellsStart - this.state.selectedCellsEnd) - 1
+        if(numCells < 1){
+            // numCells represents the number of cells in between the start and end cells.
+            // so selecting 2 cells gives numCells a value of 0.
+            return
+        }
+        let redStep = (endColor[0] - startColor[0]) / numCells
+        let greenStep = (endColor[1] - startColor[1]) / numCells
+        let blueStep = (endColor[2] - startColor[2]) / numCells
+        let currentCell = startCell + 1
+        // find the lowest cell selected, then increment to begin blending the cells in between the ends
+        let blendedColormap = this.state.currentColormap.map(function(arr) {
+            return arr.slice(); // copy inner array of colors
+        });
+        for(let count = 1; currentCell < endCell; currentCell++, count++){
+            blendedColormap[currentCell][0] = startColor[0] + (redStep * count)
+            blendedColormap[currentCell][1] = startColor[1] + (greenStep * count)
+            blendedColormap[currentCell][2] = startColor[2] + (blueStep * count)
+        }
+        this.setState({currentColormap: blendedColormap})
+    }
+
     render(){
         return(
             <div>

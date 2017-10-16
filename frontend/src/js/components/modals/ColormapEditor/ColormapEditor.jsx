@@ -34,7 +34,16 @@ class ColormapEditor extends Component {
                             onChange={(color) => {this.handleChange(color)}}/>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button style={{float: "left"}} onClick={() => {this.refs.widget.resetColormap()}}>Reset</Button>
+                        <Button 
+                            style={{float: "left"}}
+                            onClick={() => {this.refs.widget.resetColormap()}}>
+                            Reset
+                        </Button>
+                        <Button 
+                            style={{float: "left"}}
+                            onClick={() => {this.refs.widget.blendColors()}}>
+                            Blend
+                        </Button>
                         <Button onClick={this.props.close}>Close</Button>
                     </Modal.Footer>
                 </Modal>
