@@ -16,19 +16,25 @@ class ColormapWidget extends Component {
     }
 
     componentWillReceiveProps(nextProps){
+        // The current color selected by the color picker is passed in as a prop
+        // Since we do not want to change the colormap right when the component opens, 
+        // we ignore the first time the prop is given
+        // After that, we update the currently selected cell with the nextProps.color value
         if(!this.state.shouldUseProps){
             this.setState({shouldUseProps: true})
             return
         }
         else{
-            let updatedColormap = this.state.currentColormap.map(function(arr) {
-                return arr.slice(); 
-                // Note: we might not need to deep copy. this could hurt performance
-            });
-            updatedColormap[this.state.selectedCellsEnd][0] = Math.round((nextProps.color.rgb.r / 255) * 100)
-            updatedColormap[this.state.selectedCellsEnd][1] = Math.round((nextProps.color.rgb.g / 255) * 100)
-            updatedColormap[this.state.selectedCellsEnd][2] = Math.round((nextProps.color.rgb.b / 255) * 100)
-            this.setState({currentColormap: updatedColormap})
+            if(this.state.currentColormap){
+                let updatedColormap = this.state.currentColormap.map(function(arr) {
+                    return arr.slice(); 
+                    // Note: we might not need to deep copy. this could hurt performance
+                });
+                updatedColormap[this.state.selectedCellsEnd][0] = Math.round((nextProps.color.rgb.r / 255) * 100)
+                updatedColormap[this.state.selectedCellsEnd][1] = Math.round((nextProps.color.rgb.g / 255) * 100)
+                updatedColormap[this.state.selectedCellsEnd][2] = Math.round((nextProps.color.rgb.b / 255) * 100)
+                this.setState({currentColormap: updatedColormap})
+            }
         }
     }
     
@@ -118,22 +124,22 @@ class ColormapWidget extends Component {
     blendColors(){
         let startCell = Math.min(this.state.selectedCellsStart, this.state.selectedCellsEnd)
         let endCell = Math.max(this.state.selectedCellsStart, this.state.selectedCellsEnd)
-        let startColor = this.state.currentColormap[startCell] // rgba array
-        let endColor = this.state.currentColormap[endCell] // rgba array
         let numCells = Math.abs(this.state.selectedCellsStart - this.state.selectedCellsEnd) - 1
         if(numCells < 1){
             // numCells represents the number of cells in between the start and end cells.
             // so selecting 2 cells gives numCells a value of 0.
             return
         }
+        let startColor = this.state.currentColormap[startCell] // rgba array
+        let endColor = this.state.currentColormap[endCell] // rgba array
         let redStep = (endColor[0] - startColor[0]) / numCells
         let greenStep = (endColor[1] - startColor[1]) / numCells
         let blueStep = (endColor[2] - startColor[2]) / numCells
         let currentCell = startCell + 1
-        // find the lowest cell selected, then increment to begin blending the cells in between the ends
         let blendedColormap = this.state.currentColormap.map(function(arr) {
             return arr.slice(); // copy inner array of colors
         });
+        
         for(let count = 1; currentCell < endCell; currentCell++, count++){
             blendedColormap[currentCell][0] = startColor[0] + (redStep * count)
             blendedColormap[currentCell][1] = startColor[1] + (greenStep * count)
