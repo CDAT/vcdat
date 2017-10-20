@@ -31,6 +31,7 @@ class BasicColorSwatch extends Component{
 
         return(
             <div style={styles.compact}>
+            <div>Basic Colors</div>
                 { this.props.colors.map( c => (
                     <CompactColor
                     key={ c }

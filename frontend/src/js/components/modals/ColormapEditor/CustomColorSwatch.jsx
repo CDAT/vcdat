@@ -51,17 +51,20 @@ class CustomColorSwatch extends Component{
         })
 
         return(
-            <div style={styles.compact}>
-                { this.props.colors.map( (c, index) => (
-                    <CompactColor
-                    key={ index }
-                    color={ c }
-                    active={ index === this.state.currentCell }
-                    onClick={ (hex) => {this.handleClick(hex, index)} }
-                    />
-                ), this) }
-                <div style={ styles.clear }>
-                    <button className="btn btn-sm btn-default" onClick={() => {this.addCustomColor()}}>Add to Custom Colors</button>
+            <div>
+                <div>Custom Colors</div>
+                <div style={styles.compact}>
+                    { this.props.colors.map( (c, index) => (
+                        <CompactColor
+                        key={ index }
+                        color={ c }
+                        active={ index === this.state.currentCell }
+                        onClick={ (hex) => {this.handleClick(hex, index)} }
+                        />
+                    ), this) }
+                    <div style={ styles.clear }>
+                        <button className="btn btn-sm btn-default" onClick={() => {this.addCustomColor()}}>Add to Custom Colors</button>
+                    </div>
                 </div>
             </div>
         )

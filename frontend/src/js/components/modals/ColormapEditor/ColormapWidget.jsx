@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 var colorUtility = require('react-color/lib/helpers/color.js').default
 
+import './ColormapWidget.css'
+
 class ColormapWidget extends Component {
     constructor(props){
         super(props)
@@ -171,7 +173,8 @@ class ColormapWidget extends Component {
                     </input>
                     <button className="form-control" style={{marginLeft: "5px"}} onClick={() => {this.saveColormap()}}>Save as...</button>
                 </div>
-                <div style={{overflowY: "scroll", maxHeight: "250px"}}>
+                <span style={{fontSize: 11, fontWeight: 300}}title="*Shift+Click to select multiple cells">*Shift+Click to select multiple cells</span>
+                <div id="colormap-cells-container">
                 { (this.state.currentColormap) ? 
                     (
                         this.state.currentColormap.map( (cell, index) => (
@@ -179,22 +182,11 @@ class ColormapWidget extends Component {
                             className="cells"
                             key={`${index}${cell[0]}${cell[1]}${cell[2]}${cell[3]}`} // need a key that changes when the color does and is unique
                             style={{
-                                width:"30px",
-                                height: "25px", // must match line height
                                 border:(this.cellActive(index, this.state.selectedCellsStart, this.state.selectedCellsEnd)) ? 
                                         "2px solid black" : "2px solid lightgrey",
-                                display: "inline-block",
                                 background: `rgb(${Math.round(cell[0]*2.55)}, ${Math.round(cell[1]*2.55)}, ${Math.round(cell[2]*2.55)}`,
                                 color: ((cell[0]*0.299 + cell[1]*0.587 + cell[2]*0.114)*2.55 > 186) ? ("#000000") : ("#ffffff"),
                                 // https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color  
-                                textAlign: "center",
-                                verticalAlign: "middle",
-                                lineHeight: "25px", // Must match height
-                                MozUserSelect: "none",
-                                WebkitUserSelect: "none",
-                                msUserSelect: "none", // Styles that prevent text highlight when selecting cells
-                                userSelect: "none",
-                                OUserSelect: "none",
                             }}
                             onClick={ (e) => {this.handleCellClick(e)} }
                         >
