@@ -6,6 +6,8 @@ class ColormapModel extends BaseModel {
         switch(action.type){
             case "INITIALIZE_COLORMAPS":
                 return action.colormaps
+            case "SAVE_COLORMAP":
+                return Object.assign({}, state, action.colormap)
             default:
                 return state;
         }

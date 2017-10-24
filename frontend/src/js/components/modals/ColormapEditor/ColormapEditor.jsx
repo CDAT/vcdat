@@ -13,8 +13,15 @@ class ColormapEditor extends Component {
         }
     }
 
+    static get propTypes() { 
+        return { 
+            show: React.PropTypes.bool.isRequired, // show the modal
+            close: React.PropTypes.func.isRequired, // close the modal
+        }; 
+    }
+
     handleChange(color) {
-        this.setState({ currentColor: color})
+        this.setState({ currentColor: color })
     }
 
     render(){
@@ -29,20 +36,25 @@ class ColormapEditor extends Component {
                             color={this.state.currentColor}
                             onChange={(color) => {this.handleChange(color)}}/>
                         <ColormapWidget 
-                            ref="widget" 
+                            ref="widget"
                             color={this.state.currentColor} 
                             onChange={(color) => {this.handleChange(color)}}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button 
                             style={{float: "left"}}
-                            onClick={() => {this.refs.widget.resetColormap()}}>
+                            onClick={() => {this.refs.widget.getWrappedInstance().blendColors()}}>
+                            Blend
+                        </Button>
+                        <Button 
+                            style={{float: "left"}}
+                            onClick={() => {this.refs.widget.getWrappedinstance().resetColormap()}}>
                             Reset
                         </Button>
                         <Button 
                             style={{float: "left"}}
-                            onClick={() => {this.refs.widget.blendColors()}}>
-                            Blend
+                            onClick={() => {}}>
+                            Apply
                         </Button>
                         <Button onClick={this.props.close}>Close</Button>
                     </Modal.Footer>
@@ -52,8 +64,4 @@ class ColormapEditor extends Component {
     }
 }
 
-ColormapEditor.PropTypes = {
-    show: React.PropTypes.bool.isRequired,
-    close: React.PropTypes.func.isRequired
-}
-export default ColormapEditor; 
+export default ColormapEditor;

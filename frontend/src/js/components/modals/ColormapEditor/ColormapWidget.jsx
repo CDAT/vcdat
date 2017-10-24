@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import Actions from '../../../constants/Actions.js'
 var colorUtility = require('react-color/lib/helpers/color.js').default
 
 import './ColormapWidget.css'
@@ -7,14 +9,24 @@ class ColormapWidget extends Component {
     constructor(props){
         super(props)
         this.state = {
-            colormaps: undefined,
             selectedCellsStart: 0,
             selectedCellsEnd: 0,
-            currentColormap: undefined, // an array of arrays representing the current cells
+            currentColormap: this.props.colormaps[this.props.defaultColormap].map(function(arr) {
+                return arr.slice()
+            }), // an array of arrays representing the current cells 
             selectedColormapName: undefined, // a string, such as 'viridis', or 'AMIP'
             shouldUseProps: false, // value to indicate if color should be applied from props to color map
         }
-        this.fetchColormaps()
+    }
+
+    static get propTypes() { 
+        return { 
+            colormaps: React.PropTypes.object, // object containing all colormaps. 
+            defaultColormap: React.PropTypes.string, // The name of the colormap to select when opening the editor
+            color: React.PropTypes.object,// the current colorpicker color 
+            onChange: React.PropTypes.func,
+            saveColormap: React.PropTypes.func,
+        }; 
     }
 
     componentWillReceiveProps(nextProps){
@@ -39,20 +51,11 @@ class ColormapWidget extends Component {
             }
         }
     }
-    
-
-    fetchColormaps(){
-        const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", () => {this.loadColormaps(xhr)})
-        xhr.open('GET', '/getColormaps');
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send();
-    }
 
     handleColormapSelect(name){
         // we need a copy of the base colormap for editing. 
         // javascript .slice() does not do a deep copy so we need to copy each inner array of colors per cell
-        let currentColormap = this.state.colormaps[name].map(function(arr) {
+        let currentColormap = this.props.colormaps[name].map(function(arr) {
             return arr.slice(); // copy inner array of colors
         });
         this.setState({
@@ -80,41 +83,12 @@ class ColormapWidget extends Component {
         }
     }
 
-    loadColormaps(xhr){
-        if(xhr.readyState === 4 && xhr.status === 200){
-            this.setState((prevState, props) => {
-                try {
-                    let newState = {colormaps: JSON.parse(xhr.responseText)}
-                    if(prevState.selectedColormapName === undefined){
-                        if(newState.colormaps[this.props.defaultColormap]){
-                            newState.selectedColormapName = this.props.defaultColormap
-                        }
-                        else{
-                            newState.selectedColormapName = Object.keys(newState.colormaps)[0]
-                        }
-                        newState.currentColormap = newState.colormaps[newState.selectedColormapName].map(function(arr) {
-                            return arr.slice(); // copy inner array of colors
-                        });
-                    }
-                    return newState
-                } catch(e){
-                    console.error(e)
-                }
-                
-            })
-        }
-    }
-
     cellActive(index, start, end){
         // if multiple cells are selected check if it is between the two
         if(index >= Math.min(start, end) && index <= Math.max(start, end)){
             return true
         }
         return false
-    }
-
-    saveColormap(){
-        console.log(this.state.newColormapTemplateName)
     }
 
     resetColormap(){
@@ -157,9 +131,10 @@ class ColormapWidget extends Component {
                     <select 
                         className="form-control"
                         style={{marginRight: "5px"}}
-                        onChange={(event) => {this.handleColormapSelect(event.target.value)}} value={this.state.selectedColormapName} >
-                        { this.state.colormaps ? (
-                            Object.keys(this.state.colormaps).sort().map( name => ( <option key={name} value={name}>{name}</option> ))
+                        onChange={(event) => {this.handleColormapSelect(event.target.value)}}
+                        value={this.state.selectedColormapName}>
+                        { this.props.colormaps ? (
+                            Object.keys(this.props.colormaps).sort().map( name => ( <option key={name} value={name}>{name}</option> ))
                             ) : (
                             <option value="" disabled />    
                         )}
@@ -171,7 +146,11 @@ class ColormapWidget extends Component {
                         onChange={(event) => { this.setState({newColormapTemplateName: event.target.value}) }}
                         >
                     </input>
-                    <button className="form-control" style={{marginLeft: "5px"}} onClick={() => {this.saveColormap()}}>Save as...</button>
+                    <button className="form-control" style={{marginLeft: "5px"}} 
+                        onClick={() => {
+                            this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
+                        }}>Save as...
+                    </button>
                 </div>
                 <span style={{fontSize: 11, fontWeight: 300}}title="*Shift+Click to select multiple cells">*Shift+Click to select multiple cells</span>
                 <div id="colormap-cells-container">
@@ -206,4 +185,20 @@ ColormapWidget.defaultProps = {
     defaultColormap: 'viridis'
 }
 
-export default ColormapWidget;
+const mapStateToProps = (state) => {
+    return {
+        colormaps: state.present.colormaps,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        saveColormap: (name, colormap) => {
+            let cm = {};
+            cm[name] = colormap;
+            dispatch(Actions.saveColormap(cm));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(ColormapWidget)
