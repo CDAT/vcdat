@@ -25,7 +25,12 @@ if isBound(VCDAT_PORT):
 
 logfile = tempfile.TemporaryFile()
 
+print "Logs are going to:",logfile,dir(logfile)
+print "Starting VCSJS on PORT:",VCSJS_PORT
 vcs_server = subprocess.Popen(["vcs-server", "--port", VCSJS_PORT], stdout=logfile, stderr=logfile)
+import time
+time.sleep(3)
+print "Starting VCDAT on PORT:",VCDAT_PORT
 flask = subprocess.Popen(["python", "-m", "vcdat.app", "--prod", "--port", VCDAT_PORT, "--vcs_server=localhost:%s" % VCSJS_PORT], stdout=logfile, stderr=logfile)
 
 # Keep looping till we get a successful response
