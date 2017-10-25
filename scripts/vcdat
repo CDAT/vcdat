@@ -6,8 +6,23 @@ import sys
 import tempfile
 import os
 
-VCSJS_PORT = os.environ.et("VCSJS_PORT","8888")
+def isBound(port):
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.bind(("localhost", int(port)))
+    except socket.error as e:
+        return True
+    s.close()
+    return False
+
+VCSJS_PORT = os.environ.get("VCSJS_PORT","8888")
+if isBound(VCSJS_PORT):
+    raise RuntimeError("Could not bind to port %s. Please select another port for the vcsserver via the VCSJS_PORT environment variable" % VCSJS_PORT)
 VCDAT_PORT = os.environ.get("VCDAT_PORT","5000")
+if isBound(VCDAT_PORT):
+    raise RuntimeError("Could not bind to port %s. Please select another port for the vcdat froentend via the VCDAT_PORT environment variable" % VCSJS_PORT)
+
 logfile = tempfile.TemporaryFile()
 
 vcs_server = subprocess.Popen(["vcs-server", "--port", VCSJS_PORT], stdout=logfile, stderr=logfile)

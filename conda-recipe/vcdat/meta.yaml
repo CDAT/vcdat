@@ -2,7 +2,7 @@ about:
   home: http://gitub.com/UV-CDAT/vcdat
 package:
   name: vcdat
-  version: "0.0.4"
+  version: "0.0.5"
 requirements:
   build:
   - python
@@ -17,7 +17,7 @@ requirements:
   - genutil 2.12
   - vcs-js
 source:
-  git_rev: v0.0.4
+  git_rev: build
   git_url: git://github.com/UV-CDAT/vcdat.git
 build:
   noarch_python: false
