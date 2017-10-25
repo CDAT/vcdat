@@ -4,21 +4,24 @@ import time
 import requests
 import sys
 import tempfile
+import os
 
+VCSJS_PORT = os.environ.et("VCSJS_PORT","8888")
+VCDAT_PORT = os.environ.get("VCDAT_PORT","5000")
 logfile = tempfile.TemporaryFile()
 
-vcs_server = subprocess.Popen(["vcs-server", "--port", "8123"], stdout=logfile, stderr=logfile)
-flask = subprocess.Popen(["python", "-m", "vcdat.app", "--prod", "--port", "8124", "--vcs_server=localhost:8123"], stdout=logfile, stderr=logfile)
+vcs_server = subprocess.Popen(["vcs-server", "--port", VCSJS_PORT], stdout=logfile, stderr=logfile)
+flask = subprocess.Popen(["python", "-m", "vcdat.app", "--prod", "--port", VCDAT_PORT, "--vcs_server=localhost:%s" % VCSJS_PORT], stdout=logfile, stderr=logfile)
 
 # Keep looping till we get a successful response
 while True:
     try:
-        resp = requests.get("http://localhost:8124")
+        resp = requests.get("http://localhost:%s" % VCDAT_PORT)
     except:
         continue
     if resp.status_code == 200:
         import webbrowser
-        webbrowser.open("http://localhost:8124")
+        webbrowser.open("http://localhost:%s" % VCDAT_PORT)
         break
 
 # Now we'll wait till the user terminates the process.
