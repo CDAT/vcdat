@@ -48,7 +48,7 @@ class ColormapEditor extends Component {
                         </Button>
                         <Button 
                             style={{float: "left"}}
-                            onClick={() => {this.refs.widget.getWrappedinstance().resetColormap()}}>
+                            onClick={() => {this.refs.widget.getWrappedInstance().resetColormap()}}>
                             Reset
                         </Button>
                         <Button 

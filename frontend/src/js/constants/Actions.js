@@ -183,6 +183,12 @@ var Actions = {
             colormap: colormap,
         }
     },
+    deleteColormap(name) {
+        return {
+            type: 'DELETE_COLORMAP',
+            name: name,
+        }
+    },
 }
 
 export default Actions;

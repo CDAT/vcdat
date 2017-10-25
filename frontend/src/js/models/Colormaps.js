@@ -1,5 +1,6 @@
 import BaseModel from './BaseModel.js';
-
+import $ from 'jquery'
+import _ from 'lodash'
 
 class ColormapModel extends BaseModel {
     static reduce(state=[], action) {
@@ -7,7 +8,9 @@ class ColormapModel extends BaseModel {
             case "INITIALIZE_COLORMAPS":
                 return action.colormaps
             case "SAVE_COLORMAP":
-                return Object.assign({}, state, action.colormap)
+                return $.extend(true, {}, state, action.colormap)
+            case "DELETE_COLORMAP":
+                return _.omit(state, action.name)
             default:
                 return state;
         }

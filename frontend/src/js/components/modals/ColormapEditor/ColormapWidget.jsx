@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import _ from 'lodash'
 import Actions from '../../../constants/Actions.js'
 var colorUtility = require('react-color/lib/helpers/color.js').default
 
@@ -14,7 +15,7 @@ class ColormapWidget extends Component {
             currentColormap: this.props.colormaps[this.props.defaultColormap].map(function(arr) {
                 return arr.slice()
             }), // an array of arrays representing the current cells 
-            selectedColormapName: undefined, // a string, such as 'viridis', or 'AMIP'
+            selectedColormapName: this.props.defaultColormap, // a string, such as 'viridis', or 'AMIP'
             shouldUseProps: false, // value to indicate if color should be applied from props to color map
         }
     }
@@ -26,6 +27,7 @@ class ColormapWidget extends Component {
             color: React.PropTypes.object,// the current colorpicker color 
             onChange: React.PropTypes.func,
             saveColormap: React.PropTypes.func,
+            deleteColormap: React.PropTypes.func,
         }; 
     }
 
@@ -53,11 +55,7 @@ class ColormapWidget extends Component {
     }
 
     handleColormapSelect(name){
-        // we need a copy of the base colormap for editing. 
-        // javascript .slice() does not do a deep copy so we need to copy each inner array of colors per cell
-        let currentColormap = this.props.colormaps[name].map(function(arr) {
-            return arr.slice(); // copy inner array of colors
-        });
+        let currentColormap = _.map(this.props.colormaps[name], _.clone())
         this.setState({
             selectedColormapName: name,
             currentColormap: currentColormap
@@ -97,6 +95,30 @@ class ColormapWidget extends Component {
         }
     }
 
+    handleDeleteColormap(){
+        let nameToDelete = this.state.selectedColormapName
+        let colormapNames = Object.keys(this.props.colormaps).sort(function (a, b) {
+            return a.toLowerCase().localeCompare(b.toLowerCase())
+        })
+        let index = colormapNames.indexOf(nameToDelete)
+        if(index == colormapNames.length - 1){ // if the colormap to delete is the last in the list
+            index = colormapNames.length - 2; // select the colormap before it
+        }
+        else{
+            index++ // else, select the colormap below it
+        }
+        let name = colormapNames[index]
+        let currentColormap = _.map(this.props.colormaps[name], _.clone())
+        this.props.deleteColormap(nameToDelete)
+        setTimeout(()=>{
+            this.setState({
+                selectedColormapName: name,
+                currentColormap: currentColormap,
+            })  
+        }, 0)
+        
+    }
+
     blendColors(){
         let startCell = Math.min(this.state.selectedCellsStart, this.state.selectedCellsEnd)
         let endCell = Math.max(this.state.selectedCellsStart, this.state.selectedCellsEnd)
@@ -128,15 +150,24 @@ class ColormapWidget extends Component {
         return(
             <div>
                 <div className="form-inline" style={{display: "flex", marginTop: "20px", marginBottom: "10px"}} >
+                    <button 
+                        title="Delete Selected Colormap"
+                        onClick={() => {this.handleDeleteColormap()}}
+                        className="btn btn-danger btn-sm"
+                        style={{marginRight: "5px"}}>
+                        <i className="glyphicon glyphicon-trash"></i>
+                    </button>
                     <select 
                         className="form-control"
                         style={{marginRight: "5px"}}
                         onChange={(event) => {this.handleColormapSelect(event.target.value)}}
                         value={this.state.selectedColormapName}>
                         { this.props.colormaps ? (
-                            Object.keys(this.props.colormaps).sort().map( name => ( <option key={name} value={name}>{name}</option> ))
+                            Object.keys(this.props.colormaps).sort(function (a, b) {
+                                return a.toLowerCase().localeCompare(b.toLowerCase());
+                            }).map( name => ( <option key={name} value={name}>{name}</option> ))
                             ) : (
-                            <option value="" disabled />    
+                            <option value="" disabled />
                         )}
                     </select>
                     <input 
@@ -197,6 +228,9 @@ const mapDispatchToProps = dispatch => {
             let cm = {};
             cm[name] = colormap;
             dispatch(Actions.saveColormap(cm));
+        },
+        deleteColormap: (name) => {
+            dispatch(Actions.deleteColormap(name));
         }
     }
 }
