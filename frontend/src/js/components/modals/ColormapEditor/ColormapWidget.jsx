@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import Actions from '../../../constants/Actions.js'
 var colorUtility = require('react-color/lib/helpers/color.js').default
-
+import ExportModal from "./ExportModal.jsx";
 import './ColormapWidget.css'
 
 class ColormapWidget extends Component {
@@ -17,6 +17,7 @@ class ColormapWidget extends Component {
             }), // an array of arrays representing the current cells 
             selectedColormapName: this.props.defaultColormap, // a string, such as 'viridis', or 'AMIP'
             shouldUseProps: false, // value to indicate if color should be applied from props to color map
+            showExportModal: false,
         }
     }
 
@@ -146,6 +147,11 @@ class ColormapWidget extends Component {
         this.setState({currentColormap: blendedColormap})
     }
 
+    exportColormap(){
+        let data = new Blob(this.state.currentColormap, {type: "text/plain"})
+
+    }
+
     render(){
         return(
             <div>
@@ -157,6 +163,14 @@ class ColormapWidget extends Component {
                         style={{marginRight: "5px"}}>
                         <i className="glyphicon glyphicon-trash"></i>
                     </button>
+                    <button 
+                        title="Export Current Colormap"
+                        onClick={() => {this.setState({showExportModal: true})}}
+                        className="btn btn-default btn-sm"
+                        style={{marginRight: "5px"}}>
+                        <i className="glyphicon glyphicon-cog"></i>
+                    </button>
+                    <ExportModal show={this.state.showExportModal} close={() => this.setState({showExportModal: false})}/>
                     <select 
                         className="form-control"
                         style={{marginRight: "5px"}}
