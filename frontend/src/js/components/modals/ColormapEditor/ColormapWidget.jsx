@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import Actions from '../../../constants/Actions.js'
 var colorUtility = require('react-color/lib/helpers/color.js').default
-import ExportModal from "./ExportModal.jsx";
+import ImportExportModal from "./ImportExportModal.jsx";
 import './ColormapWidget.css'
 
 class ColormapWidget extends Component {
@@ -29,6 +29,8 @@ class ColormapWidget extends Component {
             onChange: React.PropTypes.func,
             saveColormap: React.PropTypes.func,
             deleteColormap: React.PropTypes.func,
+            showImportExportModal: React.PropTypes.bool,
+            closeImportExportModal: React.PropTypes.func,
         }; 
     }
 
@@ -163,14 +165,6 @@ class ColormapWidget extends Component {
                         style={{marginRight: "5px"}}>
                         <i className="glyphicon glyphicon-trash"></i>
                     </button>
-                    <button 
-                        title="Export Current Colormap"
-                        onClick={() => {this.setState({showExportModal: true})}}
-                        className="btn btn-default btn-sm"
-                        style={{marginRight: "5px"}}>
-                        <i className="glyphicon glyphicon-cog"></i>
-                    </button>
-                    <ExportModal show={this.state.showExportModal} close={() => this.setState({showExportModal: false})}/>
                     <select 
                         className="form-control"
                         style={{marginRight: "5px"}}
@@ -221,6 +215,10 @@ class ColormapWidget extends Component {
                         <span></span>
                     )}
                 </div>
+                <ImportExportModal
+                    show={this.props.showImportExportModal} 
+                    close={this.props.closeImportExportModal}
+                    currentColormap={this.state.currentColormap}/>
             </div>
         )
     }

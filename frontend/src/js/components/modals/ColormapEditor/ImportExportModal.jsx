@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import './ColormapWidget.css'
 
-class ExportModal extends Component {
+class ImportExportModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            filename: "",
+            name: "",
+            data: "",
         }
     }
 
@@ -14,11 +15,20 @@ class ExportModal extends Component {
         return { 
             show: React.PropTypes.bool.isRequired, // show the modal
             close: React.PropTypes.func.isRequired, // close the modal
+            currentColormap: React.PropTypes.array
         }; 
     }
 
     handleChange(e) {
-        this.setState({filename: e.target.value})
+        let colormap = {
+            name: e.target.value,
+            colormap: this.props.currentColormap,
+        }
+        let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(colormap));
+        this.setState({
+            name: e.target.value,
+            data: data
+        })
     }
 
     render(){
@@ -29,8 +39,12 @@ class ExportModal extends Component {
                         <Modal.Title>Export Current Colormap</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <input type="text" value={this.state.filename} onChange={(e)=>{this.handleChange(e)}}></input>
-                        <Button className="btn btn-primary">Download</Button>
+                        <input type="text" value={this.state.name} onChange={(e)=>{this.handleChange(e)}}></input>
+                        <Button 
+                            className="btn btn-primary" 
+                            href={this.state.data}
+                            download={this.state.name}>
+                            Download</Button>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.props.close}>Close</Button>
@@ -41,4 +55,4 @@ class ExportModal extends Component {
     }
 }
 
-export default ExportModal;
+export default ImportExportModal;

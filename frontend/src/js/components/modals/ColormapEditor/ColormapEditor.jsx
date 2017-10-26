@@ -9,7 +9,8 @@ class ColormapEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentColor: colorUtility.toState("#333")
+            currentColor: colorUtility.toState("#333"),
+            showImportExportModal: false,
         }
     }
 
@@ -22,6 +23,14 @@ class ColormapEditor extends Component {
 
     handleChange(color) {
         this.setState({ currentColor: color })
+    }
+
+    closeImportExportModal(){
+        this.setState({showImportExportModal: false})
+    }
+
+    openImportExportModal(){
+        this.setState({showImportExportModal: true})
     }
 
     render(){
@@ -38,7 +47,9 @@ class ColormapEditor extends Component {
                         <ColormapWidget 
                             ref="widget"
                             color={this.state.currentColor} 
-                            onChange={(color) => {this.handleChange(color)}}/>
+                            onChange={(color) => {this.handleChange(color)}}
+                            showImportExportModal={this.state.showImportExportModal}
+                            closeImportExportModal={this.closeImportExportModal.bind(this)}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button 
@@ -56,6 +67,7 @@ class ColormapEditor extends Component {
                             onClick={() => {}}>
                             Apply
                         </Button>
+                        <Button onClick={this.openImportExportModal.bind(this)}>Import/Export</Button>
                         <Button onClick={this.props.close}>Close</Button>
                     </Modal.Footer>
                 </Modal>
