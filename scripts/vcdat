@@ -6,6 +6,7 @@ import sys
 import tempfile
 import os
 
+
 def isBound(port):
     import socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,27 +17,41 @@ def isBound(port):
     s.close()
     return False
 
-VCSJS_PORT = os.environ.get("VCSJS_PORT","8888")
+
+VCSJS_PORT = os.environ.get("VCSJS_PORT", "8888")
 if isBound(VCSJS_PORT):
-    raise RuntimeError("Could not bind to port %s. Please select another port for the vcsserver via the VCSJS_PORT environment variable" % VCSJS_PORT)
-VCDAT_PORT = os.environ.get("VCDAT_PORT","5000")
+    raise RuntimeError(
+        "Could not bind to port %s. Please select another port for the vcsserver via the VCSJS_PORT environment variable" %
+        VCSJS_PORT)
+VCDAT_PORT = os.environ.get("VCDAT_PORT", "5000")
 if isBound(VCDAT_PORT):
-    raise RuntimeError("Could not bind to port %s. Please select another port for the vcdat froentend via the VCDAT_PORT environment variable" % VCSJS_PORT)
+    raise RuntimeError(
+        "Could not bind to port %s. Please select another port for the vcdat froentend via the VCDAT_PORT environment variable" %
+        VCSJS_PORT)
 
 logfile = tempfile.TemporaryFile()
 
-print "Logs are going to:",logfile,dir(logfile)
-print "Starting VCSJS on PORT:",VCSJS_PORT
-vcs_server = subprocess.Popen(["vcs-server", "--port", VCSJS_PORT], stdout=logfile, stderr=logfile)
+print "Logs are going to:", logfile, dir(logfile)
+print "Starting VCSJS on PORT:", VCSJS_PORT
+vcs_server = subprocess.Popen(
+    ["vcs-server", "--port", VCSJS_PORT], stdout=logfile, stderr=logfile)
 time.sleep(3)
-print "Starting VCDAT on PORT:",VCDAT_PORT
-flask = subprocess.Popen(["python", "-m", "vcdat.app", "--prod", "--port", VCDAT_PORT, "--vcs_server=localhost:%s" % VCSJS_PORT], stdout=logfile, stderr=logfile)
+print "Starting VCDAT on PORT:", VCDAT_PORT
+flask = subprocess.Popen(["python",
+                          "-m",
+                          "vcdat.app",
+                          "--prod",
+                          "--port",
+                          VCDAT_PORT,
+                          "--vcs_server=localhost:%s" % VCSJS_PORT],
+                         stdout=logfile,
+                         stderr=logfile)
 
 # Keep looping till we get a successful response
 while True:
     try:
         resp = requests.get("http://localhost:%s" % VCDAT_PORT)
-    except:
+    except BaseException:
         continue
     if resp.status_code == 200:
         import webbrowser
