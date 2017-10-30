@@ -17,7 +17,7 @@ requirements:
   - genutil 2.12
   - vcs-js
 source:
-  git_rev: build
+  git_rev: 0.0.4
   git_url: git://github.com/UV-CDAT/vcdat.git
 build:
   noarch_python: false
