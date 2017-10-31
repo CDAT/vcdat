@@ -149,11 +149,6 @@ class ColormapWidget extends Component {
         this.setState({currentColormap: blendedColormap})
     }
 
-    exportColormap(){
-        let data = new Blob(this.state.currentColormap, {type: "text/plain"})
-
-    }
-
     render(){
         return(
             <div>
