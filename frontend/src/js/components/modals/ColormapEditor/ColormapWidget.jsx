@@ -216,9 +216,11 @@ class ColormapWidget extends Component {
                     )}
                 </div>
                 <ImportExportModal
-                    show={this.props.showImportExportModal} 
+                    show={this.props.showImportExportModal}
                     close={this.props.closeImportExportModal}
-                    currentColormap={this.state.currentColormap}/>
+                    currentColormap={this.state.currentColormap}
+                    saveColormap={this.props.saveColormap}
+                />
             </div>
         )
     }
