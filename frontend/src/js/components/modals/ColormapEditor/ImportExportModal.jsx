@@ -72,28 +72,36 @@ class ImportExportModal extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         <h4>Export Current Colormap</h4>
-                        <input 
-                            type="text"
-                            value={this.state.name}
-                            onChange={(e)=>{this.handleChange(e)}}>
-                        </input>
-                        <Button
-                            className="btn btn-primary"
-                            href={this.state.data}
-                            download={this.state.name}>
-                            Download
-                        </Button>
+                        <div className="form-group form-inline">
+                            <input 
+                                placeholder="filename.json"
+                                className="form-control"
+                                type="text"
+                                value={this.state.name}
+                                onChange={(e)=>{this.handleChange(e)}}>
+                            </input>
+                            <Button
+                                className="btn btn-primary form-control"
+                                href={this.state.data}
+                                download={this.state.name}>
+                                Download
+                            </Button>
+                        </div>
                         <hr/>
                         <h4>Import a Colormap</h4>
-                        <input
-                            type="file"
-                            onChange={(e)=>{this.handleFileChange(e)}}>
-                        </input>
-                        <Button 
-                            className="btn btn-primary"
-                            onClick={()=>{this.importColormap()}}>
-                            Upload
-                        </Button>
+                        <div className="form-group form-inline">
+                            <input
+                                style={{display: "inline-block"}}
+                                className="form-control"
+                                type="file"
+                                onChange={(e)=>{this.handleFileChange(e)}}>
+                            </input>
+                            <Button 
+                                className="btn btn-primary form-control"
+                                onClick={()=>{this.importColormap()}}>
+                                Upload
+                            </Button>
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.props.close}>Close</Button>
