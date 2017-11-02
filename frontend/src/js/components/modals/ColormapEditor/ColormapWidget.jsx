@@ -31,6 +31,12 @@ class ColormapWidget extends Component {
             deleteColormap: React.PropTypes.func,
             showImportExportModal: React.PropTypes.bool,
             closeImportExportModal: React.PropTypes.func,
+            cur_sheet_index: React.PropTypes.number,
+            sheet_num_rows: React.PropTypes.number,
+            sheet_num_cols: React.PropTypes.number,
+            sheet: React.PropTypes.object,
+            applyColormap: React.PropTypes.func,
+            graphics_methods: React.PropTypes.object,
         }; 
     }
 
@@ -149,10 +155,42 @@ class ColormapWidget extends Component {
         this.setState({currentColormap: blendedColormap})
     }
 
+    applyColormap(cell_row, cell_col){
+        /* eslint-disable no-undef */ 
+        if(vcs){
+            let self = this
+            let graphics_method_parent = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method_parent
+            let graphics_method = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method
+            let colormap_name = "applied_colormap"
+            
+            vcs.colormapnames().then((names) => {
+                if(names.indexOf(colormap_name) >= 0){
+                    vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => {
+                        let new_graphics_method = _.clone(self.props.graphics_methods[graphics_method_parent][graphics_method])
+                        new_graphics_method.colormap = colormap_name
+                        self.props.updateGraphicsMethod(new_graphics_method)
+                    })
+                }
+                else{
+                    vcs.createcolormap(colormap_name).then(() => {
+                        vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => {
+                            let new_graphics_method = _.clone(self.props.graphics_methods[graphics_method_parent][graphics_method])
+                            new_graphics_method.colormap = colormap_name
+                            self.props.updateGraphicsMethod(new_graphics_method)
+                        })
+                    })
+                }
+            })
+            let plot = this.props.sheet.cells[cell_row][cell_col].plots[0]
+            this.props.applyColormap(plot.graphics_method_parent, graphics_method, cell_row, cell_col, 0)
+        }
+        /* eslint-enable no-undef */
+    }
+
     render(){
         return(
             <div>
-                <div className="form-inline" style={{display: "flex", marginTop: "20px", marginBottom: "10px"}} >
+                <div className="form-inline" style={{display: "flex", marginTop: "20px", marginBottom: "10px"}}>
                     <button 
                         title="Delete Selected Colormap"
                         onClick={() => {this.handleDeleteColormap()}}
@@ -177,10 +215,11 @@ class ColormapWidget extends Component {
                         className="form-control"
                         style={{flexGrow: 1}} 
                         value={this.state.newColormapTemplateName}
-                        onChange={(event) => { this.setState({newColormapTemplateName: event.target.value}) }}
-                        >
+                        onChange={(event) => { this.setState({newColormapTemplateName: event.target.value}) }}>
                     </input>
-                    <button className="form-control" style={{marginLeft: "5px"}} 
+                    <button 
+                        className="form-control"
+                        style={{marginLeft: "5px"}} 
                         onClick={() => {
                             this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
                         }}>Save as...
@@ -228,6 +267,11 @@ ColormapWidget.defaultProps = {
 const mapStateToProps = (state) => {
     return {
         colormaps: state.present.colormaps,
+        cur_sheet_index: state.present.sheets_model.cur_sheet_index,
+        sheet_num_rows: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].row_count,
+        sheet_num_cols: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].col_count,
+        sheet: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index],
+        graphics_methods: state.present.graphics_methods,
     }
 }
 
@@ -240,7 +284,13 @@ const mapDispatchToProps = dispatch => {
         },
         deleteColormap: (name) => {
             dispatch(Actions.deleteColormap(name));
-        }
+        },
+        applyColormap: (graphics_method_parent, graphics_method, row, col, plot_index) =>{
+            dispatch(Actions.swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, plot_index));
+        },
+        updateGraphicsMethod: (graphics_method) => {
+            dispatch(Actions.updateGraphicsMethod(graphics_method))
+        },
     }
 }
 
