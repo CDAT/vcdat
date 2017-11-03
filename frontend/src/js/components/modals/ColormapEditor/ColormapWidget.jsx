@@ -156,33 +156,35 @@ class ColormapWidget extends Component {
     }
 
     applyColormap(cell_row, cell_col){
+        let self = this
+        let graphics_method_parent = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method_parent
+        let graphics_method = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method
+        let colormap_name = "applied_colormap"
+
+        function applyColormapHelper(){
+            let new_graphics_method = _.clone(self.props.graphics_methods[graphics_method_parent][graphics_method])
+            new_graphics_method.colormap = colormap_name
+            self.props.updateGraphicsMethod(new_graphics_method)
+            let plot = self.props.sheet.cells[cell_row][cell_col].plots[0]
+            self.props.applyColormap(plot.graphics_method_parent, graphics_method, cell_row, cell_col, 0)
+        }
+
         /* eslint-disable no-undef */ 
         if(vcs){
-            let self = this
-            let graphics_method_parent = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method_parent
-            let graphics_method = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method
-            let colormap_name = "applied_colormap"
-            
             vcs.colormapnames().then((names) => {
                 if(names.indexOf(colormap_name) >= 0){
                     vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => {
-                        let new_graphics_method = _.clone(self.props.graphics_methods[graphics_method_parent][graphics_method])
-                        new_graphics_method.colormap = colormap_name
-                        self.props.updateGraphicsMethod(new_graphics_method)
+                        applyColormapHelper()
                     })
                 }
                 else{
                     vcs.createcolormap(colormap_name).then(() => {
                         vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => {
-                            let new_graphics_method = _.clone(self.props.graphics_methods[graphics_method_parent][graphics_method])
-                            new_graphics_method.colormap = colormap_name
-                            self.props.updateGraphicsMethod(new_graphics_method)
+                            applyColormapHelper()
                         })
                     })
                 }
             })
-            let plot = this.props.sheet.cells[cell_row][cell_col].plots[0]
-            this.props.applyColormap(plot.graphics_method_parent, graphics_method, cell_row, cell_col, 0)
         }
         /* eslint-enable no-undef */
     }
