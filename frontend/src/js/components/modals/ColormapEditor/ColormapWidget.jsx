@@ -173,13 +173,15 @@ class ColormapWidget extends Component {
         if(vcs){
             vcs.colormapnames().then((names) => {
                 if(names.indexOf(colormap_name) >= 0){
-                    vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => {
+                    vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => { // save colormap in vcs
+                        self.props.saveColormap(colormap_name, self.state.currentColormap) // save to the frontend state
                         applyColormapHelper()
                     })
                 }
                 else{
                     vcs.createcolormap(colormap_name).then(() => {
                         vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => {
+                            self.props.saveColormap(colormap_name, self.state.currentColormap) // save to the frontend state
                             applyColormapHelper()
                         })
                     })

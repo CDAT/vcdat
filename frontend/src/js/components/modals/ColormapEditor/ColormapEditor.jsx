@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Modal, Button, Dropdown, MenuItem } from 'react-bootstrap';
-
+import _ from 'lodash'
 import ColorPicker from './ColorPicker.jsx'
 import ColormapWidget from './ColormapWidget.jsx'
 var colorUtility = require('react-color/lib/helpers/color.js').default;
@@ -49,7 +49,42 @@ class ColormapEditor extends Component {
         }
         else{
             let menuItems;
-            if(this.props.sheet_num_rows == 2 && this.props.sheet_num_cols == 2){
+            if(this.props.sheet_num_rows > 2 || this.props.sheet_num_cols > 2){
+                let rows = _.range(this.props.sheet_num_rows)
+                let cols = _.range(this.props.sheet_num_cols)
+                let cells = [];
+                rows.forEach((row)=>{
+                    cols.forEach((col)=>{
+                        cells.push({row: row, col: col})
+                    })
+                })
+                 
+                menuItems = (
+                    <Dropdown.Menu className="colormap-apply-menu">
+                    {
+                        cells.map((cell, index)=>{
+                            return <MenuItem
+                                    key={index.toString()} 
+                                    eventKey={index.toString()}
+                                    onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(cell.row, cell.col)}}>
+                                    To Row {cell.row+1}, Col {cell.col+1}
+                                    </MenuItem>
+                        })
+                    }
+                    </Dropdown.Menu>
+                )
+            }
+            else if(this.props.sheet_num_rows >= 2 && this.props.sheet_num_cols == 2){
+                menuItems = (
+                    <Dropdown.Menu className="colormap-apply-menu">
+                        <MenuItem eventKey="0" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 0)}}>To Top Left</MenuItem>
+                        <MenuItem eventKey="1" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 1)}}>To Top Right</MenuItem>
+                        <MenuItem eventKey="2" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(1, 0)}}>To Bottom Left</MenuItem>
+                        <MenuItem eventKey="3" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(1, 1)}}>To Bottom Right</MenuItem>
+                    </Dropdown.Menu>
+                )
+            }
+            else if(this.props.sheet_num_rows == 2 && this.props.sheet_num_cols == 2){
                 menuItems = (
                     <Dropdown.Menu className="colormap-apply-menu">
                         <MenuItem eventKey="0" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 0)}}>To Top Left</MenuItem>
@@ -67,7 +102,7 @@ class ColormapEditor extends Component {
                     </Dropdown.Menu>
                 )
             }
-            else{
+            else {
                 menuItems = (
                     <Dropdown.Menu className="colormap-apply-menu">
                         <MenuItem eventKey="0" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 0)}}>To Left</MenuItem>
