@@ -12,7 +12,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "react": "^15.1.0",
-    "react-bootstrap": "^0.30.7",
+    "react-bootstrap": "^0.30.10",
     "react-bootstrap-dialog": "^0.9.1",
     "react-color": "^2.13.8",
     "react-dnd": "^2.2.4",
@@ -21,7 +21,7 @@
     "react-redux": "^4.4.5",
     "redux": "=3.5.2",
     "redux-undo": "^0.6.1",
-    "vcs-widgets": "^0.0.4"
+    "vcs-widgets": "^0.0.5"
   },
   "devDependencies": {
     "babel-cli": "^6.4.0",
