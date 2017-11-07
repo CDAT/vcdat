@@ -328,3 +328,7 @@ li.tree-leaf {
         height: 450px;
     }
 }
+
+.colormap-apply-menu.dropdown-menu {
+    background-color: #fff /* Reset the background color set by another rule */
+}

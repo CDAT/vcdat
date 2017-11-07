@@ -174,7 +174,19 @@ var Actions = {
     updateTemplate(template) {
         return {
             type: 'UPDATE_TEMPLATE',
-            template:template
+            template: template
+        }
+    },
+    saveColormap(colormap) {
+        return {
+            type: 'SAVE_COLORMAP',
+            colormap: colormap,
+        }
+    },
+    deleteColormap(name) {
+        return {
+            type: 'DELETE_COLORMAP',
+            name: name,
         }
     },
 }
