@@ -1,20 +1,43 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import _ from 'lodash'
+import Actions from '../../../constants/Actions.js'
 var colorUtility = require('react-color/lib/helpers/color.js').default
-
+import ImportExportModal from "./ImportExportModal.jsx";
 import './ColormapWidget.css'
 
 class ColormapWidget extends Component {
     constructor(props){
         super(props)
         this.state = {
-            colormaps: undefined,
             selectedCellsStart: 0,
             selectedCellsEnd: 0,
-            currentColormap: undefined, // an array of arrays representing the current cells
-            selectedColormapName: undefined, // a string, such as 'viridis', or 'AMIP'
+            currentColormap: this.props.colormaps[this.props.defaultColormap].map(function(arr) {
+                return arr.slice()
+            }), // an array of arrays representing the current cells 
+            selectedColormapName: this.props.defaultColormap, // a string, such as 'viridis', or 'AMIP'
             shouldUseProps: false, // value to indicate if color should be applied from props to color map
+            showExportModal: false,
         }
-        this.fetchColormaps()
+    }
+
+    static get propTypes() { 
+        return { 
+            colormaps: React.PropTypes.object, // object containing all colormaps. 
+            defaultColormap: React.PropTypes.string, // The name of the colormap to select when opening the editor
+            color: React.PropTypes.object,// the current colorpicker color 
+            onChange: React.PropTypes.func,
+            saveColormap: React.PropTypes.func,
+            deleteColormap: React.PropTypes.func,
+            showImportExportModal: React.PropTypes.bool,
+            closeImportExportModal: React.PropTypes.func,
+            cur_sheet_index: React.PropTypes.number,
+            sheet_num_rows: React.PropTypes.number,
+            sheet_num_cols: React.PropTypes.number,
+            sheet: React.PropTypes.object,
+            applyColormap: React.PropTypes.func,
+            graphics_methods: React.PropTypes.object,
+        }; 
     }
 
     componentWillReceiveProps(nextProps){
@@ -39,22 +62,9 @@ class ColormapWidget extends Component {
             }
         }
     }
-    
-
-    fetchColormaps(){
-        const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", () => {this.loadColormaps(xhr)})
-        xhr.open('GET', '/getColormaps');
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.send();
-    }
 
     handleColormapSelect(name){
-        // we need a copy of the base colormap for editing. 
-        // javascript .slice() does not do a deep copy so we need to copy each inner array of colors per cell
-        let currentColormap = this.state.colormaps[name].map(function(arr) {
-            return arr.slice(); // copy inner array of colors
-        });
+        let currentColormap = _.map(this.props.colormaps[name], _.clone())
         this.setState({
             selectedColormapName: name,
             currentColormap: currentColormap
@@ -80,31 +90,6 @@ class ColormapWidget extends Component {
         }
     }
 
-    loadColormaps(xhr){
-        if(xhr.readyState === 4 && xhr.status === 200){
-            this.setState((prevState, props) => {
-                try {
-                    let newState = {colormaps: JSON.parse(xhr.responseText)}
-                    if(prevState.selectedColormapName === undefined){
-                        if(newState.colormaps[this.props.defaultColormap]){
-                            newState.selectedColormapName = this.props.defaultColormap
-                        }
-                        else{
-                            newState.selectedColormapName = Object.keys(newState.colormaps)[0]
-                        }
-                        newState.currentColormap = newState.colormaps[newState.selectedColormapName].map(function(arr) {
-                            return arr.slice(); // copy inner array of colors
-                        });
-                    }
-                    return newState
-                } catch(e){
-                    console.error(e)
-                }
-                
-            })
-        }
-    }
-
     cellActive(index, start, end){
         // if multiple cells are selected check if it is between the two
         if(index >= Math.min(start, end) && index <= Math.max(start, end)){
@@ -113,14 +98,34 @@ class ColormapWidget extends Component {
         return false
     }
 
-    saveColormap(){
-        console.log(this.state.newColormapTemplateName)
-    }
-
     resetColormap(){
         if(this.state.selectedColormapName){
             this.handleColormapSelect(this.state.selectedColormapName)
         }
+    }
+
+    handleDeleteColormap(){
+        let nameToDelete = this.state.selectedColormapName
+        let colormapNames = Object.keys(this.props.colormaps).sort(function (a, b) {
+            return a.toLowerCase().localeCompare(b.toLowerCase())
+        })
+        let index = colormapNames.indexOf(nameToDelete)
+        if(index == colormapNames.length - 1){ // if the colormap to delete is the last in the list
+            index = colormapNames.length - 2; // select the colormap before it
+        }
+        else{
+            index++ // else, select the colormap below it
+        }
+        let name = colormapNames[index]
+        let currentColormap = _.map(this.props.colormaps[name], _.clone())
+        this.props.deleteColormap(nameToDelete)
+        setTimeout(()=>{
+            this.setState({
+                selectedColormapName: name,
+                currentColormap: currentColormap,
+            })  
+        }, 0)
+        
     }
 
     blendColors(){
@@ -150,28 +155,79 @@ class ColormapWidget extends Component {
         this.setState({currentColormap: blendedColormap})
     }
 
+    applyColormap(cell_row, cell_col){
+        let self = this
+        let graphics_method_parent = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method_parent
+        let graphics_method = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method
+        let colormap_name = "applied_colormap"
+
+        function applyColormapHelper(){
+            let new_graphics_method = _.clone(self.props.graphics_methods[graphics_method_parent][graphics_method])
+            new_graphics_method.colormap = colormap_name
+            self.props.updateGraphicsMethod(new_graphics_method)
+            let plot = self.props.sheet.cells[cell_row][cell_col].plots[0]
+            self.props.applyColormap(plot.graphics_method_parent, graphics_method, cell_row, cell_col, 0)
+        }
+
+        /* eslint-disable no-undef */ 
+        if(vcs){
+            vcs.colormapnames().then((names) => {
+                if(names.indexOf(colormap_name) >= 0){
+                    vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => { // save colormap in vcs
+                        self.props.saveColormap(colormap_name, self.state.currentColormap) // save to the frontend state
+                        applyColormapHelper()
+                    })
+                }
+                else{
+                    vcs.createcolormap(colormap_name).then(() => {
+                        vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => {
+                            self.props.saveColormap(colormap_name, self.state.currentColormap) // save to the frontend state
+                            applyColormapHelper()
+                        })
+                    })
+                }
+            })
+        }
+        /* eslint-enable no-undef */
+    }
+
     render(){
         return(
             <div>
-                <div className="form-inline" style={{display: "flex", marginTop: "20px", marginBottom: "10px"}} >
+                <div className="form-inline" style={{display: "flex", marginTop: "20px", marginBottom: "10px"}}>
+                    <button 
+                        title="Delete Selected Colormap"
+                        onClick={() => {this.handleDeleteColormap()}}
+                        className="btn btn-danger btn-sm"
+                        style={{marginRight: "5px"}}>
+                        <i className="glyphicon glyphicon-trash"></i>
+                    </button>
                     <select 
                         className="form-control"
                         style={{marginRight: "5px"}}
-                        onChange={(event) => {this.handleColormapSelect(event.target.value)}} value={this.state.selectedColormapName} >
-                        { this.state.colormaps ? (
-                            Object.keys(this.state.colormaps).sort().map( name => ( <option key={name} value={name}>{name}</option> ))
+                        onChange={(event) => {this.handleColormapSelect(event.target.value)}}
+                        value={this.state.selectedColormapName}>
+                        { this.props.colormaps ? (
+                            Object.keys(this.props.colormaps).sort(function (a, b) {
+                                return a.toLowerCase().localeCompare(b.toLowerCase());
+                            }).map( name => ( <option key={name} value={name}>{name}</option> ))
                             ) : (
-                            <option value="" disabled />    
+                            <option value="" disabled />
                         )}
                     </select>
                     <input 
                         className="form-control"
                         style={{flexGrow: 1}} 
                         value={this.state.newColormapTemplateName}
-                        onChange={(event) => { this.setState({newColormapTemplateName: event.target.value}) }}
-                        >
+                        onChange={(event) => { this.setState({newColormapTemplateName: event.target.value}) }}>
                     </input>
-                    <button className="form-control" style={{marginLeft: "5px"}} onClick={() => {this.saveColormap()}}>Save as...</button>
+                    <button 
+                        className="form-control"
+                        style={{marginLeft: "5px"}} 
+                        onClick={() => {
+                            this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
+                        }}>Save as...
+                    </button>
                 </div>
                 <span style={{fontSize: 11, fontWeight: 300}}title="*Shift+Click to select multiple cells">*Shift+Click to select multiple cells</span>
                 <div id="colormap-cells-container">
@@ -197,6 +253,12 @@ class ColormapWidget extends Component {
                         <span></span>
                     )}
                 </div>
+                <ImportExportModal
+                    show={this.props.showImportExportModal}
+                    close={this.props.closeImportExportModal}
+                    currentColormap={this.state.currentColormap}
+                    saveColormap={this.props.saveColormap}
+                />
             </div>
         )
     }
@@ -206,4 +268,34 @@ ColormapWidget.defaultProps = {
     defaultColormap: 'viridis'
 }
 
-export default ColormapWidget;
+const mapStateToProps = (state) => {
+    return {
+        colormaps: state.present.colormaps,
+        cur_sheet_index: state.present.sheets_model.cur_sheet_index,
+        sheet_num_rows: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].row_count,
+        sheet_num_cols: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].col_count,
+        sheet: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index],
+        graphics_methods: state.present.graphics_methods,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        saveColormap: (name, colormap) => {
+            let cm = {};
+            cm[name] = colormap;
+            dispatch(Actions.saveColormap(cm));
+        },
+        deleteColormap: (name) => {
+            dispatch(Actions.deleteColormap(name));
+        },
+        applyColormap: (graphics_method_parent, graphics_method, row, col, plot_index) =>{
+            dispatch(Actions.swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, plot_index));
+        },
+        updateGraphicsMethod: (graphics_method) => {
+            dispatch(Actions.updateGraphicsMethod(graphics_method))
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(ColormapWidget)
