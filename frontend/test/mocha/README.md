@@ -54,13 +54,12 @@ If you want to run it by hand, make sure to change the NODE_ENV to test mode, an
 
 ### vCDAT's testing stack
 
-We use [Mocha][mocha], [Chai][chai], [ReactTestUtils][test-utils], and [JSDom][jsdom] to test our application.
-We will also possibly include other tools, such as [Airbnb's Enzyme][enzyme] in the future.
+We use [Mocha][mocha], [Chai][chai], [ReactTestUtils][test-utils], [Airbnb's Enzyme][enzyme], and [JSDom][jsdom] to test our application.
 
 As a React app, vCDAT has some things that need to be set up in order to get up and running with tests.
-To test components, we need a mock DOM into which we can render the test components. For this purpose, we include [JSDOM][jsdom], and have a simple [dom-mock.js][dom-mock] script that we run before we render a new react component.
+For some components, you may need a mock DOM into which we can render the test components. For this purpose, we include [JSDOM][jsdom], and have a simple [dom-mock.js][dom-mock] script that we run before we render a new react component. However, this should be the exception rather than the rule. Most components should be tested using Enzyme's 'shallow' method which does not require a DOM mock, and isolates the rendering to the top level component. This helps assure that our tests are focused on verifying a single component and not their child components. 
 
-Also, because we use JSX syntax, we need to execute a transpilation step with [Babel][babel] when we run our tests.
+Also, because we use JSX syntax, we need to execute a transpilation step with [Babel][babel] when we run our tests. This is handled via the compiler flag inside the npm test script.  
 
 I will go over directory structure, how to write tests, and a brief overview of [Mocha][local-mocha],
 [Chai][local-chai], and [ReactTestUtils][local-test-utils] in the following sections.
