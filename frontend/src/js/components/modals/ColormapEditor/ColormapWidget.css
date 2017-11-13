@@ -1,0 +1,45 @@
+#colormap-cells-container {
+    overflow-y: scroll;
+    height: 250px;
+}
+
+.cells{
+    width: 33px;
+    height: 25px;  /* must match line height */
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 25px;  /* Must match height */
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Styles that prevent text highlight when selecting cells*/
+}
+
+@media screen and (min-height: 900px) {
+    div#colormap-cells-container {
+        height: 300px;
+    }
+}
+
+@media screen and (min-height: 950px) {
+    div#colormap-cells-container {
+        height: 350px;
+    }
+}
+
+@media screen and (min-height: 1000px) {
+    div#colormap-cells-container {
+        height: 400px;
+        overflow-y: hidden;
+    }
+    .cells{
+        width: 35px;
+    }
+}
+
+#export-modal>div.modal-dialog{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}

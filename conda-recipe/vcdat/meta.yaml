@@ -2,7 +2,7 @@ about:
   home: http://gitub.com/UV-CDAT/vcdat
 package:
   name: vcdat
-  version: "0.0.4"
+  version: "0.0.5"
 requirements:
   build:
   - python
@@ -11,11 +11,11 @@ requirements:
   run:
   - python
   - flask
-  - vcs 2.10
-  - cdms2 2.10
-  - cdutil 2.10
-  - genutil 2.10
-  - vcs-js 0.4
+  - vcs 2.12
+  - cdms2 2.12
+  - cdutil 2.12
+  - genutil 2.12
+  - vcs-js
 source:
   git_rev: v0.0.4
   git_url: git://github.com/UV-CDAT/vcdat.git

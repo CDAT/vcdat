@@ -292,10 +292,43 @@ li.tree-leaf {
     background-color: white;
 }
 
-/* input {
-    width: 90%;
+/* Responsive styling for the template editor*/
+.template-editor-tab-content {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 200px;
 }
 
-select {
-    width: 93%;
-} */
+@media screen and (min-height: 920px) {
+    .template-editor-tab-content {
+        height: 250px;
+    }
+}
+
+@media screen and (min-height: 970px) {
+    .template-editor-tab-content {
+        height: 300px;
+    }
+}
+
+@media screen and (min-height: 1020px) {
+    .template-editor-tab-content {
+        height: 350px;
+    }
+}
+
+@media screen and (min-height: 1070px) {
+    .template-editor-tab-content {
+        height: 400px;
+    }
+}
+
+@media screen and (min-height: 1120px) {
+    .template-editor-tab-content {
+        height: 450px;
+    }
+}
+
+.colormap-apply-menu.dropdown-menu {
+    background-color: #fff /* Reset the background color set by another rule */
+}
