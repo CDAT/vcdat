@@ -15,7 +15,7 @@ requirements:
   - cdms2 2.10
   - cdutil 2.10
   - genutil 2.10
-  - vcs-js
+  - vcs-js 0.4
 source:
   git_rev: v0.0.4
   git_url: git://github.com/UV-CDAT/vcdat.git
