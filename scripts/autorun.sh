@@ -1,6 +1,8 @@
 #!/bin/bash
 
-CONDA_ENV="nightly"
+CONDA_ENV=${CONDA_ENV:-nightly}
+VCSJS_PORT=${VCSJS_PORT:-8888}
+VCDAT_PORT=${VCDAT_PORT:-5000}
 
 curpath=`pwd`
 
@@ -15,9 +17,9 @@ else
     source activate ${CONDA_ENV}
 fi
 
-vcs-server -p 8888 &
+vcs-server -p ${VCSJS_PORT} &
 vcs_pid=$!
-python $curpath/backend/vcdat/app.py --vcs_server="localhost:8888" &
+python $curpath/backend/vcdat/app.py --vcs_server="localhost:${VCSJS_PORT}" --port=${VCDAT_PORT} &
 be_pid=$!
 cd frontend
 $(npm bin)/webpack --progress --colors --watch &

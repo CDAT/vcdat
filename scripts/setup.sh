@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONDA_ENV="nightly"
+CONDA_ENV=${CONDA_ENV:-nightly}
 
 CERT=$1
 if [ "-"$CERT"-" == "-auto-" ]; then
@@ -47,7 +47,7 @@ if [[ $current_dir == */vcdat* ]]; then
     conda env remove -y -n ${CONDA_ENV}
 
     # Create a new one
-    conda create -y -n nightly uvcdat -c uvcdat/label/nightly -c conda-forge -c uvcdat --file $current_dir/backend/requirements.txt
+    conda create -y -n ${CONDA_ENV} uvcdat -c uvcdat/label/nightly -c conda-forge -c uvcdat --file $current_dir/backend/requirements.txt
 
     source activate ${CONDA_ENV}
     cd frontend
