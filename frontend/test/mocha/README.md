@@ -54,13 +54,12 @@ If you want to run it by hand, make sure to change the NODE_ENV to test mode, an
 
 ### vCDAT's testing stack
 
-We use [Mocha][mocha], [Chai][chai], [ReactTestUtils][test-utils], and [JSDom][jsdom] to test our application.
-We will also possibly include other tools, such as [Airbnb's Enzyme][enzyme] in the future.
+We use [Mocha][mocha], [Chai][chai], [ReactTestUtils][test-utils], [Airbnb's Enzyme][enzyme], and [JSDom][jsdom] to test our application.
 
 As a React app, vCDAT has some things that need to be set up in order to get up and running with tests.
-To test components, we need a mock DOM into which we can render the test components. For this purpose, we include [JSDOM][jsdom], and have a simple [dom-mock.js][dom-mock] script that we run before we render a new react component.
+For some components, you may need a mock DOM into which we can render the test components. For this purpose, we include [JSDOM][jsdom], and have a simple [dom-mock.js][dom-mock] script that we run before we render a new react component. However, this should be the exception rather than the rule. Most components should be tested using Enzyme's 'shallow' method which does not require a DOM mock, and isolates the rendering to the top level component. This helps assure that our tests are focused on verifying a single component and not their child components. 
 
-Also, because we use JSX syntax, we need to execute a transpilation step with [Babel][babel] when we run our tests.
+Also, because we use JSX syntax, we need to execute a transpilation step with [Babel][babel] when we run our tests. This is handled via the compiler flag inside the npm test script.  
 
 I will go over directory structure, how to write tests, and a brief overview of [Mocha][local-mocha],
 [Chai][local-chai], and [ReactTestUtils][local-test-utils] in the following sections.
@@ -111,6 +110,13 @@ After we have all the correct libraries and files imported, there are three esse
 After that, all that's left to do is use [TestUtils](#testutils) to render the React component in the DOM,
 pull that component out of the DOM, and test it with an assert.
 When we run ```npm test```, mocha will let us know if it gets any errors while running our test.
+
+#### Debugging Tests
+To run a debugger on your tests, follow these steps:
+1. Add 'debugger' on a line by itself where you would like execution to pause.
+2. Run: ```npm run debug_tests```
+3. Visit: chrome://inspect/#devices and look under "Remote Target" for the instance of mocha to inspect.
+4. Click Chrome's "Resume Execution" button to allow mocha to execute tests until your own breakpoints. 
 
 ### Testing Tools
 

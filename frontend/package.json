@@ -38,15 +38,17 @@
     "eslint": "3.2.2",
     "eslint-plugin-react": "^6.1.0",
     "html-file-cov": "^1.0.0",
+    "ignore-styles": "^5.0.1",
     "isparta": "^4.0.0",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^0.2.0",
     "jsdom": "^9.4.5",
-    "mocha": "^3.0.2",
+    "mocha": "^3.5.3",
     "mocha-jsdom": "^1.1.0",
     "node-sass": "^4.5.3",
     "nyc": "^8.3.0",
     "react-addons-test-utils": "^15.3.1",
+    "redux-test-utils": "^0.2.1",
     "sass-loader": "^6.0.6",
     "sinon": "^1.17.5",
     "style-loader": "^0.18.2",
@@ -64,7 +66,7 @@
   },
   "nyc": {
     "sourceMap": false,
-    "instrument": false,
+    "instrument": true,
     "include": [
       "src/**/*.js*"
     ],
@@ -75,8 +77,9 @@
   "scripts": {
     "build": "webpack --colors --progress",
     "release": "webpack -p --output-path=../backend/vcdat/resources && cp src/index.html ../backend/vcdat/resources",
-    "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text npm test",
-    "test": "mocha test/mocha --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive",
+    "coverage": "NODE_ENV=test nyc --extension .jsx --reporter=lcov --reporter=text npm test",
+    "test": "mocha test/mocha --require ignore-styles --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive",
+    "debug_tests": "mocha test/mocha --require ignore-styles --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive --inspect --debug-brk",
     "lint": "$(npm bin)/eslint -f table src/*.js* src/*/*.js* src/*/*/*.js* src/*/*/*/*.js*",
     "lint_silent": "npm run lint > lint.out; vim lint.out"
   },
