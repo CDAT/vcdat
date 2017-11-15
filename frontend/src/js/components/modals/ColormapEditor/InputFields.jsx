@@ -8,6 +8,14 @@ class InputFields extends Component{
         super(props);
     }
 
+    static get propTypes() { 
+        return {
+            onChange: React.PropTypes.func,
+            rgb: React.PropTypes.object.isRequired,
+            hsv: React.PropTypes.object.isRequired,
+            hex: React.PropTypes.string.isRequired,
+        }; 
+    }
     handleChange(val, e){
         if (val['Hex']) {
           colorUtility.isValidHex(val['Hex']) && this.props.onChange({
@@ -119,10 +127,6 @@ class InputFields extends Component{
             </div>
         )
     }
-}
-
-InputFields.PropTypes = {
-    onChange: React.PropTypes.func,
 }
 
 export default InputFields;

@@ -6,8 +6,20 @@ var React = require('react');
 import InputFields from '../../../../../src/js/components/modals/ColormapEditor/InputFields.jsx'
 import { shallow } from 'enzyme'
 
-
-const input_fields = shallow(<InputFields/>)
+var props = {
+    hsv: {
+        h: 280,
+        s: 0,
+        v: 201
+    },
+    rgb: {
+        r: 51,
+        g: 51,
+        b: 51
+    },
+    hex: "#333333"
+}
+const input_fields = shallow(<InputFields {...props}/>) // has required props, remember to pass them
 
 describe('InputFieldsTest.jsx', function() {
     it('renders without exploding', () => {

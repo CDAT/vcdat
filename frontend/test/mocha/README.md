@@ -111,6 +111,13 @@ After that, all that's left to do is use [TestUtils](#testutils) to render the R
 pull that component out of the DOM, and test it with an assert.
 When we run ```npm test```, mocha will let us know if it gets any errors while running our test.
 
+#### Debugging Tests
+To run a debugger on your tests, follow these steps:
+1. Add 'debugger' on a line by itself where you would like execution to pause.
+2. Run: ```npm run debug_tests```
+3. Visit: chrome://inspect/#devices and look under "Remote Target" for the instance of mocha to inspect.
+4. Click Chrome's "Resume Execution" button to allow mocha to execute tests until your own breakpoints. 
+
 ### Testing Tools
 
 #### Mocha

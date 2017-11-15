@@ -2,9 +2,8 @@
 var chai = require('chai');
 var expect = chai.expect;
 var React = require('react');
-import { AddEditRemoveNav } from '../../../src/js/components/AddEditRemoveNavTest.jsx';
 import { shallow } from 'enzyme'
-
+import AddEditRemoveNav from '../../../src/js/components/AddEditRemoveNav.jsx';
 
 describe('AddEditRemoveNavTest.jsx', function() {
     it('renders without exploding', function() {
