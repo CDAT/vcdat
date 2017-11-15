@@ -107,36 +107,37 @@ class ColormapWidget extends Component {
     handleDeleteColormap(){
         // TODO: If i use a colormap then delete it what happens?
         let nameToDelete = this.state.selectedColormapName
-        try{
-            if(vcs){ // eslint-disable-line no-undef
-                vcs.deleteColormap(nameToDelete).then((data)=>{console.log(data)}) // eslint-disable-line no-undef
+        if(nameToDelete !== "default"){
+            try{
+                if(vcs){ // eslint-disable-line no-undef
+                    vcs.deleteColormap(nameToDelete).then((data)=>{console.log(data)}) // eslint-disable-line no-undef
+                }
             }
-        }
-        catch(e){
-            if(e instanceof ReferenceError){
-                console.warn("VCS is not defined. Is the VCS Server running?")
+            catch(e){
+                if(e instanceof ReferenceError){
+                    console.warn("VCS is not defined. Is the VCS Server running?")
+                }
             }
+            let colormapNames = Object.keys(this.props.colormaps).sort(function (a, b) {
+                return a.toLowerCase().localeCompare(b.toLowerCase())
+            })
+            let index = colormapNames.indexOf(nameToDelete)
+            if(index == colormapNames.length - 1){ // if the colormap to delete is the last in the list
+                index = colormapNames.length - 2; // select the colormap before it
+            }
+            else{
+                index++ // else, select the colormap below it
+            }
+            let name = colormapNames[index]
+            let currentColormap = _.map(this.props.colormaps[name], _.clone())
+            this.props.deleteColormap(nameToDelete)
+            setTimeout(()=>{
+                this.setState({
+                    selectedColormapName: name,
+                    currentColormap: currentColormap,
+                })  
+            }, 0)
         }
-        let colormapNames = Object.keys(this.props.colormaps).sort(function (a, b) {
-            return a.toLowerCase().localeCompare(b.toLowerCase())
-        })
-        let index = colormapNames.indexOf(nameToDelete)
-        if(index == colormapNames.length - 1){ // if the colormap to delete is the last in the list
-            index = colormapNames.length - 2; // select the colormap before it
-        }
-        else{
-            index++ // else, select the colormap below it
-        }
-        let name = colormapNames[index]
-        let currentColormap = _.map(this.props.colormaps[name], _.clone())
-        this.props.deleteColormap(nameToDelete)
-        setTimeout(()=>{
-            this.setState({
-                selectedColormapName: name,
-                currentColormap: currentColormap,
-            })  
-        }, 0)
-        
     }
 
     blendColors(){
