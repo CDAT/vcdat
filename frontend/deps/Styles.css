@@ -181,6 +181,9 @@ button:focus {
     margin: 1px 0 0 10px;
     font-size: 18px;
 }
+.cell{
+    border: 1px solid #cecece;
+}
 .plotter {
     display:flex;
     color: black;
