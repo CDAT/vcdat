@@ -165,7 +165,7 @@ class CachedFiles extends Component {
     render() {
 
         return (
-            <Modal className='cached-files' bsSize="large" show={this.props.show} onHide={this.tryClose}>
+            <Modal className='cached-files' bsSize="large" show={this.props.show} onHide={this.props.onTryClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Load Variable</Modal.Title>
                 </Modal.Header>
