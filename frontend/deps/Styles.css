@@ -242,16 +242,30 @@ button:focus {
     display: none;
 }
 
-.tree>ul {
-    padding-left:2em;
-    cursor: pointer;
-}
-
 .tree {
     color: black;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+    padding-left: 1em;
+}
+
+li.tree-node:before{
+    content: "\e080";
+    font-family: 'Glyphicons Halflings';
+    font-size: 9px;
+    float: left;
+    margin-top: 4px;
+    margin-left: -17px;
+    color: #CCCCCC;
+}
+
+li.tree-node.disclosed:before{
+    content: "\e114";
+}
+
+#temp-list>li{
+    cursor: pointer;
 }
 
 .tree li.tree-leaf.active, #temp-list>li.active {
@@ -263,11 +277,13 @@ button:focus {
 }
 
 .tree li {
+    display: block;
     padding: .1em .25em;
 }
 
 li.tree-leaf {
     list-style-type: none;
+    cursor: pointer;
 }
 
 .tree-view {
