@@ -3,33 +3,58 @@ var chai = require('chai');
 var expect = chai.expect;
 var React = require('react');
 
-import ColormapWidget from '../../../../../src/js/components/modals/ColormapEditor/ColormapWidget.jsx'
-import { shallow } from 'enzyme'
-import { createMockStore } from 'redux-test-utils'
+import {PureColormapWidget} from '../../../../../src/js/components/modals/ColormapEditor/ColormapWidget.jsx'
+import { mount } from 'enzyme'
 
-const state = {
-    present: {
-        colormaps: {
-            "default":[
-                [100, 100, 100, 100],
-                [70, 70, 70, 100],
-                [40, 40, 40, 100],
-            ]
-        },
-        sheets_model: {
-            sheets: [
-                {row_count: 1, col_count: 1}
-            ],
-            cur_sheet_index: 0
-        },
-    }
+const props = {
+    colormaps: {
+        "viridis":[
+            [100, 100, 100, 100], // 3 cells total
+            [70, 70, 70, 100],
+            [40, 40, 40, 100],
+        ]
+    },
+    sheets_model: {
+        sheets: [
+            {row_count: 1, col_count: 1}
+        ],
+        cur_sheet_index: 0
+    },
+    onChange: function(){return}
 }
 
-const store = createMockStore(state)
-const colormap_widget = shallow(<ColormapWidget store={store}/>)
+
+const colormap_widget = mount(<PureColormapWidget {...props}/>)
 
 describe('ColormapWidgetTest.jsx', function() {
+
     it('renders without exploding', () => {
         expect(colormap_widget).to.have.lengthOf(1);
     });
+    
+    it('renders the correct number of cells', () => {
+        expect(colormap_widget.find('.cells')).to.have.lengthOf(3)
+    });
+
+    it('makes a cell active when clicked', () => {
+        let click_event = {
+            target: {
+                innerText: "1"
+            }
+        }
+        colormap_widget.find('.cells').at(1).simulate("click", click_event)
+        expect(colormap_widget.state().selectedCellsStart).to.equal(1)
+        expect(colormap_widget.state().selectedCellsEnd).to.equal(1)
+
+        click_event.target.innerText = "2"
+        colormap_widget.find('.cells').at(2).simulate("click", click_event)
+        expect(colormap_widget.state().selectedCellsStart).to.equal(2)
+        expect(colormap_widget.state().selectedCellsEnd).to.equal(2)
+
+        click_event.target.innerText = "2"
+        colormap_widget.find('.cells').at(2).simulate("click", click_event)
+        expect(colormap_widget.state().selectedCellsStart).to.equal(2)
+        expect(colormap_widget.state().selectedCellsEnd).to.equal(2)
+    });
 });
+

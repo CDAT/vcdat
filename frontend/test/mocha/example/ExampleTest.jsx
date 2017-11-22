@@ -15,13 +15,13 @@ var ExampleComponent = require('./Example.jsx').default;
 //  This allows us to create testing suites, and pick them out easily in the reporter when we run tests
 //  Any describe() block
 describe('ExampleTest.jsx : An example React component test', function() {
-    // we'd like to check the window to make sure it's there
-    jsdom({ skipWindowCheck: false });
+    // We no longer check for the window since it is set in the mocha arguments '-r jsdom-global/register'
+    // jsdom({ skipWindowCheck: false });
 
-    // Build a Test DOM, so we can render React components
-    before(function(){
-        dom_mock('<html><body></body></html>');
-    });
+    // We also no longer need to build the test dom in every test file. 
+    // before(function(){
+    //     dom_mock('<html><body></body></html>');
+    // });
 
     // Mocha's it() specifies a test case.
     //  The first argument should be a string that tells what the test does.

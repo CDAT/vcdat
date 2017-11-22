@@ -311,3 +311,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(ColormapWidget)
+export {ColormapWidget as PureColormapWidget}
