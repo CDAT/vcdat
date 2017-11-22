@@ -50,11 +50,41 @@ describe('ColormapWidgetTest.jsx', function() {
         colormap_widget.find('.cells').at(2).simulate("click", click_event)
         expect(colormap_widget.state().selectedCellsStart).to.equal(2)
         expect(colormap_widget.state().selectedCellsEnd).to.equal(2)
+    });
 
-        click_event.target.innerText = "2"
+    it('makes multiple cells active when shift clicked', () => {
+        let click_event = {
+            target: {
+                innerText: "2"
+            },
+            shiftKey: false,
+        }
         colormap_widget.find('.cells').at(2).simulate("click", click_event)
         expect(colormap_widget.state().selectedCellsStart).to.equal(2)
         expect(colormap_widget.state().selectedCellsEnd).to.equal(2)
+
+        click_event.target.innerText = "0"
+        click_event.shiftKey = true;
+        colormap_widget.find('.cells').at(0).simulate("click", click_event)
+        expect(colormap_widget.state().selectedCellsStart).to.equal(2)
+        expect(colormap_widget.state().selectedCellsEnd).to.equal(0)
+    })
+
+    it('does not change active cells if cell text is NaN', () => {
+        let click_event = {
+            target: {
+                innerText: "0"
+            }
+        }
+        colormap_widget.find('.cells').at(0).simulate("click", click_event)
+        expect(colormap_widget.state().selectedCellsStart).to.equal(0)
+        expect(colormap_widget.state().selectedCellsEnd).to.equal(0)
+
+        click_event.target.innerText = "not_a_number"
+        colormap_widget.find('.cells').at(2).simulate("click", click_event)
+        expect(colormap_widget.state().selectedCellsStart).to.equal(0)
+        expect(colormap_widget.state().selectedCellsEnd).to.equal(0)
     });
+
 });
 

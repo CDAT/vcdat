@@ -28,18 +28,19 @@
     "babel-core": "^6.4.0",
     "babel-loader": "^6.2.1",
     "babel-plugin-__coverage__": "^11.0.0",
+    "babel-plugin-istanbul": "^4.1.5",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.3.13",
-    "babel-register": "^6.14.0",
+    "babel-register": "^6.26.0",
     "chai": "^3.5.0",
+    "cross-env": "^5.1.1",
     "css-loader": "^0.28.4",
     "enzyme": "^2.4.1",
     "eslint": "3.2.2",
     "eslint-plugin-react": "^6.1.0",
     "html-file-cov": "^1.0.0",
     "ignore-styles": "^5.0.1",
-    "isparta": "^4.0.0",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^0.2.0",
     "jsdom": "^11.4.0",
@@ -67,20 +68,22 @@
   },
   "nyc": {
     "sourceMap": false,
-    "instrument": true,
+    "instrument": false,
     "include": [
       "src/**/*.js*"
     ],
     "require": [
-      "babel-register"
+      "babel-register",
+      "ignore-styles",
+      "jsdom-global/register"
     ]
   },
   "scripts": {
     "build": "webpack --colors --progress",
     "release": "webpack -p --output-path=../backend/vcdat/resources && cp src/index.html ../backend/vcdat/resources",
-    "coverage": "NODE_ENV=test nyc --extension .jsx --reporter=lcov --reporter=text npm test",
-    "test": "mocha test/mocha --require ignore-styles --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive -r jsdom-global/register",
-    "debug_tests": "mocha test/mocha --require ignore-styles --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive -r jsdom-global/register --inspect --debug-brk",
+    "coverage": "cross-env NODE_ENV=test nyc --extension .jsx --reporter=lcov --reporter=text npm test",
+    "test": "mocha test/mocha --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-register --recursive",
+    "debug_tests": "mocha test/mocha --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive --inspect --debug-brk",
     "lint": "$(npm bin)/eslint -f table src/*.js* src/*/*.js* src/*/*/*.js* src/*/*/*/*.js*",
     "lint_silent": "npm run lint > lint.out; vim lint.out"
   },
