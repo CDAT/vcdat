@@ -26,5 +26,5 @@ python ./prep_for_build.py
 echo "Building now"
 conda build -c conda-forge -c uvcdat $PKG_NAME
 echo "Uploading"
-anaconda -t $CONDA_UPLOAD_TOKEN upload -u $USER -l nightly $CONDA_BLD_PATH/$OS/$PKG_NAME-*`date +%Y`*-py27_0.tar.bz2 --force
+anaconda -t $CONDA_UPLOAD_TOKEN upload -u $USER -l nightly $CONDA_BLD_PATH/$OS/$PKG_NAME-*`date +%Y`*.tar.bz2 --force
 
