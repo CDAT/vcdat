@@ -41,8 +41,6 @@
     "eslint-plugin-react": "^6.1.0",
     "html-file-cov": "^1.0.0",
     "ignore-styles": "^5.0.1",
-    "istanbul": "^0.4.5",
-    "istanbul-instrumenter-loader": "^0.2.0",
     "jsdom": "^11.4.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^3.5.3",
@@ -83,7 +81,7 @@
     "release": "webpack -p --output-path=../backend/vcdat/resources && cp src/index.html ../backend/vcdat/resources",
     "coverage": "cross-env NODE_ENV=test nyc --extension .jsx --reporter=lcov --reporter=text npm test",
     "test": "mocha test/mocha --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-register --recursive",
-    "debug_tests": "mocha test/mocha --grep '/.*Test.js[x]{0,1}/' --compilers jsx:babel-core/register --recursive --inspect --debug-brk",
+    "debug_tests": "mocha test/mocha --grep '/.*Test.js[x]{0,1}/' --require ignore-styles --require jsdom-global/register --compilers jsx:babel-core/register --recursive --inspect --debug-brk",
     "lint": "$(npm bin)/eslint -f table src/*.js* src/*/*.js* src/*/*/*.js* src/*/*/*/*.js*",
     "lint_silent": "npm run lint > lint.out; vim lint.out"
   },

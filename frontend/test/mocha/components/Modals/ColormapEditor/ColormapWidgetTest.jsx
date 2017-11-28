@@ -86,5 +86,38 @@ describe('ColormapWidgetTest.jsx', function() {
         expect(colormap_widget.state().selectedCellsEnd).to.equal(0)
     });
 
+    it('Cells respond to color changes in props appropriately', () => {
+        var first_props = {
+            color: {
+                hex: "#ffffff",
+                hsl: {h: 0, s: 0, l: 1, a: 1},
+                hsv: {h: 0, s: 0, v: 1, a: 1},
+                oldHue: 0,
+                rgb: {r: 255, g: 255, b: 255, a: 1},
+                source: undefined
+            }
+        }
+        var second_props = {
+            color:{
+                hex: "#000000",
+                hsl: {h: 6.162162162162163, s: 0, l: 0.6, a: 1},
+                hsv: {h: 6.162162162162163, s: 0, v: 0.6, a: 1},
+                oldHue: 6.162162162162163,
+                rgb: {r: 0, g: 0, b: 0, a: 1},
+                source: undefined
+            }
+        }
+        colormap_widget.setProps(first_props)
+        // We now check that the active cell (cell 0) has not changed across it's rgb values
+        // We ignore the first set of props so that the first cell does not change when the colormap first opens
+        expect(colormap_widget.state().currentColormap[0][0]).to.equal(100)
+        expect(colormap_widget.state().currentColormap[0][1]).to.equal(100)
+        expect(colormap_widget.state().currentColormap[0][2]).to.equal(100)
+
+        colormap_widget.setProps(second_props)
+        expect(colormap_widget.state().currentColormap[0][0]).to.equal(0)
+        expect(colormap_widget.state().currentColormap[0][1]).to.equal(0)
+        expect(colormap_widget.state().currentColormap[0][2]).to.equal(0)
+    });
 });
 

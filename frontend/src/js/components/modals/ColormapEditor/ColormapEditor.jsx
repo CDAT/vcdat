@@ -170,3 +170,4 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps)(ColormapEditor);
+export {ColormapEditor as PureColormapEditor}
