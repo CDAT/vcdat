@@ -17,14 +17,17 @@ function cleanPath(path) {
     return `/${path.split('/').filter(segment => segment).join('/')}`;
 }
 
+const HISTORY_KEY = "variable_history_files"
+
 class CachedFiles extends Component {
     constructor(props) {
         super(props);
+        let history_files = JSON.parse(localStorage.getItem(HISTORY_KEY))
         this.state = {
             showFileExplorer: false,
             showRedefineVariableModal: false,
             selectedFile: '',
-            historyFiles: [],
+            historyFiles: history_files ? history_files : [], // load files from storage if possible, or set to empty
             variablesAxes: null,
             selectedVariable: null,
             selectedVariableName: '',
@@ -143,6 +146,7 @@ class CachedFiles extends Component {
             var historyFiles = [file, ...this.state.historyFiles.filter(historyFile => {
                 return historyFile.path !== file.path || historyFile.name !== file.name;
             })];
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
             this.setState({
                 variablesAxes,
                 selectedFile: file,
