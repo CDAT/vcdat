@@ -12,6 +12,11 @@ const props = {
             [100, 100, 100, 100], // 3 cells total
             [70, 70, 70, 100],
             [40, 40, 40, 100],
+        ],
+        "testSelect": [
+            [0, 0, 0, 100],
+            [70, 70, 70, 100],
+            [100, 100, 100, 100],
         ]
     },
     sheets_model: {
@@ -119,5 +124,35 @@ describe('ColormapWidgetTest.jsx', function() {
         expect(colormap_widget.state().currentColormap[0][1]).to.equal(0)
         expect(colormap_widget.state().currentColormap[0][2]).to.equal(0)
     });
+
+    it('loads the selected colormap', () => {
+        let change_event = {
+            target: {
+                value: "testSelect"
+            }
+        }
+        colormap_widget.find('select.form-control').at(0).simulate("change", change_event)
+        expect(colormap_widget.state().currentColormap[0][0]).to.equal(0) // first cell red should be 0
+        expect(colormap_widget.state().currentColormap[1][0]).to.equal(70) // second cell red should be 70
+        expect(colormap_widget.state().currentColormap[2][0]).to.equal(100) // third cell red should be 100
+    });
+
+    it('blends a colormap properly', () => {
+        colormap_widget.setState({
+            selectedCellsStart: 0,
+            selectedCellsEnd: 2
+        })
+        colormap_widget.instance().blendColors()
+        expect(colormap_widget.state().currentColormap[0][0]).to.equal(0) // first cell red should be 0
+        expect(colormap_widget.state().currentColormap[0][1]).to.equal(0) // first cell green should be 0
+        expect(colormap_widget.state().currentColormap[0][2]).to.equal(0) // first cell blue should be 0
+        expect(colormap_widget.state().currentColormap[1][0]).to.equal(50) // second cell red should be 70
+        expect(colormap_widget.state().currentColormap[1][1]).to.equal(50) // second cell green should be 70
+        expect(colormap_widget.state().currentColormap[1][2]).to.equal(50) // second cell blue should be 70
+        expect(colormap_widget.state().currentColormap[2][0]).to.equal(100) // third cell red should be 100
+        expect(colormap_widget.state().currentColormap[2][1]).to.equal(100) // third cell green should be 100
+        expect(colormap_widget.state().currentColormap[2][2]).to.equal(100) // third cell blue should be 100
+    });
+
 });
 
