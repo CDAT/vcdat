@@ -50,7 +50,7 @@
     "react-addons-test-utils": "^15.3.1",
     "redux-test-utils": "^0.2.1",
     "sass-loader": "^6.0.6",
-    "sinon": "^1.17.5",
+    "sinon": "^4.1.2",
     "style-loader": "^0.18.2",
     "webpack": "^2.7.0"
   },

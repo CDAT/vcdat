@@ -5,6 +5,7 @@ var React = require('react');
 
 import {PureColormapWidget} from '../../../../../src/js/components/modals/ColormapEditor/ColormapWidget.jsx'
 import { mount } from 'enzyme'
+import sinon from 'sinon'
 
 const props = {
     colormaps: {
@@ -25,7 +26,8 @@ const props = {
         ],
         cur_sheet_index: 0
     },
-    onChange: function(){return}
+    onChange: function(){return},
+    deleteColormap: function(){return}
 }
 
 
@@ -143,16 +145,38 @@ describe('ColormapWidgetTest.jsx', function() {
             selectedCellsEnd: 2
         })
         colormap_widget.instance().blendColors()
-        expect(colormap_widget.state().currentColormap[0][0]).to.equal(0) // first cell red should be 0
-        expect(colormap_widget.state().currentColormap[0][1]).to.equal(0) // first cell green should be 0
-        expect(colormap_widget.state().currentColormap[0][2]).to.equal(0) // first cell blue should be 0
-        expect(colormap_widget.state().currentColormap[1][0]).to.equal(50) // second cell red should be 70
-        expect(colormap_widget.state().currentColormap[1][1]).to.equal(50) // second cell green should be 70
-        expect(colormap_widget.state().currentColormap[1][2]).to.equal(50) // second cell blue should be 70
-        expect(colormap_widget.state().currentColormap[2][0]).to.equal(100) // third cell red should be 100
-        expect(colormap_widget.state().currentColormap[2][1]).to.equal(100) // third cell green should be 100
-        expect(colormap_widget.state().currentColormap[2][2]).to.equal(100) // third cell blue should be 100
+        let blended_values = [0, 50, 100]
+        for(let cell = 0; cell < 3; cell++){
+            for(let color_index = 0; color_index < 3; color_index++){
+                expect(colormap_widget.state().currentColormap[cell][color_index]).to.equal(blended_values[cell])
+            }
+        }
     });
 
+    it('resets a colormap properly', () => {
+        colormap_widget.instance().resetColormap("testSelect")
+        for(let cell = 0; cell < 3; cell++){
+            for(let color_index = 0; color_index < 3; color_index++){
+                expect(colormap_widget.state().currentColormap[cell][color_index]).to.equal(props.colormaps.testSelect[cell][color_index])
+            }
+        }
+    });
+
+    it('deletes a colormap properly', () => {
+        let clock = sinon.useFakeTimers() // replace setTimout with a fake version that can be manipulated/ran synchronously
+        let warn = console.warn
+        console.warn = function(){return} // disable console.warn to prevent unnecessary warnings about vcs being missing
+        colormap_widget.instance().handleColormapSelect("testSelect")
+        colormap_widget.instance().handleDeleteColormap()
+        clock.runAll() // force all setTimeout calls to process  
+        expect(colormap_widget.state().selectedColormapName).to.equal("viridis") // since it is the only colormap left, viridis should be selected
+        for(let cell = 0; cell < 3; cell++){
+            for(let color_index = 0; color_index < 3; color_index++){
+                expect(colormap_widget.state().currentColormap[cell][color_index]).to.equal(props.colormaps.viridis[cell][color_index])
+            }
+        }
+        clock.restore()
+        console.warn = warn // restore console.warn
+    });
 });
 
