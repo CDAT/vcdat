@@ -18,16 +18,27 @@ function cleanPath(path) {
 }
 
 const HISTORY_KEY = "variable_history_files"
+const BOOKMARK_KEY = "variable_bookmark_files"
 
 class CachedFiles extends Component {
     constructor(props) {
         super(props);
         let history_files = JSON.parse(localStorage.getItem(HISTORY_KEY))
+        let bookmark_files = JSON.parse(localStorage.getItem(BOOKMARK_KEY))
+        if (!Array.isArray(history_files)){
+            history_files = []
+        }
+        if (!Array.isArray(bookmark_files)){
+            bookmark_files = []
+        }
         this.state = {
             showFileExplorer: false,
             showRedefineVariableModal: false,
             selectedFile: '',
-            historyFiles: history_files ? history_files : [], // load files from storage if possible, or set to empty
+            historyFiles: history_files,
+            bookmarkFiles: bookmark_files,
+            showBookmarkZone: false,
+            showBookmarkZoneSuccess: false,
             variablesAxes: null,
             selectedVariable: null,
             selectedVariableName: '',
@@ -162,12 +173,49 @@ class CachedFiles extends Component {
             this.state.dimension.find(dimension => dimension.axisName === axisName).values = values;
         }
         else {
-            this.state.dimension.values = values;;
+            this.state.dimension.values = values;
         }
     }
 
-    render() {
+    handleDragStart(event, file){
+        let data = _.assign({}, file)
+        event.dataTransfer.setData('text', JSON.stringify(data)); // datatype must be text/plain due to chrome bug
+        
+        this.setState({showBookmarkZone: true})
+    }
 
+    handleDragEnter(){
+        this.setState({showBookmarkZoneSuccess: true})
+    }
+
+    handleDragLeave(){
+        this.setState({showBookmarkZoneSuccess: false})
+    }
+
+    handleDragOver(event){
+        event.preventDefault()
+        event.stopPropagation() // Stupid drag and drop api issue
+    }
+
+    handleDrop(event){
+        try {
+            let file = JSON.parse(event.dataTransfer.getData('text'));
+            let bookmarks = this.state.bookmarkFiles.slice()
+            bookmarks.push(file)
+            this.setState({bookmarkFiles: bookmarks, showBookmarkZone: false, showBookmarkZoneSuccess: false})
+        } catch (e) {
+            this.setState({showBookmarkZone: false, showBookmarkZoneSuccess: false})
+            console.log(e)
+            return;
+        }
+    }
+
+    handleDragEnd(){
+        this.setState({showBookmarkZoneSuccess: false, showBookmarkZone: false})
+    }
+
+    render() {
+        let bookmarkStyle = this.state.showBookmarkZoneSuccess ? "#d4edda" : this.state.showBookmarkZone ? "#d1ecf1" : "#fff"
         return (
             <Modal className='cached-files' bsSize="large" show={this.props.show} onHide={this.props.onTryClose}>
                 <Modal.Header closeButton>
@@ -215,19 +263,48 @@ class CachedFiles extends Component {
                             <Col sm={9}>
                                 <FormControl className="history" componentClass="div">
                                     {this.state.historyFiles.map((file, i) => {
-                                        return <div className="file" key={i} onClick={(e) => this.handleFileSelected(file)}>{cleanPath(file.path + '/' + file.name)}</div>;
+                                        return (
+                                            <div 
+                                                className="file"
+                                                key={i}
+                                                draggable="true"
+                                                onDragStart={(e) => {this.handleDragStart(e, file)}}
+                                                onDragEnd={(e) => {this.handleDragEnd(e)}}
+                                                onClick={(e) => this.handleFileSelected(file)}>
+                                                {cleanPath(file.path + '/' + file.name)}
+                                            </div>
+                                        )
                                     })}
                                 </FormControl>
                             </Col>
                         </Row>
-                        {/* <Row>
+                        <Row>
                             <Col className="text-right" sm={2}>
-                                Bookmarks(s):
+                                Bookmarks:
                             </Col>
-                            <Col sm={10}>
-                                <FormControl componentClass="textarea" />
+                            <Col sm={9}>
+                                <FormControl 
+                                    className="bookmarks"
+                                    componentClass="div"
+                                    style={{backgroundColor: bookmarkStyle}}
+                                    onDragEnter={(e) => {this.handleDragEnter(e)}}
+                                    onDragOver={(e) => {this.handleDragOver(e)}}
+                                    onDragLeave={(e) => {this.handleDragLeave(e)}}
+                                    onDrop={(e) => {this.handleDrop(e)}}
+                                    >
+                                    {this.state.bookmarkFiles.map((file, i) => {
+                                        return( 
+                                            <div
+                                                className="file" 
+                                                key={i} 
+                                                onClick={(e) => this.handleFileSelected(file)}>
+                                                {cleanPath(file.path + '/' + file.name)}
+                                            </div>
+                                        )
+                                    })}
+                                </FormControl>
                             </Col>
-                        </Row> */}
+                        </Row>
                     </div>
                     {this.state.selectedVariable &&
                         <div className="dimensions">
