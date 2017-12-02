@@ -23,14 +23,29 @@ const BOOKMARK_KEY = "variable_bookmark_files"
 class CachedFiles extends Component {
     constructor(props) {
         super(props);
-        let history_files = JSON.parse(localStorage.getItem(HISTORY_KEY))
-        let bookmark_files = JSON.parse(localStorage.getItem(BOOKMARK_KEY))
-        if (!Array.isArray(history_files)){
+        let history_files;
+        let bookmark_files;
+        try {
+             history_files = JSON.parse(localStorage.getItem(HISTORY_KEY))
+             if (!Array.isArray(history_files)){
+                history_files = []
+            }
+        }
+        catch(e){
             history_files = []
         }
-        if (!Array.isArray(bookmark_files)){
+        try{
+            bookmark_files = JSON.parse(localStorage.getItem(BOOKMARK_KEY))
+            if (!Array.isArray(bookmark_files)){
+                bookmark_files = []   
+            }
+        }
+        catch(e){
             bookmark_files = []
         }
+        
+        
+        
         this.state = {
             showFileExplorer: false,
             showRedefineVariableModal: false,
@@ -193,6 +208,7 @@ class CachedFiles extends Component {
             let file = JSON.parse(event.dataTransfer.getData('text'));
             let bookmarks = this.state.bookmarkFiles.slice()
             bookmarks.push(file)
+            localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bookmarks))
             this.setState({bookmarkFiles: bookmarks})
         } catch (e) {
             console.log(e)
