@@ -38,7 +38,6 @@ class CachedFiles extends Component {
             historyFiles: history_files,
             bookmarkFiles: bookmark_files,
             showBookmarkZone: false,
-            showBookmarkZoneSuccess: false,
             variablesAxes: null,
             selectedVariable: null,
             selectedVariableName: '',
@@ -184,14 +183,6 @@ class CachedFiles extends Component {
         this.setState({showBookmarkZone: true})
     }
 
-    handleDragEnter(){
-        this.setState({showBookmarkZoneSuccess: true})
-    }
-
-    handleDragLeave(){
-        this.setState({showBookmarkZoneSuccess: false})
-    }
-
     handleDragOver(event){
         event.preventDefault()
         event.stopPropagation() // Stupid drag and drop api issue
@@ -202,20 +193,18 @@ class CachedFiles extends Component {
             let file = JSON.parse(event.dataTransfer.getData('text'));
             let bookmarks = this.state.bookmarkFiles.slice()
             bookmarks.push(file)
-            this.setState({bookmarkFiles: bookmarks, showBookmarkZone: false, showBookmarkZoneSuccess: false})
+            this.setState({bookmarkFiles: bookmarks})
         } catch (e) {
-            this.setState({showBookmarkZone: false, showBookmarkZoneSuccess: false})
             console.log(e)
             return;
         }
     }
 
     handleDragEnd(){
-        this.setState({showBookmarkZoneSuccess: false, showBookmarkZone: false})
+        this.setState({showBookmarkZone: false})
     }
 
     render() {
-        let bookmarkStyle = this.state.showBookmarkZoneSuccess ? "#d4edda" : this.state.showBookmarkZone ? "#d1ecf1" : "#fff"
         return (
             <Modal className='cached-files' bsSize="large" show={this.props.show} onHide={this.props.onTryClose}>
                 <Modal.Header closeButton>
@@ -286,10 +275,8 @@ class CachedFiles extends Component {
                                 <FormControl 
                                     className="bookmarks"
                                     componentClass="div"
-                                    style={{backgroundColor: bookmarkStyle}}
-                                    onDragEnter={(e) => {this.handleDragEnter(e)}}
+                                    style={{backgroundColor: this.state.showBookmarkZone ? "#d1ecf1" : "#fff"}}
                                     onDragOver={(e) => {this.handleDragOver(e)}}
-                                    onDragLeave={(e) => {this.handleDragLeave(e)}}
                                     onDrop={(e) => {this.handleDrop(e)}}
                                     >
                                     {this.state.bookmarkFiles.map((file, i) => {
