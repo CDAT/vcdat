@@ -54,11 +54,11 @@
 }
 
 .cached-files {
-    .history {
+    .history, .bookmarks{
         min-height: 75px;
         max-height: 120px;
-        overflow-y: auto;
         overflow-x: hidden;
+        overflow-y: auto;
         .file {
             cursor: pointer;
             &:hover {
@@ -69,10 +69,3 @@
     }
 }
 
-.bookmarks{
-    height: auto;
-    min-height: 75px;
-    max-height: 120px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
