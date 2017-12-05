@@ -151,9 +151,9 @@ class ColormapWidget extends Component {
         }
         let startColor = this.state.currentColormap[startCell] // rgba array
         let endColor = this.state.currentColormap[endCell] // rgba array
-        let redStep = (endColor[0] - startColor[0]) / numCells
-        let greenStep = (endColor[1] - startColor[1]) / numCells
-        let blueStep = (endColor[2] - startColor[2]) / numCells
+        let redStep = (endColor[0] - startColor[0]) / (numCells+1)
+        let greenStep = (endColor[1] - startColor[1]) / (numCells+1)
+        let blueStep = (endColor[2] - startColor[2]) / (numCells+1)
         let currentCell = startCell + 1
         let blendedColormap = this.state.currentColormap.map(function(arr) {
             return arr.slice(); // copy inner array of colors
@@ -311,3 +311,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(ColormapWidget)
+export {ColormapWidget as PureColormapWidget}
