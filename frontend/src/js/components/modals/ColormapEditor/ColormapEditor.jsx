@@ -36,13 +36,17 @@ class ColormapEditor extends Component {
         this.setState({showImportExportModal: true})
     }
 
+    handleApply(row, col){
+        this.refs.widget.getWrappedInstance().applyColormap(row, col)
+    }
+
     getApplyButton(){
         if(this.props.sheet_num_rows < 2 && this.props.sheet_num_cols < 2){
             return(
                 <Button
                     id="colormap-apply-dropup"
                     style={{float: "left", marginLeft: "5px"}}
-                    onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 0)}}>
+                    onClick={() => {this.handleApply(0, 0)}}>
                     Apply
                 </Button>
             )
@@ -66,7 +70,7 @@ class ColormapEditor extends Component {
                             return <MenuItem
                                     key={index.toString()} 
                                     eventKey={index.toString()}
-                                    onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(cell.row, cell.col)}}>
+                                    onClick={() => {this.handleApply(cell.row, cell.col)}}>
                                     To Row {cell.row+1}, Col {cell.col+1}
                                     </MenuItem>
                         })
@@ -74,39 +78,29 @@ class ColormapEditor extends Component {
                     </Dropdown.Menu>
                 )
             }
-            else if(this.props.sheet_num_rows >= 2 && this.props.sheet_num_cols == 2){
-                menuItems = (
-                    <Dropdown.Menu className="colormap-apply-menu">
-                        <MenuItem eventKey="0" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 0)}}>To Top Left</MenuItem>
-                        <MenuItem eventKey="1" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 1)}}>To Top Right</MenuItem>
-                        <MenuItem eventKey="2" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(1, 0)}}>To Bottom Left</MenuItem>
-                        <MenuItem eventKey="3" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(1, 1)}}>To Bottom Right</MenuItem>
-                    </Dropdown.Menu>
-                )
-            }
             else if(this.props.sheet_num_rows == 2 && this.props.sheet_num_cols == 2){
                 menuItems = (
                     <Dropdown.Menu className="colormap-apply-menu">
-                        <MenuItem eventKey="0" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 0)}}>To Top Left</MenuItem>
-                        <MenuItem eventKey="1" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 1)}}>To Top Right</MenuItem>
-                        <MenuItem eventKey="2" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(1, 0)}}>To Bottom Left</MenuItem>
-                        <MenuItem eventKey="3" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(1, 1)}}>To Bottom Right</MenuItem>
+                        <MenuItem eventKey="0" onClick={() => {this.handleApply(0, 0)}}>To Top Left</MenuItem>
+                        <MenuItem eventKey="1" onClick={() => {this.handleApply(0, 1)}}>To Top Right</MenuItem>
+                        <MenuItem eventKey="2" onClick={() => {this.handleApply(1, 0)}}>To Bottom Left</MenuItem>
+                        <MenuItem eventKey="3" onClick={() => {this.handleApply(1, 1)}}>To Bottom Right</MenuItem>
                     </Dropdown.Menu>
                 )
             }
             else if(this.props.sheet_num_rows == 2){
                 menuItems = (
                     <Dropdown.Menu className="colormap-apply-menu">
-                        <MenuItem eventKey="0" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 0)}}>To Top</MenuItem>
-                        <MenuItem eventKey="1" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(1, 0)}}>To Bottom</MenuItem>
+                        <MenuItem eventKey="0" onClick={() => {this.handleApply(0, 0)}}>To Top</MenuItem>
+                        <MenuItem eventKey="1" onClick={() => {this.handleApply(1, 0)}}>To Bottom</MenuItem>
                     </Dropdown.Menu>
                 )
             }
             else {
                 menuItems = (
                     <Dropdown.Menu className="colormap-apply-menu">
-                        <MenuItem eventKey="0" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 0)}}>To Left</MenuItem>
-                        <MenuItem eventKey="1" onClick={() => {this.refs.widget.getWrappedInstance().applyColormap(0, 1)}}>To Right</MenuItem>
+                        <MenuItem eventKey="0" onClick={() => {this.handleApply(0, 0)}}>To Left</MenuItem>
+                        <MenuItem eventKey="1" onClick={() => {this.handleApply(0, 1)}}>To Right</MenuItem>
                     </Dropdown.Menu>
                 )
             }
