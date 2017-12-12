@@ -97,7 +97,6 @@ describe('SpinnerTest.jsx', function() {
         }
         spinner.find("InputGroup FormControl").simulate("change", event)
         sinon.assert.calledOnce(stub)
-        debugger
         sinon.assert.calledWith(stub, 1)
     });
 });
