@@ -1,28 +1,18 @@
 // Mocking window and document object:
 /* globals it, describe, beforeEach */
-var dom_mock = require('../dom-mock');
-var jsdom = require('mocha-jsdom');
 var chai = require('chai');
 var expect = chai.expect
-var assert = chai.assert;
 var React = require('react');
-var TestUtils = require('react-addons-test-utils');
-var Spinner = require('../../../src/js/components/Spinner.jsx').default;
-
-beforeEach(function(){
-    dom_mock('<html><body></body></html>');
-});
+var Spinner = require('../../../src/js/components/Spinner/Spinner.jsx').default;
+import { shallow } from 'enzyme'
 
 describe('SpinnerTest.jsx', function() {
-    jsdom({ skipWindowCheck: false });
-
-    it('Renders a div named "spinner"', function() {
+    it('renders without exploding', function() {
         var mockUpdate = ()=>{};
         var mockValue = 10;
-        var spinner = TestUtils.renderIntoDocument(
+        var spinner = shallow(
             <Spinner min='1' max='4' value={mockValue} update={mockUpdate} />
         );
-        var spinner_div = TestUtils.scryRenderedDOMComponentsWithClass(spinner, 'spinner');
-        expect(spinner_div).to.exist;
+        expect(spinner).to.have.lengthOf(1);
     });
 });

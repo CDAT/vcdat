@@ -5,11 +5,12 @@ import BaseModel from './BaseModel.js';
 class GraphicsMethodModel extends BaseModel {
 
     static reduce(state={}, action) {
+        let new_graphics_methods = {};
         switch (action.type) {
             case "INITIALIZE_GRAPHICS_METHODS_VALUES":
                 return action.graphics_methods;
             case "UPDATE_GRAPHICS_METHOD":
-                let new_graphics_methods = Object.assign({}, state)
+                new_graphics_methods = Object.assign({}, state)
                 const gm = action.graphics_method;
                 switch (gm.g_name) {
                     case "Gfb":
@@ -41,6 +42,16 @@ class GraphicsMethodModel extends BaseModel {
                         break;
                 }
                 return new_graphics_methods;
+            case "DELETE_COLORMAP":
+                new_graphics_methods = Object.assign({}, state)
+                for(let type of Object.keys(new_graphics_methods)){
+                    for(let name of Object.keys(new_graphics_methods[type])){
+                        if(action.name === new_graphics_methods[type][name].colormap){
+                            new_graphics_methods[type][name].colormap = "default"
+                        }
+                    }
+                }
+                return new_graphics_methods
             default:
                 return state
         }

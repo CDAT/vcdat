@@ -21,7 +21,7 @@ class ColormapModel extends BaseModel {
             if(vcs){ // will throw an error if vcs server is not running/unreachable. This is caught as "ReferenceError" below
                 // This code is rather hard to read, but vcs.js does not provide a 'getallcolormaps' function 
                 return new Promise((resolve, reject) => { // Configure store expects an object, rather than an array, so we wrap a promise around promise.all
-                    vcs.colormapnames().then((names) => { 
+                    vcs.getcolormapnames().then((names) => { 
                         return Promise.all(names.map((name) => { // The array of colormaps starts as an array of promises. Use promise all to wait for all of them to finish
                             return vcs.getcolormap(name).then((map) => { // for each colormap name, create an object with the name and the colormap data
                                 return {name: name, colormap: map}

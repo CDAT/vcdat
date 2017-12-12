@@ -22,9 +22,9 @@ git clone git://github.com/UV-CDAT/conda-recipes
 cd conda-recipes
 # uvcdat creates issues for build -c uvcdat confises package and channel
 ln -s ../conda vcdat
-python ./prep_for_build.py 
+python ./prep_for_build.py -l 0.0.5
 echo "Building now"
 conda build -c conda-forge -c uvcdat $PKG_NAME
 echo "Uploading"
-anaconda -t $CONDA_UPLOAD_TOKEN upload -u $USER -l nightly $CONDA_BLD_PATH/$OS/$PKG_NAME-*`date +%Y`*-py27_0.tar.bz2 --force
+anaconda -t $CONDA_UPLOAD_TOKEN upload -u $USER -l nightly $CONDA_BLD_PATH/noarch/$PKG_NAME-*`date +%Y`*.tar.bz2 --force
 

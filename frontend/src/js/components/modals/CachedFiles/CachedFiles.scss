@@ -54,9 +54,10 @@
 }
 
 .cached-files {
-    .history {
+    .history, .bookmarks{
         min-height: 75px;
         max-height: 120px;
+        overflow-x: hidden;
         overflow-y: auto;
         .file {
             cursor: pointer;
@@ -67,3 +68,4 @@
         }
     }
 }
+

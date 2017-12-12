@@ -1,52 +1,65 @@
-import React, {Component} from 'react';
-import {Tabs, Tab} from 'react-bootstrap';
-import {
-    Modal,
-    ButtonToolbar,
-    Button,
-    Row,
-    Col,
-    Glyphicon,
-    FormGroup,
-    FormControl,
-    ControlLabel,
-    InputGroup
-} from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
 import _ from 'lodash';
 import Dialog from 'react-bootstrap-dialog';
-import {DragDropContext} from 'react-dnd';
+import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import {DropTarget, DragSource} from 'react-dnd';
-import {findDOMNode} from 'react-dom';
+import { DropTarget, DragSource } from 'react-dnd';
+import { findDOMNode } from 'react-dom';
+
 import DimensionSlider from './DimensionSlider/DimensionSlider.jsx';
 import FileExplorer from '../FileExplorer/FileExplorer.jsx';
 import DragAndDropTypes from 'constants/DragAndDropTypes';
+
 import './CachedFiles.scss';
 
 function cleanPath(path) {
     return `/${path.split('/').filter(segment => segment).join('/')}`;
 }
 
+const HISTORY_KEY = "variable_history_files"
+const BOOKMARK_KEY = "variable_bookmark_files"
+
 class CachedFiles extends Component {
     constructor(props) {
         super(props);
+        let history_files;
+        let bookmark_files;
+        try {
+             history_files = JSON.parse(localStorage.getItem(HISTORY_KEY))
+             if (!Array.isArray(history_files)){
+                history_files = []
+            }
+        }
+        catch(e){
+            history_files = []
+        }
+        try{
+            bookmark_files = JSON.parse(localStorage.getItem(BOOKMARK_KEY))
+            if (!Array.isArray(bookmark_files)){
+                bookmark_files = []   
+            }
+        }
+        catch(e){
+            bookmark_files = []
+        }
+        
+        
+        
         this.state = {
             showFileExplorer: false,
             showRedefineVariableModal: false,
             selectedFile: '',
-            historyFiles: [],
+            historyFiles: history_files,
+            bookmarkFiles: bookmark_files,
+            showBookmarkZone: false,
             variablesAxes: null,
             selectedVariable: null,
             selectedVariableName: '',
             redefinedVariableName: '',
             temporaryRedefinedVariableName: '',
-            dimension: null,
-            key: 1
+            dimension: null
         }
-    }
-
-    handleSelect(key) {
-        this.setState({key});
     }
 
     get selectedFilePath() {
@@ -67,13 +80,13 @@ class CachedFiles extends Component {
                 // it's a variablevar 
                 selectedVariable = this.state.variablesAxes[0][this.state.selectedVariableName];
                 dimension = selectedVariable.axisList.map((axisName) => {
-                    return {axisName};
+                    return { axisName };
                 })
             }
             else {
                 // it's a axis
                 selectedVariable = this.state.variablesAxes[1][this.state.selectedVariableName];
-                dimension = {axisName: this.state.selectedVariableName};
+                dimension = { axisName: this.state.selectedVariableName };
             }
             this.setState({
                 selectedVariable,
@@ -96,7 +109,7 @@ class CachedFiles extends Component {
             dimension: this.state.dimension
         };
         this.props.loadVariables([var_obj]);
-        this.setState({redefinedVariableName: ''});
+        this.setState({ redefinedVariableName: '' });
     }
 
     load() {
@@ -137,9 +150,7 @@ class CachedFiles extends Component {
 
     redefineVariableName() {
         return new Promise((resolve, reject) => {
-            this.doneRedefineVariable = () => {
-                resolve()
-            };
+            this.doneRedefineVariable = () => { resolve() };
             this.setState({
                 showRedefineVariableModal: true,
                 temporaryRedefinedVariableName: this.variableName
@@ -148,7 +159,7 @@ class CachedFiles extends Component {
     }
 
     handleFileExplorerTryClose() {
-        this.setState({showFileExplorer: false});
+        this.setState({ showFileExplorer: false });
     }
 
     handleFileSelected(file) {
@@ -160,6 +171,7 @@ class CachedFiles extends Component {
             var historyFiles = [file, ...this.state.historyFiles.filter(historyFile => {
                 return historyFile.path !== file.path || historyFile.name !== file.name;
             })];
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
             this.setState({
                 variablesAxes,
                 selectedFile: file,
@@ -176,14 +188,41 @@ class CachedFiles extends Component {
         }
         else {
             this.state.dimension.values = values;
-            ;
         }
     }
 
-    render() {
+    handleDragStart(event, file){
+        let data = _.assign({}, file)
+        event.dataTransfer.setData('text', JSON.stringify(data)); // datatype must be text/plain due to chrome bug
+        
+        this.setState({showBookmarkZone: true})
+    }
 
+    handleDragOver(event){
+        event.preventDefault()
+        event.stopPropagation() // Stupid drag and drop api issue
+    }
+
+    handleDrop(event){
+        try {
+            let file = JSON.parse(event.dataTransfer.getData('text'));
+            let bookmarks = this.state.bookmarkFiles.slice()
+            bookmarks.push(file)
+            localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bookmarks))
+            this.setState({bookmarkFiles: bookmarks})
+        } catch (e) {
+            console.log(e)
+            return;
+        }
+    }
+
+    handleDragEnd(){
+        this.setState({showBookmarkZone: false})
+    }
+
+    render() {
         return (
-            <Modal className='cached-files' bsSize="large" show={this.props.show} onHide={this.tryClose}>
+            <Modal className='cached-files' bsSize="large" show={this.props.show} onHide={this.props.onTryClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Load Variable</Modal.Title>
                 </Modal.Header>
@@ -194,101 +233,108 @@ class CachedFiles extends Component {
                                 <h4>Load From</h4>
                             </Col>
                         </Row>
-
-                        {/* Start */}
-                        <Tabs id="options" activeKey={this.state.key} onSelect={(k) => {
-                            this.handleSelect(k);
-                        }}>
-
-                            <Tab eventKey={1} title="File">
-                                <div>
-                                    <Row>
-                                        <Col className="text-right" sm={2}>
-                                            File
-                                        </Col>
-                                        <Col sm={9}>
-                                            <InputGroup bsSize="small">
-                                                <FormControl className="full-width file-path" type="text"
-                                                             value={this.selectedFilePath}/>
-                                                <InputGroup.Button>
-                                                    <Button bsStyle="primary" onClick={
-                                                        () => this.setState({showFileExplorer: true})}><Glyphicon
-                                                        glyph="file"/></Button>
-                                                </InputGroup.Button>
-                                            </InputGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col className="text-right" sm={2}>
-                                            Variable(s)
-                                        </Col>
-                                        <Col sm={9}>
-                                            <FormControl
-                                                className="input-sm full-width"
-                                                componentClass="select"
-                                                onChange={(e) => this.setState({selectedVariableName: e.target.value})}
-                                                value={this.state.selectedVariableName}>
-                                                {this._formatvariablesAxes()}
-                                            </FormControl>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col className="text-right" sm={2}>
-                                            History:
-                                        </Col>
-                                        <Col sm={9}>
-                                            <FormControl className="history" componentClass="div">
-                                                {this.state.historyFiles.map((file, i) => {
-                                                    return <div className="file" key={i}
-                                                                onClick={(e) => this.handleFileSelected(file)}>{cleanPath(file.path + '/' + file.name)}</div>;
-                                                })}
-                                            </FormControl>
-                                        </Col>
-                                    </Row>
-                                    {/* <Row><Col>Bookmarks(s):</Col></Row> */}
-                                </div>
-                            </Tab>
-                            <Tab eventKey={2} title="Info">
-                                <div>
-                                    <h4>Variable Information</h4>
-                                    <p>
-                                        Function call to display info
-                                    </p>
-                                </div>
-                            </Tab>
-                        </Tabs>
-                        {/* Stop */}
-
-                    </div>
-                    {this.state.selectedVariable &&
-                    <div className="dimensions">
                         <Row>
                             <Col className="text-right" sm={2}>
-                                <h4>Dimensions</h4>
+                                File
+                            </Col>
+                            <Col sm={9}>
+                                <InputGroup bsSize="small">
+                                    <FormControl className="full-width file-path" type="text" value={this.selectedFilePath} />
+                                    <InputGroup.Button>
+                                        <Button bsStyle="primary" onClick={
+                                            () => this.setState({ showFileExplorer: true })}><Glyphicon glyph="file" /></Button>
+                                    </InputGroup.Button>
+                                </InputGroup>
                             </Col>
                         </Row>
-                        {/* If is a variable */}
-                        {this.state.dimension &&
-                        this.state.dimension.map(dimension => dimension.axisName).map((axisName, i) => {
-                            let axis = this.state.variablesAxes[1][axisName];
-                            return (
-                                <DimensionDnDContainer key={axisName} index={i} axis={axis} axisName={axisName}
-                                                       handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)}
-                                                       moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)}/>
-                            )
-                        })
-                        }
-                        {/* if is an Axis */}
-                        {!this.state.selectedVariable.axisList &&
-                        <Row key={this.state.selectedVariable.name} className="dimension">
-                            <Col sm={2} className="text-right"><span>{this.state.selectedVariable.name}</span></Col>
-                            <Col sm={8} className="right-content">
-                                <DimensionSlider {...this.state.selectedVariable}
-                                                 onChange={(values) => this.handleDimensionValueChange(values)}/>
+                        <Row>
+                            <Col className="text-right" sm={2}>
+                                Variable(s)
+                            </Col>
+                            <Col sm={9}>
+                                <FormControl
+                                    className="input-sm full-width"
+                                    componentClass="select"
+                                    onChange={(e) => this.setState({ selectedVariableName: e.target.value })}
+                                    value={this.state.selectedVariableName}>
+                                    {this._formatvariablesAxes()}
+                                </FormControl>
                             </Col>
                         </Row>
-                        }
+                        <Row>
+                            <Col className="text-right" sm={2}>
+                                History:
+                            </Col>
+                            <Col sm={9}>
+                                <FormControl className="history" componentClass="div">
+                                    {this.state.historyFiles.map((file, i) => {
+                                        return (
+                                            <div 
+                                                className="file"
+                                                key={i}
+                                                draggable="true"
+                                                onDragStart={(e) => {this.handleDragStart(e, file)}}
+                                                onDragEnd={(e) => {this.handleDragEnd(e)}}
+                                                onClick={(e) => this.handleFileSelected(file)}>
+                                                {cleanPath(file.path + '/' + file.name)}
+                                            </div>
+                                        )
+                                    })}
+                                </FormControl>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="text-right" sm={2}>
+                                Bookmarks:
+                            </Col>
+                            <Col sm={9}>
+                                <FormControl 
+                                    className="bookmarks"
+                                    componentClass="div"
+                                    style={{backgroundColor: this.state.showBookmarkZone ? "#d1ecf1" : "#fff"}}
+                                    onDragOver={(e) => {this.handleDragOver(e)}}
+                                    onDrop={(e) => {this.handleDrop(e)}}
+                                    >
+                                    {this.state.bookmarkFiles.map((file, i) => {
+                                        return( 
+                                            <div
+                                                className="file" 
+                                                key={i} 
+                                                onClick={(e) => this.handleFileSelected(file)}>
+                                                {cleanPath(file.path + '/' + file.name)}
+                                            </div>
+                                        )
+                                    })}
+                                </FormControl>
+                            </Col>
+                        </Row>
                     </div>
+                    {this.state.selectedVariable &&
+                        <div className="dimensions">
+                            <Row>
+                                <Col className="text-right" sm={2}>
+                                    <h4>Dimensions</h4>
+                                </Col>
+                            </Row>
+                            {/* If is a variable */}
+                            {this.state.dimension &&
+                                this.state.dimension.map(dimension => dimension.axisName).map((axisName, i) => {
+                                    let axis = this.state.variablesAxes[1][axisName];
+                                    return (
+                                        <DimensionDnDContainer key={axisName} index={i} axis={axis} axisName={axisName} handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)} moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} />
+                                    )
+                                })
+                            }
+                            {/* if is an Axis */}
+                            {!this.state.selectedVariable.axisList &&
+                                <Row key={this.state.selectedVariable.name} className="dimension">
+                                    <Col sm={2} className="text-right"><span>{this.state.selectedVariable.name}</span></Col>
+                                    <Col sm={8} className="right-content">
+                                        <DimensionSlider {...this.state.selectedVariable} onChange={(values) => this.handleDimensionValueChange(values)} />
+                                    </Col>
+                                </Row>
+                            }
+                        </div>
                     }
                 </Modal.Body>
                 <Modal.Footer>
@@ -313,28 +359,26 @@ class CachedFiles extends Component {
                             <FormControl
                                 type="text"
                                 value={this.state.temporaryRedefinedVariableName}
-                                onChange={(e) => this.setState({temporaryRedefinedVariableName: e.target.value})}/>
+                                onChange={(e) => this.setState({ temporaryRedefinedVariableName: e.target.value })} />
                         </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button bsStyle="primary" bsSize="small"
-                                onClick={() => {
-                                    if (this.state.temporaryRedefinedVariableName) {
-                                        this.doneRedefineVariable();
-                                        this.setState({
-                                            redefinedVariableName: this.state.temporaryRedefinedVariableName,
-                                            showRedefineVariableModal: false
-                                        });
-                                    }
-                                }}>Confirm</Button>
-                        <Button bsSize="small"
-                                onClick={() => this.setState({showRedefineVariableModal: false})}>Close</Button>
+                            onClick={() => {
+                                if (this.state.temporaryRedefinedVariableName) {
+                                    this.doneRedefineVariable();
+                                    this.setState({
+                                        redefinedVariableName: this.state.temporaryRedefinedVariableName,
+                                        showRedefineVariableModal: false
+                                    });
+                                }
+                            }}>Confirm</Button>
+                        <Button bsSize="small" onClick={() => this.setState({ showRedefineVariableModal: false })}>Close</Button>
                     </Modal.Footer>
                 </Modal>
-                <Dialog ref="dialog"/>
+                <Dialog ref="dialog" />
                 {this.state.showFileExplorer &&
-                <FileExplorer show={true} onTryClose={() => this.handleFileExplorerTryClose()}
-                              onFileSelected={(file) => this.handleFileSelected(file)}/>}
+                    <FileExplorer show={true} onTryClose={() => this.handleFileExplorerTryClose()} onFileSelected={(file) => this.handleFileSelected(file)} />}
             </Modal>
         )
     }
@@ -410,10 +454,9 @@ class CachedFiles extends Component {
     moveDimension(dragIndex, hoverIndex) {
         var dimensions = this.state.dimension.slice();
         dimensions.splice(hoverIndex, 0, dimensions.splice(dragIndex, 1)[0]);
-        this.setState({dimension: dimensions});
+        this.setState({ dimension: dimensions });
     }
 }
-
 CachedFiles.propTypes = {
     show: React.PropTypes.bool.isRequired,
     onTryClose: React.PropTypes.func.isRequired,
@@ -425,11 +468,11 @@ CachedFiles.propTypes = {
 
 var DimensionContainer = (props) => {
     const opacity = props.isDragging ? 0 : 1;
-    return props.connectDropTarget(props.connectDragPreview(<div className="row dimension" style={{opacity}}>
+    return props.connectDropTarget(props.connectDragPreview(<div className="row dimension" style={{ opacity }}>
         <Col sm={2} className="text-right"><span>{props.axis.name}</span></Col>
-        {props.connectDragSource(<div className="sort col-sm-1"><Glyphicon glyph="menu-hamburger"/></div>)}
+        {props.connectDragSource(<div className="sort col-sm-1"><Glyphicon glyph="menu-hamburger" /></div>)}
         <div className="col-sm-7 right-content">
-            <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange}/>
+            <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
         </div>
     </div>));
 }
@@ -485,7 +528,7 @@ var DimensionDnDContainer = _.flow(
             };
         }
     ))
-(DimensionContainer);
+    (DimensionContainer);
 
 
 export default CachedFiles;

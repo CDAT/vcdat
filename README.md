@@ -1,11 +1,13 @@
-# vCDAT
+# vCDAT 
+
+[![Build Status](https://travis-ci.org/UV-CDAT/vcdat.svg?branch=master)](https://travis-ci.org/UV-CDAT/vcdat)
 
 ### Naming Convention
 * newfolder
 * NewFile
 * NewClass
 * newFunction
-* new_variable  
+* new_variable
 
 Filenames should correspond to the class exported by default.  
 Example: `import CoolClass from './cool/CoolClass.js'`
