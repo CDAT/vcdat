@@ -1,7 +1,7 @@
 # vCDAT 
 
 [![Build Status](https://travis-ci.org/UV-CDAT/vcdat.svg?branch=master)](https://travis-ci.org/UV-CDAT/vcdat)
-
+[![Coverage Status](https://coveralls.io/repos/github/UV-CDAT/vcdat/badge.svg?branch=master)](https://coveralls.io/github/UV-CDAT/vcdat?branch=master)
 ### Naming Convention
 * newfolder
 * NewFile
