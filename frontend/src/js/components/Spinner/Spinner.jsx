@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
+import { Button, Glyphicon, FormControl, InputGroup } from 'react-bootstrap';
 import './Spinner.scss';
 /* global $*/
 
@@ -23,13 +23,13 @@ var Spinner = React.createClass({
         }
     },
     handleInputChange(value) {
-        var value = Math.max(this.props.min, Math.min(this.props.max, value));
-        this.props.update(value);
+        let new_value = Math.max(this.props.min, Math.min(this.props.max, value));
+        this.props.update(new_value);
     },
     render() {
         return (
             <InputGroup bsSize="small" className="spinner">
-                <FormControl type="number" value={this.props.value} onChange={(e) => this.handleInputChange(e.target.value)} />
+                <FormControl type="number" value={this.props.value} onChange={(e) => {this.handleInputChange(e.target.value)}} />
                 <InputGroup.Button>
                     <Button bsStyle="default" onClick={this.decrementValue}><Glyphicon glyph="menu-left" /></Button>
                     <Button bsStyle="default" onClick={this.incrementValue}><Glyphicon glyph="menu-right" /></Button>

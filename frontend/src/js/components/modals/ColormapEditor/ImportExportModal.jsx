@@ -35,11 +35,11 @@ class ImportExportModal extends Component {
     }
 
     handleFileChange(e){
-        let reader = new FileReader()
-        function handleLoad(){
+        let reader = new window.FileReader()
+        function handleLoad(event){
             let obj = {}
             try{
-                obj = JSON.parse(reader.result);
+                obj = JSON.parse(event.target.result);
             }
             catch(err){
                 console.error(err)
