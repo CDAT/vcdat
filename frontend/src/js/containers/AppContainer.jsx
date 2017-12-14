@@ -29,6 +29,7 @@ var AppContainer = React.createClass({
                 <div id="main-container">
                     <LeftSideBar resizeSpreadsheet={this.resizeSpreadsheet} />
                     <SpreadsheetContainer />
+                    <RightSideBar />
                 </div>
             </div>
         );

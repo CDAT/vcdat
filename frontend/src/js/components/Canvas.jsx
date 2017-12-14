@@ -19,7 +19,7 @@ var Canvas = React.createClass({
     },
     componentDidMount() {
         this.canvas = vcs.init(this.refs.div);
-        this.token = PubSub.subscribe(PubSubEvents.clear_canvas, this.clearCellAndCanvas.bind(this))
+        this.token = PubSub.subscribe(PubSubEvents.clear_canvas, this.clearCellAndCanvas)
     },
     componentDidUpdate(prevProps, prevState) {
         // Sync the size of the canvas
