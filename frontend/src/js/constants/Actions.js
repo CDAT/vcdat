@@ -92,6 +92,13 @@ var Actions = {
             position: position
         }
     },
+    clearCell(row, col){
+        return({
+            type: 'CLEAR_CELL',
+            row: row,
+            col: col,
+        })
+    },
     addPlot(variable, graphics_method_parent, graphics_method, template, row, col) {
         return {
             type: 'ADD_PLOT',

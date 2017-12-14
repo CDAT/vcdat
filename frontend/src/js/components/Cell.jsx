@@ -25,7 +25,9 @@ var Cell = React.createClass({
         addPlot: React.PropTypes.func,
         swapVariableInPlot: React.PropTypes.func,
         swapGraphicsMethodInPlot: React.PropTypes.func,
-        swapTemplateInPlot: React.PropTypes.func
+        swapTemplateInPlot: React.PropTypes.func,
+        connectDropTarget: React.PropTypes.func,
+        isOver: React.PropTypes.bool,
     },
     render() {
         this.cell = this.props.cells[this.props.row][this.props.col];

@@ -1,6 +1,9 @@
 import React from 'react';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import { connect } from 'react-redux';
+import PubSub from 'pubsub-js'
+import PubSubEvents from '../constants/PubSubEvents.js'
+import Actions from '../constants/Actions.js'
 import $ from 'jquery';
 import _ from 'lodash';
 
@@ -8,15 +11,20 @@ var Canvas = React.createClass({
     propTypes: {
         plots: React.PropTypes.array,
         plotVariables: React.PropTypes.array,
+        plotGMs: React.PropTypes.array,
         onTop: React.PropTypes.bool,
+        clearCell: React.PropTypes.func,
+        row: React.PropTypes.number,
+        col: React.PropTypes.number,
     },
     componentDidMount() {
         this.canvas = vcs.init(this.refs.div);
+        this.token = PubSub.subscribe(PubSubEvents.clear_canvas, this.clearCellAndCanvas.bind(this))
     },
     componentDidUpdate(prevProps, prevState) {
         // Sync the size of the canvas
         var div = $(this.refs.div);
-        var canvas = $(this.refs.div).find("canvas");
+        var canvas = div.find("canvas");
         canvas.attr("width", div.width());
         canvas.attr("height", div.height());
         this.canvas.clear()
@@ -53,6 +61,11 @@ var Canvas = React.createClass({
     },
     componentWillUnmount() {
         this.canvas.close();
+    },
+    clearCellAndCanvas(){
+        // checkthat the selected cell is this cell before clearing
+        this.props.clearCell(this.props.row, this.props.col)
+        this.canvas.clear()
     },
     render() {
         return (
@@ -92,6 +105,9 @@ const mapStateToProps = (state, ownProps) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
+        clearCell: function(row, col){
+            dispatch(Actions.clearCell(row, col))
+        },
     }
 }
 

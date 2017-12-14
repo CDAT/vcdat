@@ -23,7 +23,6 @@ var default_sheet = {
     cells: [
         [default_cell]
     ]
-
 }
 
 var default_sheets_model = {
@@ -100,6 +99,15 @@ class SpreadsheetModel extends BaseModel {
                 new_state = jQuery.extend(true, {}, state);
                 new_state.cur_sheet_index = action.index;
                 return new_state;
+            case 'CLEAR_CELL':
+                new_state = jQuery.extend(true, {}, state);
+                new_state.sheets[new_state.cur_sheet_index].cells[action.row][action.col].plots = [{
+                    graphics_method: "default",
+                    graphics_method_parent: "boxfill",
+                    template: "default",
+                    variables: [],
+                }]
+                return new_state
             default:
                 return state;
         }
