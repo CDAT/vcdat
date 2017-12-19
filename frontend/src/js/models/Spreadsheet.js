@@ -22,12 +22,14 @@ var default_sheet = {
     ],
     cells: [
         [default_cell]
-    ]
+    ],
+    sheet_index: 0,
 }
 
 var default_sheets_model = {
     cur_sheet_index: 0,
-    sheets: [default_sheet]
+    selected_cell_id: 0,
+    sheets: [default_sheet],
 }
 
 
@@ -98,7 +100,16 @@ class SpreadsheetModel extends BaseModel {
             case 'CHANGE_CUR_SHEET_INDEX':
                 new_state = jQuery.extend(true, {}, state);
                 new_state.cur_sheet_index = action.index;
+                new_state.selected_cell_id = 0 // reset selected cell when changing sheets
                 return new_state;
+            case 'SELECT_CELL':
+                new_state = jQuery.extend(true, {}, state);
+                new_state.selected_cell_id = action.cell_id
+                return new_state
+            case 'DESELECT_CELL':
+                new_state = jQuery.extend(true, {}, state);
+                new_state.selected_cell_id = 0
+                return new_state
             case 'CLEAR_CELL':
                 new_state = jQuery.extend(true, {}, state);
                 new_state.sheets[new_state.cur_sheet_index].cells[action.row][action.col].plots = [{

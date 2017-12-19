@@ -70,6 +70,17 @@ var Actions = {
             graphics_methods: gm
         }
     },
+    selectCell(cell_id){
+        return {
+            type: 'SELECT_CELL',
+            cell_id: cell_id
+        }
+    },
+    deselectCell(){
+        return {
+            type: 'DESELECT_CELL',
+        }
+    },
     updateSelectedCells(selected_cells) {
         return {
             type: 'UPDATE_SELECTED_CELLS',

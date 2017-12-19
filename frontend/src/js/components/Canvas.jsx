@@ -16,6 +16,8 @@ var Canvas = React.createClass({
         clearCell: React.PropTypes.func,
         row: React.PropTypes.number,
         col: React.PropTypes.number,
+        selected_cell_id: React.PropTypes.number,
+        cell_id: React.PropTypes.number,
     },
     componentDidMount() {
         this.canvas = vcs.init(this.refs.div);
@@ -35,7 +37,7 @@ var Canvas = React.createClass({
                     var dataSpecs = variables.map(function (variable) {
                         var dataSpec = {
                             uri: variable.path,
-                            variable: variable.cdms_var_name
+                            variable: variable.cdms_var_name 
                         };
                         var subRegion = {};
                         variable.dimension
@@ -63,9 +65,10 @@ var Canvas = React.createClass({
         this.canvas.close();
     },
     clearCellAndCanvas(){
-        // checkthat the selected cell is this cell before clearing
-        this.props.clearCell(this.props.row, this.props.col)
-        this.canvas.clear()
+        if(this.props.cell_id == this.props.selected_cell_id){
+            this.props.clearCell(this.props.row, this.props.col) // removes plot state from redux
+            this.canvas.clear()
+        }
     },
     render() {
         return (
@@ -99,6 +102,7 @@ const mapStateToProps = (state, ownProps) => {
     };
 
     return {
+        selected_cell_id: state.present.sheets_model.selected_cell_id,
         plotVariables: ownProps.plots.map(get_vars_for_plot),
         plotGMs: ownProps.plots.map(get_gm_for_plot),
     }
