@@ -1,4 +1,5 @@
 import React from 'react'
+import InspectorToolbar from './InspectorToolbar.jsx'
 
 var PlotInspector = React.createClass({
     propTypes: {
@@ -33,6 +34,7 @@ var PlotInspector = React.createClass({
                     </div>
                 </nav>
                     <div className='inspector-selector btn-group'>
+                    <InspectorToolbar />
                         <h5 className='black'>Plot:</h5>
                         <table>
                             <tbody>
