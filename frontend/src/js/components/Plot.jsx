@@ -18,7 +18,7 @@ const plotTarget = {
                 break;
         }
     }
-};
+}; 
 
 function collect(connect, monitor) {
     return {
@@ -36,6 +36,7 @@ var Plot = React.createClass({
         swapVariableInPlot: React.PropTypes.func,
         swapGraphicsMethodInPlot: React.PropTypes.func,
         swapTemplateInPlot: React.PropTypes.func,
+        connectDropTarget: React.PropTypes.func,
 
     },
     validSecondVar(event, ui) {
