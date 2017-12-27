@@ -18,6 +18,7 @@ class ColormapWidget extends Component {
             selectedColormapName: this.props.defaultColormap, // a string, such as 'viridis', or 'AMIP'
             shouldUseProps: false, // value to indicate if color should be applied from props to color map
             showExportModal: false,
+            cm_name_input_class: "form-control cm-name-input"
         }
     }
 
@@ -204,6 +205,7 @@ class ColormapWidget extends Component {
     }
 
     render(){
+        console.log(new Date());
         return(
             <div>
                 <div className="form-inline" style={{display: "flex", marginTop: "20px", marginBottom: "10px"}}>
@@ -227,17 +229,25 @@ class ColormapWidget extends Component {
                             <option value="" disabled />
                         )}
                     </select>
-                    <input 
-                        className="form-control"
+                    <input
+                        className={this.state.cm_name_input_class}
                         style={{flexGrow: 1}} 
                         value={this.state.newColormapTemplateName}
                         onChange={(event) => { this.setState({newColormapTemplateName: event.target.value}) }}>
                     </input>
                     <button 
                         className="form-control"
-                        style={{marginLeft: "5px"}} 
+                        style={{marginLeft: "5px"}}
                         onClick={() => {
-                            this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
+                            let result = this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
+                            if(result){
+                                this.setState({cm_name_input_class: "form-control cm-name-input save-success"})
+                            }
+                            else{
+                                this.setState({cm_name_input_class: "form-control cm-name-input save-fail"})
+                            }
+                            let self = this;
+                            setTimeout(function(){ console.log(new Date());this.setState({cm_name_input_class: "form-control cm-name-input"})}.bind(this), 900)
                         }}>Save as...
                     </button>
                 </div>
@@ -294,9 +304,19 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         saveColormap: (name, colormap) => {
-            let cm = {};
-            cm[name] = colormap;
-            dispatch(Actions.saveColormap(cm));
+            if(name){
+                let cm = {};
+                cm[name] = colormap;
+                try{
+                    dispatch(Actions.saveColormap(cm));
+                    return true
+                }
+                catch(e){
+                    return false
+                }
+            }
+            return false
+            
         },
         deleteColormap: (name) => {
             dispatch(Actions.deleteColormap(name));
