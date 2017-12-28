@@ -3,7 +3,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var React = require('react');
 
-import {PureColormapWidget} from '../../../../../src/js/components/modals/ColormapEditor/ColormapWidget.jsx'
+import { PureColormapWidget } from '../../../../../src/js/components/modals/ColormapEditor/ColormapWidget.jsx'
 import { mount } from 'enzyme'
 import sinon from 'sinon'
 
@@ -178,5 +178,77 @@ describe('ColormapWidgetTest.jsx', function() {
         clock.restore()
         console.warn = warn // restore console.warn
     });
+
+    it('saves a colormap', () => {
+        let dummy_save = sinon.spy()
+        const colormap_widget = mount(<PureColormapWidget {...props} saveColormap={dummy_save}/>)
+        colormap_widget.setState({
+            newColormapTemplateName: "testSave",
+        })
+        expect(colormap_widget.find(".form-control.cm-name-input")).to.have.lengthOf(1)
+        colormap_widget.find(".save-button").simulate("click")
+        sinon.assert.calledOnce(dummy_save)
+    })
+
+    it('Does not save a colormap with no name', () => {
+        let dummy_save = sinon.spy()
+        const colormap_widget = mount(<PureColormapWidget {...props} saveColormap={dummy_save}/>)
+        colormap_widget.setState({
+            newColormapTemplateName: "",
+        })
+        expect(colormap_widget.find(".form-control.cm-name-input")).to.have.lengthOf(1)
+        colormap_widget.find(".save-button").simulate("click")
+        sinon.assert.notCalled(dummy_save)
+    })
+
+    it('Applies a colormap correctly', (done) => {
+        global.vcs = {
+            getcolormapnames: function(){
+                return new Promise((resolve) => {
+                    resolve(["default", "viridis", "testSelect"]);
+                })
+            },
+            setcolormap: function(){
+                return new Promise((resolve) => {
+                    resolve("");
+                })
+            },
+            createcolormap: function(){
+                return new Promise((resolve) => {
+                    resolve("");
+                })
+            }
+        }
+        
+        let extra_props = {
+            saveColormap: sinon.spy(),
+            updateGraphicsMethod: sinon.spy(),
+            applyColormap: sinon.spy(),
+            graphics_methods: {
+                boxfill:{
+                    default:{}
+                }
+            },
+            sheet: {
+                cells:[[
+                    {
+                        plots: [
+                            {
+                                graphics_method_parent: "boxfill",
+                                graphics_method: "default"
+                            }
+                        ]
+                    }
+                ]]
+            }
+        }
+        
+        const colormap_widget = mount(<PureColormapWidget {...props} {...extra_props}/>)
+        colormap_widget.instance().applyColormap(0,0).then(() => {
+            sinon.assert.called(extra_props.updateGraphicsMethod)
+            sinon.assert.called(extra_props.applyColormap)
+            done()
+        })
+    })
 });
 
