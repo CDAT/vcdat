@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Slider from 'bootstrap-slider';
 import moment from 'moment';
-import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
+import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import _ from 'lodash'
 
 import style from './DimensionSlider.scss';
 
@@ -21,8 +22,6 @@ class DimensionSlider extends Component {
         }
         if (_.includes(props.units, 'since')) {
             type = 'date';
-            var format;
-            var increment;
             let [span, , startTime] = props.units.split(' ');
             switch (span) {
                 case 'years':
