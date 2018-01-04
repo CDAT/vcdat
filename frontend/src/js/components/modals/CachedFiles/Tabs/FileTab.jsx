@@ -7,7 +7,7 @@ import { findDOMNode } from 'react-dom';
 
 import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx';
 import FileExplorer from '../../FileExplorer/FileExplorer.jsx';
-import DragAndDropTypes from 'constants/DragAndDropTypes';
+import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js';
 import TabBar from './TabBar.jsx'
 
 import '../CachedFiles.scss';
@@ -25,7 +25,7 @@ class FileTab extends Component {
         let history_files;
         let bookmark_files;
         try {
-             history_files = JSON.parse(localStorage.getItem(HISTORY_KEY))
+             history_files = JSON.parse(window.localStorage.getItem(HISTORY_KEY))
              if (!Array.isArray(history_files)){
                 history_files = []
             }
@@ -34,7 +34,7 @@ class FileTab extends Component {
             history_files = []
         }
         try{
-            bookmark_files = JSON.parse(localStorage.getItem(BOOKMARK_KEY))
+            bookmark_files = JSON.parse(window.localStorage.getItem(BOOKMARK_KEY))
             if (!Array.isArray(bookmark_files)){
                 bookmark_files = []   
             }
@@ -168,7 +168,7 @@ class FileTab extends Component {
             var historyFiles = [file, ...this.state.historyFiles.filter(historyFile => {
                 return historyFile.path !== file.path || historyFile.name !== file.name;
             })];
-            localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
+            window.localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
             this.setState({
                 variablesAxes,
                 selectedFile: file,
@@ -195,6 +195,7 @@ class FileTab extends Component {
         this.setState({showBookmarkZone: true})
     }
 
+    /* istanbul ignore next */
     handleDragOver(event){
         event.preventDefault()
         event.stopPropagation() // Stupid drag and drop api issue
@@ -205,7 +206,7 @@ class FileTab extends Component {
             let file = JSON.parse(event.dataTransfer.getData('text'));
             let bookmarks = this.state.bookmarkFiles.slice()
             bookmarks.push(file)
-            localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bookmarks))
+            window.localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bookmarks))
             this.setState({bookmarkFiles: bookmarks})
         } catch (e) {
             console.log(e)
@@ -526,8 +527,7 @@ var DimensionDnDContainer = _.flow(
                 isOver: monitor.isOver(),
             };
         }
-    ))
-    (DimensionContainer);
+    ))(DimensionContainer);
 
 
 export default FileTab;
