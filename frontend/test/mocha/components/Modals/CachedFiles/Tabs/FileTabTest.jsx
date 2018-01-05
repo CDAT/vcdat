@@ -18,7 +18,7 @@ const props = {
 }
 
 describe('FileTabTest.jsx', function() {
-    it('renders without exploding', () => {        
+    it('Renders without exploding', () => {        
         const cached_files = shallow(<FileTab {...props}/>)
         expect(cached_files).to.have.lengthOf(1);
     });
@@ -45,7 +45,7 @@ describe('FileTabTest.jsx', function() {
         expect(cached_files.instance().selectedFilePath).to.equal('')
     });
 
-    it('variableName getter works', () => {
+    it('VariableName getter works', () => {
         const cached_files = shallow(<FileTab {...props}/>)
         cached_files.setState({
             variablesAxes: [
@@ -117,7 +117,7 @@ describe('FileTabTest.jsx', function() {
         expect(cached_files.instance().variableName).to.equal("")
     });
 
-    it('loadVariable and ComponentDidUpdate works', () => {
+    it('LoadVariable and ComponentDidUpdate works', () => {
         let spy = sinon.spy()
         const cached_files = shallow(<FileTab {...props} loadVariables={spy}/>)
 
@@ -226,4 +226,41 @@ describe('FileTabTest.jsx', function() {
         console.log = log // eslint-disable-line no-console
     });
 
+    it('Handles file selection', () => {
+        global.vcs = {
+            variables: () => { 
+                return Promise.resolve([
+                    { clt: {
+                        gridType: "rectilinear",
+                        name: "Total cloudiness",
+                        axisList: ["time", "latitude", "longitude"],
+                        bounds: null,
+                        shape: [0, 1, 2],
+                        units: "%",
+                    }},
+                    { second: {
+                        shape: [1,2,80,97],
+                        name: "A second dummy variable for testing",
+                        units: "m/s",
+                        data: [200, 800]
+                    }}
+                ])
+            }
+        }
+        const cached_files = shallow(<FileTab {...props}/>)
+        let file = {
+            name: "dummyFile",
+            path: "/some/dummy/path/"
+        }
+        const set_item_spy = sinon.stub()
+        global.window.localStorage = { setItem: set_item_spy } // localStorage doesnt exist during testing, so mock it 
+        cached_files.setState({ showFileExplorer: true, selectedVariableName: "" })
+        expect(cached_files.state().historyFiles.length).to.equal(0)
+        // handleFileSelected is asynchronous, we return the promise to mocha and it will handle it properly
+        return cached_files.instance().handleFileSelected(file).then(() => {
+            expect(cached_files.state().showFileExplorer).to.be.false
+            expect(cached_files.state().selectedVariableName).to.equal("clt")
+            expect(cached_files.state().selectedVariable.name).to.equal("Total cloudiness")
+        })
+    });
 });

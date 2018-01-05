@@ -162,21 +162,30 @@ class FileTab extends Component {
     handleFileSelected(file) {
         this.handleFileExplorerTryClose();
         var path = cleanPath(file.path + '/' + file.name);
-
-        vcs.variables(path).then((variablesAxes) => {
-            console.log(variablesAxes);
-            var historyFiles = [file, ...this.state.historyFiles.filter(historyFile => {
-                return historyFile.path !== file.path || historyFile.name !== file.name;
-            })];
-            window.localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
-            this.setState({
-                variablesAxes,
-                selectedFile: file,
-                historyFiles: historyFiles,
-                selectedVariableName: Object.keys(variablesAxes[0])[0],
-                selectedVariable: null
-            });
-        });
+        var self = this
+        return new Promise((resolve, reject) => {
+            try{
+                resolve(
+                    vcs.variables(path).then((variablesAxes) => {
+                        var historyFiles = [file, ...self.state.historyFiles.filter(historyFile => {
+                            return historyFile.path !== file.path || historyFile.name !== file.name;
+                        })];
+                        window.localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
+                        self.setState({
+                            variablesAxes,
+                            selectedFile: file,
+                            historyFiles: historyFiles,
+                            selectedVariableName: Object.keys(variablesAxes[0])[0],
+                            selectedVariable: null
+                        });
+                    })
+                )
+            }
+            catch(e){
+                console.log(e)
+                reject(e)
+            }
+        })
     }
 
     handleDimensionValueChange(values, axisName = undefined) {
