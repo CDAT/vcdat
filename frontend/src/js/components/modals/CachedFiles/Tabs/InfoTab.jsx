@@ -16,7 +16,7 @@ class InfoTab extends Component{
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button bsStyle="default" bsSize="small" onClick={() => this.props.onTryClose()}>Close</Button>
+                    <Button id="infotab-close" bsStyle="default" bsSize="small" onClick={() => this.props.onTryClose()}>Close</Button>
                 </Modal.Footer>
             </div>
         )
