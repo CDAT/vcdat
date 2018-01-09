@@ -18,6 +18,7 @@ class ColormapWidget extends Component {
             selectedColormapName: this.props.defaultColormap, // a string, such as 'viridis', or 'AMIP'
             shouldUseProps: false, // value to indicate if color should be applied from props to color map
             showExportModal: false,
+            cm_name_input_class: "form-control cm-name-input"
         }
     }
 
@@ -104,6 +105,22 @@ class ColormapWidget extends Component {
         }
     }
 
+    handleSaveColormap(){
+        if(this.state.newColormapTemplateName){
+            let result = this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
+            if(result){
+                this.setState({cm_name_input_class: "form-control cm-name-input save-success"})
+            }
+            else{
+                this.setState({cm_name_input_class: "form-control cm-name-input save-fail"})
+            }
+        } 
+        else{
+            this.setState({cm_name_input_class: "form-control cm-name-input save-fail"})
+        }
+        setTimeout(function(){this.setState({cm_name_input_class: "form-control cm-name-input"})}.bind(this), 900)
+    }
+
     handleDeleteColormap(){
         // TODO: If i use a colormap then delete it what happens?
         let nameToDelete = this.state.selectedColormapName
@@ -174,33 +191,56 @@ class ColormapWidget extends Component {
         let colormap_name = "applied_colormap"
 
         function applyColormapHelper(){
-            let new_graphics_method = _.clone(self.props.graphics_methods[graphics_method_parent][graphics_method])
-            new_graphics_method.colormap = colormap_name
-            self.props.updateGraphicsMethod(new_graphics_method)
-            let plot = self.props.sheet.cells[cell_row][cell_col].plots[0]
-            self.props.applyColormap(plot.graphics_method_parent, graphics_method, cell_row, cell_col, 0)
+            try{
+                let new_graphics_method = _.clone(self.props.graphics_methods[graphics_method_parent][graphics_method])
+                new_graphics_method.colormap = colormap_name
+                self.props.updateGraphicsMethod(new_graphics_method)
+                let plot = self.props.sheet.cells[cell_row][cell_col].plots[0]
+                self.props.applyColormap(plot.graphics_method_parent, graphics_method, cell_row, cell_col, 0)
+                return true
+            }
+            catch(e){
+                return false
+            }
+            
         }
-
-        /* eslint-disable no-undef */ 
-        if(vcs){
-            vcs.getcolormapnames().then((names) => {
-                if(names.indexOf(colormap_name) >= 0){
-                    vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => { // save colormap in vcs
-                        self.props.saveColormap(colormap_name, self.state.currentColormap) // save to the frontend state
-                        applyColormapHelper()
+        return new Promise((resolve, reject) => {
+            try{
+                /* eslint-disable no-undef */ 
+                if(vcs){
+                    vcs.getcolormapnames().then((names) => {
+                        if(names.indexOf(colormap_name) >= 0){
+                            vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => { // save colormap in vcs
+                                self.props.saveColormap(colormap_name, self.state.currentColormap) // save to the frontend state
+                                if(applyColormapHelper(resolve)){
+                                    resolve()
+                                }
+                                else{
+                                    reject()
+                                }
+                            })
+                        }
+                        else{
+                            vcs.createcolormap(colormap_name).then(() => {
+                                vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => {
+                                    self.props.saveColormap(colormap_name, self.state.currentColormap) // save to the frontend state
+                                    if(applyColormapHelper(resolve)){
+                                        resolve()
+                                    }
+                                    else{
+                                        reject()
+                                    }
+                                })
+                            })
+                        }
                     })
                 }
-                else{
-                    vcs.createcolormap(colormap_name).then(() => {
-                        vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => {
-                            self.props.saveColormap(colormap_name, self.state.currentColormap) // save to the frontend state
-                            applyColormapHelper()
-                        })
-                    })
-                }
-            })
-        }
-        /* eslint-enable no-undef */
+                /* eslint-enable no-undef */
+            }
+            catch(e){
+                reject(e)
+            }
+        })
     }
 
     render(){
@@ -227,17 +267,17 @@ class ColormapWidget extends Component {
                             <option value="" disabled />
                         )}
                     </select>
-                    <input 
-                        className="form-control"
+                    <input
+                        className={this.state.cm_name_input_class}
                         style={{flexGrow: 1}} 
                         value={this.state.newColormapTemplateName}
                         onChange={(event) => { this.setState({newColormapTemplateName: event.target.value}) }}>
                     </input>
                     <button 
-                        className="form-control"
-                        style={{marginLeft: "5px"}} 
+                        className="form-control save-button"
+                        style={{marginLeft: "5px"}}
                         onClick={() => {
-                            this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
+                            this.handleSaveColormap()
                         }}>Save as...
                     </button>
                 </div>
@@ -294,9 +334,19 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         saveColormap: (name, colormap) => {
-            let cm = {};
-            cm[name] = colormap;
-            dispatch(Actions.saveColormap(cm));
+            if(name){
+                let cm = {};
+                cm[name] = colormap;
+                try{
+                    dispatch(Actions.saveColormap(cm));
+                    return true
+                }
+                catch(e){
+                    return false
+                }
+            }
+            return false
+            
         },
         deleteColormap: (name) => {
             dispatch(Actions.deleteColormap(name));

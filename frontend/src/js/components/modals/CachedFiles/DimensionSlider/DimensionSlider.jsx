@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Slider from 'bootstrap-slider';
 import moment from 'moment';
-import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
+import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import _ from 'lodash'
 
 import style from './DimensionSlider.scss';
 
@@ -21,8 +22,6 @@ class DimensionSlider extends Component {
         }
         if (_.includes(props.units, 'since')) {
             type = 'date';
-            var format;
-            var increment;
             let [span, , startTime] = props.units.split(' ');
             switch (span) {
                 case 'years':
@@ -108,9 +107,10 @@ class DimensionSlider extends Component {
                 {!this.singleValue &&
                     <div className="form-inline">
                         <FormControl
+                            id="dimension-slider-select-lower"
                             bsSize="sm"
                             componentClass="select"
-                            onChange={(e) => this.setState({ value: [parseInt(e.target.value), this.state.value[1]] })}
+                            onChange={(e) => {this.setState({ value: [parseInt(e.target.value), this.state.value[1]] })}}
                             value={this.state.value[0]}>
                             {this.props.data.map((data) => {
                                 return <option key={data} value={data}>{this.formatter(data)}</option>;
@@ -118,6 +118,7 @@ class DimensionSlider extends Component {
                         </FormControl>
                         &nbsp;:&nbsp;
                         <FormControl
+                            id="dimension-slider-select-upper"
                             bsSize="sm"
                             componentClass="select"
                             onChange={(e) => this.setState({ value: [this.state.value[0], parseInt(e.target.value)] })}
