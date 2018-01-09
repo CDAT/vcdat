@@ -263,4 +263,38 @@ describe('FileTabTest.jsx', function() {
             expect(cached_files.state().selectedVariable.name).to.equal("Total cloudiness")
         })
     });
+
+    it('Handles dimension value changes', () => {
+        const cached_files = shallow(<FileTab {...props}/>)
+        cached_files.setState({
+            variablesAxes: [
+                {dummyName: {
+                    axisList: ["latitude", "longitude"],
+                    shape: [1,2,80,97],
+                    bounds: null,
+                    lonLat: null,
+                    gridType: "rectilinear",
+                    name: "A dummy variable for testing",
+                    units: "m/s",
+                }},
+                {second: {
+                    shape: [1,2,80,97],
+                    name: "A second dummy variable for testing",
+                    units: "m/s",
+                    data: [200, 800]
+                }}
+            ],
+            selectedVariableName: "dummyName",
+            dimension: [
+                {axisName: "latitude"},
+            ]
+        })
+        cached_files.instance().handleDimensionValueChange({
+            range: [0, 10],
+            stride: 1
+        }, "latitude")
+        expect(cached_files.state().dimension[0].values.range[0]).to.equal(0)
+        expect(cached_files.state().dimension[0].values.range[1]).to.equal(10)
+        expect(cached_files.state().dimension[0].values.stride).to.equal(1)
+    });
 });

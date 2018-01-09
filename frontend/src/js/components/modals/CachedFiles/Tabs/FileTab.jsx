@@ -116,7 +116,7 @@ class FileTab extends Component {
                     return new Promise((resolve, reject) => {
                         this.refs.dialog.show({
                             title: 'Variable exists',
-                            body: `The variable name ${this.variableName} already exists, rename or overwrite existing varaible`,
+                            body: `The variable name ${this.variableName} already exists, rename or overwrite existing variable`,
                             actions: [
                                 Dialog.OKAction(() => resolve())
                             ]
