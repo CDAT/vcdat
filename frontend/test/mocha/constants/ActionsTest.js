@@ -101,6 +101,15 @@ describe('ActionsTest.js', function() {
         expect(result).to.deep.equal(expected)
     });
 
+    it('initializeGraphicsMethodsValues works', () => {
+        let result = Actions.initializeGraphicsMethodsValues("gm")
+        let expected = {
+            type: 'INITIALIZE_GRAPHICS_METHODS_VALUES',
+            graphics_methods: "gm"
+        }
+        expect(result).to.deep.equal(expected)
+    });
+
     it('selectCell works', () => {
         let result = Actions.selectCell(1)
         let expected = {
@@ -255,6 +264,15 @@ describe('ActionsTest.js', function() {
         let expected = {
             type: 'INITIALIZE_COLORMAPS',
             colormaps: ["map1", "map2"]
+        }
+        expect(result).to.deep.equal(expected)
+    });
+
+    it('initializeDefaultMethods works', () => {
+        let result = Actions.initializeDefaultMethods("defaults")
+        let expected = {
+            type: 'INITIALIZE_DEFAULT_METHODS',
+            defaultmethods: "defaults"
         }
         expect(result).to.deep.equal(expected)
     });
