@@ -15,10 +15,10 @@ class InspectorToolbar extends Component{
     render(){
         return (
             <div id="inspector-toolbar">
-                <a className="btn btn-default btn-xs" onClick={() => {PubSub.publish(PubSubEvents.clear_canvas)}} title="Clear selected plot">
+                <a id="clear-canvas-button" className="btn btn-default btn-xs" onClick={() => {PubSub.publish(PubSubEvents.clear_canvas)}} title="Clear selected plot">
                     <i className="material-icons" style={{color: "red"}}>clear</i>
                 </a>
-                <a className="btn btn-default btn-xs" onClick={() => this.setState({showColormapEditor: true})} title="Open the colormap editor">
+                <a id="open-colormap-editor-button" className="btn btn-default btn-xs" onClick={() => this.setState({showColormapEditor: true})} title="Open the colormap editor">
                     <i className="material-icons" style={{color: "blue"}}>color_lens</i>
                 </a>
                 <ColormapEditor show={this.state.showColormapEditor} close={() => this.setState({showColormapEditor: false})}/>
