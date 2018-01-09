@@ -16,6 +16,19 @@
     user-select: none;          /* Styles that prevent text highlight when selecting cells*/
 }
 
+.cm-name-input{
+    transition: .9s;
+}
+
+.cm-name-input.save-success{
+    transition: .01s;
+    border-color: #5cb85c;
+}
+
+.cm-name-input.save-fail{
+    transition: .01s;
+    border-color: #d9534f;
+}
 @media screen and (min-height: 900px) {
     div#colormap-cells-container {
         height: 300px;
