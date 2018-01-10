@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AddEditRemoveNav from './AddEditRemoveNav.jsx';
 import CachedFiles from './modals/CachedFiles/CachedFiles.jsx';
 import { DragSource } from 'react-dnd';
@@ -23,7 +23,7 @@ function collect(connect, monitor) {
 
 function VariableItem(props) {
     return props.connectDragSource(
-        <li>
+        <li className={props.active ? "active" : ""} onClick={() => {props.selectVariable(props.variable)}}>
             <a>{props.variable}</a>
         </li>
     );
@@ -48,11 +48,15 @@ var VarList = React.createClass({
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent'>
-                <AddEditRemoveNav title='Variables' addAction={()=>this.setState({ showFile: true })} />
+                <AddEditRemoveNav title='Variables'
+                                  addAction={()=>this.setState({ showFile: true })} 
+                                  editAction={()=>this.setState({ showFile: true, selectedTab: "edit" })}/>
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {
-                           return <DraggableVariable key={index} variable={value} />
+                           return <DraggableVariable key={index} variable={value}
+                                                     active={value === this.state.active_variable}
+                                                     selectVariable={(v) => {this.setState({active_variable: v});}}/>
                         })}
                     </ul>
                 </div>
@@ -63,6 +67,7 @@ var VarList = React.createClass({
                     loadVariables={this.props.loadVariables}
                     cachedFiles={this.props.cachedFiles}
                     addFileToCache={this.props.addFileToCache}
+                    selectedTab={this.state.selectedTab}
                 />
             </div>
         )

@@ -264,15 +264,15 @@ li.tree-node.disclosed:before{
     content: "\e114";
 }
 
-#temp-list>li{
+#temp-list>li, #var-list>li{
     cursor: pointer;
 }
 
-.tree li.tree-leaf.active, #temp-list>li.active {
+.tree li.tree-leaf.active, #temp-list>li.active, #var-list>li.active {
     background-color: #df691a;
 }
 
-.tree li.tree-leaf.active a, #temp-list>li.active a {
+.tree li.tree-leaf.active a, #temp-list>li.active a, #var-list>li.active a{
     color: white;
 }
 

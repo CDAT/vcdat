@@ -7,6 +7,13 @@ import FileTab from './Tabs/FileTab.jsx'
 // import EditTab from './Tabs/EditTab.jsx'
 import InfoTab from './Tabs/InfoTab.jsx'
 
+const tabs = {
+    file: "file",
+    esgf: "esgf",
+    opendap: "opendap",
+    edit: "edit",
+    info: "info"
+}
 
 class CachedFiles extends Component {
     constructor(props) {
@@ -25,10 +32,10 @@ class CachedFiles extends Component {
         return (
             <Modal className='cached-files' bsSize="large" show={this.props.show} onHide={this.props.onTryClose}>
                     {
-                        this.state.selectedTab == 'esgf' ? <div className="Dummy-esgf-component">ESGF</div> :
-                        this.state.selectedTab == 'opendap' ? <div className="Dummy-opendap-component">OpenDAP</div> :
-                        this.state.selectedTab == 'edit' ? <div className="Dummy-edit-component">Edit</div> :
-                    this.state.selectedTab == 'info' ? <InfoTab {...this.props} switchTab={this.switchTab.bind(this)} selectedTab={this.state.selectedTab}/> :
+                        this.state.selectedTab == tabs.esgf ? <div className="Dummy-esgf-component">ESGF</div> :
+                        this.state.selectedTab == tabs.opendap ? <div className="Dummy-opendap-component">OpenDAP</div> :
+                        this.state.selectedTab == tabs.edit ? <div className="Dummy-edit-component">Edit</div> :
+                    this.state.selectedTab == tabs.info ? <InfoTab {...this.props} switchTab={this.switchTab.bind(this)} selectedTab={this.state.selectedTab}/> :
                         <FileTab {...this.props} switchTab={this.switchTab.bind(this)} selectedTab={this.state.selectedTab}></FileTab>
                     }
             </Modal>
@@ -47,3 +54,4 @@ CachedFiles.defaultProps = {
 };
 
 export default CachedFiles
+export { tabs }
