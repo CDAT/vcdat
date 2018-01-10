@@ -43,12 +43,20 @@ var VarList = React.createClass({
     getInitialState: function () {
         return { showFile: false };
     },
+    editVariable: function() {
+        if(this.state.active_variable){
+            this.setState({ showFile: true, selectedTab: tabs.edit })
+        }
+        else{
+            // notify the user somehow that a variable must be selected 
+        }
+    },
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent'>
                 <AddEditRemoveNav title='Variables'
                                   addAction={()=>this.setState({ showFile: true, selectedTab: tabs.file })} 
-                                  editAction={()=>this.setState({ showFile: true, selectedTab: tabs.edit })}/>
+                                  editAction={()=>this.editVariable()}/>
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {
