@@ -1,9 +1,8 @@
 import React from 'react';
 import AddEditRemoveNav from './AddEditRemoveNav.jsx';
-import CachedFiles from './modals/CachedFiles/CachedFiles.jsx';
+import CachedFiles, { tabs } from './modals/CachedFiles/CachedFiles.jsx';
 import { DragSource } from 'react-dnd';
 import DragAndDropTypes from '../constants/DragAndDropTypes.js';
-
 
 var varSource = {
     beginDrag: function (props) {
@@ -40,7 +39,6 @@ var VarList = React.createClass({
             React.PropTypes.array,
             React.PropTypes.object
         ])
-
     },
     getInitialState: function () {
         return { showFile: false };
@@ -49,8 +47,8 @@ var VarList = React.createClass({
         return (
             <div className='left-side-list scroll-area-list-parent'>
                 <AddEditRemoveNav title='Variables'
-                                  addAction={()=>this.setState({ showFile: true })} 
-                                  editAction={()=>this.setState({ showFile: true, selectedTab: "edit" })}/>
+                                  addAction={()=>this.setState({ showFile: true, selectedTab: tabs.file })} 
+                                  editAction={()=>this.setState({ showFile: true, selectedTab: tabs.edit })}/>
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {
@@ -68,6 +66,7 @@ var VarList = React.createClass({
                     cachedFiles={this.props.cachedFiles}
                     addFileToCache={this.props.addFileToCache}
                     selectedTab={this.state.selectedTab}
+                    switchTab={(tab)=>this.setState({ selectedTab: tab})}
                 />
             </div>
         )
