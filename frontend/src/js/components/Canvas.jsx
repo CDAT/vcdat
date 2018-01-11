@@ -21,16 +21,12 @@ var Canvas = React.createClass({
         try{
             // quick and dirty deep equality check
             if(JSON.stringify(this.props) === JSON.stringify(nextProps)){
-                console.log("skipping a render")
                 return false
             }
         }
         catch(e){
             console.error(e)
         }
-        console.log("doing a render")
-        console.log(JSON.stringify(this.props))
-        console.log(JSON.stringify(nextProps))
         return true
     },
     componentDidMount() {
