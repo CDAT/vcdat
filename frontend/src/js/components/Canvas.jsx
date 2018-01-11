@@ -1,8 +1,6 @@
 import React from 'react';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import { connect } from 'react-redux';
-import PubSub from 'pubsub-js'
-import PubSubEvents from '../constants/PubSubEvents.js'
 import Actions from '../constants/Actions.js'
 import $ from 'jquery';
 import _ from 'lodash';
@@ -19,9 +17,24 @@ var Canvas = React.createClass({
         selected_cell_id: React.PropTypes.number,
         cell_id: React.PropTypes.number,
     },
+    shouldComponentUpdate(nextProps){
+        try{
+            // quick and dirty deep equality check
+            if(JSON.stringify(this.props) === JSON.stringify(nextProps)){
+                console.log("skipping a render")
+                return false
+            }
+        }
+        catch(e){
+            console.error(e)
+        }
+        console.log("doing a render")
+        console.log(JSON.stringify(this.props))
+        console.log(JSON.stringify(nextProps))
+        return true
+    },
     componentDidMount() {
         this.canvas = vcs.init(this.refs.div);
-        this.token = PubSub.subscribe(PubSubEvents.clear_canvas, this.clearCellAndCanvas)
     },
     componentDidUpdate(prevProps, prevState) {
         // Sync the size of the canvas
@@ -64,11 +77,8 @@ var Canvas = React.createClass({
     componentWillUnmount() {
         this.canvas.close();
     },
-    clearCellAndCanvas(){
-        if(this.props.cell_id == this.props.selected_cell_id){
-            this.props.clearCell(this.props.row, this.props.col) // removes plot state from redux
-            this.canvas.clear()
-        }
+    clearCanvas(){
+        this.canvas.clear()
     },
     render() {
         return (
@@ -102,17 +112,12 @@ const mapStateToProps = (state, ownProps) => {
     };
 
     return {
-        selected_cell_id: state.present.sheets_model.selected_cell_id,
         plotVariables: ownProps.plots.map(get_vars_for_plot),
         plotGMs: ownProps.plots.map(get_gm_for_plot),
     }
 }
 const mapDispatchToProps = (dispatch) => {
-    return {
-        clearCell: function(row, col){
-            dispatch(Actions.clearCell(row, col))
-        },
-    }
+    return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Canvas);
