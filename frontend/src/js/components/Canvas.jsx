@@ -116,4 +116,4 @@ const mapDispatchToProps = (dispatch) => {
     return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Canvas);
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Canvas);

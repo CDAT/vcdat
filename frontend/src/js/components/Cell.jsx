@@ -26,7 +26,7 @@ class Cell extends React.Component {
         }
     }
     componentDidMount(){
-        this.token = PubSub.subscribe(PubSubEvents.clear_canvas, this.clearCanvas) // todo: clean this up?
+        this.token = PubSub.subscribe(PubSubEvents.clear_canvas, this.clearCanvas.bind(this))
     }
     selectCell(){
         if(this.props.selected_cell_id == this.state.cell_id){
@@ -43,7 +43,7 @@ class Cell extends React.Component {
     }
     clearCanvas(){
         if(this.state.cell_id == this.props.selected_cell_id){
-            this.refs.canvas.clearCanvas()
+            this.refs.canvas.getWrappedInstance().clearCanvas()
             this.props.clearCell(this.props.row, this.props.col) // removes plot state from redux
         }
     }
