@@ -1,9 +1,8 @@
 import React from 'react';
 import AddEditRemoveNav from './AddEditRemoveNav.jsx';
-import CachedFiles from './modals/CachedFiles/CachedFiles.jsx';
+import CachedFiles, { tabs } from './modals/CachedFiles/CachedFiles.jsx';
 import { DragSource } from 'react-dnd';
 import DragAndDropTypes from '../constants/DragAndDropTypes.js';
-
 
 var varSource = {
     beginDrag: function (props) {
@@ -46,13 +45,21 @@ var VarList = React.createClass({
     getInitialState: function () {
         return { showFile: false };
     },
+    editVariable: function() {
+        if(this.state.active_variable){
+            this.setState({ showFile: true, selectedTab: tabs.edit })
+        }
+        else{
+            // notify the user somehow that a variable must be selected 
+        }
+    },
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent'>
                 <AddEditRemoveNav title='Variables'
-                                  addAction={()=>this.setState({ showFile: true })} 
-                                  editAction={()=>this.setState({ showFile: true, selectedTab: "edit" })}
-                                  removeAction={()=>this.props.removeVariable(this.state.active_variable)} />
+                                  addAction={()=>this.setState({ showFile: true, selectedTab: tabs.file })} 
+                                  editAction={()=>this.editVariable()}
+                                  removeAction={()=>this.props.removeVariable(this.state.active_variable)}/>
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {
@@ -70,6 +77,7 @@ var VarList = React.createClass({
                     cachedFiles={this.props.cachedFiles}
                     addFileToCache={this.props.addFileToCache}
                     selectedTab={this.state.selectedTab}
+                    switchTab={(tab)=>this.setState({ selectedTab: tab})}
                 />
             </div>
         )
