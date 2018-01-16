@@ -39,7 +39,8 @@ var VarList = React.createClass({
         variables: React.PropTypes.oneOfType([
             React.PropTypes.array,
             React.PropTypes.object
-        ])
+        ]),
+        removeVariable: React.PropTypes.func,
 
     },
     getInitialState: function () {
@@ -50,13 +51,14 @@ var VarList = React.createClass({
             <div className='left-side-list scroll-area-list-parent'>
                 <AddEditRemoveNav title='Variables'
                                   addAction={()=>this.setState({ showFile: true })} 
-                                  editAction={()=>this.setState({ showFile: true, selectedTab: "edit" })}/>
+                                  editAction={()=>this.setState({ showFile: true, selectedTab: "edit" })}
+                                  removeAction={()=>this.props.removeVariable(this.state.active_variable)} />
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {
                            return <DraggableVariable key={index} variable={value}
                                                      active={value === this.state.active_variable}
-                                                     selectVariable={(v) => {this.setState({active_variable: v});}}/>
+                                                     selectVariable={(v) => { this.setState({active_variable: v}) }}/>
                         })}
                     </ul>
                 </div>

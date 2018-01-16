@@ -207,6 +207,12 @@ var Actions = {
             name: name,
         }
     },
+    removeVariable(name) {
+        return {
+            type: 'REMOVE_VARIABLE',
+            name: name,
+        }
+    }
 }
 
 export default Actions;
