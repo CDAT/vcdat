@@ -1,6 +1,7 @@
 import React from 'react';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import { connect } from 'react-redux';
+import Actions from '../constants/Actions.js'
 import $ from 'jquery';
 import _ from 'lodash';
 
@@ -8,7 +9,25 @@ var Canvas = React.createClass({
     propTypes: {
         plots: React.PropTypes.array,
         plotVariables: React.PropTypes.array,
+        plotGMs: React.PropTypes.array,
         onTop: React.PropTypes.bool,
+        clearCell: React.PropTypes.func,
+        row: React.PropTypes.number,
+        col: React.PropTypes.number,
+        selected_cell_id: React.PropTypes.number,
+        cell_id: React.PropTypes.number,
+    },
+    shouldComponentUpdate(nextProps){
+        try{
+            // quick and dirty deep equality check
+            if(JSON.stringify(this.props) === JSON.stringify(nextProps)){
+                return false
+            }
+        }
+        catch(e){
+            console.error(e)
+        }
+        return true
     },
     componentDidMount() {
         this.canvas = vcs.init(this.refs.div);
@@ -16,7 +35,7 @@ var Canvas = React.createClass({
     componentDidUpdate(prevProps, prevState) {
         // Sync the size of the canvas
         var div = $(this.refs.div);
-        var canvas = $(this.refs.div).find("canvas");
+        var canvas = div.find("canvas");
         canvas.attr("width", div.width());
         canvas.attr("height", div.height());
         this.canvas.clear()
@@ -27,7 +46,7 @@ var Canvas = React.createClass({
                     var dataSpecs = variables.map(function (variable) {
                         var dataSpec = {
                             uri: variable.path,
-                            variable: variable.cdms_var_name
+                            variable: variable.cdms_var_name 
                         };
                         var subRegion = {};
                         variable.dimension
@@ -53,6 +72,9 @@ var Canvas = React.createClass({
     },
     componentWillUnmount() {
         this.canvas.close();
+    },
+    clearCanvas(){
+        this.canvas.clear()
     },
     render() {
         return (
@@ -91,8 +113,7 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 const mapDispatchToProps = (dispatch) => {
-    return {
-    }
+    return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Canvas);
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Canvas);

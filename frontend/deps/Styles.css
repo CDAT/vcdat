@@ -50,7 +50,6 @@ button:focus {
 }
 #left-side-bar {
     width: 220px;
-    float: left;
     background-color: white;
     height: 100%;
     vertical-align: top;
@@ -65,14 +64,8 @@ button:focus {
 }
 #right-side-bar {
     width: 200px;
-    min-width: 200px;
-    display: inline-block;
-    float: right;
     background-color: white;
-    height: 80vh !important;
-    vertical-align: top;
-    left: 0 !important;
-    margin-left: 10px;
+    margin-left: 2px;
 }
 #var-ulist {
     width: 115px;
@@ -89,6 +82,7 @@ button:focus {
     flex-grow: 1;
     height: 100%;
     margin: 2px;
+    display: flex;
 }
 #add-sheet-button {
     vertical-align: top;
@@ -183,6 +177,9 @@ button:focus {
 }
 .cell{
     border: 1px solid #cecece;
+}
+.cell-selected{
+    border: 1px solid blue;
 }
 .plotter {
     display:flex;

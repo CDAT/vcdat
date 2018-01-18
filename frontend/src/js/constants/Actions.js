@@ -70,6 +70,17 @@ var Actions = {
             graphics_methods: gm
         }
     },
+    selectCell(cell_id){
+        return {
+            type: 'SELECT_CELL',
+            cell_id: cell_id
+        }
+    },
+    deselectCell(){
+        return {
+            type: 'DESELECT_CELL',
+        }
+    },
     updateSelectedCells(selected_cells) {
         return {
             type: 'UPDATE_SELECTED_CELLS',
@@ -91,6 +102,13 @@ var Actions = {
             dropped_index: dropped_index,
             position: position
         }
+    },
+    clearCell(row, col){
+        return({
+            type: 'CLEAR_CELL',
+            row: row,
+            col: col,
+        })
     },
     addPlot(variable, graphics_method_parent, graphics_method, template, row, col) {
         return {
