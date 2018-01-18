@@ -4,16 +4,9 @@ import './CachedFiles.scss';
 import FileTab from './Tabs/FileTab.jsx'
 // import Esgf from './Tabs/EsgfTab.jsx'
 // import OpendapTab from './Tabs/OpendapTab.jsx'
-// import EditTab from './Tabs/EditTab.jsx'
 import InfoTab from './Tabs/InfoTab.jsx'
+import { tabs } from "./Tabs/TabBar.jsx"
 
-const tabs = {
-    file: "file",
-    esgf: "esgf",
-    opendap: "opendap",
-    edit: "edit",
-    info: "info"
-}
 
 class CachedFiles extends Component {
     constructor(props) {
@@ -26,7 +19,6 @@ class CachedFiles extends Component {
                     {
                         this.props.selectedTab == tabs.esgf ? <div className="Dummy-esgf-component">ESGF</div> :
                         this.props.selectedTab == tabs.opendap ? <div className="Dummy-opendap-component">OpenDAP</div> :
-                        this.props.selectedTab == tabs.edit ? <div className="Dummy-edit-component">Edit</div> :
                         this.props.selectedTab == tabs.info ? <InfoTab {...this.props} switchTab={this.props.switchTab.bind(this)} selectedTab={this.props.selectedTab}/> :
                         <FileTab {...this.props} switchTab={this.props.switchTab.bind(this)} selectedTab={this.props.selectedTab}></FileTab>
                     }
@@ -39,7 +31,8 @@ CachedFiles.propTypes = {
     show: React.PropTypes.bool.isRequired,
     onTryClose: React.PropTypes.func.isRequired,
     selectedTab: React.PropTypes.string,
-    switchTab: React.PropTypes.func
+    switchTab: React.PropTypes.func,
+    active_variable: React.PropTypes.string,
 }
 
 CachedFiles.defaultProps = {
@@ -47,4 +40,3 @@ CachedFiles.defaultProps = {
 };
 
 export default CachedFiles
-export { tabs }
