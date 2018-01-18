@@ -46,15 +46,22 @@ class DimensionSlider extends Component {
             }
         }
         this.singleValue = props.data.length == 1;
+        let low_value = props.data.indexOf(this.props.low_value)
+        let high_value = props.data.indexOf(this.props.high_value)
         this.state = {
             min: 0,
             max: props.data.length - 1,
-            value: [props.data[0], props.data[props.data.length - 1]],
+            value: [
+                props.data[(low_value !== -1 ? low_value : 0)],
+                props.data[(high_value !== -1 ? high_value : props.data.length - 1)],
+            ],
             stride: 1
         };
     }
 
     componentDidMount() {
+        let low_value = this.props.data.indexOf(this.props.low_value)
+        let high_value = this.props.data.indexOf(this.props.high_value)
         if (this.singleValue) {
             return;
         }
@@ -62,7 +69,11 @@ class DimensionSlider extends Component {
             min: this.state.min,
             max: this.state.max,
             step: 1,
-            value: [0, this.state.max],
+            value: [
+                low_value !== -1 ? low_value : this.state.min,
+                high_value !== -1 ? high_value : this.state.max,
+                // if the passed in prop value is invalid or not present we get -1 and use the min/max value instead
+            ],
             range: true,
             across: true,
             tooltip: 'hide',
@@ -148,6 +159,14 @@ class DimensionSlider extends Component {
             </div>
         )
     }
+}
+
+DimensionSlider.propTypes = {
+    low_value: React.PropTypes.number,
+    high_value: React.PropTypes.number,
+    data: React.PropTypes.array,
+    onChange: React.PropTypes.func,
+    units: React.PropTypes.string,
 }
 
 export default DimensionSlider;

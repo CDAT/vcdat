@@ -26,7 +26,6 @@ class EditVariable extends Component {
                 resolve(
                     vcs.variables(this.props.variables[this.props.active_variable].path).then((variablesAxes) => {
                         let selectedVariable, dimension;
-
                         if (variablesAxes[0][this.props.active_variable]) {
                             // it's a variablevar 
                             selectedVariable = variablesAxes[0][this.props.active_variable];
@@ -68,6 +67,21 @@ class EditVariable extends Component {
     }
 
     render() {
+        let slider_values = {}
+        for(let dimension of this.props.variables[this.props.active_variable].dimension){
+            if(dimension.values){
+                slider_values[dimension.axisName] = {
+                    range: dimension.values.range,
+                    stride: dimension.stride
+                }
+            }
+            else{
+                slider_values[dimension.axisName] = {
+                    range: [undefined, undefined],
+                    stride: undefined
+                }
+            }
+        }
         return (
             <Modal show={this.props.show} bsSize="large" onHide={this.props.onTryClose}>
                 <Modal.Header closeButton>
@@ -86,7 +100,15 @@ class EditVariable extends Component {
                                 this.state.dimension.map(dimension => dimension.axisName).map((axisName, i) => {
                                     let axis = this.state.variablesAxes[1][axisName];
                                     return (
-                                        <DimensionDnDContainer key={axisName}  index={i} axis={axis} axisName={axisName} handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)} moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} />
+                                        <DimensionDnDContainer 
+                                            key={axisName}
+                                            low_value={slider_values[axisName].range[0]}
+                                            high_value={slider_values[axisName].range[1]}
+                                            index={i}
+                                            axis={axis}
+                                            axisName={axisName}
+                                            handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)}
+                                            moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} />
                                     )
                                 })
                             }
@@ -129,7 +151,7 @@ var DimensionContainer = (props) => {
         <Col sm={2} className="text-right"><span>{props.axis.name}</span></Col>
         {props.connectDragSource(<div className="sort col-sm-1"><Glyphicon glyph="menu-hamburger" /></div>)}
         <div className="col-sm-7 right-content">
-            <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
+            <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} low_value={props.low_value} high_value={props.high_value} />
         </div>
     </div>));
 }
