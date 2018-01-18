@@ -13,9 +13,7 @@ class VariablesModel extends BaseModel {
                 return new_list;
             case 'REMOVE_VARIABLE':
                 var new_state = Object.assign({}, state); 
-                console.log("Old State:", state)
                 delete new_state[action.name]
-                console.log("New State: ", new_state)
                 return new_state
             default: return state
         }
