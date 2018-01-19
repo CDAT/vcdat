@@ -22,5 +22,6 @@ script:
     - cd frontend
     - npm run coverage
     - npm run coveralls
+    - cd ..
 after_success:
     - if [ "$TRAVIS_OS_NAME" == "linux" -a "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then conda install conda-build && conda install anaconda-client && bash ci-support/conda_upload.sh ; fi
