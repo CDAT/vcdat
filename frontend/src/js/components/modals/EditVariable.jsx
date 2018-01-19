@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Modal, Button, Row, Col, Glyphicon } from 'react-bootstrap';
-import _ from 'lodash';
-import { DropTarget, DragSource } from 'react-dnd';
-import { findDOMNode } from 'react-dom';
+import { Modal, Button, Row, Col, Glyphicon } from 'react-bootstrap'
+import _ from 'lodash'
+import { DropTarget, DragSource } from 'react-dnd'
+import { findDOMNode } from 'react-dom'
 
-import DimensionSlider from './CachedFiles/DimensionSlider/DimensionSlider.jsx';
-import DragAndDropTypes from '../../constants/DragAndDropTypes.js';
+import DimensionSlider from './CachedFiles/DimensionSlider/DimensionSlider.jsx'
+import DragAndDropTypes from '../../constants/DragAndDropTypes.js'
+import Actions from '../../constants/Actions.js'
 
 class EditVariable extends Component {
     constructor(props) {
@@ -29,9 +30,7 @@ class EditVariable extends Component {
                         if (variablesAxes[0][this.props.active_variable]) {
                             // it's a variablevar 
                             selectedVariable = variablesAxes[0][this.props.active_variable];
-                            dimension = selectedVariable.axisList.map((axisName) => {
-                                return { axisName };
-                            })
+                            dimension = $.extend(true, [], this.props.variables[this.props.active_variable].dimension)
                         }
                         else {
                             // it's a axis
@@ -63,7 +62,7 @@ class EditVariable extends Component {
     }
 
     save(){
-        console.log("save here")
+        this.props.updateVariable(this.props.active_variable, this.state.dimension)
     }
 
     render() {
@@ -143,6 +142,7 @@ EditVariable.propTypes = {
     onTryClose: React.PropTypes.func.isRequired,
     variables: React.PropTypes.object,
     active_variable: React.PropTypes.string,
+    updateVariable: React.PropTypes.func,
 }
 
 var DimensionContainer = (props) => {
@@ -208,10 +208,18 @@ var DimensionDnDContainer = _.flow(
         }
     ))(DimensionContainer);
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateVariable: (name, dimensions) => {
+            dispatch(Actions.updateVariable(name, dimensions))
+        }
+    }
+}
+
 const mapStateToProps = (state) => {
     return {
         variables: state.present.variables,
     }
 }
 
-export default connect(mapStateToProps, null)(EditVariable);
+export default connect(mapStateToProps, mapDispatchToProps)(EditVariable);
