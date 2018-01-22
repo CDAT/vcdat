@@ -31,7 +31,7 @@ if isBound(VCDAT_PORT):
 
 logfile = tempfile.TemporaryFile()
 
-print "Logs are going to:", logfile, dir(logfile)
+print "Logs are going to:", logfile.name, dir(logfile)
 print "Starting VCSJS on PORT:", VCSJS_PORT
 vcs_server = subprocess.Popen(
     ["vcs-server", "--port", VCSJS_PORT], stdout=logfile, stderr=logfile)
