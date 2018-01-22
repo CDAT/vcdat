@@ -63,6 +63,7 @@ class EditVariable extends Component {
 
     save(){
         this.props.updateVariable(this.props.active_variable, this.state.dimension)
+        this.props.onTryClose()
     }
 
     render() {
