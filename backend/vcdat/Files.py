@@ -3,7 +3,7 @@ import datetime
 
 
 def isValidFile(start_path, item):
-    if os.path.isfile(os.path.join(start_path, item)) and item[0] != '.' and item.endswith('.nc'):
+    if os.path.isfile(os.path.join(start_path, item)) and item[0] != '.': # and item.endswith('.nc'):
         return True
     return False
 
