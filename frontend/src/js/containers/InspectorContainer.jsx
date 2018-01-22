@@ -48,27 +48,6 @@ var InspectorContainer = React.createClass({
                         plotBeingEdited={this.props.plot_being_edited}
                         changePlot={this.props.changePlot}
                     />
-                    <VariableInspector
-                        populateInspector={this.props.populate_inspector}
-                        variables={this.props.variables}
-                        nonVector={this.props.non_vector}
-                        variable1={variable1}
-                        variable2={variable2}
-                        changePlotVar={this.props.changePlotVar}
-                    />
-                    <GraphicsMethodInspector
-                        populateInspector={this.props.populate_inspector}
-                        graphicsMethods={this.props.graphics_methods}
-                        graphicsMethod={graphics_method}
-                        graphicsMethodParent={graphics_method_parent}
-                        changePlotGM={this.props.changePlotGM}
-                    />
-                    <TemplateInspector
-                        populateInspector={this.props.populate_inspector}
-                        template={template}
-                        templates={this.props.templates}
-                        changePlotTemplate={this.props.changePlotTemplate}
-                    />
                 </div>
             </div>
         )
