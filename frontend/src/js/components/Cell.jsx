@@ -21,28 +21,26 @@ const cellTarget = {};
 class Cell extends React.Component {
     constructor(props){
         super(props)
-        this.state = { 
-            cell_id: undefined 
-        }
     }
     componentDidMount(){
         this.token = PubSub.subscribe(PubSubEvents.clear_canvas, this.clearCanvas.bind(this))
     }
+    getOwnCellId(){
+        return `${this.props.sheet_index}_${this.props.row}_${this.props.col}`
+    }
     selectCell(){
-        if(this.props.selected_cell_id == this.state.cell_id){
+        let id = this.getOwnCellId()
+        if(this.props.selected_cell_id == id){
             // this.props.deselectCell() // if a cell is selected, a user clicking on it should deselect it.
             // Turning this feature off since a user manipulating an interactive plot toggles the selection too much
             return
         }
         else{
-            let date = new Date()
-            let timestamp = date.getTime()
-            this.setState({cell_id: timestamp})
-            this.props.selectCell(timestamp)
+            this.props.selectCell(id)
         }
     }
     clearCanvas(){
-        if(this.state.cell_id == this.props.selected_cell_id){
+        if(this.getOwnCellId() == this.props.selected_cell_id){
             this.refs.canvas.getWrappedInstance().clearCanvas()
             this.props.clearCell(this.props.row, this.props.col) // removes plot state from redux
         }
@@ -60,7 +58,7 @@ class Cell extends React.Component {
     }
     render() {
         this.cell = this.props.cells[this.props.row][this.props.col];
-        this.class = this.state.cell_id == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
+        this.class = this.getOwnCellId() == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
         this.can_plot = this.canPlot(this.cell)
         this.plotter_on_top = this.props.isOver || !this.can_plot
         return this.props.connectDropTarget(
@@ -101,8 +99,9 @@ Cell.propTypes = {
     isOver: React.PropTypes.bool,
     selectCell: React.PropTypes.func,
     deselectCell: React.PropTypes.func,
-    selected_cell_id: React.PropTypes.number,
+    selected_cell_id: React.PropTypes.string,
     clearCell: React.PropTypes.func,
+    sheet_index: React.PropTypes.number,
 }
 
 const mapStateToProps = (state) => {

@@ -15,7 +15,7 @@ var Canvas = React.createClass({
         clearCell: React.PropTypes.func,
         row: React.PropTypes.number,
         col: React.PropTypes.number,
-        selected_cell_id: React.PropTypes.number,
+        selected_cell_id: React.PropTypes.string,
         cell_id: React.PropTypes.number,
     },
     shouldComponentUpdate(nextProps){

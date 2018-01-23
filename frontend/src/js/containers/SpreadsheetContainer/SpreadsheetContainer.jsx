@@ -15,7 +15,8 @@ var RenderRow = React.createClass({
         col: React.PropTypes.number,
         colCount: React.PropTypes.number,
         resizeHeader: React.PropTypes.func,
-        row: React.PropTypes.number
+        row: React.PropTypes.number,
+        sheet_index: React.PropTypes.number,
     },
     render() {
         var cols = [];
@@ -35,7 +36,7 @@ var RenderRow = React.createClass({
                         }
                         return;
                     })()}
-                    <Cell resizeHeader={this.props.resizeHeader} row={this.props.row} col={i} />
+                    <Cell resizeHeader={this.props.resizeHeader} row={this.props.row} col={i} sheet_index={this.props.sheet_index}/>
                 </div>
             )
         }
@@ -243,6 +244,7 @@ var SpreadsheetContainer = React.createClass({
                 <RenderRow
                     resizeHeader={this.resizeHeader}
                     key={'row' + i}
+                    sheet_index={this.props.cur_sheet_index}
                     colCount={colCount}
                     row={i}
                     className='row-element'

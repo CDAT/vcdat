@@ -28,7 +28,7 @@ var default_sheet = {
 
 var default_sheets_model = {
     cur_sheet_index: 0,
-    selected_cell_id: 0,
+    selected_cell_id: "none",
     sheets: [default_sheet],
 }
 
@@ -100,7 +100,7 @@ class SpreadsheetModel extends BaseModel {
             case 'CHANGE_CUR_SHEET_INDEX':
                 new_state = jQuery.extend(true, {}, state);
                 new_state.cur_sheet_index = action.index;
-                new_state.selected_cell_id = 0 // reset selected cell when changing sheets
+                new_state.selected_cell_id = "none" // reset selected cell when changing sheets
                 return new_state;
             case 'SELECT_CELL':
                 new_state = jQuery.extend(true, {}, state);
@@ -108,7 +108,7 @@ class SpreadsheetModel extends BaseModel {
                 return new_state
             case 'DESELECT_CELL':
                 new_state = jQuery.extend(true, {}, state);
-                new_state.selected_cell_id = 0
+                new_state.selected_cell_id = "none"
                 return new_state
             case 'CLEAR_CELL':
                 new_state = jQuery.extend(true, {}, state);
