@@ -8,6 +8,7 @@ import { findDOMNode } from 'react-dom'
 import DimensionSlider from './CachedFiles/DimensionSlider/DimensionSlider.jsx'
 import DragAndDropTypes from '../../constants/DragAndDropTypes.js'
 import Actions from '../../constants/Actions.js'
+import $ from 'jquery'
 
 class EditVariable extends Component {
     constructor(props) {
@@ -54,10 +55,14 @@ class EditVariable extends Component {
 
     handleDimensionValueChange(values, axisName = undefined) {
         if (axisName) {
-            this.state.dimension.find(dimension => dimension.axisName === axisName).values = values;
+            let new_dimension = this.state.dimension.slice()
+            new_dimension.find(dimension => dimension.axisName === axisName).values = values;
+            this.setState({dimension: new_dimension})
         }
         else {
-            this.state.dimension.values = values;
+            let new_dimension = this.state.dimension
+            new_dimension.values = values;
+            this.setState({dimension: new_dimension})
         }
     }
 
@@ -125,8 +130,8 @@ class EditVariable extends Component {
                     }
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button bsStyle="default" bsSize="small" onClick={() => this.save()}>Save</Button>
-                    <Button bsStyle="default" bsSize="small" onClick={() => this.props.onTryClose()}>Close</Button>
+                    <Button id="edit-var-save" bsStyle="default" bsSize="small" onClick={() => this.save()}>Save</Button>
+                    <Button id="edit-var-close" bsStyle="default" bsSize="small" onClick={() => this.props.onTryClose()}>Close</Button>
                 </Modal.Footer>
             </Modal>
         )
@@ -224,3 +229,4 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditVariable);
+export {EditVariable as PureEditVariable}

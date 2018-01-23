@@ -17,7 +17,8 @@ const tabs = {
 const props = {
     show: true,
     onTryClose: sinon.spy(),
-    selectedTab: tabs.file    
+    selectedTab: tabs.file,
+    switchTab: sinon.spy(),
 }
 
 describe('CachedFilesTest.jsx', function() {
@@ -25,14 +26,4 @@ describe('CachedFilesTest.jsx', function() {
         const cached_files = shallow(<CachedFiles {...props}/>)
         expect(cached_files).to.have.lengthOf(1);
     });
-
-    it('switchTab sets state', () => {
-        const cached_files = shallow(<CachedFiles {...props}/>)
-        let tabs = ["file", "esgf", "opendap", "edit", "info"]
-        tabs.map((tab) =>{
-            cached_files.instance().switchTab(tab)
-            expect(cached_files.state().selectedTab).to.equal(tab)
-        })
-    });
-
 });
