@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import AddEditRemoveNav from './AddEditRemoveNav.jsx';
-import CachedFiles from './modals/CachedFiles/CachedFiles.jsx';
-import { DragSource } from 'react-dnd';
-import DragAndDropTypes from '../constants/DragAndDropTypes.js';
-
+import React from 'react'
+import AddEditRemoveNav from './AddEditRemoveNav.jsx'
+import CachedFiles from './modals/CachedFiles/CachedFiles.jsx'
+import { tabs } from './modals/CachedFiles/Tabs/TabBar.jsx'
+import { DragSource } from 'react-dnd'
+import DragAndDropTypes from '../constants/DragAndDropTypes.js'
+import EditVariable from "./modals/EditVariable.jsx"
 
 var varSource = {
     beginDrag: function (props) {
@@ -23,7 +24,7 @@ function collect(connect, monitor) {
 
 function VariableItem(props) {
     return props.connectDragSource(
-        <li>
+        <li className={props.active ? "active" : ""} onClick={() => {props.selectVariable(props.variable)}}>
             <a>{props.variable}</a>
         </li>
     );
@@ -39,20 +40,37 @@ var VarList = React.createClass({
         variables: React.PropTypes.oneOfType([
             React.PropTypes.array,
             React.PropTypes.object
-        ])
+        ]),
+        removeVariable: React.PropTypes.func,
 
     },
     getInitialState: function () {
-        return { showFile: false };
+        return { showFile: false, showEdit: false };
+    },
+    editVariable: function() {
+        if(this.state.active_variable){
+            this.setState({ showFile: false, showEdit: true })
+        }
+        else{
+            // notify the user somehow that a variable must be selected 
+        }
+    },
+    removeVariable(){
+        this.props.removeVariable(this.state.active_variable)
     },
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent'>
-                <AddEditRemoveNav title='Variables' addAction={()=>this.setState({ showFile: true })} />
+                <AddEditRemoveNav title='Variables'
+                                  addAction={()=>this.setState({ showFile: true, showEdit: false, selectedTab: tabs.file })} 
+                                  editAction={()=>this.editVariable()}
+                                  removeAction={()=>this.removeVariable()}/>
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {
-                           return <DraggableVariable key={index} variable={value} />
+                           return <DraggableVariable key={index} variable={value}
+                                                     active={value === this.state.active_variable}
+                                                     selectVariable={(v) => { this.setState({active_variable: v}) }}/>
                         })}
                     </ul>
                 </div>
@@ -63,7 +81,18 @@ var VarList = React.createClass({
                     loadVariables={this.props.loadVariables}
                     cachedFiles={this.props.cachedFiles}
                     addFileToCache={this.props.addFileToCache}
-                />
+                    selectedTab={this.state.selectedTab}
+                    switchTab={(tab)=>this.setState({ selectedTab: tab})}
+                    active_variable={this.state.active_variable}/>
+                {
+                    this.state.showEdit &&
+                    <EditVariable 
+                    show={this.state.showEdit}
+                    onTryClose={()=>this.setState({ showEdit: false })}
+                    active_variable={this.state.active_variable}/>    
+                }
+                
+                
             </div>
         )
     }

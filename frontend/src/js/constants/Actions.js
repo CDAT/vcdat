@@ -163,6 +163,13 @@ var Actions = {
             var_list: var_list
         }
     },
+    updateVariable(name, dimensions){
+        return {
+            type: 'UPDATE_VARIABLE',
+            name: name,
+            dimensions: dimensions
+        }
+    },
     addFileToCache(filename, filepath, variables){
         return {
             type: 'ADD_FILE_TO_CACHE',
@@ -207,6 +214,12 @@ var Actions = {
             name: name,
         }
     },
+    removeVariable(name) {
+        return {
+            type: 'REMOVE_VARIABLE',
+            name: name,
+        }
+    }
 }
 
 export default Actions;

@@ -34,38 +34,7 @@ var PlotInspector = React.createClass({
                     </div>
                 </nav>
                     <div className='inspector-selector btn-group'>
-                    <InspectorToolbar />
-                        <h5 className='black'>Plot:</h5>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <button type="button" className="btn btn-info dropdown-toggle dropdown-button"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        >
-                                            <span className='inspector-dropdown-title'>
-                                                {
-                                                    (this.props.populateInspector
-                                                        ? 'Plot ' + this.props.plotBeingEdited
-                                                        : [] )
-                                                }
-                                            </span>
-                                            <span className="caret"></span>
-                                        </button>
-                                        <ul className="dropdown-menu">
-                                            {
-                                                (this.props.populateInspector
-                                                    ? this.getPlotItems(this.props.plotBeingEdited)
-                                                    : [])
-                                            }
-                                        </ul>
-                                    </td>
-                                    <td className='edit-button'>
-                                        <button type='button' className='btn btn-default'>Edit</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <InspectorToolbar />
                     </div>
             </div>
         )

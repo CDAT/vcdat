@@ -22,6 +22,9 @@ var LeftSideBar = React.createClass({
         sheets_model: React.PropTypes.object,
         updateGraphicsMethods: React.PropTypes.func,
         updateTemplate: React.PropTypes.func,
+        removeVariable: React.PropTypes.func,
+        selectVariable: React.PropTypes.func,
+        selected_variable: React.PropTypes.string,
 
     },
     render() {
@@ -30,7 +33,11 @@ var LeftSideBar = React.createClass({
                 <VarList variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     addFileToCache={this.props.addFileToCache}
-                    cachedFiles={this.props.cached_files} />
+                    cachedFiles={this.props.cached_files} 
+                    removeVariable={this.props.removeVariable}
+                    selectVariable={this.props.selectVariable}
+                    selected_variable={this.props.selected_variable}
+                    />
                 <GMList graphicsMethods={this.props.graphics_methods}
                     updateGraphicsMethod={this.props.updateGraphicsMethod}
                     colormaps={this.props.colormaps}
@@ -49,7 +56,8 @@ const mapStateToProps = (state) => {
         cached_files: state.present.cached_files,
         sheets_model: state.present.sheets_model,
         colormaps: state.present.colormaps,
-        default_methods: state.present.default_methods
+        default_methods: state.present.default_methods,
+        selected_variable: state.present.selected_variable,
     }
 }
 
@@ -59,6 +67,14 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(Actions.addFileToCache(filename, filepath, variables));
         },
         loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list)),
+        removeVariable: (var_name) => {
+            if(var_name){
+                dispatch(Actions.removeVariable(var_name))
+            }
+            else{
+                // error handling here. No variable selected when delete was pressed
+            }
+        },
         updateGraphicsMethod: (graphics_method) => {
             dispatch(Actions.updateGraphicsMethod(graphics_method))
         },

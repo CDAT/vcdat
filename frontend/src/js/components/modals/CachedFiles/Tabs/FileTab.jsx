@@ -190,10 +190,14 @@ class FileTab extends Component {
 
     handleDimensionValueChange(values, axisName = undefined) {
         if (axisName) {
-            this.state.dimension.find(dimension => dimension.axisName === axisName).values = values;
+            let new_dimension = this.state.dimension.slice()
+            new_dimension.find(dimension => dimension.axisName === axisName).values = values;
+            this.setState({dimension: new_dimension})
         }
         else {
-            this.state.dimension.values = values;
+            let new_dimension = this.state.dimension
+            new_dimension.values = values;
+            this.setState({dimension: new_dimension})
         }
     }
 
