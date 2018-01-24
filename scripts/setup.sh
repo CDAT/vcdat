@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONDA_ENV=${CONDA_ENV:-test_setup}
+CONDA_ENV=${CONDA_ENV:-nightly}
 
 CERT=$1
 if [ "-"$CERT"-" == "-auto-" ]; then
