@@ -4,8 +4,8 @@
 
 cdms2
 vcs
-uvcdat
 vcs-js
 nodejs
 flask
 service_identity
+vcsaddons
