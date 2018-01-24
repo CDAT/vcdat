@@ -1,10 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { ListGroup, ListGroupItem } from 'react-bootstrap'
+import { ListGroup, ListGroupItem, Collapse } from 'react-bootstrap'
 import InspectorToolbar from './InspectorToolbar.jsx'
 
 class PlotInspector extends React.Component {
 
+    constructor(props){
+        super(props)
+        
+    }
     getVariables(plot_index){
         try{
             return this.props.plots[plot_index].variables.map(function(name){
@@ -54,17 +58,19 @@ class PlotInspector extends React.Component {
                         {
                             this.props.plots && this.props.plots.map((v, index) => {
                                 return(
-                                    <ListGroup key={index}>
-                                        {this.props.plots.length > 1 ? `Plot: ${index}` : "Plot Info:"}
-                                        <ListGroupItem>{
-                                            this.props.plots.variables && 
-                                                this.props.plots.variables.length > 1 ? "Variables:" : "Variable:"}
-                                            {this.getVariables(index)}
-                                        </ListGroupItem>
-                                        <ListGroupItem>GM Type: {this.getGraphicsMethodParent(index)}</ListGroupItem>
-                                        <ListGroupItem>Graphics Method: {this.getGraphicsMethod(index)}</ListGroupItem>
-                                        <ListGroupItem>Template: {this.getTemplate(index)}</ListGroupItem>
-                                    </ListGroup>
+                                    <Collapse key={index}>
+                                        <ListGroup>
+                                            {this.props.plots.length > 1 ? `Plot: ${index}` : "Plot Info:"}
+                                            <ListGroupItem>{
+                                                this.props.plots.variables && 
+                                                    this.props.plots.variables.length > 1 ? "Variables:" : "Variable:"}
+                                                {this.getVariables(index)}
+                                            </ListGroupItem>
+                                            <ListGroupItem>GM Type: {this.getGraphicsMethodParent(index)}</ListGroupItem>
+                                            <ListGroupItem>Graphics Method: {this.getGraphicsMethod(index)}</ListGroupItem>
+                                            <ListGroupItem>Template: {this.getTemplate(index)}</ListGroupItem>
+                                        </ListGroup>
+                                    </Collapse>
                                 )
                             })
                         }
