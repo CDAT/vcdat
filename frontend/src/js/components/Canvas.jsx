@@ -38,7 +38,6 @@ var Canvas = React.createClass({
         var canvas = div.find("canvas");
         canvas.attr("width", div.width());
         canvas.attr("height", div.height());
-        this.canvas.clear()
         if (this.props.plots !== prevProps.plots) {
             this.props.plots.map((plot, index) => {
                 if (plot.variables.length > 0) {
@@ -78,7 +77,7 @@ var Canvas = React.createClass({
     },
     render() {
         return (
-            <div className={this.props.onTop ? "cell-stack-top" : "cell-stack-bottom"} ref="div"></div>
+            <div className={this.props.onTop ? "cell-stack-top canvas-container" : "cell-stack-bottom canvas-container"} ref="div"></div>
         )
     }
 });
