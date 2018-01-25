@@ -1,7 +1,8 @@
 import React from 'react';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import { connect } from 'react-redux';
-import Actions from '../constants/Actions.js'
+import PubSub from 'pubsub-js'
+import PubSubEvents from '../constants/PubSubEvents.js'
 import $ from 'jquery';
 import _ from 'lodash';
 
@@ -27,53 +28,53 @@ var Canvas = React.createClass({
         catch(e){
             console.error(e)
         }
-        return true
+        return true 
     },
     componentDidMount() {
         this.canvas = vcs.init(this.refs.div);
+        this.token = PubSub.subscribe(PubSubEvents.resize, this.resizeCanvas)
     },
     componentDidUpdate(prevProps, prevState) {
-        // Sync the size of the canvas
-        var div = $(this.refs.div);
-        var canvas = div.find("canvas");
-        canvas.attr("width", div.width());
-        canvas.attr("height", div.height());
-        if (this.props.plots !== prevProps.plots) {
-            this.props.plots.map((plot, index) => {
-                if (plot.variables.length > 0) {
-                    var variables = this.props.plotVariables[index];
-                    var dataSpecs = variables.map(function (variable) {
-                        var dataSpec = {
-                            uri: variable.path,
-                            variable: variable.cdms_var_name 
-                        };
-                        var subRegion = {};
-                        variable.dimension
-                            .filter(dimension => dimension.values)
-                            .forEach((dimension) => {
-                                subRegion[dimension.axisName] = dimension.values.range;
-                            })
-                        if (!_.isEmpty(subRegion)) {
-                            dataSpec['operations'] = [{ subRegion }];
-                        }
+        this.props.plots.map((plot, index) => {
+            if (plot.variables.length > 0) {
+                var variables = this.props.plotVariables[index];
+                var dataSpecs = variables.map(function (variable) {
+                    var dataSpec = {
+                        uri: variable.path,
+                        variable: variable.cdms_var_name 
+                    };
+                    var subRegion = {};
+                    variable.dimension
+                        .filter(dimension => dimension.values)
+                        .forEach((dimension) => {
+                            subRegion[dimension.axisName] = dimension.values.range;
+                        })
+                    if (!_.isEmpty(subRegion)) {
+                        dataSpec['operations'] = [{ subRegion }];
+                    }
 
-                        var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName));
-                        if (axis_order.some((order, index) => order !== index)) {
-                            dataSpec['axis_order'] = axis_order;
-                        }
-                        return dataSpec;
-                    });
-                    console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
-                    this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template);
-                }
-            });
-        }
+                    var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName));
+                    if (axis_order.some((order, index) => order !== index)) {
+                        dataSpec['axis_order'] = axis_order;
+                    }
+                    return dataSpec;
+                });
+                console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
+                this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template);
+            }
+        });
     },
     componentWillUnmount() {
         this.canvas.close();
     },
     clearCanvas(){
         this.canvas.clear()
+    },
+    resizeCanvas(){
+        this.canvas.close()
+        delete this.canvas
+        this.canvas = vcs.init(this.refs.div);
+        this.forceUpdate()
     },
     render() {
         return (

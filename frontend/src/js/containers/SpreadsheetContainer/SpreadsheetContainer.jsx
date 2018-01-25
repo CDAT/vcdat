@@ -1,10 +1,12 @@
 import React from 'react';
-import { Modal, ButtonToolbar, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import Cell from 'components/Cell.jsx';
 import { connect } from 'react-redux';
 import Actions from 'constants/Actions.js';
 import Spinner from 'components/Spinner/Spinner.jsx';
+import PubSub from 'pubsub-js'
+import PubSubEvents from '../../constants/PubSubEvents.js'
 import './SpreadsheetContainer.scss';
 /* global $ */
 
@@ -185,9 +187,11 @@ var SpreadsheetContainer = React.createClass({
         // $('#spreadsheet-div').selectable({filter: '.cell', stop: this.updateSelectedCells});
         this.initDragAndDrop();
     },
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         this.initDragAndDrop();
-
+        if(prevProps.cur_sheet.row_count != this.props.cur_sheet.row_count || prevProps.cur_sheet.col_count != this.props.cur_sheet.col_count){
+            PubSub.publish(PubSubEvents.resize)
+        }
     },
     dropppedColHeader(event, ui) {
         var dragged_index = ui.draggable.attr('data-col');
