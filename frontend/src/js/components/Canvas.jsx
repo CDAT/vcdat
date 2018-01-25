@@ -64,12 +64,15 @@ var Canvas = React.createClass({
             }
         });
     },
+    /* istanbul ignore next */
     componentWillUnmount() {
         this.canvas.close();
     },
+    /* istanbul ignore next */
     clearCanvas(){
         this.canvas.clear()
     },
+    /* istanbul ignore next */
     resizeCanvas(){
         this.canvas.close()
         delete this.canvas
@@ -84,14 +87,7 @@ var Canvas = React.createClass({
 });
 
 const mapStateToProps = (state, ownProps) => {
-    var can_plot = ownProps.plots.reduce((prevVal, curVal) => {
-        if (prevVal === false) {
-            return prevVal;
-        }
-        return curVal.variables.length > 0;
-    }, true);
-
-    if (!can_plot) {
+    if (!ownProps.can_plot) {
         return {
             plotVariables: [],
         }
