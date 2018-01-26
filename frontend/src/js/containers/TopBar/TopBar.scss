@@ -1,0 +1,14 @@
+$top_nav_width: 150px;
+
+.top-bar{
+    display: flex;
+    height: 110px;
+    border: #e7e7e7 1px solid;
+    .navbar.navbar-default{
+        width: $top_nav_width;
+    }
+}
+
+.plot-inspector-container{
+    width: calc(100% - #{$top_nav_width}); // https://github.com/sass/sass/issues/818
+}

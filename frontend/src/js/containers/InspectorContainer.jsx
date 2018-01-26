@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Actions from '../constants/Actions.js'
 import VariableInspector from '../components/inspectoritems/VariableInspector.jsx'
-import PlotInspector from '../components/inspectoritems/PlotInspector.jsx'
+//import PlotInspector from '../components/inspectoritems/PlotInspector.jsx'
 import GraphicsMethodInspector from '../components/inspectoritems/GraphicsMethodInspector.jsx'
 import TemplateInspector from '../components/inspectoritems/TemplateInspector.jsx'
 
@@ -41,14 +41,14 @@ var InspectorContainer = React.createClass({
 
         return (
             <div id='inspector' className=' scroll-area-list-parent right-side-list'>
-                <div className='scroll-area'>
+                {/* <div className='scroll-area'>
                     <PlotInspector
                         populateInspector={this.props.populate_inspector}
                         selectedCell={this.props.selected_cell}
                         plotBeingEdited={this.props.plot_being_edited}
                         changePlot={this.props.changePlot}
                     />
-                </div>
+                </div> */}
             </div>
         )
     }

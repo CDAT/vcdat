@@ -95,7 +95,7 @@ button:focus {
     -webkit-transform: scaleX(-1);
     -ms-transform: scaleX(-1);
 }
-.side-nav-header {
+.side-nav-header, .top-nav-header {
     margin-top: 10px;
     margin-left: -8px;
 }
