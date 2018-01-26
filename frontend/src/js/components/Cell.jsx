@@ -47,24 +47,43 @@ class Cell extends React.Component {
             this.props.clearCell(this.props.row, this.props.col) // removes plot state from redux
         }
     }
+    canPlot(cell){
+        if(cell.plots){
+            return cell.plots.reduce((prevVal, curVal) => {
+                if (prevVal === false) {
+                    return prevVal;
+                }
+                return curVal.variables.length > 0;
+            }, true);
+        }
+        return false
+    }
     render() {
         this.cell = this.props.cells[this.props.row][this.props.col];
-        this.row = this.props.row;
-        this.col = this.props.col;
         this.class = this.state.cell_id == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
+        this.can_plot = this.canPlot(this.cell)
+        this.plotter_on_top = this.props.isOver || !this.can_plot
         return this.props.connectDropTarget(
             <div className={this.class} data-row={this.props.row} data-col={this.props.col} onClick={() => {this.selectCell()}}>
                 <Plotter
-                    onTop={this.props.isOver}
+                    onTop={this.plotter_on_top}
                     cell={this.cell}
                     row={this.props.row}
                     col={this.props.col}
+                    can_plot={this.can_plot}
                     addPlot={this.props.addPlot}
                     swapVariableInPlot={this.props.swapVariableInPlot}
                     swapGraphicsMethodInPlot={this.props.swapGraphicsMethodInPlot}
                     swapTemplateInPlot={this.props.swapTemplateInPlot}
                 />
-                <Canvas ref="canvas" onTop={!this.props.isOver} plots={this.cell.plots} row={this.props.row} col={this.props.col} />}
+                <Canvas 
+                    ref="canvas"
+                    onTop={!this.plotter_on_top}
+                    plots={this.cell.plots}
+                    row={this.props.row}
+                    col={this.props.col}
+                    can_plot={this.can_plot}
+                />
             </div>
         );
     }

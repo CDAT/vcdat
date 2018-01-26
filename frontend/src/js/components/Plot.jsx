@@ -17,6 +17,20 @@ const plotTarget = {
                 props.swapTemplateInPlot(item.template, props.plotIndex);
                 break;
         }
+        component.setState({highlight: undefined})
+    },
+    hover(props, monitor, component){
+        switch (monitor.getItemType()) {
+            case DragAndDropTypes.GM:
+                component.setState({highlight: "graphics_method"})
+                break;
+            case DragAndDropTypes.VAR:
+                component.setState({highlight: "variables"})
+                break;
+            case DragAndDropTypes.TMPL:
+                component.setState({highlight: "template"})
+                break;
+        }
     }
 }; 
 
@@ -37,7 +51,7 @@ var Plot = React.createClass({
         swapGraphicsMethodInPlot: React.PropTypes.func,
         swapTemplateInPlot: React.PropTypes.func,
         connectDropTarget: React.PropTypes.func,
-
+        isOver: React.PropTypes.bool,
     },
     validSecondVar(event, ui) {
         if (ui.draggable.attr('data-type') === 'variable' && this.props.plot.graphics_method_parent === 'vector') {
@@ -55,7 +69,7 @@ var Plot = React.createClass({
         return this.props.connectDropTarget(
             <div className='plot' id={this.props.plotName} data-plot-index={this.props.plotIndex}>
                 <div>
-                    <h4>Variables:</h4>
+                    <h4 style={{color: this.props.isOver && this.state.highlight=="variables"? 'lime' : ''}}>Variables:</h4>
                     <div className='plot-var first-var'>{(this.props.plot.variables.length > 0
                             ? this.props.plot.variables[0].cdms_var_name
                             : '')}
@@ -69,12 +83,12 @@ var Plot = React.createClass({
                     </div>
                 </div>
                 <div>
-                    <h4>Graphics method:</h4>
+                    <h4 style={{color: this.props.isOver && this.state.highlight=="graphics_method"? 'lime' : ''}}>Graphics method:</h4>
                     <h5>{this.props.plot.graphics_method_parent}</h5>
                     <h5>{this.props.plot.graphics_method}</h5>
                 </div>
                 <div>
-                    <h4>Template:</h4>
+                    <h4 style={{color: this.props.isOver && this.state.highlight=="template"? 'lime' : ''}}>Template:</h4>
                     <h5>{this.props.plot.template}</h5>
                 </div>
             </div>

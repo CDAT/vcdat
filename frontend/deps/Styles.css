@@ -181,6 +181,9 @@ button:focus {
 .cell-selected{
     border: 1px solid blue;
 }
+.canvas-container{
+    overflow: hidden;
+}
 .plotter {
     display:flex;
     color: black;
