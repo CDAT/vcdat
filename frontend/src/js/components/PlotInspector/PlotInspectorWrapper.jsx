@@ -1,13 +1,39 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Actions from '../../constants/Actions.js'
 import PlotInspector from './PlotInspector.jsx'
 
 class PlotInspectorWrapper extends React.Component {
 
     constructor(props){
         super(props)
+        this.handleSelectVar1 = this.handleSelectVar1.bind(this)
+        this.handleSelectVar2 = this.handleSelectVar2.bind(this)
+        this.handleSelectGMType = this.handleSelectGMType.bind(this)
+        this.handleSelectGM = this.handleSelectGM.bind(this)
+        this.handleSelectTemplate = this.handleSelectTemplate.bind(this)
     }
 
+    handleSelectVar1(event){
+        console.log(event.target.value)
+    }
+
+    handleSelectVar2(event){
+        console.log(event.target.value)
+    }
+
+    handleSelectGMType(event){
+        console.log(event.target.value)
+    }
+
+    handleSelectGM(event){
+        console.log(event.target.value)
+    }
+
+    handleSelectTemplate(event, index){
+        this.props.swapTemplateInPlot(this.props.cell_row, this.props.cell_col, event.target.value, index)
+    }
+    
     render() {
         return (
             <table className="plot-inspector-container table table-condensed">
@@ -29,18 +55,29 @@ class PlotInspectorWrapper extends React.Component {
                                 graphics_methods = Object.keys(this.props.all_graphics_methods[plot.graphics_method_parent])
                             }
                             catch(e){
-                                console.log("woops: ", e)
+                                console.log(e)
                                 graphics_methods = []
                             }
 
                             return(
                                 <PlotInspector
                                     key={index}
+                                    plot_index={index}
                                     plot={plot}
                                     variables={this.props.variables}
                                     graphics_method_types={this.props.graphics_method_types}
                                     graphics_methods={graphics_methods}
                                     templates={this.props.templates}
+                                    cur_var1={plot.variables.length > 0 ? plot.variables[0] : ""}
+                                    cur_var2={plot.variables.length > 1 ? plot.variables[1] : ""}
+                                    cur_gm_type={plot.graphics_method_parent}
+                                    cur_gm={plot.graphics_method}
+                                    cur_template={plot.template}
+                                    handleSelectVar1={this.handleSelectVar1}
+                                    handleSelectVar2={this.handleSelectVar2}
+                                    handleSelectGMType={this.handleSelectGMType}
+                                    handleSelectGM={this.handleSelectGM}
+                                    handleSelectTemplate={this.handleSelectTemplate}
                                 />
                             )
                         })
@@ -57,6 +94,11 @@ PlotInspectorWrapper.propTypes = {
     variables: React.PropTypes.array,
     graphics_method_types: React.PropTypes.array,
     templates: React.PropTypes.array,
+    cell_row: React.PropTypes.number,
+    cell_col: React.PropTypes.number,
+    swapVariableInPlot: React.PropTypes.func,
+    swapGraphicsMethodInPlot: React.PropTypes.func,
+    swapTemplateInPlot: React.PropTypes.func,
 }
 
 const mapStateToProps = (state) => {
@@ -70,10 +112,13 @@ const mapStateToProps = (state) => {
         plots = state.present.sheets_model.sheets[sheet].cells[row][col].plots
     }
     catch(e){
+        console.log(e)
         plots = []
     }
     return {
         plots: plots,
+        cell_row: row,
+        cell_col: col,
         all_graphics_methods: state.present.graphics_methods,
         variables: state.present.variables ? Object.keys(state.present.variables) : [],
         graphics_method_types: state.present.graphics_methods ? Object.keys(state.present.graphics_methods) : [],
@@ -81,5 +126,22 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, null)(PlotInspectorWrapper);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addPlot: function(variable=null, graphics_method_parent=null, graphics_method=null, template=null, row, col) {
+            dispatch(Actions.addPlot(variable, graphics_method_parent, graphics_method, template, row, col));
+        },
+        swapVariableInPlot: function(row, col, value, index, var_being_changed=0) {
+            dispatch(Actions.swapVariableInPlot(value, row, col, index, var_being_changed));
+        },
+        swapGraphicsMethodInPlot: function(row, col, graphics_method_parent, graphics_method, index) {
+            dispatch(Actions.swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, index));
+        },
+        swapTemplateInPlot: function(row, col, value, index) {
+            dispatch(Actions.swapTemplateInPlot(value, row, col, index));
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlotInspectorWrapper);
 

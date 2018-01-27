@@ -22,11 +22,5 @@ class TopBar extends React.Component {
     }
 }
 
-TopBar.propTypes = {
-    selectedCell: React.PropTypes.string,
-}
-
-
-
 export default TopBar;
 
