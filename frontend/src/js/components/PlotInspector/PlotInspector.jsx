@@ -5,7 +5,6 @@ import './PlotInspector.scss'
 class PlotInspector extends React.PureComponent {
 
     render() {
-        console.log(this.props.plot)
         return (
             <tr className="plot-inspector active">
                 <td><Button className="glyphicon glyphicon-remove"></Button></td>
@@ -28,7 +27,7 @@ class PlotInspector extends React.PureComponent {
                     </select>
                 </td>
                 <td>
-                    <select value={this.props.cur_gm_type} onChange={this.props.handleSelectGMType} className="form-control">
+                    <select value={this.props.cur_gm_type} onChange={(e)=>this.props.handleSelectGMType(e.target.value, this.props.plot_index)} className="form-control">
                         {
                             this.props.graphics_method_types.map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>
@@ -37,7 +36,7 @@ class PlotInspector extends React.PureComponent {
                     </select>
                 </td>
                 <td>
-                    <select value={this.props.cur_gm} onChange={this.props.handleSelectGM} className="form-control">
+                    <select value={this.props.cur_gm} onChange={(e)=>this.props.handleSelectGM(this.props.cur_gm_type, e.target.value, this.props.plot_index)} className="form-control">
                         {
                             this.props.graphics_methods.map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>
@@ -46,7 +45,7 @@ class PlotInspector extends React.PureComponent {
                     </select>
                 </td>
                 <td>
-                    <select value={this.props.cur_template} onChange={(e)=>this.props.handleSelectTemplate(e, this.props.plot_index)} className="form-control">
+                    <select value={this.props.cur_template} onChange={(e)=>this.props.handleSelectTemplate(e.target.value, this.props.plot_index)} className="form-control">
                         {
                             this.props.templates.map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>

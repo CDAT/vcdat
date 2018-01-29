@@ -14,76 +14,85 @@ class PlotInspectorWrapper extends React.Component {
         this.handleSelectTemplate = this.handleSelectTemplate.bind(this)
     }
 
-    handleSelectVar1(event){
+    handleSelectVar1(var1, plot_index){
         console.log(event.target.value)
     }
 
-    handleSelectVar2(event){
+    handleSelectVar2(var2, plot_index){
         console.log(event.target.value)
     }
 
-    handleSelectGMType(event){
-        console.log(event.target.value)
+    handleSelectGMType(graphic_type, plot_index){
+        let graphics_method = ""
+        if(this.props.all_graphics_methods[graphic_type]["default"]){ // when switching the graphics type, try to set the method to default
+            graphics_method = "default"
+        }
+        else if(Object.keys(this.props.all_graphics_methods[graphic_type]).length > 0){ // if there is no default check that the parent/type exists
+            Object.keys(this.props.all_graphics_methods[graphic_type])[0] // Then set to the first entry 
+        }
+        this.props.swapGraphicsMethodInPlot(this.props.cell_row, this.props.cell_col, graphic_type, graphics_method, plot_index)
     }
 
-    handleSelectGM(event){
-        console.log(event.target.value)
+    handleSelectGM(graphic_type, graphics_method, plot_index){
+        this.props.swapGraphicsMethodInPlot(this.props.cell_row, this.props.cell_col, graphic_type, graphics_method, plot_index)
     }
 
-    handleSelectTemplate(event, index){
-        this.props.swapTemplateInPlot(this.props.cell_row, this.props.cell_col, event.target.value, index)
+    handleSelectTemplate(template, plot_index){
+        this.props.swapTemplateInPlot(this.props.cell_row, this.props.cell_col, template, plot_index)
     }
     
     render() {
         return (
-            <table className="plot-inspector-container table table-condensed">
-                <thead>
-                    <tr>
-                        <th scope="col">Delete</th>
-                        <th scope="col">Var1</th>
-                        <th scope="col">Var2</th>
-                        <th scope="col">Graphics Type</th>
-                        <th scope="col">Graphics Method</th>
-                        <th scope="col">Template</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        this.props.plots && this.props.plots.map((plot, index) => {
-                            let graphics_methods
-                            try{
-                                graphics_methods = Object.keys(this.props.all_graphics_methods[plot.graphics_method_parent])
-                            }
-                            catch(e){
-                                console.log(e)
-                                graphics_methods = []
-                            }
+            <div className="plot-inspector-container">
+                <table className="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th scope="col">Delete</th>
+                            <th scope="col">Var1</th>
+                            <th scope="col">Var2</th>
+                            <th scope="col">Graphics Type</th>
+                            <th scope="col">Graphics Method</th>
+                            <th scope="col">Template</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.props.plots && this.props.plots.map((plot, index) => {
+                                let graphics_methods
+                                try{
+                                    graphics_methods = Object.keys(this.props.all_graphics_methods[plot.graphics_method_parent])
+                                }
+                                catch(e){
+                                    console.log(e)
+                                    graphics_methods = []
+                                }
 
-                            return(
-                                <PlotInspector
-                                    key={index}
-                                    plot_index={index}
-                                    plot={plot}
-                                    variables={this.props.variables}
-                                    graphics_method_types={this.props.graphics_method_types}
-                                    graphics_methods={graphics_methods}
-                                    templates={this.props.templates}
-                                    cur_var1={plot.variables.length > 0 ? plot.variables[0] : ""}
-                                    cur_var2={plot.variables.length > 1 ? plot.variables[1] : ""}
-                                    cur_gm_type={plot.graphics_method_parent}
-                                    cur_gm={plot.graphics_method}
-                                    cur_template={plot.template}
-                                    handleSelectVar1={this.handleSelectVar1}
-                                    handleSelectVar2={this.handleSelectVar2}
-                                    handleSelectGMType={this.handleSelectGMType}
-                                    handleSelectGM={this.handleSelectGM}
-                                    handleSelectTemplate={this.handleSelectTemplate}
-                                />
-                            )
-                        })
-                    }
-                </tbody>
-            </table>
+                                return(
+                                    <PlotInspector
+                                        key={index}
+                                        plot_index={index}
+                                        plot={plot}
+                                        variables={this.props.variables}
+                                        graphics_method_types={this.props.graphics_method_types}
+                                        graphics_methods={graphics_methods}
+                                        templates={this.props.templates}
+                                        cur_var1={plot.variables.length > 0 ? plot.variables[0] : ""}
+                                        cur_var2={plot.variables.length > 1 ? plot.variables[1] : ""}
+                                        cur_gm_type={plot.graphics_method_parent}
+                                        cur_gm={plot.graphics_method}
+                                        cur_template={plot.template}
+                                        handleSelectVar1={this.handleSelectVar1}
+                                        handleSelectVar2={this.handleSelectVar2}
+                                        handleSelectGMType={this.handleSelectGMType}
+                                        handleSelectGM={this.handleSelectGM}
+                                        handleSelectTemplate={this.handleSelectTemplate}
+                                    />
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
         )
     }
 }
@@ -107,13 +116,9 @@ const mapStateToProps = (state) => {
     let sheet = sheet_row_col[0],
         row = sheet_row_col[1],
         col = sheet_row_col[2]
-    let plots
-    try{
+    let plots = []
+    if(state.present.sheets_model.sheets && state.present.sheets_model.sheets[sheet]){
         plots = state.present.sheets_model.sheets[sheet].cells[row][col].plots
-    }
-    catch(e){
-        console.log(e)
-        plots = []
     }
     return {
         plots: plots,
