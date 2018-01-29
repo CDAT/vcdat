@@ -55,7 +55,8 @@ class FileTab extends Component {
             selectedVariableName: '',
             redefinedVariableName: '',
             temporaryRedefinedVariableName: '',
-            dimension: null
+            dimension: null,
+            errorMessage: ''
         }
     }
 
@@ -160,6 +161,7 @@ class FileTab extends Component {
     }
 
     handleFileSelected(file) {
+        this.setState({errorMessage: ''});
         this.handleFileExplorerTryClose();
         var path = cleanPath(file.path + '/' + file.name);
         var self = this
@@ -178,6 +180,10 @@ class FileTab extends Component {
                             selectedVariableName: Object.keys(variablesAxes[0])[0],
                             selectedVariable: null
                         });
+                    }).catch(function(thing){
+                        console.log("error!: ", thing)
+                        self.setState({errorMessage: 'CDMS can not open this file, please select another'});
+
                     })
                 )
             }
@@ -240,6 +246,7 @@ class FileTab extends Component {
                 <Modal.Body>
                     <TabBar switchTab={this.props.switchTab} selectedTab={this.props.selectedTab}/>
                     <div className="load-from">
+                        <center><font color="red"><b>{this.state.errorMessage}</b></font></center>
                         <Row>
                             <Col className="text-right" sm={2}>
                                 <h4>Load From</h4>
