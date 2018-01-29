@@ -56,7 +56,7 @@ class FileTab extends Component {
             redefinedVariableName: '',
             temporaryRedefinedVariableName: '',
             dimension: null,
-            errorMessage: 'error section'
+            errorMessage: ''
         }
     }
 
@@ -161,6 +161,7 @@ class FileTab extends Component {
     }
 
     handleFileSelected(file) {
+        this.setState({errorMessage: ''});
         this.handleFileExplorerTryClose();
         var path = cleanPath(file.path + '/' + file.name);
         var self = this
@@ -245,7 +246,7 @@ class FileTab extends Component {
                 <Modal.Body>
                     <TabBar switchTab={this.props.switchTab} selectedTab={this.props.selectedTab}/>
                     <div className="load-from">
-                        {this.state.errorMessage}
+                        <center><font color="red"><b>{this.state.errorMessage}</b></font></center>
                         <Row>
                             <Col className="text-right" sm={2}>
                                 <h4>Load From</h4>
