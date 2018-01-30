@@ -214,7 +214,7 @@ var Actions = {
             name: name,
         }
     },
-    removeVariable(name) {
+    removeVariable(name) { // Removes variable from list of loaded variables (left side bar)
         return {
             type: 'REMOVE_VARIABLE',
             name: name,

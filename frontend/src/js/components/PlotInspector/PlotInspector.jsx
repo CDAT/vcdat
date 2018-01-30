@@ -7,9 +7,10 @@ class PlotInspector extends React.PureComponent {
     render() {
         return (
             <tr className="plot-inspector active">
-                <td><Button className="glyphicon glyphicon-remove"></Button></td>
+                <td><Button className="glyphicon glyphicon-remove" disabled></Button></td>
                 <td>
-                    <select value={this.props.cur_var1} onChange={this.props.handleSelectVar1} className="form-control">
+                    <select value={this.props.cur_var1} onChange={(e)=>this.props.handleSelectVar1(e.target.value, this.props.plot_index)} className="form-control">
+                        <option value=""></option>
                         {
                             this.props.variables.map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>
@@ -18,7 +19,8 @@ class PlotInspector extends React.PureComponent {
                     </select> 
                 </td>
                 <td>
-                    <select value={this.props.cur_var2} onChange={this.props.handleSelectVar2} className="form-control">
+                    <select value={this.props.cur_var2} onChange={(e)=>this.props.handleSelectVar2(e.target.value, this.props.plot_index)} className="form-control">
+                        <option value=""></option>
                         {
                             this.props.variables.map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>

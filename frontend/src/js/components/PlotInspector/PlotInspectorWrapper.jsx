@@ -15,11 +15,13 @@ class PlotInspectorWrapper extends React.Component {
     }
 
     handleSelectVar1(var1, plot_index){
-        console.log(event.target.value)
+        const FIRST_VARIABLE = 0
+        this.props.swapVariableInPlot(this.props.cell_row, this.props.cell_col, var1, plot_index, FIRST_VARIABLE)
     }
 
     handleSelectVar2(var2, plot_index){
-        console.log(event.target.value)
+        const SECOND_VARIABLE = 1
+        this.props.swapVariableInPlot(this.props.cell_row, this.props.cell_col, var2, plot_index, SECOND_VARIABLE)
     }
 
     handleSelectGMType(graphic_type, plot_index){
