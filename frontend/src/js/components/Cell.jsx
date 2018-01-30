@@ -46,12 +46,21 @@ class Cell extends React.Component {
         }
     }
     canPlot(cell){
+        /* A cell can be plotted if it meets ALL of the following conditions:
+            * `plots` is defined
+            * Every plot defined is valid
+            * At least one variable is defined
+            * No variable can be ""
+        */
         if(cell.plots){
-            return cell.plots.reduce((prevVal, curVal) => {
-                if (prevVal === false) {
-                    return prevVal;
+            return cell.plots.reduce((prev_val, cur_val) => {
+                if (prev_val === false) {
+                    return prev_val;
                 }
-                return curVal.variables.length > 0;
+                if(cur_val.variables.length > 0){
+                    return cur_val.variables.indexOf("") === -1
+                }
+                return false
             }, true);
         }
         return false

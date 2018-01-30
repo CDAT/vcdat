@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import InspectorContainer from './InspectorContainer.jsx'
+import PlotTools from '../components/PlotTools.jsx'
 /* global $ */
 
 class RightSideBar extends Component{
@@ -7,7 +7,7 @@ class RightSideBar extends Component{
     render(){
         return (
             <div id='right-side-bar'>
-                <InspectorContainer />
+                <PlotTools />
             </div>
         )
     }
