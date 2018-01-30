@@ -15,6 +15,7 @@ fi
 mkdir ~/conda-bld
 conda install -q anaconda-client conda-build
 conda config --set anaconda_upload no
+conda install -f six
 export CONDA_BLD_PATH=${HOME}/conda-bld
 export VERSION=`date +%Y.%m.%d`
 echo "Cloning recipes"
