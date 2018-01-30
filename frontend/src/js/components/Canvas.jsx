@@ -35,34 +35,36 @@ var Canvas = React.createClass({
         this.token = PubSub.subscribe(PubSubEvents.resize, this.resizeCanvas)
     },
     componentDidUpdate(prevProps, prevState) {
-        this.props.plots.map((plot, index) => {
-            if (plot.variables.length > 0) {
-                var variables = this.props.plotVariables[index];
-                var dataSpecs = variables.map(function (variable) {
-                    var dataSpec = {
-                        uri: variable.path,
-                        variable: variable.cdms_var_name 
-                    };
-                    var subRegion = {};
-                    variable.dimension
-                        .filter(dimension => dimension.values)
-                        .forEach((dimension) => {
-                            subRegion[dimension.axisName] = dimension.values.range;
-                        })
-                    if (!_.isEmpty(subRegion)) {
-                        dataSpec['operations'] = [{ subRegion }];
-                    }
-
-                    var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName));
-                    if (axis_order.some((order, index) => order !== index)) {
-                        dataSpec['axis_order'] = axis_order;
-                    }
-                    return dataSpec;
-                });
-                console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
-                this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template);
-            }
-        });
+        this.canvas.clear().then(() => {
+            this.props.plots.map((plot, index) => {
+                if (plot.variables.length > 0) {
+                    var variables = this.props.plotVariables[index];
+                    var dataSpecs = variables.map(function (variable) {
+                        var dataSpec = {
+                            uri: variable.path,
+                            variable: variable.cdms_var_name 
+                        };
+                        var subRegion = {};
+                        variable.dimension
+                            .filter(dimension => dimension.values)
+                            .forEach((dimension) => {
+                                subRegion[dimension.axisName] = dimension.values.range;
+                            })
+                        if (!_.isEmpty(subRegion)) {
+                            dataSpec['operations'] = [{ subRegion }];
+                        }
+    
+                        var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName));
+                        if (axis_order.some((order, index) => order !== index)) {
+                            dataSpec['axis_order'] = axis_order;
+                        }
+                        return dataSpec;
+                    });
+                    console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
+                    this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template);
+                }
+            });
+        })
     },
     /* istanbul ignore next */
     componentWillUnmount() {
