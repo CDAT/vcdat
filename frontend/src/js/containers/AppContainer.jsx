@@ -1,5 +1,4 @@
 import React from 'react';
-import Toolbar from '../components/Toolbar.jsx';
 import TopBar from './TopBar/TopBar.jsx'
 import LeftSideBar from './LeftSideBar.jsx';
 import RightSideBar from './RightSideBar.jsx';
@@ -20,17 +19,11 @@ var AppContainer = React.createClass({
     render() {
         return (
             <div id='app-container'>
-                {/* <Toolbar
-                    onUndo={this.props.undo}
-                    onRedo={this.props.redo}
-                    undoEnabled={this.props.undoEnabled}
-                    redoEnabled={this.props.redoEnabled}
-                /> */}
                 <TopBar />
                 <div id="main-container">
                     <LeftSideBar resizeSpreadsheet={this.resizeSpreadsheet} />
                     <SpreadsheetContainer />
-                    <RightSideBar />
+                    <RightSideBar onUndo={this.props.undo} onRedo={this.props.redo} undoEnabled={this.props.undoEnabled} redoEnabled={this.props.redoEnabled}/>
                 </div>
             </div>
         );
