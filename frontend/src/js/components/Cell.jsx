@@ -49,6 +49,7 @@ class Cell extends React.Component {
         /* A cell can be plotted if it meets ALL of the following conditions:
             * `plots` is defined
             * Every plot defined is valid
+            * If the plot requires 2 variables, both must be defined
             * At least one variable is defined
             * No variable can be "", undefined, empty, etc
         */
@@ -56,6 +57,9 @@ class Cell extends React.Component {
             return cell.plots.reduce((prev_val, cur_val) => {
                 if (prev_val === false) {
                     return prev_val;
+                }
+                if(["vector", "3d_vector", "streamline"].indexOf(cur_val.graphics_method_parent) >= 0 && cur_val.variables.length < 2){
+                    return false // these plots need 2 variables, but 1 or 0 are defined
                 }
                 if(cur_val.variables.length > 0){
                     return cur_val.variables.reduce((prev, cur) => {return prev && Boolean(cur)}, true)

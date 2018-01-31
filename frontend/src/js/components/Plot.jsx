@@ -60,7 +60,7 @@ var Plot = React.createClass({
         return false;
     },
     isVector(){
-        if(this.props.plot.graphics_method_parent === 'vector'){
+        if(this.props.plot.graphics_method_parent === ['vector', "3d_vector", "streamline"]){
             return true;
         }
         return false;
