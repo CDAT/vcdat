@@ -18,17 +18,17 @@ var Canvas = React.createClass({
         selected_cell_id: React.PropTypes.string,
         cell_id: React.PropTypes.number,
     },
-    shouldComponentUpdate(nextProps){
+    shouldComponentUpdate(next_props){
         try{
             // quick and dirty deep equality check
-            if(JSON.stringify(this.props) === JSON.stringify(nextProps)){
-                return false
+            if(next_props.can_plot && JSON.stringify(this.props) !== JSON.stringify(next_props)){
+                return true
             }
         }
         catch(e){
             console.error(e)
         }
-        return true 
+        return false
     },
     componentDidMount() {
         this.canvas = vcs.init(this.refs.div);

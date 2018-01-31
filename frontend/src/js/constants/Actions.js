@@ -131,6 +131,15 @@ var Actions = {
             var_being_changed: var_being_changed
         }
     },
+    deleteVariableInPlot(row, col, plot_index, var_index){
+        return{
+            type: 'DELETE_PLOT_VAR',
+            row: row,
+            col: col,
+            plot_index: plot_index,
+            var_index: var_index
+        }
+    },
     swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, plot_index) {
         return {
             type: 'CHANGE_PLOT_GM',

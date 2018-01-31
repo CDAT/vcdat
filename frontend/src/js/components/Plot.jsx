@@ -70,14 +70,14 @@ var Plot = React.createClass({
             <div className='plot' id={this.props.plotName} data-plot-index={this.props.plotIndex}>
                 <div>
                     <h4 style={{color: this.props.isOver && this.state.highlight=="variables"? 'lime' : ''}}>Variables:</h4>
-                    <div className='plot-var first-var'>{(this.props.plot.variables.length > 0
+                    <div className='plot-var first-var'>{(this.props.plot.variables.length > 0 && this.props.plot.variables[0]
                             ? this.props.plot.variables[0].cdms_var_name
                             : '')}
                     </div>
                     <div className={'plot-var second-var ' + (this.isVector()
                             ? 'colored-second-var'
                             : '')}>
-                                {(this.props.plot.variables.length > 1
+                                {(this.props.plot.variables.length > 1 && this.props.plot.variables[1]
                                     ? this.props.plot.variables[1].cdms_var_name
                                     : '')}
                     </div>

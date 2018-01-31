@@ -21,7 +21,12 @@ class PlotInspectorWrapper extends React.Component {
 
     handleSelectVar2(var2, plot_index){
         const SECOND_VARIABLE = 1
-        this.props.swapVariableInPlot(this.props.cell_row, this.props.cell_col, var2, plot_index, SECOND_VARIABLE)
+        if(var2 === ""){
+            this.props.deleteVariableInPlot(this.props.cell_row, this.props.cell_col, plot_index, SECOND_VARIABLE)
+        }
+        else{
+            this.props.swapVariableInPlot(this.props.cell_row, this.props.cell_col, var2, plot_index, SECOND_VARIABLE)
+        }
     }
 
     handleSelectGMType(graphic_type, plot_index){
@@ -110,6 +115,7 @@ PlotInspectorWrapper.propTypes = {
     swapVariableInPlot: React.PropTypes.func,
     swapGraphicsMethodInPlot: React.PropTypes.func,
     swapTemplateInPlot: React.PropTypes.func,
+    deleteVariableInPlot: React.PropTypes.func,
 }
 
 const mapStateToProps = (state) => {
@@ -136,17 +142,20 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         addPlot: function(variable=null, graphics_method_parent=null, graphics_method=null, template=null, row, col) {
-            dispatch(Actions.addPlot(variable, graphics_method_parent, graphics_method, template, row, col));
+            dispatch(Actions.addPlot(variable, graphics_method_parent, graphics_method, template, row, col))
         },
         swapVariableInPlot: function(row, col, value, index, var_being_changed=0) {
-            dispatch(Actions.swapVariableInPlot(value, row, col, index, var_being_changed));
+            dispatch(Actions.swapVariableInPlot(value, row, col, index, var_being_changed))
         },
         swapGraphicsMethodInPlot: function(row, col, graphics_method_parent, graphics_method, index) {
-            dispatch(Actions.swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, index));
+            dispatch(Actions.swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, index))
         },
         swapTemplateInPlot: function(row, col, value, index) {
-            dispatch(Actions.swapTemplateInPlot(value, row, col, index));
+            dispatch(Actions.swapTemplateInPlot(value, row, col, index))
         },
+        deleteVariableInPlot: function(row, col, index, var_being_deleted){
+            dispatch(Actions.deleteVariableInPlot(row, col, index, var_being_deleted))
+        }
     }
 }
 

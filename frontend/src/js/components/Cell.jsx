@@ -50,7 +50,7 @@ class Cell extends React.Component {
             * `plots` is defined
             * Every plot defined is valid
             * At least one variable is defined
-            * No variable can be ""
+            * No variable can be "", undefined, empty, etc
         */
         if(cell.plots){
             return cell.plots.reduce((prev_val, cur_val) => {
@@ -58,7 +58,7 @@ class Cell extends React.Component {
                     return prev_val;
                 }
                 if(cur_val.variables.length > 0){
-                    return cur_val.variables.indexOf("") === -1
+                    return cur_val.variables.reduce((prev, cur) => {return prev && Boolean(cur)}, true)
                 }
                 return false
             }, true);
