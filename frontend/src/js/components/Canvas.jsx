@@ -20,6 +20,9 @@ var Canvas = React.createClass({
     },
     shouldComponentUpdate(next_props){
         try{
+            if(this.props.onTop !== next_props.onTop){
+                return true
+            }
             // quick and dirty deep equality check
             if(next_props.can_plot && JSON.stringify(this.props) !== JSON.stringify(next_props)){
                 return true

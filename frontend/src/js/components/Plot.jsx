@@ -1,7 +1,7 @@
 import React from 'react';
 import {DropTarget} from 'react-dnd';
 import DragAndDropTypes from '../constants/DragAndDropTypes.js';
-
+import { TWO_VAR_PLOTS } from '../constants/Constants.js'
 
 const plotTarget = {
     drop(props, monitor, component) {
@@ -60,7 +60,7 @@ var Plot = React.createClass({
         return false;
     },
     isVector(){
-        if(this.props.plot.graphics_method_parent === ['vector', "3d_vector", "streamline"]){
+        if(TWO_VAR_PLOTS.indexOf(this.props.plot.graphics_method_parent) >= 0){
             return true;
         }
         return false;
@@ -71,14 +71,14 @@ var Plot = React.createClass({
                 <div>
                     <h4 style={{color: this.props.isOver && this.state.highlight=="variables"? 'lime' : ''}}>Variables:</h4>
                     <div className='plot-var first-var'>{(this.props.plot.variables.length > 0 && this.props.plot.variables[0]
-                            ? this.props.plot.variables[0].cdms_var_name
+                            ? this.props.plot.variables[0]
                             : '')}
                     </div>
                     <div className={'plot-var second-var ' + (this.isVector()
                             ? 'colored-second-var'
                             : '')}>
                                 {(this.props.plot.variables.length > 1 && this.props.plot.variables[1]
-                                    ? this.props.plot.variables[1].cdms_var_name
+                                    ? this.props.plot.variables[1]
                                     : '')}
                     </div>
                 </div>

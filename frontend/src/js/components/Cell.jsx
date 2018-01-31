@@ -7,7 +7,7 @@ import {DropTarget} from 'react-dnd';
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js';
-
+import { TWO_VAR_PLOTS } from '../constants/Constants.js'
 
 function collect(connect, monitor) {
     return {
@@ -58,7 +58,7 @@ class Cell extends React.Component {
                 if (prev_val === false) {
                     return prev_val;
                 }
-                if(["vector", "3d_vector", "streamline"].indexOf(cur_val.graphics_method_parent) >= 0 && cur_val.variables.length < 2){
+                if(TWO_VAR_PLOTS.indexOf(cur_val.graphics_method_parent) >= 0 && cur_val.variables.length < 2){
                     return false // these plots need 2 variables, but 1 or 0 are defined
                 }
                 if(cur_val.variables.length > 0){

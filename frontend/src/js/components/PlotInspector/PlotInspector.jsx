@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import './PlotInspector.scss'
-
+import { ONE_VAR_PLOTS } from '../../constants/Constants.js'
 class PlotInspector extends React.PureComponent {
 
     render() {
@@ -19,7 +19,11 @@ class PlotInspector extends React.PureComponent {
                     </select> 
                 </td>
                 <td>
-                    <select value={this.props.cur_var2} onChange={(e)=>this.props.handleSelectVar2(e.target.value, this.props.plot_index)} className="form-control">
+                    <select 
+                        value={this.props.cur_var2}
+                        onChange={(e)=>this.props.handleSelectVar2(e.target.value, this.props.plot_index)}
+                        className="form-control"
+                        disabled={ONE_VAR_PLOTS.indexOf(this.props.cur_gm_type) >= 0}>
                         <option value=""></option>
                         {
                             this.props.variables.map((name, index)=>{
