@@ -20,6 +20,7 @@
     "react-dnd-html5-backend": "^2.2.4",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
+    "react-toastify": "^3.3.1",
     "redux": "=3.5.2",
     "redux-undo": "^0.6.1",
     "vcs-widgets": "^0.0.5"
