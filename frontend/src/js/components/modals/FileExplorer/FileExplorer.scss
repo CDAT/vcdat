@@ -11,6 +11,14 @@
     list-style-type: none;
      padding-left: 0; 
     cursor: default;
+
+    .glyphicon-folder-open{
+        color: #e3783a;
+    }
+
+    li a:hover{
+        cursor: pointer;
+    }
 }
 
 .file-list .file-icon{
