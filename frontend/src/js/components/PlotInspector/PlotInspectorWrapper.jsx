@@ -35,7 +35,11 @@ class PlotInspectorWrapper extends React.Component {
             graphics_method = "default"
         }
         else if(Object.keys(this.props.all_graphics_methods[graphic_type]).length > 0){ // if there is no default check that the parent/type exists
-            Object.keys(this.props.all_graphics_methods[graphic_type])[0] // Then set to the first entry 
+            graphics_method = Object.keys(this.props.all_graphics_methods[graphic_type])[0] // Then set to the first entry 
+        }
+        /* istanbul ignore next */
+        else{
+            throw "Error: Graphics type has no child methods."
         }
         this.props.swapGraphicsMethodInPlot(this.props.cell_row, this.props.cell_col, graphic_type, graphics_method, plot_index)
     }
@@ -55,8 +59,8 @@ class PlotInspectorWrapper extends React.Component {
                     <thead>
                         <tr>
                             <th scope="col">Delete</th>
-                            <th scope="col">Var1</th>
-                            <th scope="col">Var2</th>
+                            <th scope="col">Var 1</th>
+                            <th scope="col">Var 2</th>
                             <th scope="col">Graphics Type</th>
                             <th scope="col">Graphics Method</th>
                             <th scope="col">Template</th>
@@ -160,4 +164,5 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlotInspectorWrapper);
+export {PlotInspectorWrapper as PurePlotInspectorWrapper}
 

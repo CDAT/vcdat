@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import { Button } from 'react-bootstrap'
 import './PlotInspector.scss'
 import { ONE_VAR_PLOTS } from '../../constants/Constants.js'
@@ -9,7 +9,12 @@ class PlotInspector extends React.PureComponent {
             <tr className="plot-inspector active">
                 <td><Button className="glyphicon glyphicon-remove" disabled></Button></td>
                 <td>
-                    <select value={this.props.cur_var1} onChange={(e)=>this.props.handleSelectVar1(e.target.value, this.props.plot_index)} className="form-control">
+                    <select
+                        value={this.props.cur_var1}
+                        onChange={(e)=>this.props.handleSelectVar1(e.target.value, this.props.plot_index)}
+                        className="form-control"
+                        id="plot-inspector-variable1-select"
+                        >
                         <option value=""></option>
                         {
                             this.props.variables.map((name, index)=>{
@@ -22,8 +27,10 @@ class PlotInspector extends React.PureComponent {
                     <select 
                         value={this.props.cur_var2}
                         onChange={(e)=>this.props.handleSelectVar2(e.target.value, this.props.plot_index)}
-                        className="form-control"
-                        disabled={ONE_VAR_PLOTS.indexOf(this.props.cur_gm_type) >= 0}>
+                        className="form-control" 
+                        id="plot-inspector-variable2-select"
+                        disabled={ONE_VAR_PLOTS.indexOf(this.props.cur_gm_type) >= 0}
+                        >
                         <option value=""></option>
                         {
                             this.props.variables.map((name, index)=>{
@@ -33,7 +40,12 @@ class PlotInspector extends React.PureComponent {
                     </select>
                 </td>
                 <td>
-                    <select value={this.props.cur_gm_type} onChange={(e)=>this.props.handleSelectGMType(e.target.value, this.props.plot_index)} className="form-control">
+                    <select 
+                        value={this.props.cur_gm_type}
+                        onChange={(e)=>this.props.handleSelectGMType(e.target.value, this.props.plot_index)}
+                        className="form-control"
+                        id="plot-inspector-graphics-method-type-select"
+                        >
                         {
                             this.props.graphics_method_types.map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>
@@ -42,7 +54,12 @@ class PlotInspector extends React.PureComponent {
                     </select>
                 </td>
                 <td>
-                    <select value={this.props.cur_gm} onChange={(e)=>this.props.handleSelectGM(this.props.cur_gm_type, e.target.value, this.props.plot_index)} className="form-control">
+                    <select 
+                        value={this.props.cur_gm}
+                        onChange={(e)=>this.props.handleSelectGM(this.props.cur_gm_type, e.target.value, this.props.plot_index)}
+                        className="form-control"
+                        id="plot-inspector-graphics-method-select"
+                        >
                         {
                             this.props.graphics_methods.map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>
@@ -51,7 +68,12 @@ class PlotInspector extends React.PureComponent {
                     </select>
                 </td>
                 <td>
-                    <select value={this.props.cur_template} onChange={(e)=>this.props.handleSelectTemplate(e.target.value, this.props.plot_index)} className="form-control">
+                    <select
+                        value={this.props.cur_template}
+                        onChange={(e)=>this.props.handleSelectTemplate(e.target.value, this.props.plot_index)}
+                        className="form-control"
+                        id="plot-inspector-template-select"
+                        >
                         {
                             this.props.templates.map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>
@@ -65,22 +87,22 @@ class PlotInspector extends React.PureComponent {
 }
 
 PlotInspector.propTypes = {
-    plot: React.PropTypes.object,
-    plot_index: React.PropTypes.number,
-    variables: React.PropTypes.array,
-    graphics_method_types: React.PropTypes.array, // parent graphics methods. E.g. "boxfill"
-    graphics_methods: React.PropTypes.array, // child GMs. E.g. "default"
-    templates: React.PropTypes.array,
-    cur_var1: React.PropTypes.string,
-    cur_var2: React.PropTypes.string,
-    cur_gm_type: React.PropTypes.string,
-    cur_gm: React.PropTypes.string,
-    cur_template: React.PropTypes.string,
-    handleSelectVar1: React.PropTypes.func,
-    handleSelectVar2: React.PropTypes.func,
-    handleSelectGMType: React.PropTypes.func,
-    handleSelectGM: React.PropTypes.func,
-    handleSelectTemplate: React.PropTypes.func,
+    plot: PropTypes.object,
+    plot_index: PropTypes.number,
+    variables: PropTypes.arrayOf(PropTypes.string).isRequired,
+    graphics_method_types: PropTypes.arrayOf(PropTypes.string).isRequired, // parent graphics methods. E.g. "boxfill"
+    graphics_methods: PropTypes.arrayOf(PropTypes.string).isRequired, // child GMs. E.g. "default"
+    templates: PropTypes.arrayOf(PropTypes.string).isRequired,
+    cur_var1: PropTypes.string,
+    cur_var2: PropTypes.string,
+    cur_gm_type: PropTypes.string,
+    cur_gm: PropTypes.string,
+    cur_template: PropTypes.string,
+    handleSelectVar1: PropTypes.func,
+    handleSelectVar2: PropTypes.func,
+    handleSelectGMType: PropTypes.func,
+    handleSelectGM: PropTypes.func,
+    handleSelectTemplate: PropTypes.func,
 }
 
 export default PlotInspector;
