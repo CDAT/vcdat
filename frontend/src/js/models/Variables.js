@@ -12,7 +12,7 @@ class VariablesModel extends BaseModel {
                     new_list[key] = var_obj[key];
                 })
                 return new_list;
-            case 'REMOVE_VARIABLE':
+            case 'REMOVE_VARIABLE': // Removes variable from list of loaded variables (left side bar)
                 new_state = $.extend(true, {}, state) 
                 delete new_state[action.name]
                 return new_state

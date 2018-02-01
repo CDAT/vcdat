@@ -3,7 +3,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var React = require('react');
 
-import InspectorToolbar from '../../../../src/js/components/inspectoritems/InspectorToolbar.jsx'
+import InspectorToolbar from '../../../../src/js/components/PlotTools/PlotTools.jsx'
 import { shallow } from 'enzyme'
 import sinon from 'sinon'
 import PubSub from 'pubsub-js'

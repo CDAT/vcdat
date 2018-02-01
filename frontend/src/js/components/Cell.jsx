@@ -7,7 +7,7 @@ import {DropTarget} from 'react-dnd';
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js';
-
+import { TWO_VAR_PLOTS } from '../constants/Constants.js'
 
 function collect(connect, monitor) {
     return {
@@ -21,46 +21,57 @@ const cellTarget = {};
 class Cell extends React.Component {
     constructor(props){
         super(props)
-        this.state = { 
-            cell_id: undefined 
-        }
     }
     componentDidMount(){
         this.token = PubSub.subscribe(PubSubEvents.clear_canvas, this.clearCanvas.bind(this))
     }
+    getOwnCellId(){
+        return `${this.props.sheet_index}_${this.props.row}_${this.props.col}`
+    }
     selectCell(){
-        if(this.props.selected_cell_id == this.state.cell_id){
+        let id = this.getOwnCellId()
+        if(this.props.selected_cell_id == id){
             // this.props.deselectCell() // if a cell is selected, a user clicking on it should deselect it.
             // Turning this feature off since a user manipulating an interactive plot toggles the selection too much
             return
         }
         else{
-            let date = new Date()
-            let timestamp = date.getTime()
-            this.setState({cell_id: timestamp})
-            this.props.selectCell(timestamp)
+            this.props.selectCell(id)
         }
     }
     clearCanvas(){
-        if(this.state.cell_id == this.props.selected_cell_id){
+        if(this.getOwnCellId() == this.props.selected_cell_id){
             this.refs.canvas.getWrappedInstance().clearCanvas()
             this.props.clearCell(this.props.row, this.props.col) // removes plot state from redux
         }
     }
     canPlot(cell){
+        /* A cell can be plotted if it meets ALL of the following conditions:
+            * `plots` is defined
+            * Every plot defined is valid
+            * If the plot requires 2 variables, both must be defined
+            * At least one variable is defined
+            * No variable can be "", undefined, empty, etc
+        */
         if(cell.plots){
-            return cell.plots.reduce((prevVal, curVal) => {
-                if (prevVal === false) {
-                    return prevVal;
+            return cell.plots.reduce((prev_val, cur_val) => {
+                if (prev_val === false) {
+                    return prev_val;
                 }
-                return curVal.variables.length > 0;
+                if(TWO_VAR_PLOTS.indexOf(cur_val.graphics_method_parent) >= 0 && cur_val.variables.length < 2){
+                    return false // these plots need 2 variables, but 1 or 0 are defined
+                }
+                if(cur_val.variables.length > 0){
+                    return cur_val.variables.reduce((prev, cur) => {return prev && Boolean(cur)}, true)
+                }
+                return false
             }, true);
         }
         return false
     }
     render() {
         this.cell = this.props.cells[this.props.row][this.props.col];
-        this.class = this.state.cell_id == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
+        this.class = this.getOwnCellId() == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
         this.can_plot = this.canPlot(this.cell)
         this.plotter_on_top = this.props.isOver || !this.can_plot
         return this.props.connectDropTarget(
@@ -101,8 +112,9 @@ Cell.propTypes = {
     isOver: React.PropTypes.bool,
     selectCell: React.PropTypes.func,
     deselectCell: React.PropTypes.func,
-    selected_cell_id: React.PropTypes.number,
+    selected_cell_id: React.PropTypes.string,
     clearCell: React.PropTypes.func,
+    sheet_index: React.PropTypes.number,
 }
 
 const mapStateToProps = (state) => {

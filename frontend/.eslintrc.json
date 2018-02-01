@@ -17,7 +17,7 @@
         "react"
     ],
     "rules": {
-            "max-len": ["error", 120, 4],
+            "max-len": ["error", 150, 4],
             "spaced-comment": ["error", "always"]
     },
     "root": true

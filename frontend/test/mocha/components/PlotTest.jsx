@@ -15,17 +15,15 @@ const empty_props = {
 const vector_props = {
     plot: {
         variables: [
-            {cdms_var_name: "first_variable_name"},
-            {cdms_var_name: "second_variable_name"}
+            "first_variable_name",
+            "second_variable_name"
         ],
         graphics_method_parent: 'vector'
     }
 }
 const scalar_props = {
     plot: {
-        variables: [{
-            cdms_var_name: "test_variable_name"
-        }],
+        variables: ["test_variable_name"],
         graphics_method_parent: 'scalar'
     }
 }
@@ -41,16 +39,16 @@ describe('PlotTest.jsx', function() {
         var plot = shallow(<Unwrapped_Plot {...scalar_props} connectDropTarget={dummyFunction}/>)
         expect(plot).to.have.lengthOf(1);
         expect(plot.find(".plot-var.first-var")).to.have.lengthOf(1)
-        expect(plot.find(".plot-var.first-var").text()).to.equal(scalar_props.plot.variables[0].cdms_var_name)
+        expect(plot.find(".plot-var.first-var").text()).to.equal(scalar_props.plot.variables[0])
     });
     it('renders with a vector variable', function() {
         var plot = shallow(<Unwrapped_Plot {...vector_props} connectDropTarget={dummyFunction}/>)
         expect(plot).to.have.lengthOf(1);
         expect(plot.find(".plot-var.first-var")).to.have.lengthOf(1)
-        expect(plot.find(".plot-var.first-var").text()).to.equal(vector_props.plot.variables[0].cdms_var_name)
+        expect(plot.find(".plot-var.first-var").text()).to.equal(vector_props.plot.variables[0])
         expect(plot.find(".plot-var.second-var.colored-second-var")).to.have.lengthOf(1)
         expect(plot.find(".plot-var.second-var.colored-second-var").text())
-        .to.equal(vector_props.plot.variables[1].cdms_var_name)
+        .to.equal(vector_props.plot.variables[1])
     });
     it('Validates a second variable correctly', function() {
         var plot = shallow(<Unwrapped_Plot {...vector_props} connectDropTarget={dummyFunction}/>)
