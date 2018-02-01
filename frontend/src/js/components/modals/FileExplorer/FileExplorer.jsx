@@ -99,7 +99,7 @@ class FileExplorer extends Component {
     render() {
         var files = _.sortBy(this.state.files, (file) => {
             if (this.state.sortBy == SortByType.name) {
-                return file.name;
+                return file.name.toLowerCase();
             }
             else {
                 return new Date(file.modifiedTime);
@@ -108,7 +108,17 @@ class FileExplorer extends Component {
         if (this.state.sortDirection == SortDirection.descending) {
             files = files.reverse();
         }
-
+        let folder_list = []
+        let file_list = []
+        for(let item of files){
+            if(item.directory === true){
+                folder_list.push(item)
+            }
+            else{
+                file_list.push(item)
+            }
+        }
+        files = folder_list.concat(file_list)
         return (
             <Modal show={this.props.show} onHide={this.tryClose}>
                 <Modal.Header closeButton>
