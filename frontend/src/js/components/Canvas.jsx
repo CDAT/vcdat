@@ -62,7 +62,7 @@ class Canvas extends Component{
                             console.log("Error while plotting: ", error)
                             this.canvas.close()
                             delete this.canvas
-                            this.canvas = vcs.init(this.refs.div);
+                            this.canvas = vcs.init(this.refs.div)
                         })
                     }
                 });
