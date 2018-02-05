@@ -3,8 +3,8 @@ var chai = require('chai');
 var expect = chai.expect;
 import React from 'react';
 import { shallow } from 'enzyme'
-import { createMockStore } from 'redux-test-utils'
-import Cell, { PureCell }  from '../../../src/js/components/Cell.jsx'
+// import { createMockStore } from 'redux-test-utils'
+import { PureCell }  from '../../../src/js/components/Cell.jsx'
 // Exported 'Pure' components are exported without higher order function wrappers, like redux, to make testing simpler
 import sinon from 'sinon'
 
@@ -89,7 +89,6 @@ describe('CellTest.jsx', function() {
         cell.instance().selectCell()
         expect(props.selectCell.calledWith("1_2_3")).to.be.true
 
-        
         props = getProps()
         props.selected_cell_id = "0_0_0"
         cell = shallow(<PureCell {...props}/>)
@@ -97,15 +96,66 @@ describe('CellTest.jsx', function() {
         expect(props.selectCell.callCount).to.equal(0)
     });
     
-    // selectCell(){
-    //     let id = this.getOwnCellId()
-    //     if(this.props.selected_cell_id == id){
-    //         // this.props.deselectCell() // if a cell is selected, a user clicking on it should deselect it.
-    //         // Turning this feature off since a user manipulating an interactive plot toggles the selection too much
-    //         return
-    //     }
-    //     else{
-    //         this.props.selectCell(id)
-    //     }
-    // }
+    it('Selects a cell properly', function() {
+        let props = getProps()
+        let cell = shallow(<PureCell {...props}/>)
+
+        let empty_plot = {}
+        expect(cell.instance().canPlot(empty_plot)).to.be.false
+        // empty plot: false
+
+        props.cells[0][0].plots[0] = {
+            graphics_method: "default",
+            graphics_method_parent: "boxfill",
+            template: "default",
+            variables: []
+        }
+        expect(cell.instance().canPlot(props.cells[0][0])).to.be.false
+        // one var plot, no variable: false
+
+        props.cells[0][0].plots[0] = {
+            graphics_method: "default",
+            graphics_method_parent: "boxfill",
+            template: "default",
+            variables: ["clt"]
+        }
+        expect(cell.instance().canPlot(props.cells[0][0])).to.be.true
+        // one var plot with var: true
+
+        props.cells[0][0].plots[0] = {
+            graphics_method: "default",
+            graphics_method_parent: "vector",
+            template: "default",
+            variables: []
+        }
+        expect(cell.instance().canPlot(props.cells[0][0])).to.be.false
+        // two var plot, no var: false
+
+        props.cells[0][0].plots[0] = {
+            graphics_method: "default",
+            graphics_method_parent: "vector",
+            template: "default",
+            variables: ["clt"]
+        }
+        expect(cell.instance().canPlot(props.cells[0][0])).to.be.false
+        // two var plot, one var (1st): false
+
+        props.cells[0][0].plots[0] = {
+            graphics_method: "default",
+            graphics_method_parent: "vector",
+            template: "default",
+            variables: ["", "v"]
+        }
+        expect(cell.instance().canPlot(props.cells[0][0])).to.be.false
+        // two var plot, one var (2nd): false:
+
+        props.cells[0][0].plots[0] = {
+            graphics_method: "default",
+            graphics_method_parent: "vector",
+            template: "default",
+            variables: ["u", "v"]
+        }
+        expect(cell.instance().canPlot(props.cells[0][0])).to.be.true
+        // two var plot: true
+    });
 });
