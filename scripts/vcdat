@@ -29,9 +29,9 @@ if isBound(VCDAT_PORT):
         "Could not bind to port %s. Please select another port for the vcdat froentend via the VCDAT_PORT environment variable" %
         VCSJS_PORT)
 
-logfile = tempfile.TemporaryFile()
+logfile = tempfile.NamedTemporaryFile()
 
-print "Logs are going to:", logfile.name, dir(logfile)
+print "Logs are going to:", logfile.name
 print "Starting VCSJS on PORT:", VCSJS_PORT
 vcs_server = subprocess.Popen(
     ["vcs-server", "--port", VCSJS_PORT], stdout=logfile, stderr=logfile)
