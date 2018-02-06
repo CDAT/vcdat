@@ -27,7 +27,7 @@ class Canvas extends Component{
 
     componentDidMount() {
         this.canvas = vcs.init(this.refs.div);
-        this.token = PubSub.subscribe(PubSubEvents.resize, this.resetCanvas)
+        this.token = PubSub.subscribe(PubSubEvents.resize, this.resetCanvas.bind(this))
     }
 
     componentDidUpdate(prevProps, prevState) {
