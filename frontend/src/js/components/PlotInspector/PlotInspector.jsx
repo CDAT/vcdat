@@ -26,7 +26,7 @@ class PlotInspector extends React.PureComponent {
                     <select 
                         value={this.props.cur_var2}
                         onChange={(e)=>this.props.handleSelectVar2(e.target.value, this.props.plot_index)}
-                        className="form-control" 
+                        className="form-control"
                         id="plot-inspector-variable2-select"
                         disabled={ONE_VAR_PLOTS.indexOf(this.props.cur_gm_type) >= 0}
                         >
