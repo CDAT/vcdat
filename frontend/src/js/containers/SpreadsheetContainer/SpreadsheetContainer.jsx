@@ -254,8 +254,8 @@ var SpreadsheetContainer = React.createClass({
         return (
             <div className='spreadsheet-container'>
                 <div className="spreadsheet-toolbar form-inline">
-                    <Spinner min={1} max={4} value={rowCount} update={this.updateRowCount} />
-                    <Spinner min={1} max={4} value={colCount} update={this.updateColCount} />
+                    <Spinner min={1} max={4} value={rowCount} update={this.updateRowCount} addon_label="Rows"/>
+                    <Spinner min={1} max={4} value={colCount} update={this.updateColCount} addon_label="Cols"/>
                     <Button bsStyle="default" bsSize="small" className='add-sheet-button' onClick={this.addSheet}>
                         <i className='glyphicon glyphicon-plus'></i>
                     </Button>
