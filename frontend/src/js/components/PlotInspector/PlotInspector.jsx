@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
 import { Button } from 'react-bootstrap'
-import './PlotInspector.scss'
 import { ONE_VAR_PLOTS } from '../../constants/Constants.js'
 class PlotInspector extends React.PureComponent {
 

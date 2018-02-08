@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Actions from '../../constants/Actions.js'
 import PlotInspector from './PlotInspector.jsx'
+import './PlotInspector.scss'
 
 class PlotInspectorWrapper extends React.Component {
 
@@ -12,6 +13,7 @@ class PlotInspectorWrapper extends React.Component {
         this.handleSelectGMType = this.handleSelectGMType.bind(this)
         this.handleSelectGM = this.handleSelectGM.bind(this)
         this.handleSelectTemplate = this.handleSelectTemplate.bind(this)
+        this.handleAddPlot = this.handleAddPlot.bind(this)
     }
 
     handleSelectVar1(var1, plot_index){
@@ -51,58 +53,70 @@ class PlotInspectorWrapper extends React.Component {
     handleSelectTemplate(template, plot_index){
         this.props.swapTemplateInPlot(this.props.cell_row, this.props.cell_col, template, plot_index)
     }
+
+    handleAddPlot(){
+        this.props.addPlot(null, null, null, null, this.props.cell_row, this.props.cell_col)
+    }
     
     render() {
         return (
-            <div className="plot-inspector-container">
-                <table className="table table-condensed">
-                    <thead>
-                        <tr>
-                            <th scope="col">Delete</th>
-                            <th scope="col">Var 1</th>
-                            <th scope="col">Var 2</th>
-                            <th scope="col">Graphics Type</th>
-                            <th scope="col">Graphics Method</th>
-                            <th scope="col">Template</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            this.props.plots && this.props.plots.map((plot, index) => {
-                                let graphics_methods
-                                try{
-                                    graphics_methods = Object.keys(this.props.all_graphics_methods[plot.graphics_method_parent])
-                                }
-                                catch(e){
-                                    console.log(e)
-                                    graphics_methods = []
-                                }
+            <div className="plot-inspector-wrapper">
+                <nav className="navbar navbar-default">
+                        <div className="container-fluid">
+                            <p className="top-nav-header">Plot Inspector</p>
+                            <button className="btn btn-default btn-sm" onClick={this.handleAddPlot}><i className="glyphicon glyphicon-plus green"></i> Add Plot</button>
+                        </div>
+                </nav>
+                <div className="plot-inspector-container">
+                    <table className="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th scope="col" className="no-padding-top">Delete</th>
+                                <th scope="col" className="no-padding-top">Var 1</th>
+                                <th scope="col" className="no-padding-top">Var 2</th>
+                                <th scope="col" className="no-padding-top">Graphics Type</th>
+                                <th scope="col" className="no-padding-top">Graphics Method</th>
+                                <th scope="col" className="no-padding-top">Template</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.props.plots && this.props.plots.map((plot, index) => {
+                                    let graphics_methods
+                                    try{
+                                        graphics_methods = Object.keys(this.props.all_graphics_methods[plot.graphics_method_parent])
+                                    }
+                                    catch(e){
+                                        console.log(e)
+                                        graphics_methods = []
+                                    }
 
-                                return(
-                                    <PlotInspector
-                                        key={index}
-                                        plot_index={index}
-                                        plot={plot}
-                                        variables={this.props.variables}
-                                        graphics_method_types={this.props.graphics_method_types}
-                                        graphics_methods={graphics_methods}
-                                        templates={this.props.templates}
-                                        cur_var1={plot.variables.length > 0 ? plot.variables[0] : ""}
-                                        cur_var2={plot.variables.length > 1 ? plot.variables[1] : ""}
-                                        cur_gm_type={plot.graphics_method_parent}
-                                        cur_gm={plot.graphics_method}
-                                        cur_template={plot.template}
-                                        handleSelectVar1={this.handleSelectVar1}
-                                        handleSelectVar2={this.handleSelectVar2}
-                                        handleSelectGMType={this.handleSelectGMType}
-                                        handleSelectGM={this.handleSelectGM}
-                                        handleSelectTemplate={this.handleSelectTemplate}
-                                    />
-                                )
-                            })
-                        }
-                    </tbody>
-                </table>
+                                    return(
+                                        <PlotInspector
+                                            key={index}
+                                            plot_index={index}
+                                            plot={plot}
+                                            variables={this.props.variables}
+                                            graphics_method_types={this.props.graphics_method_types}
+                                            graphics_methods={graphics_methods}
+                                            templates={this.props.templates}
+                                            cur_var1={plot.variables.length > 0 ? plot.variables[0] : ""}
+                                            cur_var2={plot.variables.length > 1 ? plot.variables[1] : ""}
+                                            cur_gm_type={plot.graphics_method_parent}
+                                            cur_gm={plot.graphics_method}
+                                            cur_template={plot.template}
+                                            handleSelectVar1={this.handleSelectVar1}
+                                            handleSelectVar2={this.handleSelectVar2}
+                                            handleSelectGMType={this.handleSelectGMType}
+                                            handleSelectGM={this.handleSelectGM}
+                                            handleSelectTemplate={this.handleSelectTemplate}
+                                        />
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         )
     }
@@ -120,6 +134,7 @@ PlotInspectorWrapper.propTypes = {
     swapGraphicsMethodInPlot: React.PropTypes.func,
     swapTemplateInPlot: React.PropTypes.func,
     deleteVariableInPlot: React.PropTypes.func,
+    addPlot: React.PropTypes.func,
 }
 
 const mapStateToProps = (state) => {
