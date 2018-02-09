@@ -69,7 +69,13 @@ class PlotInspectorWrapper extends React.Component {
                 <nav className="navbar navbar-default">
                         <div className="container-fluid">
                             <p className="top-nav-header">Plot Inspector</p>
-                            <button className="btn btn-default btn-sm" onClick={this.handleAddPlot}><i className="glyphicon glyphicon-plus green"></i> Add Plot</button>
+                            <button 
+                                className="btn btn-default btn-sm"
+                                onClick={this.handleAddPlot}
+                                disabled={!(this.props.cell_row > -1 && this.props.cell_col > -1)}>
+                                <i className="glyphicon glyphicon-plus green"></i>
+                                Add Plot
+                            </button>
                         </div>
                 </nav>
                 <div className="plot-inspector-container">
