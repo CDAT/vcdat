@@ -7,7 +7,8 @@ class PlotInspector extends React.PureComponent {
         return (
             <tr className="plot-inspector active">
                 <td>
-                    <Button 
+                    <Button
+                        id="delete-plot-button"
                         className="glyphicon glyphicon-remove"
                         disabled={this.props.disable_delete}
                         onClick={()=>{this.props.handleDeletePlot(this.props.plot_index)}}>

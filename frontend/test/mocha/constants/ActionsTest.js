@@ -182,6 +182,17 @@ describe('ActionsTest.js', function() {
         expect(result).to.deep.equal(expected)
     });
 
+    it('deletePlot works', () => {
+        let result = Actions.deletePlot(0, 1, 2)
+        let expected = {
+            type: 'DELETE_PLOT',
+            row: 0,
+            col: 1,
+            index: 2
+        }
+        expect(result).to.deep.equal(expected)
+    });
+
     it('swapVariableInPlot works', () => {
         let result = Actions.swapVariableInPlot("value", 1, 2, 3, "var_being_changed")
         let expected = {
@@ -191,6 +202,18 @@ describe('ActionsTest.js', function() {
             col: 2,
             plot_index: 3,
             var_being_changed: "var_being_changed"
+        }
+        expect(result).to.deep.equal(expected)
+    });
+
+    it('deleteVariableInPlot works', () => {
+        let result = Actions.deleteVariableInPlot(1, 2, 3, 4)
+        let expected = {
+            type: 'DELETE_PLOT_VAR',
+            row: 1,
+            col: 2,
+            plot_index: 3,
+            var_index: 4
         }
         expect(result).to.deep.equal(expected)
     });
@@ -235,6 +258,17 @@ describe('ActionsTest.js', function() {
         let expected = {
             type: 'LOAD_VARIABLES',
             var_list: ["var1", "var2", "var3"]
+        }
+        expect(result).to.deep.equal(expected)
+    });
+
+    it('updateVariable works', () => {
+        let dimensions = [{values:[1,2]}, {values: [3,4]}]
+        let result = Actions.updateVariable("name", dimensions)
+        let expected = {
+            type: 'UPDATE_VARIABLE',
+            name: "name",
+            dimensions: dimensions
         }
         expect(result).to.deep.equal(expected)
     });
@@ -299,6 +333,15 @@ describe('ActionsTest.js', function() {
         let result = Actions.deleteColormap("name")
         let expected = {
             type: 'DELETE_COLORMAP',
+            name: "name" 
+        }
+        expect(result).to.deep.equal(expected)
+    });
+
+    it('removeVariable works', () => {
+        let result = Actions.removeVariable("name")
+        let expected = {
+            type: 'REMOVE_VARIABLE',
             name: "name" 
         }
         expect(result).to.deep.equal(expected)
