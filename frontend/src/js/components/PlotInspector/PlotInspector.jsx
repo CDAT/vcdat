@@ -6,7 +6,13 @@ class PlotInspector extends React.PureComponent {
     render() {
         return (
             <tr className="plot-inspector active">
-                <td><Button className="glyphicon glyphicon-remove" disabled></Button></td>
+                <td>
+                    <Button 
+                        className="glyphicon glyphicon-remove"
+                        disabled={this.props.disable_delete}
+                        onClick={()=>{this.props.handleDeletePlot(this.props.plot_index)}}>
+                    </Button>
+                </td>
                 <td>
                     <select
                         value={this.props.cur_var1}
@@ -97,11 +103,13 @@ PlotInspector.propTypes = {
     cur_gm_type: PropTypes.string,
     cur_gm: PropTypes.string,
     cur_template: PropTypes.string,
+    disable_delete: PropTypes.bool,
     handleSelectVar1: PropTypes.func,
     handleSelectVar2: PropTypes.func,
     handleSelectGMType: PropTypes.func,
     handleSelectGM: PropTypes.func,
     handleSelectTemplate: PropTypes.func,
+    handleDeletePlot: PropTypes.func,
 }
 
 export default PlotInspector;

@@ -14,6 +14,7 @@ class PlotInspectorWrapper extends React.Component {
         this.handleSelectGM = this.handleSelectGM.bind(this)
         this.handleSelectTemplate = this.handleSelectTemplate.bind(this)
         this.handleAddPlot = this.handleAddPlot.bind(this)
+        this.handleDeletePlot = this.handleDeletePlot.bind(this)
     }
 
     handleSelectVar1(var1, plot_index){
@@ -56,6 +57,10 @@ class PlotInspectorWrapper extends React.Component {
 
     handleAddPlot(){
         this.props.addPlot(null, null, null, null, this.props.cell_row, this.props.cell_col)
+    }
+
+    handleDeletePlot(plot_index){
+        this.props.deletePlot(this.props.cell_row, this.props.cell_col, plot_index)
     }
     
     render() {
@@ -110,6 +115,8 @@ class PlotInspectorWrapper extends React.Component {
                                             handleSelectGMType={this.handleSelectGMType}
                                             handleSelectGM={this.handleSelectGM}
                                             handleSelectTemplate={this.handleSelectTemplate}
+                                            handleDeletePlot={this.handleDeletePlot}
+                                            disable_delete={this.props.plots.length < 2}
                                         />
                                     )
                                 })
@@ -135,6 +142,7 @@ PlotInspectorWrapper.propTypes = {
     swapTemplateInPlot: React.PropTypes.func,
     deleteVariableInPlot: React.PropTypes.func,
     addPlot: React.PropTypes.func,
+    deletePlot: React.PropTypes.func,
 }
 
 const mapStateToProps = (state) => {
@@ -162,6 +170,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addPlot: function(variable=null, graphics_method_parent=null, graphics_method=null, template=null, row, col) {
             dispatch(Actions.addPlot(variable, graphics_method_parent, graphics_method, template, row, col))
+        },
+        deletePlot: function(row, col, index) {
+            dispatch(Actions.deletePlot(row, col, index))
         },
         swapVariableInPlot: function(row, col, value, index, var_being_changed=0) {
             dispatch(Actions.swapVariableInPlot(value, row, col, index, var_being_changed))
