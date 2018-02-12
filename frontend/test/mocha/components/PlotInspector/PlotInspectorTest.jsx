@@ -86,4 +86,17 @@ describe('PlotInspectorTest.jsx', function() {
         select.simulate("change", {target: { value : 'template'}})
         expect(props.handleSelectTemplate.calledWith('template')).to.be.true
     });
+
+    it('Handles clicking delete plot button', () => {
+        let props = {
+            variables: [],
+            graphics_method_types: [],
+            graphics_methods: [],
+            templates: [],
+            handleDeletePlot: sinon.spy()
+        }
+        let wrapper = shallow(<PlotInspector {...props}/>)
+        wrapper.find("#delete-plot-button").simulate("click")
+        expect(props.handleDeletePlot.callCount).to.equal(1);
+    });
 });

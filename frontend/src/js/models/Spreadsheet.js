@@ -65,6 +65,7 @@ class SpreadsheetModel extends BaseModel {
             case 'CHANGE_PLOT_GM':
             case 'CHANGE_PLOT_TEMPLATE':
             case 'DELETE_PLOT_VAR':
+            case 'DELETE_PLOT':
                 new_state = jQuery.extend(true, {}, state);
                 sheet = new_state.sheets[state.cur_sheet_index];
                 SpreadsheetModel.updateCell(SpreadsheetModel.getCell(sheet, action), action)
@@ -248,6 +249,9 @@ class SpreadsheetModel extends BaseModel {
                     plot = cell.plots[action.plot_index]
                 }
                 plot.variables.splice(action.var_index, 1)
+                break
+            case 'DELETE_PLOT':
+                cell.plots.splice(action.index, 1)
                 break
             default:
                 break;

@@ -33,43 +33,49 @@ class Canvas extends Component{
     componentDidUpdate(prevProps, prevState) {
         this.canvas.clear().then(() => {
             if(this.props.can_plot){
-                this.props.plots.map((plot, index) => {
-                    if (plot.variables.length > 0) {
-                        var variables = this.props.plotVariables[index];
-                        var dataSpecs = variables.map(function (variable) {
-                            var dataSpec = {
-                                uri: variable.path,
-                                variable: variable.cdms_var_name 
-                            };
-                            var subRegion = {};
-                            variable.dimension
-                                .filter(dimension => dimension.values)
-                                .forEach((dimension) => {
-                                    subRegion[dimension.axisName] = dimension.values.range;
-                                })
-                            if (!_.isEmpty(subRegion)) {
-                                dataSpec['operations'] = [{ subRegion }];
-                            }
-        
-                            var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName));
-                            if (axis_order.some((order, index) => order !== index)) {
-                                dataSpec['axis_order'] = axis_order;
-                            }
-                            return dataSpec;
-                        });
-                        console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
-                        this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).catch((error) =>{
-                            console.log("Error while plotting: ", error)
-                            this.canvas.close()
-                            delete this.canvas
-                            this.canvas = vcs.init(this.refs.div);
-                        })
-                    }
-                });
+                this.plotAll.call(this)
             }
         })
     }
+    async plotAll(){ // eslint complains about this right now. Just ignore it.
+        for(let [index, plot] of this.props.plots.entries()){
+            await this.plot(plot, index)
+        }
+    }
 
+    plot(plot, index){
+        if (plot.variables.length > 0) {
+            var variables = this.props.plotVariables[index];
+            var dataSpecs = variables.map(function (variable) {
+                var dataSpec = {
+                    uri: variable.path,
+                    variable: variable.cdms_var_name 
+                };
+                var subRegion = {};
+                variable.dimension
+                    .filter(dimension => dimension.values)
+                    .forEach((dimension) => {
+                        subRegion[dimension.axisName] = dimension.values.range;
+                    })
+                if (!_.isEmpty(subRegion)) {
+                    dataSpec['operations'] = [{ subRegion }];
+                }
+
+                var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName));
+                if (axis_order.some((order, index) => order !== index)) {
+                    dataSpec['axis_order'] = axis_order;
+                }
+                return dataSpec;
+            });
+            console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
+            return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).then(()=>{console.log(`finished ${index}:`, Date.now())}).catch((error) =>{
+                console.log("Error while plotting: ", error)
+                this.canvas.close()
+                delete this.canvas
+                this.canvas = vcs.init(this.refs.div);
+            })
+        }
+    }
     /* istanbul ignore next */
     componentWillUnmount() {
         this.canvas.close();
