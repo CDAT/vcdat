@@ -142,6 +142,7 @@ class ColormapWidget extends Component {
                         return
                     }
                     else{
+                        console.warn(e)
                         toast.error("Failed to delete colormap", { position: toast.POSITION.BOTTOM_CENTER })
                         return
                     }

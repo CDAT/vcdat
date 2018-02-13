@@ -188,7 +188,7 @@ class FileTab extends Component {
                                 });
                                 break
                             case -32099:
-                                toast.error("VCS connection is closed. Try refreshing the page.", {
+                                toast.error("VCS connection is closed. Try restarting vCDAT.", {
                                     position: toast.POSITION.BOTTOM_CENTER
                                 });
                                 break    

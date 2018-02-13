@@ -166,6 +166,14 @@ describe('ColormapWidgetTest.jsx', function() {
         let clock = sinon.useFakeTimers() // replace setTimout with a fake version that can be manipulated/ran synchronously
         let warn = console.warn
         console.warn = function(){return} // disable console.warn to prevent unnecessary warnings about vcs being missing
+        const confirm = sinon.stub(global, 'confirm')
+        confirm.returns(true)
+        global.vcs = {
+            deleteColormap() {
+                return Promise.resolve()
+            }
+        }
+
         colormap_widget.instance().handleColormapSelect("testSelect")
         colormap_widget.instance().handleDeleteColormap()
         clock.runAll() // force all setTimeout calls to process  
@@ -177,6 +185,7 @@ describe('ColormapWidgetTest.jsx', function() {
         }
         clock.restore()
         console.warn = warn // restore console.warn
+        confirm.restore()
     });
 
     it('saves a colormap', () => {
