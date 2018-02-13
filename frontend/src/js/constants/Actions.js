@@ -121,6 +121,14 @@ var Actions = {
             col: col
         }
     },
+    deletePlot(row, col, index){
+        return {
+            type: 'DELETE_PLOT',
+            row: row,
+            col: col,
+            index: index
+        }
+    },
     swapVariableInPlot(value, row, col, plot_index, var_being_changed) {
         return {
             type: 'CHANGE_PLOT_VAR',

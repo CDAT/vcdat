@@ -8,7 +8,8 @@ var Spinner = React.createClass({
         max: React.PropTypes.number,
         min: React.PropTypes.number,
         update: React.PropTypes.func,
-        value: React.PropTypes.number
+        value: React.PropTypes.number,
+        addon_label: React.PropTypes.string,
     },
     incrementValue() {
         let value = this.props.value + 1;
@@ -29,6 +30,7 @@ var Spinner = React.createClass({
     render() {
         return (
             <InputGroup bsSize="small" className="spinner">
+                { this.props.addon_label ? <InputGroup.Addon>{this.props.addon_label}</InputGroup.Addon> : null }
                 <FormControl type="number" value={this.props.value} onChange={(e) => {this.handleInputChange(e.target.value)}} />
                 <InputGroup.Button>
                     <Button bsStyle="default" onClick={this.decrementValue}><Glyphicon glyph="menu-left" /></Button>

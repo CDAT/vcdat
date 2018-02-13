@@ -11,11 +11,6 @@ class TopBar extends React.Component {
     render() {
         return (
             <div className="top-bar">
-                <nav className="navbar navbar-default">
-                    <div className="container-fluid">
-                        <p className="top-nav-header">Plot Inspector</p>
-                    </div>
-                </nav>
                 <PlotInspectorWrapper />
             </div>
         )

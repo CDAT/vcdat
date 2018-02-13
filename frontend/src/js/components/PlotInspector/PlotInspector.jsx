@@ -1,13 +1,19 @@
 import React, {PropTypes} from 'react'
 import { Button } from 'react-bootstrap'
-import './PlotInspector.scss'
 import { ONE_VAR_PLOTS } from '../../constants/Constants.js'
 class PlotInspector extends React.PureComponent {
 
     render() {
         return (
             <tr className="plot-inspector active">
-                <td><Button className="glyphicon glyphicon-remove" disabled></Button></td>
+                <td>
+                    <Button
+                        id="delete-plot-button"
+                        className="glyphicon glyphicon-remove"
+                        disabled={this.props.disable_delete}
+                        onClick={()=>{this.props.handleDeletePlot(this.props.plot_index)}}>
+                    </Button>
+                </td>
                 <td>
                     <select
                         value={this.props.cur_var1}
@@ -27,7 +33,7 @@ class PlotInspector extends React.PureComponent {
                     <select 
                         value={this.props.cur_var2}
                         onChange={(e)=>this.props.handleSelectVar2(e.target.value, this.props.plot_index)}
-                        className="form-control" 
+                        className="form-control"
                         id="plot-inspector-variable2-select"
                         disabled={ONE_VAR_PLOTS.indexOf(this.props.cur_gm_type) >= 0}
                         >
@@ -98,11 +104,13 @@ PlotInspector.propTypes = {
     cur_gm_type: PropTypes.string,
     cur_gm: PropTypes.string,
     cur_template: PropTypes.string,
+    disable_delete: PropTypes.bool,
     handleSelectVar1: PropTypes.func,
     handleSelectVar2: PropTypes.func,
     handleSelectGMType: PropTypes.func,
     handleSelectGM: PropTypes.func,
     handleSelectTemplate: PropTypes.func,
+    handleDeletePlot: PropTypes.func,
 }
 
 export default PlotInspector;

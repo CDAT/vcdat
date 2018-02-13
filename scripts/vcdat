@@ -10,6 +10,7 @@ import os
 def isBound(port):
     import socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     try:
         s.bind(("localhost", int(port)))
     except socket.error as e:
@@ -21,17 +22,17 @@ def isBound(port):
 VCSJS_PORT = os.environ.get("VCSJS_PORT", "8888")
 if isBound(VCSJS_PORT):
     raise RuntimeError(
-        "Could not bind to port %s. Please select another port for the vcsserver via the VCSJS_PORT environment variable" %
+        "Could not bind to port %s. Please select another port for the vcs server via the VCSJS_PORT environment variable" %
         VCSJS_PORT)
 VCDAT_PORT = os.environ.get("VCDAT_PORT", "5000")
 if isBound(VCDAT_PORT):
     raise RuntimeError(
-        "Could not bind to port %s. Please select another port for the vcdat froentend via the VCDAT_PORT environment variable" %
+        "Could not bind to port %s. Please select another port for the vcdat frontend via the VCDAT_PORT environment variable" %
         VCSJS_PORT)
 
-logfile = tempfile.TemporaryFile()
+logfile = tempfile.NamedTemporaryFile()
 
-print "Logs are going to:", logfile.name, dir(logfile)
+print "Logs are going to:", logfile.name
 print "Starting VCSJS on PORT:", VCSJS_PORT
 vcs_server = subprocess.Popen(
     ["vcs-server", "--port", VCSJS_PORT], stdout=logfile, stderr=logfile)
@@ -51,6 +52,10 @@ flask = subprocess.Popen(["python",
 while True:
     try:
         resp = requests.get("http://localhost:%s" % VCDAT_PORT)
+    except KeyboardInterrupt:
+        vcs_server.terminate()
+        flask.terminate()
+        exit(0)
     except BaseException:
         continue
     if resp.status_code == 200:
