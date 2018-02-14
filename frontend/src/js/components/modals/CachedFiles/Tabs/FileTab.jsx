@@ -9,6 +9,7 @@ import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx';
 import FileExplorer from '../../FileExplorer/FileExplorer.jsx';
 import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js';
 import TabBar from './TabBar.jsx'
+import { toast } from 'react-toastify'
 
 import '../CachedFiles.scss';
 
@@ -56,7 +57,6 @@ class FileTab extends Component {
             redefinedVariableName: '',
             temporaryRedefinedVariableName: '',
             dimension: null,
-            errorMessage: ''
         }
     }
 
@@ -161,8 +161,6 @@ class FileTab extends Component {
     }
 
     handleFileSelected(file) {
-        this.setState({errorMessage: ''});
-        this.handleFileExplorerTryClose();
         var path = cleanPath(file.path + '/' + file.name);
         var self = this
         return new Promise((resolve, reject) => {
@@ -178,16 +176,35 @@ class FileTab extends Component {
                             selectedFile: file,
                             historyFiles: historyFiles,
                             selectedVariableName: Object.keys(variablesAxes[0])[0],
-                            selectedVariable: null
+                            selectedVariable: null,
+                            showFileExplorer: false
                         });
-                    }).catch(function(thing){
-                        console.log("error!: ", thing)
-                        self.setState({errorMessage: 'CDMS can not open this file, please select another'});
-
+                    }).catch((error) => {
+                        console.error(error)
+                        switch(error.code){
+                            case -32001: // CDMSError(u'Cannot open file /example/path/to/a/file.nc (No error)',)
+                                toast.error("CDMS can not open this file, please select another", {
+                                    position: toast.POSITION.BOTTOM_CENTER
+                                });
+                                break
+                            case -32099:
+                                toast.error("VCS connection is closed. Try restarting vCDAT.", {
+                                    position: toast.POSITION.BOTTOM_CENTER
+                                });
+                                break    
+                            default:
+                                toast.error("Failed to load file. Please try another one.", {
+                                    position: toast.POSITION.BOTTOM_CENTER
+                                });   
+                                break
+                        }
                     })
                 )
             }
             catch(e){
+                if(e instanceof ReferenceError){
+                    toast.error("VCS is not loaded. Try refreshing the page", { position: toast.POSITION.BOTTOM_CENTER })
+                }
                 console.log(e)
                 reject(e)
             }
@@ -246,7 +263,6 @@ class FileTab extends Component {
                 <Modal.Body>
                     <TabBar switchTab={this.props.switchTab} selectedTab={this.props.selectedTab}/>
                     <div className="load-from">
-                        <center><font color="red"><b>{this.state.errorMessage}</b></font></center>
                         <Row>
                             <Col className="text-right" sm={2}>
                                 <h4>Load From</h4>
