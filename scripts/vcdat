@@ -29,7 +29,7 @@ if isBound(VCDAT_PORT):
     raise RuntimeError(
         "Could not bind to port %s. Please select another port for the vcdat frontend via the VCDAT_PORT environment variable" %
         VCSJS_PORT)
-
+os.environ["UVCDAT_ANONYMOUS_LOG"] = "no"
 logfile = tempfile.NamedTemporaryFile()
 
 print "Logs are going to:", logfile.name

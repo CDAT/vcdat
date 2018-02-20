@@ -5,6 +5,7 @@
   "main": "src/js/app.js",
   "private": true,
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "bootstrap-slider": "github:matthewma7/bootstrap-slider",
     "core-js": "^2.5.1",
     "css-element-queries": "^0.3.2",
