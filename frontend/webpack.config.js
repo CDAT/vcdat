@@ -17,7 +17,11 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: "babel-loader",
                 query: {
-                    presets: ['env', 'react']
+                    presets: ['react', ['env', {
+                        "targets": {
+                            "browsers": ["Firefox > 52"]
+                        }
+                    }]]
                 }
             },
             {
