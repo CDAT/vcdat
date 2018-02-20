@@ -4,7 +4,7 @@ var LinkWatcher = require("./LinkWatcher.js");
 var path = require("path");
 
 module.exports = {
-    entry: "./src/js/App.js",
+    entry: ["babel-polyfill", "./src/js/App.js"],
     devtool: 'source-map',
     output: {
         path: __dirname + "/dist",
@@ -19,7 +19,7 @@ module.exports = {
                 query: {
                     presets: ['react', ['env', {
                         "targets": {
-                            "browsers": ["Firefox > 52"]
+                            "uglify": true
                         }
                     }]]
                 }

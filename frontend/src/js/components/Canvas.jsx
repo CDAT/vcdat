@@ -68,7 +68,7 @@ class Canvas extends Component{
                 return dataSpec;
             });
             console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
-            return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).then(()=>{console.log(`finished ${index}:`, Date.now())}).catch((error) =>{
+            return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).catch((error) =>{
                 console.log("Error while plotting: ", error)
                 this.canvas.close()
                 delete this.canvas

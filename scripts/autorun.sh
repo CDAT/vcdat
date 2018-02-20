@@ -3,7 +3,7 @@
 CONDA_ENV=${CONDA_ENV:-nightly}
 VCSJS_PORT=${VCSJS_PORT:-8888}
 VCDAT_PORT=${VCDAT_PORT:-5000}
-
+export UVCDAT_ANONYMOUS_LOG="no"
 curpath=`pwd`
 
 while [ -n $curpath ] && [ `basename $curpath` != "vcdat" ]; do
