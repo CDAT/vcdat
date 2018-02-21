@@ -426,7 +426,7 @@ class FileTab extends Component {
     }
 
     _formatVariables(variables) {
-        return Object.keys(variables).map((variableName) => {
+        return Object.keys(variables).sort().map((variableName) => {
             // let variable = variables[variableName];
             // let label = `${variableName} (${variable.shape.join(',')}) ${variable.name}`
             var vars = variables;
