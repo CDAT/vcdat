@@ -85,7 +85,7 @@ var GMList = React.createClass({
                     title='Graphics Methods'
                     editAction={this.clickedEdit}
                     addText="Creating a graphics method is not supported yet"
-                    editText=""
+                    editText="Edit a selected graphics method"
                     removeText="Removing a graphics method is not supported yet"
                 />
                 {gmEditor}
