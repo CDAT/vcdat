@@ -138,7 +138,7 @@ class ColormapWidget extends Component {
                 catch(e){
                     if(e instanceof ReferenceError){
                         console.warn("VCS is not defined. Is the VCS Server running?")
-                        toast.error("VCS is not loaded. Try refreshing the page", { position: toast.POSITION.BOTTOM_CENTER })
+                        toast.error("VCS is not loaded. Try restarting vCDAT", { position: toast.POSITION.BOTTOM_CENTER })
                         return
                     }
                     else{

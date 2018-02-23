@@ -180,30 +180,32 @@ class FileTab extends Component {
                             showFileExplorer: false
                         });
                     }).catch((error) => {
-                        console.error(error)
-                        switch(error.code){
-                            case -32001: // CDMSError(u'Cannot open file /example/path/to/a/file.nc (No error)',)
-                                toast.error("CDMS can not open this file, please select another", {
-                                    position: toast.POSITION.BOTTOM_CENTER
-                                });
-                                break
-                            case -32099:
-                                toast.error("VCS connection is closed. Try restarting vCDAT.", {
-                                    position: toast.POSITION.BOTTOM_CENTER
-                                });
-                                break    
-                            default:
-                                toast.error("Failed to load file. Please try another one.", {
-                                    position: toast.POSITION.BOTTOM_CENTER
-                                });   
-                                break
+                        if(!(error instanceof ReferenceError)){
+                            console.error(error)
+                            switch(error.code){
+                                case -32001: // CDMSError(u'Cannot open file /example/path/to/a/file.nc (No error)',)
+                                    toast.error("CDMS can not open this file, please select another", {
+                                        position: toast.POSITION.BOTTOM_CENTER
+                                    });
+                                    return
+                                case -32099:
+                                    toast.error("VCS connection is closed. Try restarting vCDAT.", {
+                                        position: toast.POSITION.BOTTOM_CENTER
+                                    });
+                                    return    
+                                default:
+                                    toast.error("Failed to load file. Please try another one.", {
+                                        position: toast.POSITION.BOTTOM_CENTER
+                                    });   
+                                    return
+                            }
                         }
                     })
                 )
             }
             catch(e){
                 if(e instanceof ReferenceError){
-                    toast.error("VCS is not loaded. Try refreshing the page", { position: toast.POSITION.BOTTOM_CENTER })
+                    toast.error("VCS is not loaded. Try restarting vCDAT", { position: toast.POSITION.BOTTOM_CENTER })
                 }
                 console.log(e)
                 reject(e)

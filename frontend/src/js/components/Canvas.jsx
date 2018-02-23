@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
 import _ from 'lodash';
+import { toast } from "react-toastify"
 
 class Canvas extends Component{
     constructor(props){
@@ -26,8 +27,20 @@ class Canvas extends Component{
     }
 
     componentDidMount() {
-        this.canvas = vcs.init(this.refs.div);
-        this.token = PubSub.subscribe(PubSubEvents.resize, this.resetCanvas.bind(this))
+        try{
+            this.canvas = vcs.init(this.refs.div);
+            this.token = PubSub.subscribe(PubSubEvents.resize, this.resetCanvas.bind(this))
+        }
+        catch(e){
+            if(e instanceof ReferenceError && e.message == "vcs is not defined"){
+                toast.error("VCS is not defined. Try setting the VCSJS_PORT environment variable and restart vCDAT", 
+                    { position: toast.POSITION.BOTTOM_CENTER }
+                )
+            }
+            else{
+                console.log(e)
+            }
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -37,6 +50,7 @@ class Canvas extends Component{
             }
         })
     }
+
     async plotAll(){ // eslint complains about this right now. Just ignore it.
         for(let [index, plot] of this.props.plots.entries()){
             await this.plot(plot, index)
@@ -69,10 +83,17 @@ class Canvas extends Component{
             });
             console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
             return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).catch((error) =>{
-                console.log("Error while plotting: ", error)
                 this.canvas.close()
                 delete this.canvas
                 this.canvas = vcs.init(this.refs.div);
+                if(error.data){
+                    console.warn("Error while plotting: ", error)
+                    toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
+                }
+                else{
+                    console.warn("Unknown error while plotting: ", error)
+                    toast.error("Error while plotting", {position: toast.POSITION.BOTTOM_CENTER})
+                }
             })
         }
     }
