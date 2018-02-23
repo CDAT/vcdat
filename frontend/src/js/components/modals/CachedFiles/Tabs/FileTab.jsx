@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import Actions from '../../../../constants/Actions.js';
 import { Modal, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
 import _ from 'lodash';
 import Dialog from 'react-bootstrap-dialog';
@@ -171,7 +173,7 @@ class FileTab extends Component {
         var path = cleanPath(file.path + '/' + file.name);
         var self = this
         let recent_path = cleanPath(file.path)
-        this.setState({recent_path: recent_path})
+        this.props.setRecentFolderOpened(recent_path) 
         return new Promise((resolve, reject) => {
             try{
                 resolve(
@@ -428,7 +430,7 @@ class FileTab extends Component {
                         show={true}
                         onTryClose={() => this.handleFileExplorerTryClose()}
                         onFileSelected={(file) => this.handleFileSelected(file)}
-                        recent_path = {this.state.recent_path}
+                        recent_path = {this.props.recent_path}
                     />
                 }
             </div>
@@ -517,6 +519,7 @@ FileTab.propTypes = {
     addFileToCache: React.PropTypes.func,
     switchTab: React.PropTypes.func,
     selectedTab: React.PropTypes.string,
+    setRecentFolderOpened: React.PropTypes.func,
 }
 
 var DimensionContainer = (props) => {
@@ -582,5 +585,17 @@ var DimensionDnDContainer = _.flow(
         }
     ))(DimensionContainer);
 
+const mapStateToProps = (state) => {
+    return {
+        recent_path: state.present.cached_files.recent_local_path
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setRecentFolderOpened: function(path) {
+            dispatch(Actions.setRecentLocalPath(path));
+        },
+    }
+}
 
-export default FileTab;
+export default connect(mapStateToProps, mapDispatchToProps)(FileTab);
