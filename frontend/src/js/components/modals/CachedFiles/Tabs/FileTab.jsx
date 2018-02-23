@@ -119,7 +119,8 @@ class FileTab extends Component {
                             title: 'Variable exists',
                             body: `The variable name ${this.variableName} already exists, rename or overwrite existing variable`,
                             actions: [
-                                Dialog.OKAction(() => resolve())
+                                Dialog.OKAction(() => resolve()),
+                                Dialog.CancelAction(() => reject())
                             ]
                         })
                     })
@@ -128,6 +129,11 @@ class FileTab extends Component {
             })
             .then(() => {
                 return this.loadVariable()
+            })
+            .catch((e) =>{
+                if(e){
+                    console.warn(e)
+                }
             })
     }
 
