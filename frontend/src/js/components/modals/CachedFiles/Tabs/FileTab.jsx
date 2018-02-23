@@ -57,6 +57,7 @@ class FileTab extends Component {
             redefinedVariableName: '',
             temporaryRedefinedVariableName: '',
             dimension: null,
+            recent_path: "",
         }
     }
 
@@ -169,6 +170,8 @@ class FileTab extends Component {
     handleFileSelected(file) {
         var path = cleanPath(file.path + '/' + file.name);
         var self = this
+        let recent_path = cleanPath(file.path)
+        this.setState({recent_path: recent_path})
         return new Promise((resolve, reject) => {
             try{
                 resolve(
@@ -421,7 +424,13 @@ class FileTab extends Component {
                 </Modal>
                 <Dialog ref="dialog" />
                 {this.state.showFileExplorer &&
-                    <FileExplorer show={true} onTryClose={() => this.handleFileExplorerTryClose()} onFileSelected={(file) => this.handleFileSelected(file)} />}
+                    <FileExplorer
+                        show={true}
+                        onTryClose={() => this.handleFileExplorerTryClose()}
+                        onFileSelected={(file) => this.handleFileSelected(file)}
+                        recent_path = {this.state.recent_path}
+                    />
+                }
             </div>
         )
     }
