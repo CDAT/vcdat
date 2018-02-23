@@ -6,6 +6,7 @@ var React = require('react');
 import FileTab from '../../../../../../src/js/components/modals/CachedFiles/Tabs/FileTab.jsx'
 import { shallow } from 'enzyme'
 import sinon from 'sinon'
+import { createMockStore } from 'redux-test-utils'
 
 const props = {
     onTryClose: sinon.spy(),
@@ -14,17 +15,27 @@ const props = {
     loadVariables: sinon.spy(),
     addFileToCache: sinon.spy(),
     switchTab: sinon.spy(),
-    selectedTab: "file"
+    selectedTab: "file",
+}
+
+const state = { 
+    present: {
+        cached_files: {
+            recent_local_path: undefined
+        }
+    }
 }
 
 describe('FileTabTest.jsx', function() {
-    it('Renders without exploding', () => {        
-        const cached_files = shallow(<FileTab {...props}/>)
+    it('Renders without exploding', () => {
+        const store = createMockStore(state)
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive() // dive gives us the Canvas component instead of the redux wrapper
         expect(cached_files).to.have.lengthOf(1);
     });
 
     it('Getting selectedFilePath returns clean paths', () => {
-        const cached_files = shallow(<FileTab {...props}/>)
+        const store = createMockStore(state)
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive()
         expect(cached_files).to.have.lengthOf(1);
         cached_files.setState({selectedFile: {path: "/example/path/to/test/", name: "filename.txt"}}) // good path
         expect(cached_files.instance().selectedFilePath).to.equal("/example/path/to/test/filename.txt")
@@ -46,7 +57,8 @@ describe('FileTabTest.jsx', function() {
     });
 
     it('VariableName getter works', () => {
-        const cached_files = shallow(<FileTab {...props}/>)
+        const store = createMockStore(state)
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive()
         cached_files.setState({
             variablesAxes: [
                 {dummyName: {
@@ -119,8 +131,8 @@ describe('FileTabTest.jsx', function() {
 
     it('LoadVariable and ComponentDidUpdate works', () => {
         let spy = sinon.spy()
-        const cached_files = shallow(<FileTab {...props} loadVariables={spy}/>)
-
+        const store = createMockStore(state)
+        const cached_files = shallow(<FileTab {...props} loadVariables={spy} store={store}/>).dive()
         cached_files.setState({
             variablesAxes: [
                 {dummyName: {
@@ -130,7 +142,7 @@ describe('FileTabTest.jsx', function() {
                     lonLat: null,
                     gridType: "rectilinear",
                     name: "A dummy variable for testing",
-                    units: "m/s",  
+                    units: "m/s",
                 }},
                 {second: {
                     shape: [1,2,80,97],
@@ -159,8 +171,9 @@ describe('FileTabTest.jsx', function() {
         expect(cached_files.state().redefinedVariableName).to.equal("")
     })
 
-    it('Starting and ending a drag sets state', () => {        
-        const cached_files = shallow(<FileTab {...props}/>)
+    it('Starting and ending a drag sets state', () => {
+        const store = createMockStore(state)
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive()
         let event = {
             dataTransfer:{
                 setData: function(){return}
@@ -174,9 +187,10 @@ describe('FileTabTest.jsx', function() {
     });
 
     it('Drop sets state', () => {
+        const store = createMockStore(state)
         const set_item_spy = sinon.spy()
         global.window.localStorage = { setItem: set_item_spy } // localStoarge doesnt exist during testing, so mock it 
-        const cached_files = shallow(<FileTab {...props}/>)
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive()
         let test_bookmark = {
             directory: false,
             modifiedTime: "Thu, 04 Jan 2018 19:00:00 GMT",
@@ -205,7 +219,8 @@ describe('FileTabTest.jsx', function() {
         console.log = function(){return} // eslint-disable-line no-console
         const set_item_spy = sinon.stub().throws()
         global.window.localStorage = { setItem: set_item_spy } // localStorage doesnt exist during testing, so mock it 
-        const cached_files = shallow(<FileTab {...props}/>)
+        const store = createMockStore(state)
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive()
         let test_bookmark = {
             directory: false,
             modifiedTime: "Thu, 04 Jan 2018 19:00:01 GMT",
@@ -247,7 +262,8 @@ describe('FileTabTest.jsx', function() {
                 ])
             }
         }
-        const cached_files = shallow(<FileTab {...props}/>)
+        const store = createMockStore(state)
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive()
         let file = {
             name: "dummyFile",
             path: "/some/dummy/path/"
@@ -265,7 +281,8 @@ describe('FileTabTest.jsx', function() {
     });
 
     it('Handles dimension value changes', () => {
-        const cached_files = shallow(<FileTab {...props}/>)
+        const store = createMockStore(state)
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive()
         cached_files.setState({
             variablesAxes: [
                 {dummyName: {
