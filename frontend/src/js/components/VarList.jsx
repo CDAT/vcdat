@@ -1,5 +1,5 @@
 import React from 'react'
-import AddEditRemoveNav from './AddEditRemoveNav.jsx'
+import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx';
 import CachedFiles from './modals/CachedFiles/CachedFiles.jsx'
 import { tabs } from './modals/CachedFiles/Tabs/TabBar.jsx'
 import { DragSource } from 'react-dnd'
@@ -67,10 +67,15 @@ var VarList = React.createClass({
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent'>
-                <AddEditRemoveNav title='Variables'
-                                  addAction={()=>this.setState({ showFile: true, showEdit: false, selectedTab: tabs.file })} 
-                                  editAction={()=>this.editVariable()}
-                                  removeAction={()=>this.removeVariable()}/>
+                <AddEditRemoveNav 
+                    title='Variables'
+                    addAction={()=>this.setState({ showFile: true, showEdit: false, selectedTab: tabs.file })} 
+                    editAction={()=>this.editVariable()}
+                    removeAction={()=>this.removeVariable()}
+                    addText="Load a variable"
+                    editText="Edit a loaded variable"
+                    removeText="Remove a loaded variable"
+                />
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {

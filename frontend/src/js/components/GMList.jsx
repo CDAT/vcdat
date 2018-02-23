@@ -1,5 +1,5 @@
 import React from 'react';
-import AddEditRemoveNav from './AddEditRemoveNav.jsx';
+import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx';
 import GraphicsMethodEditor from './modals/GraphicsMethodEditor.jsx';
 import Tree from './Tree.jsx';
 import DragAndDropTypes from '../constants/DragAndDropTypes.js';
@@ -81,7 +81,13 @@ var GMList = React.createClass({
 
         return (
             <div className='left-side-list scroll-area-list-parent'>
-                <AddEditRemoveNav editAction={this.clickedEdit} title='Graphics Methods'/>
+                <AddEditRemoveNav 
+                    title='Graphics Methods'
+                    editAction={this.clickedEdit}
+                    addText="Creating a graphics method is not supported yet"
+                    editText="Edit a selected graphics method"
+                    removeText="Removing a graphics method is not supported yet"
+                />
                 {gmEditor}
                 <div className='scroll-area'>
                     <Tree dragSource={gmSource} dragCollect={collect} dragType={DragAndDropTypes.GM} contents={gmModel} activate={(activatePath) => {
