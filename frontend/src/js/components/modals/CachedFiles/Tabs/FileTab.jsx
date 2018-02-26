@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import Actions from '../../../../constants/Actions.js';
 import { Modal, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
 import _ from 'lodash';
 import Dialog from 'react-bootstrap-dialog';
@@ -57,6 +59,7 @@ class FileTab extends Component {
             redefinedVariableName: '',
             temporaryRedefinedVariableName: '',
             dimension: null,
+            recent_path: "",
         }
     }
 
@@ -137,6 +140,7 @@ class FileTab extends Component {
             })
     }
 
+    /* istanbul ignore next */
     loadAndClose() {
         this.load().then(() => this.props.onTryClose());
     }
@@ -148,6 +152,7 @@ class FileTab extends Component {
             })
     }
 
+    /* istanbul ignore next */
     variableNameExists() {
         return Promise.resolve(this.variableName in this.props.curVariables);
     }
@@ -162,6 +167,7 @@ class FileTab extends Component {
         })
     }
 
+    /* istanbul ignore next */
     handleFileExplorerTryClose() {
         this.setState({ showFileExplorer: false });
     }
@@ -169,6 +175,8 @@ class FileTab extends Component {
     handleFileSelected(file) {
         var path = cleanPath(file.path + '/' + file.name);
         var self = this
+        let recent_path = cleanPath(file.path)
+        this.props.setRecentFolderOpened(recent_path) 
         return new Promise((resolve, reject) => {
             try{
                 resolve(
@@ -421,7 +429,13 @@ class FileTab extends Component {
                 </Modal>
                 <Dialog ref="dialog" />
                 {this.state.showFileExplorer &&
-                    <FileExplorer show={true} onTryClose={() => this.handleFileExplorerTryClose()} onFileSelected={(file) => this.handleFileSelected(file)} />}
+                    <FileExplorer
+                        show={true}
+                        onTryClose={() => this.handleFileExplorerTryClose()}
+                        onFileSelected={(file) => this.handleFileSelected(file)}
+                        recent_path = {this.props.recent_path}
+                    />
+                }
             </div>
         )
     }
@@ -508,6 +522,7 @@ FileTab.propTypes = {
     addFileToCache: React.PropTypes.func,
     switchTab: React.PropTypes.func,
     selectedTab: React.PropTypes.string,
+    setRecentFolderOpened: React.PropTypes.func,
 }
 
 var DimensionContainer = (props) => {
@@ -573,5 +588,17 @@ var DimensionDnDContainer = _.flow(
         }
     ))(DimensionContainer);
 
+const mapStateToProps = (state) => {
+    return {
+        recent_path: state.present.cached_files.recent_local_path
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setRecentFolderOpened: function(path) {
+            dispatch(Actions.setRecentLocalPath(path));
+        },
+    }
+}
 
-export default FileTab;
+export default connect(mapStateToProps, mapDispatchToProps)(FileTab);

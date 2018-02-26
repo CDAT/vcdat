@@ -33,6 +33,19 @@ class FileExplorer extends Component {
     }
 
     componentDidMount() {
+        if(this.props.recent_path){
+            let files = this.getDirectory(this.props.recent_path)
+            files.then((files) =>{
+                this.process(files)
+                this.directories.set(files.path, files);
+            })
+        }
+        else{
+            this.goHome()
+        }
+    }
+
+    goHome(){
         $.get('getInitialFileTree').then((files) => {
             this.process(files);
             this.directories.set(files.path, files);
@@ -164,13 +177,14 @@ class FileExplorer extends Component {
             </Modal>
         )
     }
-};
+}
 
 FileExplorer.propTypes = {
     show: React.PropTypes.bool,
     addFileToCache: React.PropTypes.func,
     onTryClose: React.PropTypes.func,
-    onFileSelected: React.PropTypes.func
+    onFileSelected: React.PropTypes.func,
+    recent_path: React.PropTypes.string,
 }
 
 export default FileExplorer;
