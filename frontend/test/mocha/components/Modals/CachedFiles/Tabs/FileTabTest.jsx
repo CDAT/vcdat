@@ -29,7 +29,7 @@ const state = {
 describe('FileTabTest.jsx', function() {
     it('Renders without exploding', () => {
         const store = createMockStore(state)
-        const cached_files = shallow(<FileTab {...props} store={store}/>).dive() // dive gives us the Canvas component instead of the redux wrapper
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive() // dive gives us the FileTab component instead of the redux wrapper
         expect(cached_files).to.have.lengthOf(1);
     });
 

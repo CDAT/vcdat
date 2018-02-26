@@ -140,6 +140,7 @@ class FileTab extends Component {
             })
     }
 
+    /* istanbul ignore next */
     loadAndClose() {
         this.load().then(() => this.props.onTryClose());
     }
@@ -151,6 +152,7 @@ class FileTab extends Component {
             })
     }
 
+    /* istanbul ignore next */
     variableNameExists() {
         return Promise.resolve(this.variableName in this.props.curVariables);
     }
@@ -165,6 +167,7 @@ class FileTab extends Component {
         })
     }
 
+    /* istanbul ignore next */
     handleFileExplorerTryClose() {
         this.setState({ showFileExplorer: false });
     }
