@@ -9,11 +9,16 @@
     height: 40vh;
     overflow-y: scroll;
     list-style-type: none;
-     padding-left: 0; 
+    padding-left: 0;
     cursor: default;
 
     .glyphicon-folder-open{
         color: #e3783a;
+    }
+
+    li {
+        width: fit-content;
+        white-space: nowrap;
     }
 
     li a:hover{
