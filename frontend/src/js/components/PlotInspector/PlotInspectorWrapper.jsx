@@ -155,11 +155,11 @@ PlotInspectorWrapper.propTypes = {
 const mapStateToProps = (state) => {
     let cell_id_string = state.present.sheets_model.selected_cell_id // format of `sheet_row_col`. Ex: "0_0_0"
     let sheet_row_col = cell_id_string.split("_").map(function (str_val) { return Number(str_val) })
-    let sheet = sheet_row_col[0],
-        row = sheet_row_col[1],
-        col = sheet_row_col[2]
+    let sheet = sheet_row_col[0]
+    let row = sheet_row_col[1]
+    let col = sheet_row_col[2]
     let plots = []
-    if(state.present.sheets_model.sheets && state.present.sheets_model.sheets[sheet]){
+    if(row != -1 && col != -1 && sheet != -1 && state.present.sheets_model.sheets && state.present.sheets_model.sheets[sheet]){
         plots = state.present.sheets_model.sheets[sheet].cells[row][col].plots
     }
     return {

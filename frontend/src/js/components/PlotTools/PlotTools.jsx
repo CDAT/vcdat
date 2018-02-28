@@ -17,7 +17,7 @@ class PlotTools extends Component{
     }
 
     handleClear(){
-        if(this.props.cell_selected === "none"){
+        if(this.props.cell_selected === "-1_-1_-1"){
             toast.info("A cell must be selected to clear", {position: toast.POSITION.BOTTOM_CENTER})
         }
         else{
