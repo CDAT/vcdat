@@ -53,7 +53,7 @@ class PlotInspector extends React.PureComponent {
                         id="plot-inspector-graphics-method-type-select"
                         >
                         {
-                            this.props.graphics_method_types.map((name, index)=>{
+                            this.props.graphics_method_types.sort().map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>
                             })
                         }
@@ -67,7 +67,7 @@ class PlotInspector extends React.PureComponent {
                         id="plot-inspector-graphics-method-select"
                         >
                         {
-                            this.props.graphics_methods.map((name, index)=>{
+                            this.props.graphics_methods.sort().map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>
                             })
                         }
@@ -81,7 +81,9 @@ class PlotInspector extends React.PureComponent {
                         id="plot-inspector-template-select"
                         >
                         {
-                            this.props.templates.map((name, index)=>{
+                            this.props.templates.sort((a, b)=>{
+                                return a.toLowerCase().localeCompare(b.toLowerCase());
+                            }).map((name, index)=>{
                                 return <option key={index} value={name}>{name}</option>
                             })
                         }

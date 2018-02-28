@@ -55,7 +55,7 @@ var TemplateList = React.createClass({
         let template = this.state.active_template ? this.props.templates[this.state.active_template] : this.props.templates.default;
         return (
             <div className='left-side-list scroll-area-list-parent'>
-                <AddEditRemoveNav 
+                <AddEditRemoveNav
                     editAction={this.editTemplate}
                     addText="Adding templates is not supported yet"
                     editText="Edit a selected template"
@@ -64,11 +64,14 @@ var TemplateList = React.createClass({
                 />
                 <div className='scroll-area'>
                     <ul id='temp-list' className='no-bullets left-list'>
-                        {Object.keys(this.props.templates).map((value, index) => {
-                            return (<DraggableTemplateItem template={value} key={index}
+                        {Object.keys(this.props.templates).sort((a, b)=>{
+                                return a.toLowerCase().localeCompare(b.toLowerCase());
+                            }).map((value, index) => {
+                                return (<DraggableTemplateItem template={value} key={index}
                                                            active={value === this.state.active_template}
                                                            selectTemplate={(t) => {this.setState({active_template: t});}} />);
-                        })}
+                            })
+                        }
                     </ul>
                 </div>
                 <TemplateEditor show={this.state.showTemplateEditor} template={template} updateTemplate={this.updateTemplate}/>
