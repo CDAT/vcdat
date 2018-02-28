@@ -16,7 +16,7 @@ describe('PlotToolsTest.jsx', function() {
         const store = createMockStore({
             present: {
                 sheets_model: {
-                    selected_cell_id: "none"
+                    selected_cell_id: "-1_-1_-1"
                 }
             }
         })
@@ -49,7 +49,7 @@ describe('PlotToolsTest.jsx', function() {
         const store = createMockStore({
             present: {
                 sheets_model: {
-                    selected_cell_id: "none"
+                    selected_cell_id: "-1_-1_-1"
                 }
             }
         })
@@ -71,7 +71,7 @@ describe('PlotToolsTest.jsx', function() {
         const store = createMockStore({
             present: {
                 sheets_model: {
-                    selected_cell_id: "none"
+                    selected_cell_id: "-1_-1_-1"
                 }
             }
         })
