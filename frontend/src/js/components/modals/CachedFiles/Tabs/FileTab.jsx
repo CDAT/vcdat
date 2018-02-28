@@ -110,6 +110,7 @@ class FileTab extends Component {
             dimension: this.state.dimension
         };
         this.props.loadVariables([var_obj]);
+        toast.success(`Successfully Loaded ${variable}`, { position: toast.POSITION.BOTTOM_CENTER})
         this.setState({ redefinedVariableName: '' });
     }
 
