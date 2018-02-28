@@ -65,8 +65,8 @@ var GMList = React.createClass({
                 );
         }
 
-        const gmModel = Object.keys(this.props.graphicsMethods).map((gmType) => {
-            const gms = Object.keys(this.props.graphicsMethods[gmType]).map((gmname) => {
+        const gmModel = Object.keys(this.props.graphicsMethods).sort().map((gmType) => {
+            const gms = Object.keys(this.props.graphicsMethods[gmType]).sort().map((gmname) => {
                 return {
                     'title': gmname,
                     'gmType': gmType
