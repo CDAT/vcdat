@@ -141,7 +141,7 @@ class Canvas extends Component{
         return (
             <div className={this.props.onTop ? "cell-stack-top" : "cell-stack-bottom"}>
                 <div ref="div" className="canvas-container"></div>
-                <div ref="spinner" className="canvas-spinner-show">Loading</div>
+                <div ref="spinner" className="canvas-spinner-show">Loading <span className="loading-spinner"></span></div>
             </div>
         )
     }
