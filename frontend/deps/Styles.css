@@ -220,6 +220,10 @@ button:focus {
 }
 .canvas-container{
     overflow: hidden;
+    position: absolute;
+    background-color: #fbfbfb;
+    height: 100%;
+    width: 100%;
 }
 .plotter {
     display:flex;
@@ -391,4 +395,39 @@ li.tree-leaf {
 
 .variable-tabs {
     
+}
+
+.canvas-spinner-hidden {
+    display: none;
+}
+
+.canvas-spinner-show {
+    z-index: 1;
+    background-color: rgba(250, 250, 250, .6);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.canvas-spinner-show span{
+    margin-left: 5px;
+}
+
+.loading-spinner {
+    border: 3px solid #f3f3f3;
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+    border-top: 3px solid #555;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

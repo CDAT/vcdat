@@ -13,10 +13,16 @@ class Canvas extends Component{
     shouldComponentUpdate(next_props){
         try{
             if(this.props.onTop !== next_props.onTop){
+                // onTop will change to false if the user drags a var/gm/temp over the cell. 
+                // We need to render so that the class will change to 'cell-stack-bottom'
                 return true
             }
-            // quick and dirty deep equality check
-            if(next_props.can_plot && JSON.stringify(this.props) !== JSON.stringify(next_props)){
+            if(next_props.can_plot && next_props.onTop && JSON.stringify(this.props) !== JSON.stringify(next_props)){
+                // We need to check for several cases here
+                // 1. we must be able to plot
+                // 2. There is no point in rendering a plot if it is hidden under the plotter
+                // 3. Any prop needs to be different. 
+                //      i.e. Dont render the same exact plot just because the parent component rendered. Make sure something changed
                 return true
             }
         }
@@ -44,17 +50,28 @@ class Canvas extends Component{
     }
 
     componentDidUpdate(prevProps, prevState) {
+        if(prevProps.onTop === true && this.props.onTop === false){
+            // Prevents the plot from rendering again when it is actually being hidden
+            // We also show the spinner here. This prevents a flicker effect when dragging a var/gm/temp into a cell and back out
+            // The incorrect order, and corrected order are shown below
+            // plotter -> empty_plot -> spinner -> filled_plot
+            // plotter -> spinner -> filled_plot
+            this.refs.spinner.className = "canvas-spinner-show"
+            return
+        }
         this.canvas.clear().then(() => {
             if(this.props.can_plot){
+                this.refs.spinner.className = "canvas-spinner-show"
                 this.plotAll.call(this)
             }
         })
     }
 
-    async plotAll(){ // eslint complains about this right now. Just ignore it.
+    async plotAll(){ // eslint complains about async functions right now. Just ignore it.
         for(let [index, plot] of this.props.plots.entries()){
             await this.plot(plot, index)
         }
+        this.refs.spinner.className = "canvas-spinner-hidden"
     }
 
     plot(plot, index){
@@ -82,19 +99,24 @@ class Canvas extends Component{
                 return dataSpec;
             });
             console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
-            return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).catch((error) =>{
-                this.canvas.close()
-                delete this.canvas
-                this.canvas = vcs.init(this.refs.div);
-                if(error.data){
-                    console.warn("Error while plotting: ", error)
-                    toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
+            return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).then(
+                (success)=>{
+                    return
+                },
+                (error) =>{
+                    this.canvas.close()
+                    delete this.canvas
+                    this.canvas = vcs.init(this.refs.div);
+                    if(error.data){
+                        console.warn("Error while plotting: ", error)
+                        toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
+                    }
+                    else{
+                        console.warn("Unknown error while plotting: ", error)
+                        toast.error("Error while plotting", {position: toast.POSITION.BOTTOM_CENTER})
+                    }
                 }
-                else{
-                    console.warn("Unknown error while plotting: ", error)
-                    toast.error("Error while plotting", {position: toast.POSITION.BOTTOM_CENTER})
-                }
-            })
+            )
         }
     }
     /* istanbul ignore next */
@@ -117,7 +139,10 @@ class Canvas extends Component{
 
     render() {
         return (
-            <div className={this.props.onTop ? "cell-stack-top canvas-container" : "cell-stack-bottom canvas-container"} ref="div"></div>
+            <div className={this.props.onTop ? "cell-stack-top" : "cell-stack-bottom"}>
+                <div ref="div" className="canvas-container"></div>
+                <div ref="spinner" className="canvas-spinner-show">Loading <span className="loading-spinner"></span></div>
+            </div>
         )
     }
 }

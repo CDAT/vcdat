@@ -44,7 +44,7 @@ describe('CanvasTest.jsx', function() {
 
         next_props = getProps()
         next_props.can_plot = true
-        expect(canvas.instance().shouldComponentUpdate(next_props)).to.be.true // on top is false, but we can render now
+        expect(canvas.instance().shouldComponentUpdate(next_props)).to.be.false // on top is false, we could render but shouldn't since the canvas is not visible
 
         props = getProps()
         props.can_plot = true
