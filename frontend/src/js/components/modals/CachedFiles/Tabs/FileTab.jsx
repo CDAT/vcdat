@@ -181,41 +181,44 @@ class FileTab extends Component {
         return new Promise((resolve, reject) => {
             try{
                 resolve(
-                    vcs.variables(path).then((variablesAxes) => {
-                        var historyFiles = [file, ...self.state.historyFiles.filter(historyFile => {
-                            return historyFile.path !== file.path || historyFile.name !== file.name;
-                        })];
-                        window.localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
-                        self.setState({
-                            variablesAxes,
-                            selectedFile: file,
-                            historyFiles: historyFiles,
-                            selectedVariableName: Object.keys(variablesAxes[0])[0],
-                            selectedVariable: null,
-                            showFileExplorer: false
-                        });
-                    }).catch((error) => {
-                        if(!(error instanceof ReferenceError)){
-                            console.error(error)
-                            switch(error.code){
-                                case -32001: // CDMSError(u'Cannot open file /example/path/to/a/file.nc (No error)',)
-                                    toast.error("CDMS can not open this file, please select another", {
-                                        position: toast.POSITION.BOTTOM_CENTER
-                                    });
-                                    return
-                                case -32099:
-                                    toast.error("VCS connection is closed. Try restarting vCDAT.", {
-                                        position: toast.POSITION.BOTTOM_CENTER
-                                    });
-                                    return    
-                                default:
-                                    toast.error("Failed to load file. Please try another one.", {
-                                        position: toast.POSITION.BOTTOM_CENTER
-                                    });   
-                                    return
+                    vcs.variables(path).then(
+                        (variablesAxes) => { // success
+                            var historyFiles = [file, ...self.state.historyFiles.filter(historyFile => {
+                                return historyFile.path !== file.path || historyFile.name !== file.name;
+                            })];
+                            window.localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
+                            self.setState({
+                                variablesAxes,
+                                selectedFile: file,
+                                historyFiles: historyFiles,
+                                selectedVariableName: Object.keys(variablesAxes[0])[0],
+                                selectedVariable: null,
+                                showFileExplorer: false
+                            });
+                        },
+                        (error) => { // error
+                            if(!(error instanceof ReferenceError)){
+                                console.error(error)
+                                switch(error.code){
+                                    case -32001: // CDMSError(u'Cannot open file /example/path/to/a/file.nc (No error)',)
+                                        toast.error("CDMS can not open this file, please select another", {
+                                            position: toast.POSITION.BOTTOM_CENTER
+                                        });
+                                        return
+                                    case -32099:
+                                        toast.error("VCS connection is closed. Try restarting vCDAT.", {
+                                            position: toast.POSITION.BOTTOM_CENTER
+                                        });
+                                        return    
+                                    default:
+                                        toast.error("Failed to load file. Please try another one.", {
+                                            position: toast.POSITION.BOTTOM_CENTER
+                                        });   
+                                        return
+                                }
                             }
                         }
-                    })
+                    )
                 )
             }
             catch(e){
