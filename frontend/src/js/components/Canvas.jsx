@@ -13,10 +13,16 @@ class Canvas extends Component{
     shouldComponentUpdate(next_props){
         try{
             if(this.props.onTop !== next_props.onTop){
+                // onTop will change to false if the user drags a var/gm/temp over the cell. 
+                // We need to render so that the class will change to 'cell-stack-bottom'
                 return true
             }
-            // quick and dirty deep equality check
-            if(next_props.can_plot && JSON.stringify(this.props) !== JSON.stringify(next_props)){
+            if(next_props.can_plot && next_props.onTop && JSON.stringify(this.props) !== JSON.stringify(next_props)){
+                // We need to check for several cases here
+                // 1. we must be able to plot
+                // 2. There is no point in rendering a plot if it is hidden under the plotter
+                // 3. Any prop needs to be different. 
+                //      i.e. Dont render the same exact plot just because the parent component rendered. Make sure something changed
                 return true
             }
         }
@@ -44,8 +50,14 @@ class Canvas extends Component{
     }
 
     componentDidUpdate(prevProps, prevState) {
+        // console.log("Previous props", prevProps)
+        // console.log("Current props", this.props)
+        // console.log("----------------------")
+        // console.log("Current state", this.state)
+        // console.log("Previous state", prevState)
         this.canvas.clear().then(() => {
             if(this.props.can_plot){
+                this.refs.spinner.className = "canvas-spinner-show"
                 this.plotAll.call(this)
             }
         })
@@ -55,6 +67,9 @@ class Canvas extends Component{
         for(let [index, plot] of this.props.plots.entries()){
             await this.plot(plot, index)
         }
+        // debugger
+        this.refs.spinner.className = "canvas-spinner-hidden"
+        // console.log("step 3")
     }
 
     plot(plot, index){
@@ -82,19 +97,24 @@ class Canvas extends Component{
                 return dataSpec;
             });
             console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
-            return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).catch((error) =>{
-                this.canvas.close()
-                delete this.canvas
-                this.canvas = vcs.init(this.refs.div);
-                if(error.data){
-                    console.warn("Error while plotting: ", error)
-                    toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
+            return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).then(
+                (success)=>{
+                    return
+                },
+                (error) =>{
+                    this.canvas.close()
+                    delete this.canvas
+                    this.canvas = vcs.init(this.refs.div);
+                    if(error.data){
+                        console.warn("Error while plotting: ", error)
+                        toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
+                    }
+                    else{
+                        console.warn("Unknown error while plotting: ", error)
+                        toast.error("Error while plotting", {position: toast.POSITION.BOTTOM_CENTER})
+                    }
                 }
-                else{
-                    console.warn("Unknown error while plotting: ", error)
-                    toast.error("Error while plotting", {position: toast.POSITION.BOTTOM_CENTER})
-                }
-            })
+            )
         }
     }
     /* istanbul ignore next */
@@ -117,7 +137,10 @@ class Canvas extends Component{
 
     render() {
         return (
-            <div className={this.props.onTop ? "cell-stack-top canvas-container" : "cell-stack-bottom canvas-container"} ref="div"></div>
+            <div>
+                <div ref="div" className={this.props.onTop ? "cell-stack-top canvas-container" : "cell-stack-bottom canvas-container"}></div>
+                <div ref="spinner" className="canvas-spinner-hidden">Loading</div>
+            </div>
         )
     }
 }

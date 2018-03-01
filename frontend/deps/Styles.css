@@ -392,3 +392,18 @@ li.tree-leaf {
 .variable-tabs {
     
 }
+
+.canvas-spinner-hidden {
+    display: none;
+}
+
+.canvas-spinner-show {
+    z-index: 3;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
