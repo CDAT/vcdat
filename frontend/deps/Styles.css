@@ -220,6 +220,10 @@ button:focus {
 }
 .canvas-container{
     overflow: hidden;
+    position: absolute;
+    background-color: #fbfbfb;
+    height: 100%;
+    width: 100%;
 }
 .plotter {
     display:flex;
@@ -398,7 +402,8 @@ li.tree-leaf {
 }
 
 .canvas-spinner-show {
-    z-index: 3;
+    z-index: 1;
+    background-color: rgba(250, 250, 250, .6);
     position: absolute;
     width: 100%;
     height: 100%;

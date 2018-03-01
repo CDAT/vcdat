@@ -50,11 +50,15 @@ class Canvas extends Component{
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // console.log("Previous props", prevProps)
-        // console.log("Current props", this.props)
-        // console.log("----------------------")
-        // console.log("Current state", this.state)
-        // console.log("Previous state", prevState)
+        if(prevProps.onTop === true && this.props.onTop === false){
+            // Prevents the plot from rendering again when it is actually being hidden
+            // We also show the spinner here. This prevents a flicker effect when dragging a var/gm/temp into a cell and back out
+            // The incorrect order, and corrected order are shown below
+            // plotter -> empty_plot -> spinner -> filled_plot
+            // plotter -> spinner -> filled_plot
+            this.refs.spinner.className = "canvas-spinner-show"
+            return
+        }
         this.canvas.clear().then(() => {
             if(this.props.can_plot){
                 this.refs.spinner.className = "canvas-spinner-show"
@@ -63,13 +67,11 @@ class Canvas extends Component{
         })
     }
 
-    async plotAll(){ // eslint complains about this right now. Just ignore it.
+    async plotAll(){ // eslint complains about async functions right now. Just ignore it.
         for(let [index, plot] of this.props.plots.entries()){
             await this.plot(plot, index)
         }
-        // debugger
         this.refs.spinner.className = "canvas-spinner-hidden"
-        // console.log("step 3")
     }
 
     plot(plot, index){
@@ -137,9 +139,9 @@ class Canvas extends Component{
 
     render() {
         return (
-            <div>
-                <div ref="div" className={this.props.onTop ? "cell-stack-top canvas-container" : "cell-stack-bottom canvas-container"}></div>
-                <div ref="spinner" className="canvas-spinner-hidden">Loading</div>
+            <div className={this.props.onTop ? "cell-stack-top" : "cell-stack-bottom"}>
+                <div ref="div" className="canvas-container"></div>
+                <div ref="spinner" className="canvas-spinner-show">Loading</div>
             </div>
         )
     }
