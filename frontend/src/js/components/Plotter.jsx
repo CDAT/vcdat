@@ -14,6 +14,7 @@ function AddPlot(props) {
 
 const addPlotTarget = {
     drop(props, monitor, component) {
+        props.onDrop()
         const item = monitor.getItem();
         let var_name = null;
         let graphics_method_parent = null;
@@ -57,7 +58,8 @@ var Plotter = React.createClass({
         cell: React.PropTypes.object,
         swapTemplateInPlot: React.PropTypes.func,
         swapVariableInPlot: React.PropTypes.func,
-        swapGraphicsMethodInPlot: React.PropTypes.func
+        swapGraphicsMethodInPlot: React.PropTypes.func,
+        onDrop: React.PropTypes.func,
     },
     render() {
         return (

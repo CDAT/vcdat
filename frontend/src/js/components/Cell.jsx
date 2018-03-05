@@ -83,6 +83,7 @@ class Cell extends React.Component {
                     col={this.props.col}
                     can_plot={this.can_plot}
                     addPlot={this.props.addPlot}
+                    onDrop={()=>{this.selectCell()}}
                     swapVariableInPlot={this.props.swapVariableInPlot}
                     swapGraphicsMethodInPlot={this.props.swapGraphicsMethodInPlot}
                     swapTemplateInPlot={this.props.swapTemplateInPlot}
