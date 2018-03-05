@@ -215,7 +215,10 @@ button:focus {
 .cell{
     border: 1px solid #cecece;
 }
-.cell-selected{
+.cell:hover{
+    border: 1px solid rgb(175, 175, 255);
+}
+.cell.cell-selected{
     border: 1px solid blue;
 }
 .canvas-container{

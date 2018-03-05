@@ -14,6 +14,7 @@ function AddPlot(props) {
 
 const addPlotTarget = {
     drop(props, monitor, component) {
+        props.onDrop()
         const item = monitor.getItem();
         let var_name = null;
         let graphics_method_parent = null;
