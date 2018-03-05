@@ -57,7 +57,8 @@ var Plotter = React.createClass({
         cell: React.PropTypes.object,
         swapTemplateInPlot: React.PropTypes.func,
         swapVariableInPlot: React.PropTypes.func,
-        swapGraphicsMethodInPlot: React.PropTypes.func
+        swapGraphicsMethodInPlot: React.PropTypes.func,
+        onDrop: React.PropTypes.func,
     },
     render() {
         return (
