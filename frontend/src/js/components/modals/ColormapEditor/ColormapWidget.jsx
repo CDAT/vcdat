@@ -19,7 +19,6 @@ class ColormapWidget extends Component {
             selectedColormapName: this.props.defaultColormap, // a string, such as 'viridis', or 'AMIP'
             shouldUseProps: false, // value to indicate if color should be applied from props to color map
             showExportModal: false,
-            cm_name_input_class: "form-control cm-name-input"
         }
     }
 
@@ -106,74 +105,18 @@ class ColormapWidget extends Component {
         }
     }
 
-    handleSaveColormap(){
+    saveColormap(){
         if(this.state.newColormapTemplateName){ 
             let result = this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
             if(result){
                 toast.success("Save Successful", { position: toast.POSITION.BOTTOM_CENTER });
-                this.setState({cm_name_input_class: "form-control cm-name-input save-success"})
             }
             else{
                 toast.error("Failed to save colormap", { position: toast.POSITION.BOTTOM_CENTER });
-                this.setState({cm_name_input_class: "form-control cm-name-input save-fail"})
             }
         } 
         else{
             toast.error("Please enter a name to save this colormap", { position: toast.POSITION.BOTTOM_CENTER });
-            this.setState({cm_name_input_class: "form-control cm-name-input save-fail"})
-        }
-        setTimeout(function(){this.setState({cm_name_input_class: "form-control cm-name-input"})}.bind(this), 900)
-    }
-
-    handleDeleteColormap(){
-        // TODO: If i use a colormap then delete it what happens?
-        let nameToDelete = this.state.selectedColormapName
-        if(nameToDelete !== "default"){
-            if(confirm(`Are you sure you want to delete '${nameToDelete}'?`)) {
-                try{
-                    if(vcs){ // eslint-disable-line no-undef
-                        vcs.deleteColormap(nameToDelete).then((data)=>{console.log(data)}) // eslint-disable-line no-undef
-                    }
-                }
-                catch(e){
-                    if(e instanceof ReferenceError){
-                        console.warn("VCS is not defined. Is the VCS Server running?")
-                        toast.error("VCS is not loaded. Try restarting vCDAT", { position: toast.POSITION.BOTTOM_CENTER })
-                        return
-                    }
-                    else{
-                        console.warn(e)
-                        toast.error("Failed to delete colormap", { position: toast.POSITION.BOTTOM_CENTER })
-                        return
-                    }
-                }
-                let colormapNames = Object.keys(this.props.colormaps).sort(function (a, b) {
-                    return a.toLowerCase().localeCompare(b.toLowerCase())
-                })
-                let index = colormapNames.indexOf(nameToDelete)
-                if(index == colormapNames.length - 1){ // if the colormap to delete is the last in the list
-                    index = colormapNames.length - 2; // select the colormap before it
-                }
-                else{
-                    index++ // else, select the colormap below it
-                }
-                let name = colormapNames[index]
-                let currentColormap = _.map(this.props.colormaps[name], _.clone())
-                this.props.deleteColormap(nameToDelete)
-                toast.success("Colormap deleted successfully", { position: toast.POSITION.BOTTOM_CENTER })
-                setTimeout(()=>{
-                    this.setState({
-                        selectedColormapName: name,
-                        currentColormap: currentColormap,
-                    })  
-                }, 0)   
-            } 
-            else{
-                return
-            }
-        }
-        else{
-            toast.warn("The default colormap cannot be deleted", { position: toast.POSITION.BOTTOM_CENTER })
         }
     }
 
@@ -269,41 +212,6 @@ class ColormapWidget extends Component {
     render(){
         return(
             <div>
-                <div className="form-inline" style={{display: "flex", marginTop: "20px", marginBottom: "10px"}}>
-                    <button 
-                        title="Delete Selected Colormap"
-                        onClick={() => {this.handleDeleteColormap()}}
-                        className="btn btn-danger btn-sm"
-                        style={{marginRight: "5px"}}>
-                        <i className="glyphicon glyphicon-trash"></i>
-                    </button>
-                    <select 
-                        className="form-control"
-                        style={{marginRight: "5px"}}
-                        onChange={(event) => {this.handleColormapSelect(event.target.value)}}
-                        value={this.state.selectedColormapName}>
-                        { this.props.colormaps ? (
-                            Object.keys(this.props.colormaps).sort(function (a, b) {
-                                return a.toLowerCase().localeCompare(b.toLowerCase());
-                            }).map( name => ( <option key={name} value={name}>{name}</option> ))
-                            ) : (
-                            <option value="" disabled />
-                        )}
-                    </select>
-                    <input
-                        className={this.state.cm_name_input_class}
-                        style={{flexGrow: 1}} 
-                        value={this.state.newColormapTemplateName}
-                        onChange={(event) => { this.setState({newColormapTemplateName: event.target.value}) }}>
-                    </input>
-                    <button 
-                        className="form-control save-button"
-                        style={{marginLeft: "5px"}}
-                        onClick={() => {
-                            this.handleSaveColormap()
-                        }}>Save as...
-                    </button>
-                </div>
                 <span style={{fontSize: 11, fontWeight: 300}}title="*Shift+Click to select multiple cells">*Shift+Click to select multiple cells</span>
                 <div id="colormap-cells-container">
                 { (this.state.currentColormap) ? 

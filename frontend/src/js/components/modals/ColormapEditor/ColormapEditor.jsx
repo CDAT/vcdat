@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { toast } from 'react-toastify'
 import { Modal, Button, Dropdown, MenuItem } from 'react-bootstrap';
 import _ from 'lodash'
+import Actions from '../../../constants/Actions.js'
 import ColorPicker from './ColorPicker.jsx'
 import ColormapWidget from './ColormapWidget.jsx'
 var colorUtility = require('react-color/lib/helpers/color.js').default;
@@ -12,6 +14,7 @@ class ColormapEditor extends Component {
         this.state = {
             currentColor: colorUtility.toState("#333"),
             showImportExportModal: false,
+            select_val: "AMIP"
         }
     }
 
@@ -21,6 +24,9 @@ class ColormapEditor extends Component {
             close: React.PropTypes.func.isRequired, // close the modal
             sheet_num_cols: React.PropTypes.number,
             sheet_num_rows: React.PropTypes.number,
+            colormaps: React.PropTypes.object,
+            defaultColormap: React.PropTypes.string,
+            deleteColormap: React.PropTypes.func,
         }; 
     }
 
@@ -38,6 +44,78 @@ class ColormapEditor extends Component {
 
     handleApply(row, col){
         this.refs.widget.getWrappedInstance().applyColormap(row, col)
+    }
+
+    handleSelectColormap(name){
+        this.setState({select_val: name})
+    }
+
+    handleLoadColormap(){
+        this.setState({selectedColormapName: this.state.select_val})
+        this.refs.widget.getWrappedInstance().handleColormapSelect(this.state.select_val)
+    }
+
+    handleNewColormap(){
+        // Show new colormap name modal
+        // user enters name
+        // either hits create or cancel
+        // create should copy the current colormap, save it into vcs, add it to redux and set it as active in the widget, and close the modal
+        // cancel should close the modal
+
+        this.setState({selectedColormapName: this.state.select_val})
+        this.refs.widget.getWrappedInstance().handleColormapSelect(this.state.select_val)
+    }
+
+    handleDeleteColormap(){
+        // TODO: If i use a colormap then delete it what happens?
+        let nameToDelete = this.state.selectedColormapName
+        if(nameToDelete !== "default"){
+            if(confirm(`Are you sure you want to delete '${nameToDelete}'?`)) {
+                try{
+                    if(vcs){ // eslint-disable-line no-undef
+                        vcs.deleteColormap(nameToDelete).then((data)=>{console.log(data)}) // eslint-disable-line no-undef
+                    }
+                }
+                catch(e){
+                    if(e instanceof ReferenceError){
+                        console.warn("VCS is not defined. Is the VCS Server running?")
+                        toast.error("VCS is not loaded. Try restarting vCDAT", { position: toast.POSITION.BOTTOM_CENTER })
+                        return
+                    }
+                    else{
+                        console.warn(e)
+                        toast.error("Failed to delete colormap", { position: toast.POSITION.BOTTOM_CENTER })
+                        return
+                    }
+                }
+                let colormapNames = Object.keys(this.props.colormaps).sort(function (a, b) {
+                    return a.toLowerCase().localeCompare(b.toLowerCase())
+                })
+                let index = colormapNames.indexOf(nameToDelete)
+                if(index == colormapNames.length - 1){ // if the colormap to delete is the last in the list
+                    index = colormapNames.length - 2; // select the colormap before it
+                }
+                else{
+                    index++ // else, select the colormap below it
+                }
+                let name = colormapNames[index]
+                let currentColormap = _.map(this.props.colormaps[name], _.clone())
+                this.props.deleteColormap(nameToDelete)
+                toast.success("Colormap deleted successfully", { position: toast.POSITION.BOTTOM_CENTER })
+                setTimeout(()=>{
+                    this.setState({
+                        selectedColormapName: name,
+                        currentColormap: currentColormap,
+                    })
+                }, 0)   
+            } 
+            else{
+                return
+            }
+        }
+        else{
+            toast.warn("The default colormap cannot be deleted", { position: toast.POSITION.BOTTOM_CENTER })
+        }
     }
 
     getApplyButton(){
@@ -122,9 +200,52 @@ class ColormapEditor extends Component {
             <div>
                 <Modal show={this.props.show} onHide={this.props.close}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Colormap Editor</Modal.Title>
+                        <Modal.Title>Colormap Editor: {this.state.selectedColormapName}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        <div className="form-inline " style={{display: "flex", justifyContent: "center"}}>
+                            <div className="form-group">
+                                <label htmlFor="cm-select" className="control-label">Colormaps</label>
+                                <select
+                                    name="cm-select"
+                                    className="form-control"
+                                    style={{marginLeft: "5px", marginRight: "5px"}}
+                                    onChange={(event) => {this.handleSelectColormap(event.target.value)}}
+                                    value={this.state.select_val}>
+                                    { this.props.colormaps ? (
+                                        Object.keys(this.props.colormaps).sort(function (a, b) {
+                                            return a.toLowerCase().localeCompare(b.toLowerCase());
+                                        }).map( name => ( <option key={name} value={name}>{name}</option> ))
+                                        ) : (
+                                        <option value="" disabled />
+                                    )}
+                                </select>
+                            </div>
+                            <div>
+                                <button 
+                                    title="Load the selected colormap for editing"
+                                    onClick={() => {this.handleLoadColormap()}}
+                                    className="btn btn-default btn-sm"
+                                    style={{marginLeft: "5px"}}>
+                                        Load
+                                </button>
+                                <button 
+                                    title="Create a new copy of the selected colormap"
+                                    onClick={() => {this.handleNewColormap()}}
+                                    className="btn btn-primary btn-sm"
+                                    style={{marginLeft: "5px"}}>
+                                        New
+                                </button>
+                                <button
+                                    title="Delete Selected Colormap"
+                                    onClick={() => {this.handleDeleteColormap()}}
+                                    className="btn btn-danger btn-sm"
+                                    style={{marginLeft: "5px"}}>
+                                        <i className="glyphicon glyphicon-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <hr/>
                         <ColorPicker 
                             color={this.state.currentColor}
                             onChange={(color) => {this.handleChange(color)}}/>
@@ -147,6 +268,7 @@ class ColormapEditor extends Component {
                             Reset
                         </Button>
                         {apply}
+                        <Button onClick={() => {this.refs.widget.getWrappedInstance().saveColormap()}}>Save</Button>
                         <Button onClick={this.openImportExportModal.bind(this)}>Import/Export</Button>
                         <Button onClick={this.props.close}>Close</Button>
                     </Modal.Footer>
@@ -156,12 +278,25 @@ class ColormapEditor extends Component {
     }
 }
 
+ColormapEditor.defaultProps = {
+    defaultColormap: 'viridis'
+}
+
 const mapStateToProps = (state) => {
     return {
         sheet_num_rows: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].row_count,
         sheet_num_cols: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].col_count,
+        colormaps: state.present.colormaps,
     }
 }
 
-export default connect(mapStateToProps)(ColormapEditor);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        deleteColormap: (name) => {
+            dispatch(Actions.deleteColormap(name));
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ColormapEditor);
 export {ColormapEditor as PureColormapEditor}
