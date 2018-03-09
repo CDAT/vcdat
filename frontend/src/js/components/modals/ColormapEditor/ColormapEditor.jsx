@@ -287,7 +287,7 @@ class ColormapEditor extends Component {
                             Reset
                         </Button>
                         {apply}
-                        <Button onClick={() => {this.refs.widget.getWrappedInstance().saveColormap()}}>Save</Button>
+                        <Button onClick={() => {this.refs.widget.getWrappedInstance().saveColormap(this.state.selectedColormapName)}}>Save</Button>
                         <Button onClick={this.openImportExportModal.bind(this)}>Import/Export</Button>
                         <Button onClick={this.props.close}>Close</Button>
                     </Modal.Footer>

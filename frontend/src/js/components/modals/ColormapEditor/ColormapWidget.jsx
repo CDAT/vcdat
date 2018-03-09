@@ -137,18 +137,29 @@ class ColormapWidget extends Component {
         
     }
 
-    saveColormap(){
-        if(this.state.newColormapTemplateName){
-            let result = this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
-            if(result){
-                // todo: add a vcs call here to save the colormap to the server
-                toast.success("Save Successful", { position: toast.POSITION.BOTTOM_CENTER });
+    saveColormap(name){
+        if(name){
+            try{
+                vcs.setcolormap(name, this.state.currentColormap).then(() => {
+                    this.props.saveColormap(name, this.state.currentColormap)
+                    toast.success("Save Successful", { position: toast.POSITION.BOTTOM_CENTER });
+                },
+                (error) => {
+                    console.warn(error)
+                    try{
+                        toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
+                    }
+                    catch(e){
+                        toast.error("Failed to save colormap", { position: toast.POSITION.BOTTOM_CENTER });        
+                    }
+                })
             }
-            else{
+            catch(e){
+                console.warn(e)
                 toast.error("Failed to save colormap", { position: toast.POSITION.BOTTOM_CENTER });
             }
-        } 
-        else{
+        }
+        else{ // should not be possible, but just in case
             toast.error("Please enter a name to save this colormap", { position: toast.POSITION.BOTTOM_CENTER });
         }
     }
