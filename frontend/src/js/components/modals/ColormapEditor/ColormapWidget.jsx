@@ -11,13 +11,12 @@ class ColormapWidget extends Component {
     constructor(props){
         super(props)
         this.state = {
-            selectedCellsStart: 0,
-            selectedCellsEnd: 0,
+            selectedCellsStart: -1,
+            selectedCellsEnd: -1,
             currentColormap: this.props.colormaps[this.props.defaultColormap].map(function(arr) {
                 return arr.slice()
             }), // an array of arrays representing the current cells 
             selectedColormapName: this.props.defaultColormap, // a string, such as 'viridis', or 'AMIP'
-            shouldUseProps: false, // value to indicate if color should be applied from props to color map
             showExportModal: false,
         }
     }
@@ -42,25 +41,12 @@ class ColormapWidget extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        // The current color selected by the color picker is passed in as a prop
-        // Since we do not want to change the colormap right when the component opens, 
-        // we ignore the first time the prop is given
-        // After that, we update the currently selected cell with the nextProps.color value
-        if(!this.state.shouldUseProps){
-            this.setState({shouldUseProps: true})
-            return
-        }
-        else{
-            if(this.state.currentColormap){
-                let updatedColormap = this.state.currentColormap.map(function(arr) {
-                    return arr.slice(); 
-                    // Note: we might not need to deep copy. this could hurt performance
-                });
-                updatedColormap[this.state.selectedCellsEnd][0] = Math.round((nextProps.color.rgb.r / 255) * 100)
-                updatedColormap[this.state.selectedCellsEnd][1] = Math.round((nextProps.color.rgb.g / 255) * 100)
-                updatedColormap[this.state.selectedCellsEnd][2] = Math.round((nextProps.color.rgb.b / 255) * 100)
-                this.setState({currentColormap: updatedColormap})
-            }
+        if(this.state.currentColormap && this.state.selectedCellsStart !== -1 && this.state.selectedCellsEnd !== -1){
+            let updatedColormap = this.state.currentColormap.slice()
+            updatedColormap[this.state.selectedCellsEnd][0] = Math.round((nextProps.color.rgb.r / 255) * 100)
+            updatedColormap[this.state.selectedCellsEnd][1] = Math.round((nextProps.color.rgb.g / 255) * 100)
+            updatedColormap[this.state.selectedCellsEnd][2] = Math.round((nextProps.color.rgb.b / 255) * 100)
+            this.setState({currentColormap: updatedColormap})
         }
     }
 
@@ -68,7 +54,9 @@ class ColormapWidget extends Component {
         let currentColormap = _.map(this.props.colormaps[name], _.clone())
         this.setState({
             selectedColormapName: name,
-            currentColormap: currentColormap
+            currentColormap: currentColormap,
+            selectedCellsStart: -1,
+            selectedCellsEnd: -1,
         })
     }
 
@@ -79,10 +67,25 @@ class ColormapWidget extends Component {
                 return 
             }
             if(event.shiftKey){
-                this.setState({selectedCellsEnd: index})
+                if(this.state.selectedCellsStart === -1){
+                    this.setState({
+                        selectedCellsStart: 0,
+                        selectedCellsEnd: index
+                    })
+                }
+                else{
+                    this.setState({selectedCellsEnd: index})
+                }
             }
             else{
-                this.setState({selectedCellsEnd: index, selectedCellsStart: index})
+                if(this.state.selectedCellsStart === this.state.selectedCellsEnd && this.state.selectedCellsStart === index){
+                    // if a single cell is selected and the user clicks it. Deselect the cell
+                    this.setState({selectedCellsEnd: -1, selectedCellsStart: -1})
+                }
+                else{
+                    this.setState({selectedCellsEnd: index, selectedCellsStart: index})
+                }
+                
             }
             let r = this.state.currentColormap[index][0] * 2.55
             let g = this.state.currentColormap[index][1] * 2.55
@@ -105,10 +108,40 @@ class ColormapWidget extends Component {
         }
     }
 
+    createNewColormap(base_cm, name){
+        // create should copy the current colormap, save it into vcs, 
+        // add it to redux and set it as active in the widget, and close the modal
+        // cancel should close the modal
+        try{
+            /* eslint-disable no-undef */ 
+            return vcs.createcolormap(name, base_cm).then((result)=>{
+                this.props.saveColormap(name, result)
+                return true
+            },
+            (error)=>{
+                try{
+                    toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
+                }
+                catch(e){
+                    toast.error("Failed to create colormap", {position: toast.POSITION.BOTTOM_CENTER})
+                }
+                console.warn(error)
+                return false
+            })
+        }
+        catch(e){
+            console.warn(e)
+            toast.error("Failed to create colormap", {position: toast.POSITION.BOTTOM_CENTER})
+        }
+        return Promise.resolve(false)
+        
+    }
+
     saveColormap(){
-        if(this.state.newColormapTemplateName){ 
+        if(this.state.newColormapTemplateName){
             let result = this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
             if(result){
+                // todo: add a vcs call here to save the colormap to the server
                 toast.success("Save Successful", { position: toast.POSITION.BOTTOM_CENTER });
             }
             else{
@@ -124,7 +157,7 @@ class ColormapWidget extends Component {
         let startCell = Math.min(this.state.selectedCellsStart, this.state.selectedCellsEnd)
         let endCell = Math.max(this.state.selectedCellsStart, this.state.selectedCellsEnd)
         let numCells = Math.abs(this.state.selectedCellsStart - this.state.selectedCellsEnd) - 1
-        if(numCells < 1){
+        if(numCells < 1 || this.state.selectedCellsStart === -1 || this.state.selectedCellsEnd === -1){
             // numCells represents the number of cells in between the start and end cells.
             // so selecting 2 cells gives numCells a value of 0.
             toast.info("Not enough cells selected to blend. Shift + click to select more.", {

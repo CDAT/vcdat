@@ -6,6 +6,7 @@ import _ from 'lodash'
 import Actions from '../../../constants/Actions.js'
 import ColorPicker from './ColorPicker.jsx'
 import ColormapWidget from './ColormapWidget.jsx'
+import NewColormapModal from './NewColormapModal.jsx'
 var colorUtility = require('react-color/lib/helpers/color.js').default;
 
 class ColormapEditor extends Component {
@@ -14,7 +15,9 @@ class ColormapEditor extends Component {
         this.state = {
             currentColor: colorUtility.toState("#333"),
             showImportExportModal: false,
-            select_val: "AMIP"
+            selectedColormapName: "viridis",
+            select_val: "viridis",
+            show_new_colormap_modal: false,
         }
     }
 
@@ -55,25 +58,21 @@ class ColormapEditor extends Component {
         this.refs.widget.getWrappedInstance().handleColormapSelect(this.state.select_val)
     }
 
-    handleNewColormap(){
-        // Show new colormap name modal
-        // user enters name
-        // either hits create or cancel
-        // create should copy the current colormap, save it into vcs, add it to redux and set it as active in the widget, and close the modal
-        // cancel should close the modal
-
-        this.setState({selectedColormapName: this.state.select_val})
-        this.refs.widget.getWrappedInstance().handleColormapSelect(this.state.select_val)
+    handleOpenNewColormapModal(){
+        this.setState({
+            show_new_colormap_modal: true
+        })
     }
+    
 
     handleDeleteColormap(){
         // TODO: If i use a colormap then delete it what happens?
-        let nameToDelete = this.state.selectedColormapName
+        let nameToDelete = this.state.select_val
         if(nameToDelete !== "default"){
             if(confirm(`Are you sure you want to delete '${nameToDelete}'?`)) {
                 try{
                     if(vcs){ // eslint-disable-line no-undef
-                        vcs.deleteColormap(nameToDelete).then((data)=>{console.log(data)}) // eslint-disable-line no-undef
+                        vcs.removecolormap(nameToDelete).catch((e) => {throw e}) // eslint-disable-line no-undef
                     }
                 }
                 catch(e){
@@ -104,10 +103,12 @@ class ColormapEditor extends Component {
                 toast.success("Colormap deleted successfully", { position: toast.POSITION.BOTTOM_CENTER })
                 setTimeout(()=>{
                     this.setState({
+                        select_val: name,
                         selectedColormapName: name,
                         currentColormap: currentColormap,
                     })
-                }, 0)   
+                    this.refs.widget.getWrappedInstance().handleColormapSelect(name)
+                }, 0)
             } 
             else{
                 return
@@ -115,6 +116,24 @@ class ColormapEditor extends Component {
         }
         else{
             toast.warn("The default colormap cannot be deleted", { position: toast.POSITION.BOTTOM_CENTER })
+        }
+    }
+
+    createNewColormap(name){
+        if(Object.keys(this.props.colormaps).indexOf(name) >= 0){
+            toast.warn("A colormap with that name already exists. Please select a different name", {position: toast.POSITION.BOTTOM_CENTER})
+        }
+        else{
+            this.refs.widget.getWrappedInstance().createNewColormap(this.state.select_val, name).then((result)=>{
+                if(result){
+                    this.refs.widget.getWrappedInstance().handleColormapSelect(name)
+                    this.setState({
+                        selectedColormapName: name,
+                        show_new_colormap_modal: false,
+                    })
+                    toast.success("Colormap created successfully", {position: toast.POSITION.BOTTOM_CENTER})
+                }
+            })
         }
     }
 
@@ -200,7 +219,7 @@ class ColormapEditor extends Component {
             <div>
                 <Modal show={this.props.show} onHide={this.props.close}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Colormap Editor: {this.state.selectedColormapName}</Modal.Title>
+                        <Modal.Title>Editing Colormap: {this.state.selectedColormapName}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="form-inline " style={{display: "flex", justifyContent: "center"}}>
@@ -231,7 +250,7 @@ class ColormapEditor extends Component {
                                 </button>
                                 <button 
                                     title="Create a new copy of the selected colormap"
-                                    onClick={() => {this.handleNewColormap()}}
+                                    onClick={() => {this.handleOpenNewColormapModal()}}
                                     className="btn btn-primary btn-sm"
                                     style={{marginLeft: "5px"}}>
                                         New
@@ -273,6 +292,10 @@ class ColormapEditor extends Component {
                         <Button onClick={this.props.close}>Close</Button>
                     </Modal.Footer>
                 </Modal>
+                <NewColormapModal 
+                    show={this.state.show_new_colormap_modal}
+                    close={() => this.setState({show_new_colormap_modal: false})}
+                    newColormap={(name) => this.createNewColormap(name)} />
             </div>
         )
     }
