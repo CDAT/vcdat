@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import Actions from '../../../constants/Actions.js'
+import PubSub from 'pubsub-js'
+import PubSubEvents from '../../../constants/PubSubEvents.js'
 var colorUtility = require('react-color/lib/helpers/color.js').default
 import ImportExportModal from "./ImportExportModal.jsx";
 import { toast } from 'react-toastify'
@@ -140,6 +142,7 @@ class ColormapWidget extends Component {
                 vcs.setcolormap(name, this.state.currentColormap).then(() => {
                     this.props.saveColormap(name, this.state.currentColormap)
                     toast.success("Save Successful", { position: toast.POSITION.BOTTOM_CENTER });
+                    PubSub.publish(PubSubEvents.colormap_update, name)
                 },
                 (error) => {
                     console.warn(error)
@@ -199,10 +202,14 @@ class ColormapWidget extends Component {
         function applyColormapHelper(){
             try{
                 let new_graphics_method = _.clone(self.props.graphics_methods[graphics_method_parent][graphics_method])
+                const prev_colormap = new_graphics_method.colormap
                 new_graphics_method.colormap = colormap_name
                 self.props.updateGraphicsMethod(new_graphics_method)
                 let plot = self.props.sheet.cells[cell_row][cell_col].plots[0]
                 self.props.applyColormap(plot.graphics_method_parent, graphics_method, cell_row, cell_col, 0)
+                if(prev_colormap === colormap_name){ // if the colormap has changed but the name hasnt, the canvas will not render
+                    PubSub.publish(PubSubEvents.colormap_update, colormap_name)
+                }
                 return true
             }
             catch(e){

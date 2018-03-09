@@ -16,7 +16,6 @@ class ColormapEditor extends Component {
             currentColor: colorUtility.toState("#333"),
             showImportExportModal: false,
             selectedColormapName: "viridis",
-            select_val: "viridis",
             show_new_colormap_modal: false,
         }
     }
@@ -50,12 +49,8 @@ class ColormapEditor extends Component {
     }
 
     handleSelectColormap(name){
-        this.setState({select_val: name})
-    }
-
-    handleLoadColormap(){
-        this.setState({selectedColormapName: this.state.select_val})
-        this.refs.widget.getWrappedInstance().handleColormapSelect(this.state.select_val)
+        this.setState({selectedColormapName: name})
+        this.refs.widget.getWrappedInstance().handleColormapSelect(name)
     }
 
     handleOpenNewColormapModal(){
@@ -66,7 +61,7 @@ class ColormapEditor extends Component {
 
     handleDeleteColormap(){
         // TODO: If i use a colormap then delete it what happens?
-        let nameToDelete = this.state.select_val
+        let nameToDelete = this.state.selectedColormapName
         if(nameToDelete !== "default"){
             if(confirm(`Are you sure you want to delete '${nameToDelete}'?`)) {
                 try{
@@ -102,7 +97,6 @@ class ColormapEditor extends Component {
                 toast.success("Colormap deleted successfully", { position: toast.POSITION.BOTTOM_CENTER })
                 setTimeout(()=>{
                     this.setState({
-                        select_val: name,
                         selectedColormapName: name,
                         currentColormap: currentColormap,
                     })
@@ -118,16 +112,16 @@ class ColormapEditor extends Component {
         }
     }
 
-    createNewColormap(name){
-        if(Object.keys(this.props.colormaps).indexOf(name) >= 0){
+    createNewColormap(new_cm_name){
+        if(Object.keys(this.props.colormaps).indexOf(new_cm_name) >= 0){
             toast.warn("A colormap with that name already exists. Please select a different name", {position: toast.POSITION.BOTTOM_CENTER})
         }
         else{
-            this.refs.widget.getWrappedInstance().createNewColormap(this.state.select_val, name).then((result)=>{
+            this.refs.widget.getWrappedInstance().createNewColormap(this.state.selectedColormapName, new_cm_name).then((result)=>{
                 if(result){
-                    this.refs.widget.getWrappedInstance().handleColormapSelect(name)
+                    this.refs.widget.getWrappedInstance().handleColormapSelect(new_cm_name)
                     this.setState({
-                        selectedColormapName: name,
+                        selectedColormapName: new_cm_name,
                         show_new_colormap_modal: false,
                     })
                     toast.success("Colormap created successfully", {position: toast.POSITION.BOTTOM_CENTER})
@@ -157,7 +151,7 @@ class ColormapEditor extends Component {
                                     className="form-control"
                                     style={{marginLeft: "5px", marginRight: "5px"}}
                                     onChange={(event) => {this.handleSelectColormap(event.target.value)}}
-                                    value={this.state.select_val}>
+                                    value={this.state.selectedColormapName}>
                                     { this.props.colormaps ? (
                                         Object.keys(this.props.colormaps).sort(function (a, b) {
                                             return a.toLowerCase().localeCompare(b.toLowerCase());
@@ -168,13 +162,6 @@ class ColormapEditor extends Component {
                                 </select>
                             </div>
                             <div>
-                                <button 
-                                    title="Load the selected colormap for editing"
-                                    onClick={() => {this.handleLoadColormap()}}
-                                    className="btn btn-default btn-sm"
-                                    style={{marginLeft: "5px"}}>
-                                        Load
-                                </button>
                                 <button 
                                     title="Create a new copy of the selected colormap"
                                     onClick={() => {this.handleOpenNewColormapModal()}}
