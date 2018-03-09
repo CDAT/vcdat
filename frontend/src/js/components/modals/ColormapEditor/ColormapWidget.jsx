@@ -31,9 +31,6 @@ class ColormapWidget extends Component {
             deleteColormap: React.PropTypes.func,
             showImportExportModal: React.PropTypes.bool,
             closeImportExportModal: React.PropTypes.func,
-            cur_sheet_index: React.PropTypes.number,
-            sheet_num_rows: React.PropTypes.number,
-            sheet_num_cols: React.PropTypes.number,
             sheet: React.PropTypes.object,
             applyColormap: React.PropTypes.func,
             graphics_methods: React.PropTypes.object,
@@ -194,11 +191,10 @@ class ColormapWidget extends Component {
         this.setState({currentColormap: blendedColormap})
     }
 
-    applyColormap(cell_row, cell_col){
+    applyColormap(colormap_name, cell_row, cell_col){
         let self = this
         let graphics_method_parent = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method_parent
         let graphics_method = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method
-        let colormap_name = "applied_colormap"
 
         function applyColormapHelper(){
             try{
@@ -298,9 +294,6 @@ ColormapWidget.defaultProps = {
 const mapStateToProps = (state) => {
     return {
         colormaps: state.present.colormaps,
-        cur_sheet_index: state.present.sheets_model.cur_sheet_index,
-        sheet_num_rows: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].row_count,
-        sheet_num_cols: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].col_count,
         sheet: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index],
         graphics_methods: state.present.graphics_methods,
     }

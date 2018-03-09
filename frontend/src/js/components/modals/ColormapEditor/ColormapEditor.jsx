@@ -25,8 +25,8 @@ class ColormapEditor extends Component {
         return {
             show: React.PropTypes.bool.isRequired, // show the modal
             close: React.PropTypes.func.isRequired, // close the modal
-            sheet_num_cols: React.PropTypes.number,
-            sheet_num_rows: React.PropTypes.number,
+            selected_cell_col: React.PropTypes.number,
+            selected_cell_row: React.PropTypes.number,
             colormaps: React.PropTypes.object,
             defaultColormap: React.PropTypes.string,
             deleteColormap: React.PropTypes.func,
@@ -63,7 +63,6 @@ class ColormapEditor extends Component {
             show_new_colormap_modal: true
         })
     }
-    
 
     handleDeleteColormap(){
         // TODO: If i use a colormap then delete it what happens?
@@ -137,84 +136,12 @@ class ColormapEditor extends Component {
         }
     }
 
-    getApplyButton(){
-        if(this.props.sheet_num_rows < 2 && this.props.sheet_num_cols < 2){
-            return(
-                <Button
-                    id="colormap-apply-dropup"
-                    style={{float: "left", marginLeft: "5px"}}
-                    onClick={() => {this.handleApply(0, 0)}}>
-                    Apply
-                </Button>
-            )
-        }
-        else{
-            let menuItems;
-            if(this.props.sheet_num_rows > 2 || this.props.sheet_num_cols > 2){
-                let rows = _.range(this.props.sheet_num_rows)
-                let cols = _.range(this.props.sheet_num_cols)
-                let cells = [];
-                rows.forEach((row)=>{
-                    cols.forEach((col)=>{
-                        cells.push({row: row, col: col})
-                    })
-                })
-                 
-                menuItems = (
-                    <Dropdown.Menu className="colormap-apply-menu">
-                    {
-                        cells.map((cell, index)=>{
-                            return <MenuItem
-                                    key={index.toString()} 
-                                    eventKey={index.toString()}
-                                    onClick={() => {this.handleApply(cell.row, cell.col)}}>
-                                    To Row {cell.row+1}, Col {cell.col+1}
-                                    </MenuItem>
-                        })
-                    }
-                    </Dropdown.Menu>
-                )
-            }
-            else if(this.props.sheet_num_rows == 2 && this.props.sheet_num_cols == 2){
-                menuItems = (
-                    <Dropdown.Menu className="colormap-apply-menu">
-                        <MenuItem eventKey="0" onClick={() => {this.handleApply(0, 0)}}>To Top Left</MenuItem>
-                        <MenuItem eventKey="1" onClick={() => {this.handleApply(0, 1)}}>To Top Right</MenuItem>
-                        <MenuItem eventKey="2" onClick={() => {this.handleApply(1, 0)}}>To Bottom Left</MenuItem>
-                        <MenuItem eventKey="3" onClick={() => {this.handleApply(1, 1)}}>To Bottom Right</MenuItem>
-                    </Dropdown.Menu>
-                )
-            }
-            else if(this.props.sheet_num_rows == 2){
-                menuItems = (
-                    <Dropdown.Menu className="colormap-apply-menu">
-                        <MenuItem eventKey="0" onClick={() => {this.handleApply(0, 0)}}>To Top</MenuItem>
-                        <MenuItem eventKey="1" onClick={() => {this.handleApply(1, 0)}}>To Bottom</MenuItem>
-                    </Dropdown.Menu>
-                )
-            }
-            else {
-                menuItems = (
-                    <Dropdown.Menu className="colormap-apply-menu">
-                        <MenuItem eventKey="0" onClick={() => {this.handleApply(0, 0)}}>To Left</MenuItem>
-                        <MenuItem eventKey="1" onClick={() => {this.handleApply(0, 1)}}>To Right</MenuItem>
-                    </Dropdown.Menu>
-                )
-            }
-            return(
-                <Dropdown 
-                    dropup
-                    id="colormap-apply-dropup"
-                    style={{float: "left", marginLeft: "5px"}}>
-                    <Dropdown.Toggle>Apply</Dropdown.Toggle>   
-                    {menuItems}
-                </Dropdown>
-            )
-        }
+    handleApplyColormap(){
+        this.refs.widget.getWrappedInstance().applyColormap(this.state.selectedColormapName, this.props.selected_cell_row, this.props.selected_cell_col)
     }
 
     render(){
-        let apply = this.getApplyButton();
+        const apply_disabled = this.props.selected_cell_row === -1 || this.props.selected_cell_col === -1
         return(
             <div>
                 <Modal show={this.props.show} onHide={this.props.close}>
@@ -286,7 +213,12 @@ class ColormapEditor extends Component {
                             onClick={() => {this.refs.widget.getWrappedInstance().resetColormap()}}>
                             Reset
                         </Button>
-                        {apply}
+                        <Button
+                            style={{float: "left"}}
+                            disabled={apply_disabled}
+                            title={apply_disabled ? "A cell must be selected to apply a colormap" : "Apply the colormap shown to the currently selected cell"}
+                            onClick={() => {this.handleApplyColormap()}}>
+                            Apply</Button>
                         <Button onClick={() => {this.refs.widget.getWrappedInstance().saveColormap(this.state.selectedColormapName)}}>Save</Button>
                         <Button onClick={this.openImportExportModal.bind(this)}>Import/Export</Button>
                         <Button onClick={this.props.close}>Close</Button>
@@ -306,9 +238,13 @@ ColormapEditor.defaultProps = {
 }
 
 const mapStateToProps = (state) => {
+    let cell_id_string = state.present.sheets_model.selected_cell_id // format of `sheet_row_col`. Ex: "0_0_0"
+    let sheet_row_col = cell_id_string.split("_").map(function (str_val) { return Number(str_val) })
+    let row = sheet_row_col[1]
+    let col = sheet_row_col[2]
     return {
-        sheet_num_rows: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].row_count,
-        sheet_num_cols: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].col_count,
+        selected_cell_row: row,
+        selected_cell_col: col,
         colormaps: state.present.colormaps,
     }
 }
