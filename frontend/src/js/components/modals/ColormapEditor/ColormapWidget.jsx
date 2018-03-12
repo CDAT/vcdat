@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './ColormapWidget.css'
-var colorUtility = require('react-color/lib/helpers/color.js').default;
 
 class ColormapWidget extends Component {
     constructor(props){
@@ -25,25 +24,21 @@ class ColormapWidget extends Component {
             }
             if(event.shiftKey){
                 if(this.props.selected_cells_start === -1){
-                    this.props.handleCellClick(0, index, r, g, b)
+                    this.props.handleCellClick(0, index)
                 }
                 else{
-                    this.props.handleCellClick(this.props.selected_cells_start, index, r, g, b)
+                    this.props.handleCellClick(this.props.selected_cells_start, index)
                 }
             }
             else{
                 if(this.props.selected_cells_start === this.props.selected_cells_end && this.props.selected_cells_start === index){
                     // if a single cell is selected and the user clicks it. Deselect the cell
-                    this.props.handleCellClick(-1, -1, r, g, b)
+                    this.props.handleCellClick(-1, -1)
                 }
                 else{
-                    this.props.handleCellClick(index, index, r, g, b)
+                    this.props.handleCellClick(index, index)
                 }   
             }
-            const r = this.props.current_colormap[index][0] * 2.55
-            const g = this.props.current_colormap[index][1] * 2.55
-            const b = this.props.current_colormap[index][2] * 2.55
-            // this.handleChange(colorUtility.toState(`rgb(${r},${g},${b})`))
         }
     }
 

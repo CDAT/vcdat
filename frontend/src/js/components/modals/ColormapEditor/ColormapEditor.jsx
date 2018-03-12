@@ -36,7 +36,7 @@ class ColormapEditor extends Component {
             selected_cell_row: React.PropTypes.number,
             colormaps: React.PropTypes.object,
             default_colormap: React.PropTypes.string,
-            delete_colormap: React.PropTypes.func,
+            deleteColormap: React.PropTypes.func,
             saveColormap: React.PropTypes.func,
         }; 
     }
@@ -85,6 +85,11 @@ class ColormapEditor extends Component {
         this.setState({
             selected_cells_start: start_cell,
             selected_cells_end: end_cell,
+        }, () => {
+            const r = this.state.current_colormap[this.state.selected_cells_end][0] * 2.55
+            const g = this.state.current_colormap[this.state.selected_cells_end][1] * 2.55
+            const b = this.state.current_colormap[this.state.selected_cells_end][2] * 2.55
+            this.handleChange(colorUtility.toState(`rgb(${r},${g},${b})`))
         })
     }
 
@@ -94,8 +99,8 @@ class ColormapEditor extends Component {
         if(nameToDelete !== "default"){
             if(confirm(`Are you sure you want to delete '${nameToDelete}'?`)) {
                 try{
-                    if(vcs){ // eslint-disable-line no-undef
-                        vcs.removecolormap(nameToDelete).catch((e) => {throw e}) // eslint-disable-line no-undef
+                    if(vcs){
+                        vcs.removecolormap(nameToDelete).catch((e) => {throw e})
                     }
                 }
                 catch(e){
@@ -122,7 +127,7 @@ class ColormapEditor extends Component {
                 }
                 let name = colormapNames[index]
                 let current_colormap = _.map(this.props.colormaps[name], _.clone())
-                this.props.delete_colormap(nameToDelete)
+                this.props.deleteColormap(nameToDelete)
                 toast.success("Colormap deleted successfully", { position: toast.POSITION.BOTTOM_CENTER })
                 setTimeout(()=>{
                     this.setState({
@@ -189,10 +194,13 @@ class ColormapEditor extends Component {
         }
     }
 
-    handleApplyColormap(colormap_name, cell_row, cell_col){
-        let self = this
-        let graphics_method_parent = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method_parent
-        let graphics_method = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method
+    handleApplyColormap(){
+        const colormap_name = this.state.selected_colormap_name
+        const cell_row = this.props.selected_cell_row
+        const cell_col = this.props.selected_cell_col
+        const self = this
+        const graphics_method_parent = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method_parent
+        const graphics_method = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method
 
         function applyColormapHelper(){
             try{
@@ -376,7 +384,7 @@ class ColormapEditor extends Component {
                     <Modal.Footer>
                         <Button 
                             style={{float: "left"}}
-                            onClick={() => {this.refs.widget.getWrappedInstance().blendColors()}}>
+                            onClick={() => {this.blendColors()}}>
                             Blend
                         </Button>
                         <Button 
@@ -395,7 +403,7 @@ class ColormapEditor extends Component {
                             onClick={() => {this.handleApplyColormap()}}>
                             Apply
                         </Button>
-                        <Button onClick={() => {this.refs.widget.getWrappedInstance().saveColormap(this.state.selected_colormap_name)}}>Save</Button>
+                        <Button onClick={() => {this.saveColormap(this.state.selected_colormap_name)}}>Save</Button>
                         <Button onClick={this.openImportExportModal.bind(this)}>Import/Export</Button>
                         <Button onClick={this.props.close}>Close</Button>
                     </Modal.Footer>
@@ -407,7 +415,7 @@ class ColormapEditor extends Component {
                 />
                 <ImportExportModal
                     show={this.state.show_import_export_modal}
-                    close={this.closeImportExportModal}
+                    close={()=>{this.closeImportExportModal()}}
                     current_colormap={this.state.current_colormap}
                     saveColormap={(name, cm) => this.saveColormap(name, cm)}
                 />
@@ -458,8 +466,8 @@ const mapDispatchToProps = (dispatch) => {
         updateGraphicsMethod: (graphics_method) => {
             dispatch(Actions.updateGraphicsMethod(graphics_method))
         },
-        delete_colormap: (name) => {
-            dispatch(Actions.delete_colormap(name));
+        deleteColormap: (name) => {
+            dispatch(Actions.deleteColormap(name));
         },
     }
 }
