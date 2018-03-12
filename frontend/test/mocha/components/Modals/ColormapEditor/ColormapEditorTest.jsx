@@ -5,123 +5,101 @@ var React = require('react');
 
 import ColormapEditor from '../../../../../src/js/components/modals/ColormapEditor/ColormapEditor.jsx'
 import { PureColormapEditor } from '../../../../../src/js/components/modals/ColormapEditor/ColormapEditor.jsx'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import { createMockStore } from 'redux-test-utils'
 import sinon from 'sinon'
 
 describe('ColormapEditorTest.jsx', function() {
-    var stub;
-    before(function() {
-        stub = sinon.stub(PureColormapEditor.prototype, 'handleApply').returns(true);
-    });
-    afterEach(function(){ 
-        stub.reset()
-    });
+    const props = {
+        colormaps: {
+            "viridis":[
+                [100, 100, 100, 100], // 3 cells total
+                [70, 70, 70, 100],
+                [40, 40, 40, 100],
+            ],
+            "testSelect": [
+                [0, 0, 0, 100],
+                [70, 70, 70, 100],
+                [100, 100, 100, 100],
+            ]
+        },
+        sheets_model: {
+            sheets: [
+                {row_count: 1, col_count: 1}
+            ],
+            cur_sheet_index: 0
+        },
+        onChange: function(){return},
+        deleteColormap: function(){return}
+    }
+
     it('renders without exploding', () => {
         // Note that this test is rendering the default component with redux
         // Other tests will use the "pure" export without the redux connect wrapper
-        var state = { 
+        const state = { 
             present: {
                 sheets_model: {
                     sheets: [
                         {row_count: 1, col_count: 1}
                     ],
+                    selected_cell_id: "0_0_0",
                     cur_sheet_index: 0
                 }
             }
         }
         const store = createMockStore(state)
-        var colormap_editor = shallow(<ColormapEditor store={store}/>)
+        const colormap_editor = shallow(<ColormapEditor store={store}/>)
         expect(colormap_editor).to.have.lengthOf(1);
     });
-    it('renders the correct apply button for a single cell', () => {
-        var props = {
-            sheet_num_rows: 1,
-            sheet_num_cols: 1,
-        }
-        var colormap_editor = shallow(<PureColormapEditor {...props}/>)
-        let menu_options = colormap_editor.find("#colormap-apply-dropup")
-        expect(menu_options).to.have.lengthOf(1);
-        menu_options.simulate("click")
-        sinon.assert.callCount(stub, 1)
-    });
-    it('renders the correct apply button for 2 rows', () => {
-        var props = {
-            sheet_num_rows: 2,
-            sheet_num_cols: 1,
-        }
-        var colormap_editor = shallow(<PureColormapEditor {...props}/>)
-        let menu_options = colormap_editor.find(".colormap-apply-menu").find("MenuItem")
-        expect(menu_options).to.have.lengthOf(2);
-        menu_options.map(function(item){
-            item.simulate("click")
-        })
-        sinon.assert.callCount(stub, 2)
-    });
+
+    // it('loads the selected colormap', () => {
+    //     const colormap_widget = shallow(<ColormapEditor store={store}/>)
+    //     let change_event = {
+    //         target: {
+    //             value: "testSelect"
+    //         }
+    //     }
+    //     colormap_widget.find('select.form-control').at(0).simulate("change", change_event)
+    //     expect(colormap_widget.state().currentColormap[0][0]).to.equal(0) // first cell red should be 0
+    //     expect(colormap_widget.state().currentColormap[1][0]).to.equal(70) // second cell red should be 70
+    //     expect(colormap_widget.state().currentColormap[2][0]).to.equal(100) // third cell red should be 100
+    // });
     
-    it('renders the correct apply button for 2 cols', () => {
-        var props = {
-            sheet_num_rows: 1,
-            sheet_num_cols: 2,
-        }
-        var colormap_editor = shallow(<PureColormapEditor {...props}/>)
-        let menu_options = colormap_editor.find(".colormap-apply-menu").find("MenuItem")
-        expect(menu_options).to.have.lengthOf(2);
-        menu_options.map(function(item){
-            item.simulate("click")
-        })
-        sinon.assert.callCount(stub, 2)
-    });
-    it('renders the correct apply button for 2 rows and 2 cols', () => {
-        var props = {
-            sheet_num_rows: 2,
-            sheet_num_cols: 2,
-        }
-        var colormap_editor = shallow(<PureColormapEditor {...props}/>)
-        let menu_options = colormap_editor.find(".colormap-apply-menu").find("MenuItem")
-        expect(menu_options).to.have.lengthOf(4);
-        menu_options.map(function(item){
-            item.simulate("click")
-        })
-        sinon.assert.callCount(stub, 4)
-    });
-    it('renders the correct apply button for 3 rows and 2 cols', () => {
-        var props = {
-            sheet_num_rows: 3,
-            sheet_num_cols: 2,
-        }
-        var colormap_editor = shallow(<PureColormapEditor {...props}/>)
-        let menu_options = colormap_editor.find(".colormap-apply-menu").find("MenuItem")
-        expect(menu_options).to.have.lengthOf(6);
-        menu_options.map(function(item){
-            item.simulate("click")
-        })
-        sinon.assert.callCount(stub, 6)
-    });
-    it('renders the correct apply button for 2 rows and 3 cols', () => {
-        var props = {
-            sheet_num_rows: 2,
-            sheet_num_cols: 3,
-        }
-        var colormap_editor = shallow(<PureColormapEditor {...props}/>)
-        let menu_options = colormap_editor.find(".colormap-apply-menu").find("MenuItem")
-        expect(menu_options).to.have.lengthOf(6);
-        menu_options.map(function(item){
-            item.simulate("click")
-        })
-        sinon.assert.callCount(stub, 6)
-    });
-    it('renders the correct apply button for 3 rows and 3 cols', () => {
-        var props = {
-            sheet_num_rows: 3,
-            sheet_num_cols: 3,
-        }
-        var colormap_editor = shallow(<PureColormapEditor {...props}/>)
-        let menu_options = colormap_editor.find(".colormap-apply-menu").find("MenuItem")
-        expect(menu_options).to.have.lengthOf(9);
-        menu_options.map(function(item){
-            item.simulate("click")
-        })
-        sinon.assert.callCount(stub, 9)
-    });
+    // it('deletes a colormap properly', () => {
+    //     var state = { 
+    //         present: {
+    //             sheets_model: {
+    //                 sheets: [
+    //                     {row_count: 1, col_count: 1}
+    //                 ],
+    //                 selected_cell_id: "0_0_0",
+    //                 cur_sheet_index: 0
+    //             }
+    //         }
+    //     }
+    //     const store = createMockStore(state)
+    //     const colormap_editor = mount(<ColormapEditor store={store}/>)
+    //     let clock = sinon.useFakeTimers() // replace setTimout with a fake version that can be manipulated/ran synchronously
+    //     let warn = console.warn
+    //     console.warn = function(){return} // disable console.warn to prevent unnecessary warnings about vcs being missing
+    //     const confirm = sinon.stub(global, 'confirm')
+    //     confirm.returns(true)
+    //     global.vcs = {
+    //         deleteColormap() {
+    //             return Promise.resolve()
+    //         }
+    //     }
+    //     colormap_editor.instance().handleSelectColormap("testSelect")
+    //     colormap_editor.instance().handleDeleteColormap("testSelect")
+    //     clock.runAll() // force all setTimeout calls to process
+    //     expect(colormap_editor.state().selectedColormapName).to.equal("viridis") // since it is the only colormap left, viridis should be selected
+    //     for(let cell = 0; cell < 3; cell++){
+    //         for(let color_index = 0; color_index < 3; color_index++){
+    //             expect(colormap_editor.state().currentColormap[cell][color_index]).to.equal(props.colormaps.viridis[cell][color_index])
+    //         }
+    //     }
+    //     clock.restore()
+    //     console.warn = warn // restore console.warn
+    //     confirm.restore()
+    // });
 });

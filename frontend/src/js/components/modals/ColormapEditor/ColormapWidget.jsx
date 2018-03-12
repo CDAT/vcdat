@@ -30,7 +30,6 @@ class ColormapWidget extends Component {
             color: React.PropTypes.object,// the current colorpicker color 
             onChange: React.PropTypes.func,
             saveColormap: React.PropTypes.func,
-            deleteColormap: React.PropTypes.func,
             showImportExportModal: React.PropTypes.bool,
             closeImportExportModal: React.PropTypes.func,
             sheet: React.PropTypes.object,
@@ -139,7 +138,7 @@ class ColormapWidget extends Component {
     saveColormap(name){
         if(name){
             try{
-                vcs.setcolormap(name, this.state.currentColormap).then(() => {
+                return vcs.setcolormap(name, this.state.currentColormap).then(() => {
                     this.props.saveColormap(name, this.state.currentColormap)
                     toast.success("Save Successful", { position: toast.POSITION.BOTTOM_CENTER });
                     PubSub.publish(PubSubEvents.colormap_update, name)
@@ -157,10 +156,12 @@ class ColormapWidget extends Component {
             catch(e){
                 console.warn(e)
                 toast.error("Failed to save colormap", { position: toast.POSITION.BOTTOM_CENTER });
+                return Promise.reject()
             }
         }
         else{ // should not be possible, but just in case
             toast.error("Please enter a name to save this colormap", { position: toast.POSITION.BOTTOM_CENTER });
+            return Promise.reject()
         }
     }
 
@@ -323,9 +324,6 @@ const mapDispatchToProps = dispatch => {
             }
             return false
             
-        },
-        deleteColormap: (name) => {
-            dispatch(Actions.deleteColormap(name));
         },
         applyColormap: (graphics_method_parent, graphics_method, row, col, plot_index) =>{
             dispatch(Actions.swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, plot_index));
