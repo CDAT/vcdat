@@ -83,6 +83,7 @@ class Cell extends React.Component {
                     col={this.props.col}
                     can_plot={this.can_plot}
                     addPlot={this.props.addPlot}
+                    onDrop={()=>{this.selectCell()}}
                     swapVariableInPlot={this.props.swapVariableInPlot}
                     swapGraphicsMethodInPlot={this.props.swapGraphicsMethodInPlot}
                     swapTemplateInPlot={this.props.swapTemplateInPlot}
@@ -150,3 +151,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default DropTarget(DragAndDropTypes.PLOT_COMPONENTS, cellTarget, collect)(connect(mapStateToProps, mapDispatchToProps)(Cell));
+export { Cell as PureCell }

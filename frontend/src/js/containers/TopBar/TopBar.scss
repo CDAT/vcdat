@@ -1,6 +1,6 @@
 .top-bar{
     display: flex;
-    height: 110px;
+    height: 150px;
     border: #e7e7e7 1px solid;
     .navbar.navbar-default{
         width: 150px;
@@ -10,4 +10,9 @@
 .plot-inspector-container{
     width: 100%;
     overflow-y: scroll;
+}
+
+.plot-inspector-wrapper{
+    width: 100%;
+    display: inline-flex;
 }

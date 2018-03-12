@@ -121,6 +121,14 @@ var Actions = {
             col: col
         }
     },
+    deletePlot(row, col, index){
+        return {
+            type: 'DELETE_PLOT',
+            row: row,
+            col: col,
+            index: index
+        }
+    },
     swapVariableInPlot(value, row, col, plot_index, var_being_changed) {
         return {
             type: 'CHANGE_PLOT_VAR',
@@ -227,6 +235,16 @@ var Actions = {
         return {
             type: 'REMOVE_VARIABLE',
             name: name,
+        }
+    },
+    setRecentLocalPath(path){
+        // Used with the file explorer and file tab
+        // The file tab passes this value to the file explorer
+        // The file explorer will open the path it is given
+        // This makes it so that a user doesnt have to navigate to the same place over and over
+        return {
+            type: 'SET_RECENT_LOCAL_PATH',
+            path: path,
         }
     }
 }

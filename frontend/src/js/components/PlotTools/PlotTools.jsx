@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import PubSub from 'pubsub-js'
 import PubSubEvents from './../../constants/PubSubEvents.js'
 import ColormapEditor from "../modals/ColormapEditor/ColormapEditor.jsx"
+import { toast } from 'react-toastify'
 import './PlotTools.scss'
 /* global $ */
 
@@ -10,6 +12,16 @@ class PlotTools extends Component{
         super(props)
         this.state = {
             showColormapEditor: false
+        }
+        this.handleClear = this.handleClear.bind(this)
+    }
+
+    handleClear(){
+        if(this.props.cell_selected === "-1_-1_-1"){
+            toast.info("A cell must be selected to clear", {position: toast.POSITION.BOTTOM_CENTER})
+        }
+        else{
+            PubSub.publish(PubSubEvents.clear_canvas)
         }
     }
 
@@ -25,7 +37,7 @@ class PlotTools extends Component{
                     <button 
                         id="clear-canvas-button"
                         className="btn btn-default btn-sm material-icons-button"
-                        onClick={() => {PubSub.publish(PubSubEvents.clear_canvas)}}
+                        onClick={() => { this.handleClear() }}
                         title="Clear selected plot">
                         <i className="material-icons" style={{color: "red"}}>clear</i>
                     </button>
@@ -60,6 +72,12 @@ PlotTools.propTypes = {
     onRedo: React.PropTypes.func,
     undoEnabled: React.PropTypes.bool,
     redoEnabled: React.PropTypes.bool,
+    cell_selected: React.PropTypes.string,
+}
+const mapStateToProps = (state) => {
+    return {
+        cell_selected: state.present.sheets_model.selected_cell_id 
+    }
 }
 
-export default PlotTools
+export default connect(mapStateToProps, null)(PlotTools)

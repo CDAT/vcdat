@@ -43,7 +43,23 @@ def hello():
 def serve_resource_file(path):
     if app.debug:
         dir_path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'frontend/'))
-        if path in ['Styles.css', 'jquery-2.2.4.min.js', 'jquery-ui.min.js', 'jquery-ui.min.css', 'clt_image.png', 'bootstrap-themed.min.css', 'add_plot.svg']:
+        if path in [
+            'Styles.css',
+            'jquery-2.2.4.min.js',
+            'jquery-ui.min.js',
+            'jquery-ui.min.css',
+            'clt_image.png',
+            'bootstrap-themed.min.css',
+            'bootstrap.min.css',
+            'bootstrap.min.js',
+            'glyphicons-halflings-regular.woff2',
+            'glyphicons-halflings-regular.woff',
+            'glyphicons-halflings-regular.ttf',
+            'MaterialIcons-Regular.eot',
+            'MaterialIcons-Regular.ttf',
+            'MaterialIcons-Regular.woff',
+            'MaterialIcons-Regular.woff2',
+            'add_plot.svg']:
             return send_from_directory(dir_path, 'deps/' + path)
         if path in ['Bundle.js', 'Bundle.js.map']:
             return send_from_directory(dir_path, 'dist/' + path)

@@ -1,3 +1,40 @@
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(MaterialIcons-Regular.eot); /* For IE6-8 */
+    src: local('Material Icons'),
+      local('MaterialIcons-Regular'),
+      url(MaterialIcons-Regular.woff2) format('woff2'),
+      url(MaterialIcons-Regular.woff) format('woff'),
+      url(MaterialIcons-Regular.ttf) format('truetype');
+  }
+
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+  
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+  
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+  
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+  }
+
 /*makes stuff work in firefox*/
 
 * {
@@ -178,11 +215,18 @@ button:focus {
 .cell{
     border: 1px solid #cecece;
 }
-.cell-selected{
+.cell:hover{
+    border: 1px solid rgb(175, 175, 255);
+}
+.cell.cell-selected{
     border: 1px solid blue;
 }
 .canvas-container{
     overflow: hidden;
+    position: absolute;
+    background-color: #fbfbfb;
+    height: 100%;
+    width: 100%;
 }
 .plotter {
     display:flex;
@@ -354,4 +398,39 @@ li.tree-leaf {
 
 .variable-tabs {
     
+}
+
+.canvas-spinner-hidden {
+    display: none;
+}
+
+.canvas-spinner-show {
+    z-index: 1;
+    background-color: rgba(250, 250, 250, .6);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.canvas-spinner-show span{
+    margin-left: 5px;
+}
+
+.loading-spinner {
+    border: 3px solid #f3f3f3;
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+    border-top: 3px solid #555;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

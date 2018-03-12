@@ -4,7 +4,7 @@ var LinkWatcher = require("./LinkWatcher.js");
 var path = require("path");
 
 module.exports = {
-    entry: "./src/js/App.js",
+    entry: ["babel-polyfill", "./src/js/App.js"],
     devtool: 'source-map',
     output: {
         path: __dirname + "/dist",
@@ -15,10 +15,21 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: "babel-loader",
-                query: {
-                    presets: ['es2015', 'react']
-                }
+                use: [
+                    {
+                        loader: "babel-loader",
+                        options: {
+                            presets: [
+                                'react',
+                                ['env', {
+                                    "targets": {
+                                        "uglify": true
+                                    }
+                                }]
+                            ]
+                        }
+                    }
+                ]
             },
             {
                 test: /\.css$/,

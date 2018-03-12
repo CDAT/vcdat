@@ -4,6 +4,7 @@ import _ from 'lodash'
 import Actions from '../../../constants/Actions.js'
 var colorUtility = require('react-color/lib/helpers/color.js').default
 import ImportExportModal from "./ImportExportModal.jsx";
+import { toast } from 'react-toastify'
 import './ColormapWidget.css'
 
 class ColormapWidget extends Component {
@@ -106,16 +107,19 @@ class ColormapWidget extends Component {
     }
 
     handleSaveColormap(){
-        if(this.state.newColormapTemplateName){
+        if(this.state.newColormapTemplateName){ 
             let result = this.props.saveColormap(this.state.newColormapTemplateName, this.state.currentColormap)
             if(result){
+                toast.success("Save Successful", { position: toast.POSITION.BOTTOM_CENTER });
                 this.setState({cm_name_input_class: "form-control cm-name-input save-success"})
             }
             else{
+                toast.error("Failed to save colormap", { position: toast.POSITION.BOTTOM_CENTER });
                 this.setState({cm_name_input_class: "form-control cm-name-input save-fail"})
             }
         } 
         else{
+            toast.error("Please enter a name to save this colormap", { position: toast.POSITION.BOTTOM_CENTER });
             this.setState({cm_name_input_class: "form-control cm-name-input save-fail"})
         }
         setTimeout(function(){this.setState({cm_name_input_class: "form-control cm-name-input"})}.bind(this), 900)
@@ -125,35 +129,51 @@ class ColormapWidget extends Component {
         // TODO: If i use a colormap then delete it what happens?
         let nameToDelete = this.state.selectedColormapName
         if(nameToDelete !== "default"){
-            try{
-                if(vcs){ // eslint-disable-line no-undef
-                    vcs.deleteColormap(nameToDelete).then((data)=>{console.log(data)}) // eslint-disable-line no-undef
+            if(confirm(`Are you sure you want to delete '${nameToDelete}'?`)) {
+                try{
+                    if(vcs){ // eslint-disable-line no-undef
+                        vcs.deleteColormap(nameToDelete).then((data)=>{console.log(data)}) // eslint-disable-line no-undef
+                    }
                 }
-            }
-            catch(e){
-                if(e instanceof ReferenceError){
-                    console.warn("VCS is not defined. Is the VCS Server running?")
+                catch(e){
+                    if(e instanceof ReferenceError){
+                        console.warn("VCS is not defined. Is the VCS Server running?")
+                        toast.error("VCS is not loaded. Try restarting vCDAT", { position: toast.POSITION.BOTTOM_CENTER })
+                        return
+                    }
+                    else{
+                        console.warn(e)
+                        toast.error("Failed to delete colormap", { position: toast.POSITION.BOTTOM_CENTER })
+                        return
+                    }
                 }
-            }
-            let colormapNames = Object.keys(this.props.colormaps).sort(function (a, b) {
-                return a.toLowerCase().localeCompare(b.toLowerCase())
-            })
-            let index = colormapNames.indexOf(nameToDelete)
-            if(index == colormapNames.length - 1){ // if the colormap to delete is the last in the list
-                index = colormapNames.length - 2; // select the colormap before it
-            }
+                let colormapNames = Object.keys(this.props.colormaps).sort(function (a, b) {
+                    return a.toLowerCase().localeCompare(b.toLowerCase())
+                })
+                let index = colormapNames.indexOf(nameToDelete)
+                if(index == colormapNames.length - 1){ // if the colormap to delete is the last in the list
+                    index = colormapNames.length - 2; // select the colormap before it
+                }
+                else{
+                    index++ // else, select the colormap below it
+                }
+                let name = colormapNames[index]
+                let currentColormap = _.map(this.props.colormaps[name], _.clone())
+                this.props.deleteColormap(nameToDelete)
+                toast.success("Colormap deleted successfully", { position: toast.POSITION.BOTTOM_CENTER })
+                setTimeout(()=>{
+                    this.setState({
+                        selectedColormapName: name,
+                        currentColormap: currentColormap,
+                    })  
+                }, 0)   
+            } 
             else{
-                index++ // else, select the colormap below it
+                return
             }
-            let name = colormapNames[index]
-            let currentColormap = _.map(this.props.colormaps[name], _.clone())
-            this.props.deleteColormap(nameToDelete)
-            setTimeout(()=>{
-                this.setState({
-                    selectedColormapName: name,
-                    currentColormap: currentColormap,
-                })  
-            }, 0)
+        }
+        else{
+            toast.warn("The default colormap cannot be deleted", { position: toast.POSITION.BOTTOM_CENTER })
         }
     }
 
@@ -164,6 +184,9 @@ class ColormapWidget extends Component {
         if(numCells < 1){
             // numCells represents the number of cells in between the start and end cells.
             // so selecting 2 cells gives numCells a value of 0.
+            toast.info("Not enough cells selected to blend. Shift + click to select more.", {
+                position: toast.POSITION.BOTTOM_CENTER
+              });
             return
         }
         let startColor = this.state.currentColormap[startCell] // rgba array
@@ -212,7 +235,7 @@ class ColormapWidget extends Component {
                         if(names.indexOf(colormap_name) >= 0){
                             vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => { // save colormap in vcs
                                 self.props.saveColormap(colormap_name, self.state.currentColormap) // save to the frontend state
-                                if(applyColormapHelper(resolve)){
+                                if(applyColormapHelper()){
                                     resolve()
                                 }
                                 else{
@@ -224,7 +247,7 @@ class ColormapWidget extends Component {
                             vcs.createcolormap(colormap_name).then(() => {
                                 vcs.setcolormap(colormap_name, self.state.currentColormap).then(() => {
                                     self.props.saveColormap(colormap_name, self.state.currentColormap) // save to the frontend state
-                                    if(applyColormapHelper(resolve)){
+                                    if(applyColormapHelper()){
                                         resolve()
                                     }
                                     else{
@@ -342,6 +365,7 @@ const mapDispatchToProps = dispatch => {
                     return true
                 }
                 catch(e){
+                    console.error(e)
                     return false
                 }
             }

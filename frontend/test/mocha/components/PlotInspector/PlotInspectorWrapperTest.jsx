@@ -103,5 +103,22 @@ describe('PlotInspectorWrapperTest.jsx', function() {
         wrapper.instance().handleSelectTemplate("default", plot_index)
         expect(props.swapTemplateInPlot.calledWith(cell_row, cell_col, "default", plot_index)).to.be.true
     });
+
+    it('Calls prop to handle adding plots', () => {
+        let props = getProps()
+        let addPlot = sinon.spy()
+        let wrapper = shallow(<PlotInspectorWrapper {...props} addPlot={addPlot}/>)
+
+        wrapper.find("#add-plot-button").simulate("click")
+        expect(addPlot.callCount).to.equal(1)
+    });
     
+    it('Calls prop to handle deleting plots', () => {
+        let props = getProps()
+        let deletePlot = sinon.spy()
+        let wrapper = shallow(<PlotInspectorWrapper {...props} deletePlot={deletePlot}/>)
+
+        wrapper.instance().handleDeletePlot()
+        expect(deletePlot.callCount).to.equal(1)
+    });
 });

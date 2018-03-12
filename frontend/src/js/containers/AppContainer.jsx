@@ -7,6 +7,7 @@ import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import { connect } from 'react-redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { ToastContainer } from 'react-toastify';
 /* global jQuery */
 
 var AppContainer = React.createClass({
@@ -25,6 +26,7 @@ var AppContainer = React.createClass({
                     <SpreadsheetContainer />
                     <RightSideBar onUndo={this.props.undo} onRedo={this.props.redo} undoEnabled={this.props.undoEnabled} redoEnabled={this.props.redoEnabled}/>
                 </div>
+                <ToastContainer />
             </div>
         );
     }

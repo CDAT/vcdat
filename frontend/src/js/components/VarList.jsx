@@ -1,10 +1,11 @@
 import React from 'react'
-import AddEditRemoveNav from './AddEditRemoveNav.jsx'
+import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx';
 import CachedFiles from './modals/CachedFiles/CachedFiles.jsx'
 import { tabs } from './modals/CachedFiles/Tabs/TabBar.jsx'
 import { DragSource } from 'react-dnd'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 import EditVariable from "./modals/EditVariable.jsx"
+import { toast } from "react-toastify"
 
 var varSource = {
     beginDrag: function (props) {
@@ -52,19 +53,29 @@ var VarList = React.createClass({
             this.setState({ showFile: false, showEdit: true })
         }
         else{
-            // notify the user somehow that a variable must be selected 
+            toast.info("A variable must be selected to edit", { position: toast.POSITION.BOTTOM_CENTER })
         }
     },
     removeVariable(){
-        this.props.removeVariable(this.state.active_variable)
+        if(this.state.active_variable){
+            this.props.removeVariable(this.state.active_variable)
+        }
+        else{
+            toast.info("A variable must be selected to delete", { position: toast.POSITION.BOTTOM_CENTER })
+        }
     },
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent'>
-                <AddEditRemoveNav title='Variables'
-                                  addAction={()=>this.setState({ showFile: true, showEdit: false, selectedTab: tabs.file })} 
-                                  editAction={()=>this.editVariable()}
-                                  removeAction={()=>this.removeVariable()}/>
+                <AddEditRemoveNav 
+                    title='Variables'
+                    addAction={()=>this.setState({ showFile: true, showEdit: false, selectedTab: tabs.file })} 
+                    editAction={()=>this.editVariable()}
+                    removeAction={()=>this.removeVariable()}
+                    addText="Load a variable"
+                    editText="Edit a loaded variable"
+                    removeText="Remove a loaded variable"
+                />
                 <div className='scroll-area'>
                     <ul id='var-list' className='no-bullets left-list'>
                         {Object.keys(this.props.variables).map((value, index) => {

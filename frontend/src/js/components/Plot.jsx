@@ -8,12 +8,15 @@ const plotTarget = {
         const item = monitor.getItem();
         switch (monitor.getItemType()) {
             case DragAndDropTypes.GM:
+                props.onDrop()
                 props.swapGraphicsMethodInPlot(item.gmType, item.gmName, props.plotIndex);
                 break;
             case DragAndDropTypes.VAR:
+                props.onDrop()
                 props.swapVariableInPlot(item.variable, props.plotIndex);
                 break;
             case DragAndDropTypes.TMPL:
+                props.onDrop()
                 props.swapTemplateInPlot(item.template, props.plotIndex);
                 break;
         }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import Actions from '../../../../constants/Actions.js';
 import { Modal, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
 import _ from 'lodash';
 import Dialog from 'react-bootstrap-dialog';
@@ -9,6 +11,7 @@ import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx';
 import FileExplorer from '../../FileExplorer/FileExplorer.jsx';
 import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js';
 import TabBar from './TabBar.jsx'
+import { toast } from 'react-toastify'
 
 import '../CachedFiles.scss';
 
@@ -56,7 +59,7 @@ class FileTab extends Component {
             redefinedVariableName: '',
             temporaryRedefinedVariableName: '',
             dimension: null,
-            errorMessage: ''
+            recent_path: "",
         }
     }
 
@@ -107,6 +110,7 @@ class FileTab extends Component {
             dimension: this.state.dimension
         };
         this.props.loadVariables([var_obj]);
+        toast.success(`Successfully Loaded ${variable}`, { position: toast.POSITION.BOTTOM_CENTER})
         this.setState({ redefinedVariableName: '' });
     }
 
@@ -119,7 +123,8 @@ class FileTab extends Component {
                             title: 'Variable exists',
                             body: `The variable name ${this.variableName} already exists, rename or overwrite existing variable`,
                             actions: [
-                                Dialog.OKAction(() => resolve())
+                                Dialog.OKAction(() => resolve()),
+                                Dialog.CancelAction(() => reject())
                             ]
                         })
                     })
@@ -129,8 +134,14 @@ class FileTab extends Component {
             .then(() => {
                 return this.loadVariable()
             })
+            .catch((e) =>{
+                if(e){
+                    console.warn(e)
+                }
+            })
     }
 
+    /* istanbul ignore next */
     loadAndClose() {
         this.load().then(() => this.props.onTryClose());
     }
@@ -142,6 +153,7 @@ class FileTab extends Component {
             })
     }
 
+    /* istanbul ignore next */
     variableNameExists() {
         return Promise.resolve(this.variableName in this.props.curVariables);
     }
@@ -156,38 +168,63 @@ class FileTab extends Component {
         })
     }
 
+    /* istanbul ignore next */
     handleFileExplorerTryClose() {
         this.setState({ showFileExplorer: false });
     }
 
     handleFileSelected(file) {
-        this.setState({errorMessage: ''});
-        this.handleFileExplorerTryClose();
         var path = cleanPath(file.path + '/' + file.name);
         var self = this
+        let recent_path = cleanPath(file.path)
+        this.props.setRecentFolderOpened(recent_path) 
         return new Promise((resolve, reject) => {
             try{
                 resolve(
-                    vcs.variables(path).then((variablesAxes) => {
-                        var historyFiles = [file, ...self.state.historyFiles.filter(historyFile => {
-                            return historyFile.path !== file.path || historyFile.name !== file.name;
-                        })];
-                        window.localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
-                        self.setState({
-                            variablesAxes,
-                            selectedFile: file,
-                            historyFiles: historyFiles,
-                            selectedVariableName: Object.keys(variablesAxes[0])[0],
-                            selectedVariable: null
-                        });
-                    }).catch(function(thing){
-                        console.log("error!: ", thing)
-                        self.setState({errorMessage: 'CDMS can not open this file, please select another'});
-
-                    })
+                    vcs.variables(path).then(
+                        (variablesAxes) => { // success
+                            var historyFiles = [file, ...self.state.historyFiles.filter(historyFile => {
+                                return historyFile.path !== file.path || historyFile.name !== file.name;
+                            })];
+                            window.localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
+                            self.setState({
+                                variablesAxes,
+                                selectedFile: file,
+                                historyFiles: historyFiles,
+                                selectedVariableName: Object.keys(variablesAxes[0])[0],
+                                selectedVariable: null,
+                                showFileExplorer: false
+                            });
+                        },
+                        (error) => { // error
+                            if(!(error instanceof ReferenceError)){
+                                console.error(error)
+                                switch(error.code){
+                                    case -32001: // CDMSError(u'Cannot open file /example/path/to/a/file.nc (No error)',)
+                                        toast.error("CDMS can not open this file, please select another", {
+                                            position: toast.POSITION.BOTTOM_CENTER
+                                        });
+                                        return
+                                    case -32099:
+                                        toast.error("VCS connection is closed. Try restarting vCDAT.", {
+                                            position: toast.POSITION.BOTTOM_CENTER
+                                        });
+                                        return    
+                                    default:
+                                        toast.error("Failed to load file. Please try another one.", {
+                                            position: toast.POSITION.BOTTOM_CENTER
+                                        });   
+                                        return
+                                }
+                            }
+                        }
+                    )
                 )
             }
             catch(e){
+                if(e instanceof ReferenceError){
+                    toast.error("VCS is not loaded. Try restarting vCDAT", { position: toast.POSITION.BOTTOM_CENTER })
+                }
                 console.log(e)
                 reject(e)
             }
@@ -246,7 +283,6 @@ class FileTab extends Component {
                 <Modal.Body>
                     <TabBar switchTab={this.props.switchTab} selectedTab={this.props.selectedTab}/>
                     <div className="load-from">
-                        <center><font color="red"><b>{this.state.errorMessage}</b></font></center>
                         <Row>
                             <Col className="text-right" sm={2}>
                                 <h4>Load From</h4>
@@ -397,7 +433,13 @@ class FileTab extends Component {
                 </Modal>
                 <Dialog ref="dialog" />
                 {this.state.showFileExplorer &&
-                    <FileExplorer show={true} onTryClose={() => this.handleFileExplorerTryClose()} onFileSelected={(file) => this.handleFileSelected(file)} />}
+                    <FileExplorer
+                        show={true}
+                        onTryClose={() => this.handleFileExplorerTryClose()}
+                        onFileSelected={(file) => this.handleFileSelected(file)}
+                        recent_path = {this.props.recent_path}
+                    />
+                }
             </div>
         )
     }
@@ -410,7 +452,7 @@ class FileTab extends Component {
     }
 
     _formatVariables(variables) {
-        return Object.keys(variables).map((variableName) => {
+        return Object.keys(variables).sort().map((variableName) => {
             // let variable = variables[variableName];
             // let label = `${variableName} (${variable.shape.join(',')}) ${variable.name}`
             var vars = variables;
@@ -484,6 +526,7 @@ FileTab.propTypes = {
     addFileToCache: React.PropTypes.func,
     switchTab: React.PropTypes.func,
     selectedTab: React.PropTypes.string,
+    setRecentFolderOpened: React.PropTypes.func,
 }
 
 var DimensionContainer = (props) => {
@@ -549,5 +592,17 @@ var DimensionDnDContainer = _.flow(
         }
     ))(DimensionContainer);
 
+const mapStateToProps = (state) => {
+    return {
+        recent_path: state.present.cached_files.recent_local_path
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setRecentFolderOpened: function(path) {
+            dispatch(Actions.setRecentLocalPath(path));
+        },
+    }
+}
 
-export default FileTab;
+export default connect(mapStateToProps, mapDispatchToProps)(FileTab);

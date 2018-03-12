@@ -28,7 +28,7 @@ var default_sheet = {
 
 var default_sheets_model = {
     cur_sheet_index: 0,
-    selected_cell_id: "none",
+    selected_cell_id: "-1_-1_-1",
     sheets: [default_sheet],
 }
 
@@ -65,6 +65,7 @@ class SpreadsheetModel extends BaseModel {
             case 'CHANGE_PLOT_GM':
             case 'CHANGE_PLOT_TEMPLATE':
             case 'DELETE_PLOT_VAR':
+            case 'DELETE_PLOT':
                 new_state = jQuery.extend(true, {}, state);
                 sheet = new_state.sheets[state.cur_sheet_index];
                 SpreadsheetModel.updateCell(SpreadsheetModel.getCell(sheet, action), action)
@@ -74,12 +75,20 @@ class SpreadsheetModel extends BaseModel {
                 sheet = new_state.sheets[new_state.cur_sheet_index];
                 sheet.row_count = action.count;
                 sheet.cells = SpreadsheetModel.createCellGrid(sheet);
+                if(sheet.row_count >= new_state.selected_cell_id.split('_')[1]){
+                    // note: selected_cell_id format is "sheet_row_col"
+                    new_state.selected_cell_id = "-1_-1_-1"
+                }
                 return new_state;
             case 'COL_COUNT_CHANGED':
                 new_state = jQuery.extend(true, {}, state);
                 sheet = new_state.sheets[new_state.cur_sheet_index];
                 sheet.col_count = action.count;
                 sheet.cells = SpreadsheetModel.createCellGrid(sheet);
+                if(sheet.col_count >= new_state.selected_cell_id.split('_')[2]){
+                    // note: selected_cell_id format is "sheet_row_col"
+                    new_state.selected_cell_id = "-1_-1_-1"
+                }
                 return new_state;
             case 'ADD_SHEET':
                 new_state = jQuery.extend(true, {}, state);
@@ -101,7 +110,7 @@ class SpreadsheetModel extends BaseModel {
             case 'CHANGE_CUR_SHEET_INDEX':
                 new_state = jQuery.extend(true, {}, state);
                 new_state.cur_sheet_index = action.index;
-                new_state.selected_cell_id = "none" // reset selected cell when changing sheets
+                new_state.selected_cell_id = "-1_-1_-1" // reset selected cell when changing sheets
                 return new_state;
             case 'SELECT_CELL':
                 new_state = jQuery.extend(true, {}, state);
@@ -109,7 +118,7 @@ class SpreadsheetModel extends BaseModel {
                 return new_state
             case 'DESELECT_CELL':
                 new_state = jQuery.extend(true, {}, state);
-                new_state.selected_cell_id = "none"
+                new_state.selected_cell_id = "-1_-1_-1"
                 return new_state
             case 'CLEAR_CELL':
                 new_state = jQuery.extend(true, {}, state);
@@ -248,6 +257,9 @@ class SpreadsheetModel extends BaseModel {
                     plot = cell.plots[action.plot_index]
                 }
                 plot.variables.splice(action.var_index, 1)
+                break
+            case 'DELETE_PLOT':
+                cell.plots.splice(action.index, 1)
                 break
             default:
                 break;
