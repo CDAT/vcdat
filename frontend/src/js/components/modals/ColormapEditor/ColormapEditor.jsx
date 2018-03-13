@@ -126,16 +126,15 @@ class ColormapEditor extends Component {
                     index++ // else, select the colormap below it
                 }
                 let name = colormapNames[index]
-                let current_colormap = _.map(this.props.colormaps[name], _.clone())
                 this.props.deleteColormap(nameToDelete)
                 toast.success("Colormap deleted successfully", { position: toast.POSITION.BOTTOM_CENTER })
-                setTimeout(()=>{
-                    this.setState({
-                        selected_colormap_name: name,
-                        current_colormap: current_colormap,
-                    })
-                    this.handleSelectColormap(name)
-                }, 0)
+                let current_colormap = _.map(this.props.colormaps[name], _.clone())
+                this.setState({
+                    selected_colormap_name: name,
+                    current_colormap: current_colormap,
+                    selected_cells_start: -1,
+                    selected_cells_end: -1,
+                })
             } 
             else{
                 return
@@ -338,7 +337,7 @@ class ColormapEditor extends Component {
                                 <label htmlFor="cm-select" className="control-label">Colormaps</label>
                                 <select
                                     name="cm-select"
-                                    className="form-control"
+                                    className="form-control example"
                                     style={{marginLeft: "5px", marginRight: "5px"}}
                                     onChange={(event) => {this.handleSelectColormap(event.target.value)}}
                                     value={this.state.selected_colormap_name}>
