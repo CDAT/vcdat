@@ -1,6 +1,7 @@
 /* globals it, describe, before, beforeEach, */
 var chai = require('chai');
 var expect = chai.expect;
+var assert = chai.assert;
 var React = require('react');
 
 import ColormapEditor from '../../../../../src/js/components/modals/ColormapEditor/ColormapEditor.jsx'
@@ -230,30 +231,56 @@ describe('ColormapEditorTest.jsx', function() {
             expect(global.vcs.createcolormap.calledWith("test", dummy_cm)).to.be.true
         },
         () => {
-            chai.assert(false)
+            assert(false)
         })
     });
 
-    // it('saves a colormap', () => {
-    //     const store = createMockStore(state)
-    //     let dummy_save = sinon.spy()
-    //     global.vcs = {
-    //         setcolormap: function(){
-    //             return new Promise((resolve) => {
-    //                 resolve("");
-    //             })
-    //         },
-    //     }
-    //     const colormap_widget = shallow(<ColormapEditor store={store} saveColormap={dummy_save}/>).dive()
-    //     return colormap_widget.instance().saveColormap("name").then(()=>{
-    //         sinon.assert.calledOnce(dummy_save)
-    //         // dummy save represents the call to redux to save the colormap
-    //     },
-    //     () => { // Should not error. assert false to catch if it does
-    //         assert(false)
-    //     })
-         
-    // })
+    it('saves a colormap', () => {
+        const store = createMockStore(state)
+        let dummy_save = sinon.spy()
+        global.vcs = {
+            setcolormap: sinon.stub().resolves()
+        }
+        const colormap_widget = shallow(<ColormapEditor store={store} saveColormap={dummy_save}/>).dive()
+        colormap_widget.setState({current_colormap: [1,2,3]})
+        colormap_widget.setProps({saveColormap: dummy_save}) // 
+        return colormap_widget.instance().saveColormap("name").then(()=>{
+            expect(dummy_save.calledOnce).to.be.true
+            expect(dummy_save.calledWith("name", [1,2,3])).to.be.true
+            // dummy save represents the call to redux to save the colormap
+        },
+        () => { // Should not error. assert false to catch if it does
+            assert(false)
+        })
+    })
+
+    it('rejects gracefully when saving if vcs is not defined', () => {
+        const store = createMockStore(state)
+        let dummy_save = sinon.spy()
+        delete global.vcs
+        const colormap_widget = shallow(<ColormapEditor store={store} saveColormap={dummy_save}/>).dive()
+        colormap_widget.setState({current_colormap: [1,2,3]})
+        return colormap_widget.instance().saveColormap("name").then(()=>{
+            assert(false)
+        },
+        () => {
+            assert(true)
+        })
+    });
+
+    it('rejects a save if no name is given', () => {
+        const store = createMockStore(state)
+        let dummy_save = sinon.spy()
+        delete global.vcs
+        const colormap_widget = shallow(<ColormapEditor store={store} saveColormap={dummy_save}/>).dive()
+        colormap_widget.setState({current_colormap: [1,2,3]})
+        return colormap_widget.instance().saveColormap("").then(()=>{
+            assert(false)
+        },
+        () => {
+            assert(true)
+        })
+    });
 
     it('Applies a colormap correctly', () => {
         global.vcs = {

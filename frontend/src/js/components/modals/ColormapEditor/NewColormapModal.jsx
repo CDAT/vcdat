@@ -17,23 +17,26 @@ class NewColormapModal extends Component{
                 </Modal.Header>
                 <Modal.Body>
                     <FormGroup>
-                        <ControlLabel>Name</ControlLabel>
-                        <FormControl
+                        <label
+                            htmlFor="name-input"
+                            className="control-label">Name</label>
+                        <input
                             autoFocus
                             type="text"
+                            className="form-control name-input"
+                            name="name-input"
                             value={this.state.name}
                             onChange={(e) => this.setState({ name: e.target.value })} />
                     </FormGroup>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button 
-                        bsStyle="primary"
-                        bsSize="small"
+                    <button
+                        className="btn btn-primary create"
                         onClick={() => {this.props.newColormap(this.state.name)
-                        }}>Create</Button>
-                    <Button 
-                        bsSize="small"
-                        onClick={() => this.props.close()}>Cancel</Button>
+                        }}>Create</button>
+                    <button
+                        className="btn btn-default cancel"
+                        onClick={() => this.props.close()}>Cancel</button>
                 </Modal.Footer>
             </Modal>
         )
