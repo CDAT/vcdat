@@ -53,6 +53,7 @@ class FileTab extends Component {
             historyFiles: history_files,
             bookmarkFiles: bookmark_files,
             showBookmarkZone: false,
+            showRemoveBookmarkZone: false,
             variablesAxes: null,
             selectedVariable: null,
             selectedVariableName: '',
@@ -244,34 +245,70 @@ class FileTab extends Component {
         }
     }
 
-    handleDragStart(event, file){
+    handleDragStart(event, file, option){
         let data = _.assign({}, file)
         event.dataTransfer.setData('text', JSON.stringify(data)); // datatype must be text/plain due to chrome bug
-        
-        this.setState({showBookmarkZone: true})
+        if(option == 'add'){
+            this.setState({showBookmarkZone: true})
+        }
+        else if(option == 'remove'){
+            this.setState({showRemoveBookmarkZone: true})
+        }
     }
 
     /* istanbul ignore next */
-    handleDragOver(event){
+    handleDragOver(event, option){
         event.preventDefault()
         event.stopPropagation() // Stupid drag and drop api issue
     }
 
-    handleDrop(event){
+    handleDrop(event, option){
         try {
             let file = JSON.parse(event.dataTransfer.getData('text'));
             let bookmarks = this.state.bookmarkFiles.slice()
-            bookmarks.push(file)
+            let fileInBookmarks = false
+            let fileInBookmarksIndex = -1
+            bookmarks.reduce((prev_val, current_obj) => {
+                    fileInBookmarksIndex++
+                    if(current_obj.path == file.path){
+                        fileInBookmarks = true
+                    }             
+                }
+                , false
+            )
+            if(option == 'add'){
+                if(!fileInBookmarks){
+                    bookmarks.push(file)
+                }
+            }
+            else if(option == 'remove'){
+                if(fileInBookmarks){
+                    bookmarks.splice(fileInBookmarksIndex, 1)
+                }
+            }
+            else{
+                throw error
+            }
             window.localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bookmarks))
             this.setState({bookmarkFiles: bookmarks})
+            
         } catch (e) {
             console.log(e)
             return;
         }
     }
 
-    handleDragEnd(){
-        this.setState({showBookmarkZone: false})
+    handleDragEnd(event, option){
+        console.log("drag end " + option)
+        if(option == 'add'){
+            this.setState({showBookmarkZone: false})
+        }
+        else if(option == 'remove'){
+            this.setState({showRemoveBookmarkZone: false})
+        }
+        else{
+            console.log('Error')
+        }
     }
 
     render() {
@@ -328,8 +365,8 @@ class FileTab extends Component {
                                                 className="file"
                                                 key={i}
                                                 draggable="true"
-                                                onDragStart={(e) => {this.handleDragStart(e, file)}}
-                                                onDragEnd={(e) => {this.handleDragEnd(e)}}
+                                                onDragStart={(e) => {this.handleDragStart(e, file, 'add')}}
+                                                onDragEnd={(e) => {this.handleDragEnd(e, 'add')}}
                                                 onClick={(e) => this.handleFileSelected(file)}>
                                                 {cleanPath(file.path + '/' + file.name)}
                                             </div>
@@ -340,23 +377,37 @@ class FileTab extends Component {
                         </Row>
                         <Row>
                             <Col className="text-right" sm={2}>
-                                Bookmarks:
+                                Bookmarks: 
+                                <br/>
+                                <FormControl
+                                    className="trash"
+                                    componentClass="div"
+                                    style={{backgroundColor: this.state.showRemoveBookmarkZone ? "#ff8888" : "#fff"}}
+                                    onDragOver={(e) => {this.handleDragOver(e, "remove")}}
+                                    onDrop={(e) => {this.handleDrop(e, 'remove')}}
+                                    >
+                                    <center><Glyphicon glyph="trash" /></center>
+                                </FormControl>
                             </Col>
                             <Col sm={9}>
                                 <FormControl 
                                     className="bookmarks"
                                     componentClass="div"
                                     style={{backgroundColor: this.state.showBookmarkZone ? "#d1ecf1" : "#fff"}}
-                                    onDragOver={(e) => {this.handleDragOver(e)}}
-                                    onDrop={(e) => {this.handleDrop(e)}}
+                                    onDragOver={(e) => {this.handleDragOver(e, 'add')}}
+                                    onDrop={(e) => {this.handleDrop(e, 'add')}}
+                                    
                                     >
                                     {this.state.bookmarkFiles.map((file, i) => {
                                         return( 
                                             <div
                                                 className="file" 
-                                                key={i} 
+                                                key={i}
+                                                draggable="true"
+                                                onDragStart={(e) => {this.handleDragStart(e, file, 'remove')}}
+                                                onDragEnd={(e) => {this.handleDragEnd(e, 'remove')}}
                                                 onClick={(e) => this.handleFileSelected(file)}>
-                                                {cleanPath(file.path + '/' + file.name)}
+                                                {cleanPath(file.path + '/' + file.name)}                                                
                                             </div>
                                         )
                                     })}
