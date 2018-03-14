@@ -61,7 +61,9 @@ class PlotTools extends Component{
                         <i className='glyphicon glyphicon-share-alt'></i>
                     </button>
                 </div>
-                <ColormapEditor show={this.state.showColormapEditor} close={() => this.setState({showColormapEditor: false})}/>
+                {this.state.showColormapEditor && 
+                    <ColormapEditor show={this.state.showColormapEditor} close={() => this.setState({showColormapEditor: false})}/>
+                }
             </div>
         )
     }

@@ -18,7 +18,14 @@
     ],
     "rules": {
             "max-len": ["error", 150, 4],
-            "spaced-comment": ["error", "always"]
+            "spaced-comment": ["error", "always"],
+            "no-console": ["error", { 
+                "allow": ["warn", "error"]
+            }]
+    },
+    "globals": {
+        "vcs": true
     },
     "root": true
+
 }
