@@ -44,42 +44,50 @@ class InputFields extends Component{
             container:{
                 display: "flex",
                 flex: "1", // take up any unused width
-                justifyContent: "space-between"
+                justifyContent: "space-evenly",
+                paddingBottom: "2px",
+                marginRight: "50px",
             },
             hex:{
-                display: "inline-flex"
+                display: "inline-flex",
+                marginLeft: "10px",
             },
             rgb:{
-                display: "inline-flex"
+                display: "inline-flex",
+                marginLeft: "10px",
             },
             hsv:{
-                display: "inline-flex"
+                display: "inline-flex",
+                marginLeft: "10px",
             },
             hex_input: {
                 wrap: {
                     display: "flex",
-                    flexDirection: "column-reverse"
+                    flexDirection: "column-reverse",
+                    marginLeft: "5px",
                 },
                 input:{
-                    width: "70px"
+                    width: "70px",
                 },
                 label: {
                     fontSize: '12px',
                     color: '#999',
-                }
+                },
             },
             input_box: {
                 wrap: {
                     display: "flex",
                     flexDirection: "column-reverse",
+                    alignItems: "center",
+                    marginLeft: "5px",
                 },
                 input:{
-                    width: "35px"
+                    width: "35px",
                 },
                 label: {
                     fontSize: '12px',
                     color: '#999',
-                }
+                },
             },
         }
 
@@ -147,7 +155,6 @@ class InputFields extends Component{
                         onChange={(val, e) => {this.handleChange(val, e)}}
                     />
                 </div>
-                
             </div>
         )
     }
