@@ -1,12 +1,11 @@
 /* globals it, describe, before, beforeEach, */
 var chai = require('chai');
 var expect = chai.expect;
-var assert = chai.assert;
 var React = require('react');
 
 import ColormapEditor from '../../../../../src/js/components/modals/ColormapEditor/ColormapEditor.jsx'
 // import { PureColormapEditor } from '../../../../../src/js/components/modals/ColormapEditor/ColormapEditor.jsx'
-import { shallow, mount } from 'enzyme'
+import { shallow } from 'enzyme'
 import { createMockStore } from 'redux-test-utils'
 import sinon from 'sinon'
 
@@ -55,7 +54,6 @@ describe('ColormapEditorTest.jsx', function() {
     }
     
     it('renders without exploding', () => {
-        
         const store = createMockStore(state)
         const colormap_editor = shallow(<ColormapEditor store={store} {...props}/>)
         expect(colormap_editor).to.have.lengthOf(1);
@@ -89,10 +87,47 @@ describe('ColormapEditorTest.jsx', function() {
         expect(colormap_editor.state().currentColor.rgb.g).to.equal(color.rgb.b)
     });
 
-    it('loads the selected colormap', () => {
+    it('Opens and closes the ImportExportModal', () => {
         const store = createMockStore(state)
         const colormap_editor = shallow(<ColormapEditor store={store} {...props}/>).dive() 
         // redux is wrapped around this component. use dive to get around it
+        expect(colormap_editor.state().show_import_export_modal).to.be.false
+
+        colormap_editor.instance().openImportExportModal()
+        expect(colormap_editor.state().show_import_export_modal).to.be.true
+
+        colormap_editor.instance().closeImportExportModal()
+        expect(colormap_editor.state().show_import_export_modal).to.be.false
+    });
+
+    it('Opens the new colormap modal', () => {
+        const store = createMockStore(state)
+        const colormap_editor = shallow(<ColormapEditor store={store} {...props}/>).dive() 
+        expect(colormap_editor.state().show_new_colormap_modal).to.be.false
+        colormap_editor.instance().handleOpenNewColormapModal()
+        expect(colormap_editor.state().show_new_colormap_modal).to.be.true
+    });
+
+    it('handleCellClick selects cells and sets color', () => {
+        const store = createMockStore(state)
+        const colormap_editor = shallow(<ColormapEditor store={store} {...props}/>).dive()
+        
+        expect(colormap_editor.state().selected_cells_start).to.equal(-1)
+        expect(colormap_editor.state().selected_cells_end).to.equal(-1)
+
+        colormap_editor.instance().handleCellClick(2,2)
+
+        expect(colormap_editor.state().selected_cells_start).to.equal(2)
+        expect(colormap_editor.state().selected_cells_end).to.equal(2)
+        expect(colormap_editor.state().currentColor.rgb.r).to.equal(102) // colormaps use 0-100, color object uses 0-255
+        expect(colormap_editor.state().currentColor.rgb.g).to.equal(102) // we input 40% which comes out as 102/255
+        expect(colormap_editor.state().currentColor.rgb.b).to.equal(102)
+    });
+
+
+    it('Loads the selected colormap', () => {
+        const store = createMockStore(state)
+        const colormap_editor = shallow(<ColormapEditor store={store} {...props}/>).dive() 
 
         colormap_editor.instance().handleSelectColormap("testSelect")
         expect(colormap_editor.state().current_colormap[0][0]).to.equal(0) // first cell red should be 0
@@ -100,7 +135,7 @@ describe('ColormapEditorTest.jsx', function() {
         expect(colormap_editor.state().current_colormap[2][0]).to.equal(100) // third cell red should be 100
     });
     
-    it('deletes a colormap properly', () => {
+    it('Deletes a colormap properly', () => {
         const store = createMockStore(state)
         const colormap_editor = shallow(<ColormapEditor store={store} {...props}/>).dive()
         let warn = console.warn
@@ -125,7 +160,7 @@ describe('ColormapEditorTest.jsx', function() {
         confirm.restore()
     });
 
-    it('blends a colormap properly', () => {
+    it('Blends a colormap properly', () => {
         var blend_state = {
             present: {
                 sheets_model: {
@@ -159,7 +194,7 @@ describe('ColormapEditorTest.jsx', function() {
         }
     });
 
-    it('resets a colormap properly', () => {
+    it('Resets a colormap properly', () => {
         const store = createMockStore(state)
         const colormap_widget = shallow(<ColormapEditor store={store}/>).dive()
         colormap_widget.instance().handleSelectColormap("testSelect")
@@ -183,6 +218,22 @@ describe('ColormapEditorTest.jsx', function() {
         }
     });
 
+    it('Helper function for new colormaps calls expected functions', () => {
+        const dummy_cm = [1,2,3]
+        global.vcs = {
+            createcolormap: sinon.stub().resolves(dummy_cm)
+        }
+        let spy = sinon.spy()
+        const store = createMockStore(state)
+        const colormap_editor = shallow(<ColormapEditor store={store} saveColormap={spy}/>).dive()
+        return colormap_editor.instance().createNewColormapInVcs(dummy_cm, "test").then(()=>{
+            expect(global.vcs.createcolormap.calledWith("test", dummy_cm)).to.be.true
+        },
+        () => {
+            chai.assert(false)
+        })
+    });
+
     // it('saves a colormap', () => {
     //     const store = createMockStore(state)
     //     let dummy_save = sinon.spy()
@@ -204,36 +255,40 @@ describe('ColormapEditorTest.jsx', function() {
          
     // })
 
-    // it('Applies a colormap correctly', () => {
-    //     global.vcs = {
-    //         getcolormapnames: function(){
-    //             return new Promise((resolve) => {
-    //                 resolve(["default", "viridis", "testSelect"]);
-    //             })
-    //         },
-    //         setcolormap: function(){
-    //             return new Promise((resolve) => {
-    //                 resolve("");
-    //             })
-    //         },
-    //         createcolormap: function(){
-    //             return new Promise((resolve) => {
-    //                 resolve("");
-    //             })
-    //         }
-    //     }
+    it('Applies a colormap correctly', () => {
+        global.vcs = {
+            getcolormapnames: function(){
+                return new Promise((resolve) => {
+                    resolve(["default", "viridis", "testSelect"]);
+                })
+            },
+            setcolormap: function(){
+                return new Promise((resolve) => {
+                    resolve("");
+                })
+            },
+            createcolormap: function(){
+                return new Promise((resolve) => {
+                    resolve("");
+                })
+            }
+        }
         
-    //     let extra_props = {
-    //         saveColormap: sinon.spy(),
-    //         updateGraphicsMethod: sinon.spy(),
-    //         applyColormap: sinon.spy(),
-            
-    //     }
-    //     const store = createMockStore(state)
-    //     const colormap_widget = shallow(<ColormapEditor store={store} {...extra_props}/>).dive()
-    //     return colormap_widget.instance().handleApplyColormap().then(() => {
-    //         sinon.assert.called(extra_props.updateGraphicsMethod)
-    //         sinon.assert.called(extra_props.applyColormap)
-    //     })
-    // })
+        let spies = {
+            saveColormap: sinon.spy(),
+            updateGraphicsMethod: sinon.spy(),
+            applyColormap: sinon.spy(),
+        }
+        const store = createMockStore(state)
+        const colormap_widget = shallow(<ColormapEditor store={store} />).dive()
+        colormap_widget.setProps({
+            saveColormap: spies.saveColormap,
+            updateGraphicsMethod: spies.updateGraphicsMethod,
+            applyColormap: spies.applyColormap,
+        })
+        return colormap_widget.instance().handleApplyColormap().then(() => {
+            sinon.assert.called(spies.updateGraphicsMethod)
+            sinon.assert.called(spies.applyColormap)
+        })
+    })
 });

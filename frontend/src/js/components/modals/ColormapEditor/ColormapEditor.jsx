@@ -38,6 +38,10 @@ class ColormapEditor extends Component {
             default_colormap: React.PropTypes.string,
             deleteColormap: React.PropTypes.func,
             saveColormap: React.PropTypes.func,
+            sheet: React.PropTypes.object,
+            updateGraphicsMethod: React.PropTypes.func,
+            applyColormap: React.PropTypes.func,
+            graphics_methods: React.PropTypes.object,
         }; 
     }
 
@@ -150,7 +154,7 @@ class ColormapEditor extends Component {
             toast.warn("A colormap with that name already exists. Please select a different name", {position: toast.POSITION.BOTTOM_CENTER})
         }
         else{
-            this.createNewColormapInVcs(this.state.selected_colormap_name, new_cm_name).then((result)=>{
+            return this.createNewColormapInVcs(this.state.selected_colormap_name, new_cm_name).then((result)=>{
                 if(result){
                     this.handleSelectColormap(new_cm_name)
                     this.setState({
@@ -197,18 +201,17 @@ class ColormapEditor extends Component {
         const colormap_name = this.state.selected_colormap_name
         const cell_row = this.props.selected_cell_row
         const cell_col = this.props.selected_cell_col
-        const self = this
-        const graphics_method_parent = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method_parent
-        const graphics_method = self.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method
+        const graphics_method_parent = this.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method_parent
+        const graphics_method = this.props.sheet.cells[cell_row][cell_col].plots[0].graphics_method
 
-        function applyColormapHelper(){
+        let applyColormapHelper = () => {
             try{
-                let new_graphics_method = _.clone(self.props.graphics_methods[graphics_method_parent][graphics_method])
+                let new_graphics_method = _.clone(this.props.graphics_methods[graphics_method_parent][graphics_method])
                 const prev_colormap = new_graphics_method.colormap
                 new_graphics_method.colormap = colormap_name
-                self.props.updateGraphicsMethod(new_graphics_method)
-                let plot = self.props.sheet.cells[cell_row][cell_col].plots[0]
-                self.props.applyColormap(plot.graphics_method_parent, graphics_method, cell_row, cell_col, 0)
+                this.props.updateGraphicsMethod(new_graphics_method)
+                let plot = this.props.sheet.cells[cell_row][cell_col].plots[0]
+                this.props.applyColormap(plot.graphics_method_parent, graphics_method, cell_row, cell_col, 0)
                 if(prev_colormap === colormap_name){ // if the colormap has changed but the name hasnt, the canvas will not render
                     PubSub.publish(PubSubEvents.colormap_update, colormap_name)
                 }
@@ -225,8 +228,8 @@ class ColormapEditor extends Component {
                 if(vcs){
                     vcs.getcolormapnames().then((names) => {
                         if(names.indexOf(colormap_name) >= 0){
-                            vcs.setcolormap(colormap_name, self.state.current_colormap).then(() => { // save colormap in vcs
-                                self.props.saveColormap(colormap_name, self.state.current_colormap) // save to the frontend state
+                            vcs.setcolormap(colormap_name, this.state.current_colormap).then(() => { // save colormap in vcs
+                                this.props.saveColormap(colormap_name, this.state.current_colormap) // save to the frontend state
                                 if(applyColormapHelper()){
                                     resolve()
                                 }
@@ -237,8 +240,8 @@ class ColormapEditor extends Component {
                         }
                         else{
                             vcs.createcolormap(colormap_name).then(() => {
-                                vcs.setcolormap(colormap_name, self.state.current_colormap).then(() => {
-                                    self.props.saveColormap(colormap_name, self.state.current_colormap) // save to the frontend state
+                                vcs.setcolormap(colormap_name, this.state.current_colormap).then(() => {
+                                    this.props.saveColormap(colormap_name, this.state.current_colormap) // save to the frontend state
                                     if(applyColormapHelper()){
                                         resolve()
                                     }
@@ -269,7 +272,7 @@ class ColormapEditor extends Component {
         // add it to redux and set it as active in the widget, and close the modal
         // cancel should close the modal
         try{
-            /* eslint-disable no-undef */ 
+            /* eslint-disable no-undef */
             return vcs.createcolormap(name, base_cm).then((result)=>{
                 this.props.saveColormap(name, result)
                 return true
