@@ -22,9 +22,14 @@ class ColorPicker extends Component {
                     display: "flex",
                     justifyContent: "space-between"
                 },
+                container_vertical: {
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-start"
+                },
                 colorPreview: {
                     width: '50px',
-                    height: '100px',
+                    height: '60px',
                     borderRadius: '2px',
                     background: this.props.color.hex
                 },
@@ -55,10 +60,16 @@ class ColorPicker extends Component {
         return(
             <div>
                 <div style={styles.container}>
-                    <BasicColorSwatch 
-                        {...this.props.color}
-                        onChange={ this.props.onChange }
-                    />
+                    <div style={styles.container_vertical}>
+                        <BasicColorSwatch 
+                            {...this.props.color}
+                            onChange={ this.props.onChange }
+                        />
+                        <CustomColorSwatch
+                            {...this.props.color}
+                            onChange={ this.props.onChange }
+                        />
+                    </div>
                     <div>
                         <div style={styles.saturation}>
                             <Saturation
@@ -76,11 +87,7 @@ class ColorPicker extends Component {
                         </div>
                     </div>
                 </div>
-                <div style={styles.container}>
-                    <CustomColorSwatch
-                        {...this.props.color}
-                        onChange={ this.props.onChange }
-                    />
+                <div>
                     <div>
                         <div style={ styles.swatch }>
                             <div style={ styles.colorPreview } />
