@@ -27,6 +27,10 @@ class ColorPicker extends Component {
                     flexDirection: "column",
                     justifyContent: "flex-start"
                 },
+                container_inline: {
+                    display: "inline-flex",
+                    width: "100%",
+                },
                 colorPreview: {
                     width: '50px',
                     height: '60px',
@@ -87,17 +91,14 @@ class ColorPicker extends Component {
                         </div>
                     </div>
                 </div>
-                <div>
-                    <div>
-                        <div style={ styles.swatch }>
-                            <div style={ styles.colorPreview } />
-                        </div>
-                        <InputFields
-                            style={styles.inputFields}
-                            {...this.props.color}
-                            onChange={ this.props.onChange }
-                        />
+                <div style={styles.container_inline}>
+                    <div style={ styles.swatch }>
+                        <div style={ styles.colorPreview } />
                     </div>
+                    <InputFields
+                        {...this.props.color}
+                        onChange={ this.props.onChange }
+                    />
                 </div>
             </div>
         )
