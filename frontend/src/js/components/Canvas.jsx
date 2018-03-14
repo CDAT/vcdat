@@ -35,7 +35,8 @@ class Canvas extends Component{
     componentDidMount() {
         try{
             this.canvas = vcs.init(this.refs.div);
-            this.token = PubSub.subscribe(PubSubEvents.resize, this.resetCanvas.bind(this))
+            this.resize_token = PubSub.subscribe(PubSubEvents.resize, this.resetCanvas.bind(this))
+            this.colormap_token = PubSub.subscribe(PubSubEvents.colormap_update, this.handleColormapUpdate.bind(this))
         }
         catch(e){
             if(e instanceof ReferenceError && e.message == "vcs is not defined"){
@@ -135,6 +136,19 @@ class Canvas extends Component{
         delete this.canvas
         this.canvas = vcs.init(this.refs.div);
         this.forceUpdate()
+    }
+
+    handleColormapUpdate(msg, name){
+        let needs_render = false
+        for(let plot of this.props.plotGMs){
+            if(plot.colormap === name){
+                needs_render = true
+                break
+            }
+        }
+        if(needs_render){
+            this.forceUpdate()
+        }
     }
 
     render() {

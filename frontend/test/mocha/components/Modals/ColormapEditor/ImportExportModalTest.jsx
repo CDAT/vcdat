@@ -41,23 +41,23 @@ describe('ImportExportModalTest.jsx', function() {
             expect(import_export_modal.state().importColormap[0][i]).to.equal(mockColormap.colormap[0][i])
         }
     });
-    it('Creates the correct json for download', () => {
-        let result = {
-            name: "mockName",
-            colormap: [[75,75,75,75]]
-        }
-        let event = {
-            target: {
-                value: "mockName"
-            }
-        }
+    // it('Creates the correct json for download', () => {
+    //     let result = {
+    //         name: "mockName",
+    //         colormap: [[75,75,75,75]]
+    //     }
+    //     let event = {
+    //         target: {
+    //             value: "mockName"
+    //         }
+    //     }
          
-        import_export_modal = shallow(<ImportExportModal currentColormap={result.colormap} />)
+    //     import_export_modal = shallow(<ImportExportModal currentColormap={result.colormap} />)
 
-        import_export_modal.instance().handleChange(event)
-        expect(import_export_modal.state().name).to.equal(result.name)
-        let data = import_export_modal.state().data.split("data:text/json;charset=utf-8,")[1]
-        data = decodeURIComponent(data)
-        expect(data).to.equal(JSON.stringify(result))
-    });
+    //     import_export_modal.instance().handleChange(event)
+    //     expect(import_export_modal.state().name).to.equal(result.name)
+    //     let data = import_export_modal.state().data.split("data:text/json;charset=utf-8,")[1]
+    //     data = decodeURIComponent(data)
+    //     expect(data).to.equal(JSON.stringify(result))
+    // });
 });

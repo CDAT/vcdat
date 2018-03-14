@@ -17,7 +17,7 @@ class ImportExportModal extends Component {
         return { 
             show: React.PropTypes.bool.isRequired, // show the modal
             close: React.PropTypes.func.isRequired, // close the modal
-            currentColormap: React.PropTypes.array,
+            current_colormap: React.PropTypes.array,
             saveColormap: React.PropTypes.func,
         }; 
     }
@@ -25,7 +25,7 @@ class ImportExportModal extends Component {
     handleChange(e) {
         let colormap = {
             name: e.target.value,
-            colormap: this.props.currentColormap,
+            colormap: this.props.current_colormap,
         }
         let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(colormap));
         this.setState({
