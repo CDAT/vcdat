@@ -287,7 +287,7 @@ class FileTab extends Component {
                 }
             }
             else{
-                throw error
+                console.error('no parameter passed')
             }
             window.localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bookmarks))
             this.setState({bookmarkFiles: bookmarks})
@@ -309,6 +309,10 @@ class FileTab extends Component {
         else{
             console.log('Error')
         }
+    }
+
+    handleDragEnter(event, option){
+        console.log("drag enter event")
     }
 
     render() {
@@ -363,6 +367,7 @@ class FileTab extends Component {
                                         return (
                                             <div 
                                                 className="file"
+                                                id="history-file-dragable"
                                                 key={i}
                                                 draggable="true"
                                                 onDragStart={(e) => {this.handleDragStart(e, file, 'add')}}
@@ -381,6 +386,7 @@ class FileTab extends Component {
                                 <br/>
                                 <FormControl
                                     className="trash"
+                                    id="trash-span-dropable"
                                     componentClass="div"
                                     style={{backgroundColor: this.state.showRemoveBookmarkZone ? "#ff8888" : "#fff"}}
                                     onDragOver={(e) => {this.handleDragOver(e, "remove")}}
@@ -392,6 +398,7 @@ class FileTab extends Component {
                             <Col sm={9}>
                                 <FormControl 
                                     className="bookmarks"
+                                    
                                     componentClass="div"
                                     style={{backgroundColor: this.state.showBookmarkZone ? "#d1ecf1" : "#fff"}}
                                     onDragOver={(e) => {this.handleDragOver(e, 'add')}}
