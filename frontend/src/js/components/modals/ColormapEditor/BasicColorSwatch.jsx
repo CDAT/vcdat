@@ -55,7 +55,7 @@ BasicColorSwatch.defaultProps = {
 
 
 
-BasicColorSwatch.PropTypes = {
+BasicColorSwatch.propTypes = {
     colors: React.PropTypes.arrayOf(React.PropTypes.string),
     onChange: React.PropTypes.func,
 }
