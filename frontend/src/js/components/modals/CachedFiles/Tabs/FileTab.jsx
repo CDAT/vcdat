@@ -293,13 +293,12 @@ class FileTab extends Component {
             this.setState({bookmarkFiles: bookmarks})
             
         } catch (e) {
-            console.log(e)
+            console.error(e)
             return;
         }
     }
 
     handleDragEnd(event, option){
-        console.log("drag end " + option)
         if(option == 'add'){
             this.setState({showBookmarkZone: false})
         }
@@ -307,12 +306,8 @@ class FileTab extends Component {
             this.setState({showRemoveBookmarkZone: false})
         }
         else{
-            console.log('Error')
+            console.error('no parameter passed')
         }
-    }
-
-    handleDragEnter(event, option){
-        console.log("drag enter event")
     }
 
     render() {

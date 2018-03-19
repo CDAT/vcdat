@@ -19,6 +19,5 @@ backend/vcdat/resources
 build/
 dist/
 *.egg-info
-frontend/package-lock.json
 
  
