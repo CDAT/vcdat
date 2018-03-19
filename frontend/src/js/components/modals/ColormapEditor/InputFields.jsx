@@ -42,61 +42,61 @@ class InputFields extends Component{
     render(){
         const styles = {
             container:{
-                float: "right"
+                display: "flex",
+                flex: "1", // take up any unused width
+                justifyContent: "space-evenly",
+                paddingBottom: "2px",
+                marginRight: "50px",
             },
-            hsv:{
-                float: "left"
+            hex:{
+                display: "inline-flex",
+                marginLeft: "10px",
             },
             rgb:{
-                float: "right"
+                display: "inline-flex",
+                marginLeft: "10px",
             },
-            inputBox: {
+            hsv:{
+                display: "inline-flex",
+                marginLeft: "10px",
+            },
+            hex_input: {
+                wrap: {
+                    display: "flex",
+                    flexDirection: "column-reverse",
+                    marginLeft: "5px",
+                },
                 input:{
-                    width: "35px"
+                    width: "70px",
                 },
                 label: {
                     fontSize: '12px',
                     color: '#999',
-                }
+                },
             },
-            hex: {
+            input_box: {
+                wrap: {
+                    display: "flex",
+                    flexDirection: "column-reverse",
+                    alignItems: "center",
+                    marginLeft: "5px",
+                },
                 input:{
-                    width: "70px"
+                    width: "35px",
                 },
                 label: {
                     fontSize: '12px',
                     color: '#999',
-                }
+                },
             },
         }
 
         return(
             <div style={styles.container}>
-                <div style={styles.hsv} >
-                    <EditableInput
-                        className="input-box-Hue"
-                        style={ styles.inputBox }
-                        label="Hue"
-                        value={ Math.round(this.props.hsv.h) }
-                        onChange={(val, e) => {this.handleChange(val, e)}}
-                    />
-                    <EditableInput
-                        className="input-box-Saturation"
-                        style={ styles.inputBox }
-                        label="Saturation"
-                        value={ Math.round(this.props.hsv.s * 100) }
-                        onChange={(val, e) => {this.handleChange(val, e)}}
-                    />
-                    <EditableInput
-                        className="input-box-Value"
-                        style={ styles.inputBox }
-                        label="Value"
-                        value={ Math.round(this.props.hsv.v * 100) }
-                        onChange={(val, e) => {this.handleChange(val, e)}}
-                    />
+                <div style={styles.hex}>
                     <EditableInput
                         className="input-box-Hex"
-                        style={ styles.hex }
+                        style={ styles.hex_input }
                         label="Hex"
                         value={ this.props.hex }
                         onChange={(val, e) => {this.handleChange(val, e)}}
@@ -105,30 +105,53 @@ class InputFields extends Component{
                 <div style={styles.rgb} >
                     <EditableInput
                         className="input-box-Red"
-                        style={ styles.inputBox }
-                        label="Red"
+                        style={ styles.input_box }
+                        label="R"
                         value={ this.props.rgb.r }
                         onChange={(val, e) => {this.handleChange(val, e)}}
                     />
                     <EditableInput
                         className="input-box-Green"
-                        style={ styles.inputBox }
-                        label="Green"
+                        style={ styles.input_box }
+                        label="G"
                         value={ this.props.rgb.g }
                         onChange={(val, e) => {this.handleChange(val, e)}}
                     />
                     <EditableInput
                         className="input-box-Blue"
-                        style={ styles.inputBox }
-                        label="Blue"
+                        style={ styles.input_box }
+                        label="B"
                         value={ this.props.rgb.b }
                         onChange={(val, e) => {this.handleChange(val, e)}}
                     />
                     <EditableInput
                         className="input-box-Alpha"
-                        style={ styles.inputBox }
-                        label="Alpha"
+                        style={ styles.input_box }
+                        label="A"
                         value={ this.props.rgb.a }
+                        onChange={(val, e) => {this.handleChange(val, e)}}
+                    />
+                </div>
+                <div style={styles.hsv} >
+                    <EditableInput
+                        className="input-box-Hue"
+                        style={ styles.input_box }
+                        label="H"
+                        value={ Math.round(this.props.hsv.h) }
+                        onChange={(val, e) => {this.handleChange(val, e)}}
+                    />
+                    <EditableInput
+                        className="input-box-Saturation"
+                        style={ styles.input_box }
+                        label="S"
+                        value={ Math.round(this.props.hsv.s * 100) }
+                        onChange={(val, e) => {this.handleChange(val, e)}}
+                    />
+                    <EditableInput
+                        className="input-box-Value"
+                        style={ styles.input_box }
+                        label="V"
+                        value={ Math.round(this.props.hsv.v * 100) }
                         onChange={(val, e) => {this.handleChange(val, e)}}
                     />
                 </div>
