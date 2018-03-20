@@ -279,11 +279,13 @@ class FileTab extends Component {
             if(option == 'add'){
                 if(!fileInBookmarks){
                     bookmarks.push(file)
+                    this.setState({showBookmarkZone: false})
                 }
             }
             else if(option == 'remove'){
                 if(fileInBookmarks){
                     bookmarks.splice(fileInBookmarksIndex, 1)
+                    this.setState({showRemoveBookmarkZone: false})
                 }
             }
             else{
