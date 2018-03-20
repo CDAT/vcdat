@@ -180,9 +180,9 @@ describe('FileTabTest.jsx', function() {
             }
         }
         expect(cached_files.state().showBookmarkZone).to.be.false
-        cached_files.instance().handleDragStart(event, {})
+        cached_files.instance().handleDragStart(event, {}, 'add')
         expect(cached_files.state().showBookmarkZone).to.be.true
-        cached_files.instance().handleDragEnd()
+        cached_files.instance().handleDragEnd(event, 'add')
         expect(cached_files.state().showBookmarkZone).to.be.false
     });
 
@@ -205,7 +205,7 @@ describe('FileTabTest.jsx', function() {
                 }
             }
         }
-        cached_files.instance().handleDrop(event)
+        cached_files.instance().handleDrop(event, 'add')
         let bookmarks = cached_files.state().bookmarkFiles
         let new_bookmark = bookmarks[bookmarks.length-1]
         sinon.assert.calledOnce(set_item_spy)
@@ -235,7 +235,7 @@ describe('FileTabTest.jsx', function() {
                 }
             }
         }
-        cached_files.instance().handleDrop(event)
+        cached_files.instance().handleDrop(event, 'add')
         sinon.assert.calledOnce(set_item_spy)
         expect(cached_files.state().bookmarkFiles.length).to.equal(0)
         console.log = log // eslint-disable-line no-console
