@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 PKG_NAME=vcdat
-USER=uvcdat
+USER=cdat
 export PATH="$HOME/miniconda/bin:$PATH"
 echo "Trying to upload conda"
 if [ `uname` == "Linux" ]; then
