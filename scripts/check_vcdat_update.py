@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from __future__ import print_function
 import argparse
 import shlex
@@ -75,11 +77,12 @@ if update > -1:
 
     print("We found that we can do the following update:")
     print("\n".join(pkgs))
-    answer = raw_input(
-        "An update to VCDAT is available, do you want to update? [y/N]")
-    if answer == "":
-        answer = "n"
+    if not P.update:
+        answer = raw_input("An update to VCDAT is available, do you want to update? [y/N]")
+        if answer == "":
+            answer = "n"
+    else:
+        answer = "y"
     if answer[0].lower() == "y":
-        cmd = "conda update -y vcs-js vcdat -c {}".format(
-            " -c ".join(channels))
+        cmd = "conda update -y vcs-js vcdat -c {}".format(" -c ".join(channels))
         run_command(cmd)
