@@ -59,7 +59,7 @@ def serve_resource_file(path):
             'MaterialIcons-Regular.ttf',
             'MaterialIcons-Regular.woff',
             'MaterialIcons-Regular.woff2',
-            'add_plot.svg']:
+            '']:
             return send_from_directory(dir_path, 'deps/' + path)
         if path in ['Bundle.js', 'Bundle.js.map']:
             return send_from_directory(dir_path, 'dist/' + path)
