@@ -10,13 +10,18 @@ class AddPlot extends Component {
         this.state = {
             highlight: false,
         }
+        this.handleClick = this.handleClick.bind(this)
     }
     
+    handleClick(){
+        this.props.addPlot(null, null, null, null, this.props.row, this.props.col)
+    }
+
     render(){
         return(
             this.props.connectDropTarget(
                 <div className='plotter-add-plot'>
-                    <svg viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" onClick={this.props.handleClick}>
+                    <svg viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" onClick={this.handleClick}>
                         <circle 
                             cx="256"
                             cy="256"
@@ -39,7 +44,9 @@ class AddPlot extends Component {
 AddPlot.propTypes = {
     connectDropTarget: React.PropTypes.func,
     is_over: React.PropTypes.bool,
-    handleClick: React.PropTypes.func,
+    addPlot: React.PropTypes.func,
+    row: React.PropTypes.number,
+    col: React.PropTypes.number,
 }
 
 const addPlotTarget = {
@@ -124,7 +131,13 @@ var Plotter = React.createClass({
                         }
                         return plotters;
                     })()}
-                    <DropPlot onHover={this.props.onHover} onDrop={this.props.onDrop} addPlot={this.props.addPlot} row={this.props.row} col={this.props.col}/>
+                    <DropPlot 
+                        onHover={this.props.onHover}
+                        onDrop={this.props.onDrop}
+                        addPlot={this.props.addPlot}
+                        row={this.props.row}
+                        col={this.props.col}
+                    />
                 </div>
             </div>
         )
