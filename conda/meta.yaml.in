@@ -18,6 +18,7 @@ requirements:
   - cdms2
   - vcs-js
   - genutil
+  - proj4 <5
 
 build:
   noarch_python: true
