@@ -4,7 +4,6 @@ import Actions from '../../constants/Actions.js'
 import PubSub from 'pubsub-js'
 import PubSubEvents from './../../constants/PubSubEvents.js'
 import { toast } from 'react-toastify'
-import ColormapEditor from "../modals/ColormapEditor/ColormapEditor.jsx"
 import PlotInspector from './PlotInspector.jsx'
 import './PlotInspector.scss'
 
@@ -13,7 +12,7 @@ class PlotInspectorWrapper extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            showColormapEditor: false
+            show_colormap_editor: false
         }
         this.handleSelectVar1 = this.handleSelectVar1.bind(this)
         this.handleSelectVar2 = this.handleSelectVar2.bind(this)
@@ -22,7 +21,9 @@ class PlotInspectorWrapper extends React.Component {
         this.handleSelectTemplate = this.handleSelectTemplate.bind(this)
         this.handleAddPlot = this.handleAddPlot.bind(this)
         this.handleDeletePlot = this.handleDeletePlot.bind(this)
-        this.handleClear = this.handleClear.bind(this)
+        this.handleClearCell = this.handleClearCell.bind(this)
+        this.handleCloseColormapEditor = this.handleCloseColormapEditor.bind(this)
+        this.handleOpenColormapEditor = this.handleOpenColormapEditor.bind(this)
     }
 
     handleSelectVar1(var1, plot_index){
@@ -71,7 +72,7 @@ class PlotInspectorWrapper extends React.Component {
         this.props.deletePlot(this.props.cell_row, this.props.cell_col, plot_index)
     }
 
-    handleClear(){
+    handleClearCell(){
         if(this.props.cell_selected === "-1_-1_-1"){
             toast.info("A cell must be selected to clear", {position: toast.POSITION.BOTTOM_CENTER})
         }
@@ -79,107 +80,32 @@ class PlotInspectorWrapper extends React.Component {
             PubSub.publish(PubSubEvents.clear_canvas)
         }
     }
+    handleOpenColormapEditor(){
+        this.setState({show_colormap_editor: true})
+    }
+
+    handleCloseColormapEditor(){
+        this.setState({show_colormap_editor: false})
+    }
     
     render() {
-        return (
-            <div className="plot-inspector-wrapper">
-                <div className="tools-container">
-                    <p className="tools-header">Tools</p>
-                    <button
-                        className='btn btn-default btn-sm'
-                        onClick={this.props.onUndo}
-                        disabled={!this.props.undoEnabled}>
-                        <i className='glyphicon glyphicon-share-alt icon-flipped'></i>
-                        <span> Undo</span>
-                    </button>
-                    <button
-                        className='btn btn-default btn-sm'
-                        onClick={this.props.onRedo}
-                        disabled={!this.props.redoEnabled}>
-                        <i className='glyphicon glyphicon-share-alt'></i>
-                        <span> Redo</span>
-                    </button>
-                    <button 
-                        id="add-plot-button"
-                        className="btn btn-default btn-sm"
-                        onClick={this.handleAddPlot}
-                        disabled={!(this.props.cell_row > -1 && this.props.cell_col > -1)}>
-                        <i className="glyphicon glyphicon-plus green"></i>
-                        <span> Add Plot</span>
-                    </button>
-                    <button 
-                        id="clear-canvas-button"
-                        className="btn btn-default btn-sm material-icons-button"
-                        onClick={() => { this.handleClear() }}
-                        title="Clear selected plot">
-                        <i className="material-icons" style={{color: "red"}}>clear</i>
-                        <span> Clear Cell</span>
-                    </button>
-                    <button 
-                        id="open-colormap-editor-button"
-                        className="btn btn-default btn-sm material-icons-button"
-                        onClick={() => this.setState({showColormapEditor: true})}
-                        title="Open the colormap editor">
-                        <i className="material-icons" style={{color: "blue"}}>color_lens</i>
-                        <span> Colormap Editor</span>
-                    </button>
-                </div>
-                <div className="plot-inspector-container">
-                    <table className="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th scope="col" className="no-padding-top">Delete Plot</th>
-                                <th scope="col" className="no-padding-top">Var 1</th>
-                                <th scope="col" className="no-padding-top">Var 2</th>
-                                <th scope="col" className="no-padding-top">Graphics Type</th>
-                                <th scope="col" className="no-padding-top">Graphics Method</th>
-                                <th scope="col" className="no-padding-top">Template</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                this.props.plots && this.props.plots.map((plot, index) => {
-                                    let graphics_methods
-                                    try{
-                                        graphics_methods = Object.keys(this.props.all_graphics_methods[plot.graphics_method_parent])
-                                    }
-                                    catch(e){
-                                        console.log(e)
-                                        graphics_methods = []
-                                    }
-
-                                    return(
-                                        <PlotInspector
-                                            key={index}
-                                            plot_index={index}
-                                            plot={plot}
-                                            variables={this.props.variables}
-                                            graphics_method_types={this.props.graphics_method_types}
-                                            graphics_methods={graphics_methods}
-                                            templates={this.props.templates}
-                                            cur_var1={plot.variables.length > 0 ? plot.variables[0] : ""}
-                                            cur_var2={plot.variables.length > 1 ? plot.variables[1] : ""}
-                                            cur_gm_type={plot.graphics_method_parent}
-                                            cur_gm={plot.graphics_method}
-                                            cur_template={plot.template}
-                                            handleSelectVar1={this.handleSelectVar1}
-                                            handleSelectVar2={this.handleSelectVar2}
-                                            handleSelectGMType={this.handleSelectGMType}
-                                            handleSelectGM={this.handleSelectGM}
-                                            handleSelectTemplate={this.handleSelectTemplate}
-                                            handleDeletePlot={this.handleDeletePlot}
-                                            disable_delete={this.props.plots.length < 2}
-                                        />
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                {this.state.showColormapEditor && 
-                    <ColormapEditor show={this.state.showColormapEditor} close={() => this.setState({showColormapEditor: false})}/>
-                }
-            </div>
+        return(
+            <PlotInspector
+                {...this.props}
+                variables={this.props.variables}
+                templates={this.props.templates}
+                handleSelectVar1={this.handleSelectVar1}
+                handleSelectVar2={this.handleSelectVar2}
+                handleSelectGMType={this.handleSelectGMType}
+                handleSelectGM={this.handleSelectGM}
+                handleSelectTemplate={this.handleSelectTemplate}
+                handleDeletePlot={this.handleDeletePlot}
+                disable_delete={this.props.plots.length < 2}
+                show_colormap_editor={this.state.show_colormap_editor}
+                handleOpenColormapEditor={this.handleOpenColormapEditor}
+                handleCloseColormapEditor={this.handleCloseColormapEditor}
+                handleClearCell={this.handleClearCell}
+            />
         )
     }
 }
@@ -198,10 +124,6 @@ PlotInspectorWrapper.propTypes = {
     deleteVariableInPlot: React.PropTypes.func,
     addPlot: React.PropTypes.func,
     deletePlot: React.PropTypes.func,
-    onUndo: React.PropTypes.func,
-    onRedo: React.PropTypes.func,
-    undoEnabled: React.PropTypes.bool,
-    redoEnabled: React.PropTypes.bool,
     cell_selected: React.PropTypes.string,
 }
 
@@ -216,8 +138,8 @@ const mapStateToProps = (state) => {
         plots = state.present.sheets_model.sheets[sheet].cells[row][col].plots
     }
     return {
-        plots: plots,
         cell_selected: cell_id_string,
+        plots: plots,
         cell_row: row,
         cell_col: col,
         all_graphics_methods: state.present.graphics_methods,

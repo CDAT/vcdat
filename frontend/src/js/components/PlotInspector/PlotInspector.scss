@@ -16,13 +16,23 @@
     color: #28a745;
 }
 
+.delete-col{
+    width: 100px;
+}
+
 th.no-padding-top{
     padding-top: 0px;
 }
 
 .material-icons-button{
-    padding: 3px 7px 2px 7px;
-    .material-icons{
+    padding-left: 7px;
+    padding-right: 7px;
+    i{
         font-size: 18px;
+    }
+    i, span{
+        line-height: 17px;
+        vertical-align: middle;
+        display: inline;
     }
 }
