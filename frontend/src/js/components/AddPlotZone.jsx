@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {DropTarget} from 'react-dnd';
+import { DropTarget } from 'react-dnd';
 import DragAndDropTypes from '../constants/DragAndDropTypes.js';
 
 class AddPlotZone extends Component {
@@ -70,7 +70,7 @@ const addPlotTarget = {
                 template = item.template;
                 break;
         }
-        component.setState({highlight: undefined}) 
+        component.setState({highlight: false}) 
         props.addPlot(var_name, graphics_method_parent, graphics_method, template, row, col);
     },
     hover(props, monitor, component){
@@ -78,6 +78,7 @@ const addPlotTarget = {
     }
 };
 
+/* istanbul ignore next */
 function collect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),
@@ -85,4 +86,5 @@ function collect(connect, monitor) {
     };
 }
 
+export { addPlotTarget } // for testing purposes
 export default DropTarget(DragAndDropTypes.PLOT_COMPONENTS, addPlotTarget, collect)(AddPlotZone);
