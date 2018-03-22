@@ -1,6 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Actions from '../../constants/Actions.js'
+import PubSub from 'pubsub-js'
+import PubSubEvents from './../../constants/PubSubEvents.js'
+import { toast } from 'react-toastify'
+import ColormapEditor from "../modals/ColormapEditor/ColormapEditor.jsx"
 import PlotInspector from './PlotInspector.jsx'
 import './PlotInspector.scss'
 
@@ -8,6 +12,9 @@ class PlotInspectorWrapper extends React.Component {
 
     constructor(props){
         super(props)
+        this.state = {
+            showColormapEditor: false
+        }
         this.handleSelectVar1 = this.handleSelectVar1.bind(this)
         this.handleSelectVar2 = this.handleSelectVar2.bind(this)
         this.handleSelectGMType = this.handleSelectGMType.bind(this)
@@ -15,6 +22,7 @@ class PlotInspectorWrapper extends React.Component {
         this.handleSelectTemplate = this.handleSelectTemplate.bind(this)
         this.handleAddPlot = this.handleAddPlot.bind(this)
         this.handleDeletePlot = this.handleDeletePlot.bind(this)
+        this.handleClear = this.handleClear.bind(this)
     }
 
     handleSelectVar1(var1, plot_index){
@@ -62,28 +70,65 @@ class PlotInspectorWrapper extends React.Component {
     handleDeletePlot(plot_index){
         this.props.deletePlot(this.props.cell_row, this.props.cell_col, plot_index)
     }
+
+    handleClear(){
+        if(this.props.cell_selected === "-1_-1_-1"){
+            toast.info("A cell must be selected to clear", {position: toast.POSITION.BOTTOM_CENTER})
+        }
+        else{
+            PubSub.publish(PubSubEvents.clear_canvas)
+        }
+    }
     
     render() {
         return (
             <div className="plot-inspector-wrapper">
-                <nav className="navbar navbar-default">
-                        <div className="container-fluid">
-                            <p className="top-nav-header">Plot Inspector</p>
-                            <button 
-                                id="add-plot-button"
-                                className="btn btn-default btn-sm"
-                                onClick={this.handleAddPlot}
-                                disabled={!(this.props.cell_row > -1 && this.props.cell_col > -1)}>
-                                <i className="glyphicon glyphicon-plus green"></i>
-                                <span> Add Plot</span>
-                            </button>
-                        </div>
-                </nav>
+                <div className="tools-container">
+                    <p className="tools-header">Tools</p>
+                    <button
+                        className='btn btn-default btn-sm'
+                        onClick={this.props.onUndo}
+                        disabled={!this.props.undoEnabled}>
+                        <i className='glyphicon glyphicon-share-alt icon-flipped'></i>
+                        <span> Undo</span>
+                    </button>
+                    <button
+                        className='btn btn-default btn-sm'
+                        onClick={this.props.onRedo}
+                        disabled={!this.props.redoEnabled}>
+                        <i className='glyphicon glyphicon-share-alt'></i>
+                        <span> Redo</span>
+                    </button>
+                    <button 
+                        id="add-plot-button"
+                        className="btn btn-default btn-sm"
+                        onClick={this.handleAddPlot}
+                        disabled={!(this.props.cell_row > -1 && this.props.cell_col > -1)}>
+                        <i className="glyphicon glyphicon-plus green"></i>
+                        <span> Add Plot</span>
+                    </button>
+                    <button 
+                        id="clear-canvas-button"
+                        className="btn btn-default btn-sm material-icons-button"
+                        onClick={() => { this.handleClear() }}
+                        title="Clear selected plot">
+                        <i className="material-icons" style={{color: "red"}}>clear</i>
+                        <span> Clear Cell</span>
+                    </button>
+                    <button 
+                        id="open-colormap-editor-button"
+                        className="btn btn-default btn-sm material-icons-button"
+                        onClick={() => this.setState({showColormapEditor: true})}
+                        title="Open the colormap editor">
+                        <i className="material-icons" style={{color: "blue"}}>color_lens</i>
+                        <span> Colormap Editor</span>
+                    </button>
+                </div>
                 <div className="plot-inspector-container">
                     <table className="table table-condensed">
                         <thead>
                             <tr>
-                                <th scope="col" className="no-padding-top">Delete</th>
+                                <th scope="col" className="no-padding-top">Delete Plot</th>
                                 <th scope="col" className="no-padding-top">Var 1</th>
                                 <th scope="col" className="no-padding-top">Var 2</th>
                                 <th scope="col" className="no-padding-top">Graphics Type</th>
@@ -131,6 +176,9 @@ class PlotInspectorWrapper extends React.Component {
                         </tbody>
                     </table>
                 </div>
+                {this.state.showColormapEditor && 
+                    <ColormapEditor show={this.state.showColormapEditor} close={() => this.setState({showColormapEditor: false})}/>
+                }
             </div>
         )
     }
@@ -150,6 +198,11 @@ PlotInspectorWrapper.propTypes = {
     deleteVariableInPlot: React.PropTypes.func,
     addPlot: React.PropTypes.func,
     deletePlot: React.PropTypes.func,
+    onUndo: React.PropTypes.func,
+    onRedo: React.PropTypes.func,
+    undoEnabled: React.PropTypes.bool,
+    redoEnabled: React.PropTypes.bool,
+    cell_selected: React.PropTypes.string,
 }
 
 const mapStateToProps = (state) => {
@@ -164,6 +217,7 @@ const mapStateToProps = (state) => {
     }
     return {
         plots: plots,
+        cell_selected: cell_id_string,
         cell_row: row,
         cell_col: col,
         all_graphics_methods: state.present.graphics_methods,
