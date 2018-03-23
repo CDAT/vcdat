@@ -20,11 +20,10 @@ var AppContainer = React.createClass({
     render() {
         return (
             <div id='app-container'>
-                <TopBar />
+                <TopBar onUndo={this.props.undo} onRedo={this.props.redo} undoEnabled={this.props.undoEnabled} redoEnabled={this.props.redoEnabled}/>
                 <div id="main-container">
                     <LeftSideBar resizeSpreadsheet={this.resizeSpreadsheet} />
                     <SpreadsheetContainer />
-                    <RightSideBar onUndo={this.props.undo} onRedo={this.props.redo} undoEnabled={this.props.undoEnabled} redoEnabled={this.props.redoEnabled}/>
                 </div>
                 <ToastContainer />
             </div>

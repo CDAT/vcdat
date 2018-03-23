@@ -11,7 +11,7 @@ class TopBar extends React.Component {
     render() {
         return (
             <div className="top-bar">
-                <PlotInspectorWrapper />
+                <PlotInspectorWrapper {...this.props}/>
             </div>
         )
     }
