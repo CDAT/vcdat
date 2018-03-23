@@ -26,7 +26,7 @@ class PlotInspector extends React.PureComponent {
                     <button 
                         id="add-plot-button"
                         className="btn btn-default btn-sm"
-                        onClick={this.handleAddPlot}
+                        onClick={this.props.handleAddPlot}
                         disabled={!(this.props.cell_row > -1 && this.props.cell_col > -1)}>
                         <i className="glyphicon glyphicon-plus green"></i>
                         <span> Add Plot</span>
@@ -192,6 +192,7 @@ PlotInspector.propTypes = {
     handleSelectGMType: PropTypes.func,
     handleSelectGM: PropTypes.func,
     handleSelectTemplate: PropTypes.func,
+    handleAddPlot: PropTypes.func,
     handleDeletePlot: PropTypes.func,
     handleClearCell: PropTypes.func,
     handleOpenColormapEditor: PropTypes.func,

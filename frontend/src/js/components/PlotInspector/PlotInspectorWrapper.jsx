@@ -99,6 +99,7 @@ class PlotInspectorWrapper extends React.Component {
                 handleSelectGMType={this.handleSelectGMType}
                 handleSelectGM={this.handleSelectGM}
                 handleSelectTemplate={this.handleSelectTemplate}
+                handleAddPlot={this.handleAddPlot}
                 handleDeletePlot={this.handleDeletePlot}
                 disable_delete={this.props.plots.length < 2}
                 show_colormap_editor={this.state.show_colormap_editor}
@@ -173,5 +174,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlotInspectorWrapper);
-export {PlotInspectorWrapper as PurePlotInspectorWrapper}
+export { PlotInspectorWrapper as PurePlotInspectorWrapper }
+export { mapDispatchToProps } // for unit testing
+export { mapStateToProps }    // for unit testing
 
