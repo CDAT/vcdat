@@ -40,6 +40,19 @@ os.environ["UVCDAT_ANONYMOUS_LOG"] = "no"
 logfile = tempfile.NamedTemporaryFile()
 
 print "Logs are going to:", logfile.name
+
+try:
+    logfile.write("\nTesting VCS\n")
+    logfile.flush()
+    subprocess.check_output("python -c 'import vcs; x=vcs.init(); x.open()'", shell=True, stderr=logfile)
+except subprocess.CalledProcessError:
+    logfile.write("\nVCS failed to start. Attempting to fix LD_PRELOAD path...\n")
+    logfile.flush()
+    if('LD_PRELOAD' in os.environ.keys()):
+        logfile.write("LD_PRELOAD was: '{}'\n".format(os.environ['LD_PRELOAD']))
+        logfile.flush()
+    os.environ['LD_PRELOAD'] = "/usr/lib/x86_64-linux-gnu/libstdc++.so.6"
+
 print "Starting VCSJS on PORT:", VCSJS_PORT
 vcs_server = subprocess.Popen(
     ["vcs-server", "--port", VCSJS_PORT], stdout=logfile, stderr=logfile)

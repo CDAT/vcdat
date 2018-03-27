@@ -1,7 +1,38 @@
+.tools-container{
+    width: 220px;
+    flex-shrink: 0;
+    margin-left: 1px;
+    border: 1px solid transparent;
+    background-color: #f8f8f8;
+    border-color: #e7e7e7;
+}
+
+.tools-header{
+    margin-top: 5px;
+    margin-left: 7px;
+}
+
 .glyphicon.green{
     color: #28a745;
 }
 
+.delete-col{
+    width: 100px;
+}
+
 th.no-padding-top{
     padding-top: 0px;
+}
+
+.material-icons-button{
+    padding-left: 7px;
+    padding-right: 7px;
+    i{
+        font-size: 18px;
+    }
+    i, span{
+        line-height: 17px;
+        vertical-align: middle;
+        display: inline;
+    }
 }

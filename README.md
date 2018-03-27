@@ -1,19 +1,13 @@
 # vCDAT 
 
-[![Build Status](https://travis-ci.org/UV-CDAT/vcdat.svg?branch=master)](https://travis-ci.org/UV-CDAT/vcdat)
-[![Coverage Status](https://coveralls.io/repos/github/UV-CDAT/vcdat/badge.svg?branch=master)](https://coveralls.io/github/UV-CDAT/vcdat?branch=master)
+[![Build Status](https://travis-ci.org/CDAT/vcdat.svg?branch=master)](https://travis-ci.org/CDAT/vcdat)
+[![Coverage Status](https://coveralls.io/repos/github/CDAT/vcdat/badge.svg?branch=master)](https://coveralls.io/github/CDAT/vcdat?branch=master)
 
-#### New to vCDAT? Check out the documentation for [Users](https://github.com/UV-CDAT/vcdat/wiki/User-Installation) and [Developers](https://github.com/UV-CDAT/vcdat/wiki/Developer-deployment)
+#### New to vCDAT? Check out the documentation for [Users](https://github.com/UV-CDAT/vcdat/wiki/User-Installation) and [Developers](https://github.com/CDAT/vcdat/wiki/Developer-Setup)
 
-### Naming Convention
-* newfolder
-* NewFile
-* NewClass
-* newFunction
-* new_variable
+_This project is in the early stages of development. As such please be aware that there may be some bugs and not all features will be available._
 
-Filenames should correspond to the class exported by default.  
-Example: `import CoolClass from './cool/CoolClass.js'`
+vCDAT is a desktop application that provides the graphical frontend for the CDAT package. It uses CDAT's VCS and CDMS modules to render high quality visualizations within a browser.
 
 # Built With
 
