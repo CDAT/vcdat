@@ -66,7 +66,7 @@ var VarList = React.createClass({
     },
     render() {
         return (
-            <div className='left-side-list scroll-area-list-parent var-container'>
+            <div className='left-side-list scroll-area-list-parent var-list-container'>
                 <AddEditRemoveNav 
                     title='Variables'
                     addAction={()=>this.setState({ showFile: true, showEdit: false, selectedTab: tabs.file })} 

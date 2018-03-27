@@ -21,6 +21,7 @@ class AppContainer extends Component{
             jr_auto_start: false,
         }
         this.startTour = this.startTour.bind(this)
+        this.handleJoyrideEvents = this.handleJoyrideEvents.bind(this)
     }
 
     componentDidMount(){
@@ -33,6 +34,30 @@ class AppContainer extends Component{
         }
     }
 
+    handleJoyrideEvents(event){
+        console.log(event)
+        if(!event){
+            console.log("jr event was undefined")
+            return
+        }
+        switch(event.type){
+        case "step:after":
+            if(event.action !== "close"){
+                return // Only continue to reset on a close action
+            }
+            // falls through.
+        case "overlay:click":
+        case "finished":
+            this.setState({jr_run: false},() => {
+                this.joyride.reset(false) // pass .reset(false) so it does not start the tour again immediately
+            })
+            return
+        case "error:target_not_found":
+            console.warn("Joyride element missing on step ", event.index)
+        }
+
+    }
+
     render() {
         return (
             <div id='app-container'>
@@ -41,6 +66,12 @@ class AppContainer extends Component{
                     run={this.state.jr_run}
                     autoStart={true}
                     type='continuous'
+                    showSkipButton={true}
+                    showStepsProgress={true}
+                    scrollToSteps={false}
+                    scrollToFirstStep={false}
+                    holePadding={0}
+                    callback={this.handleJoyrideEvents}
                 />
                 <TopBar
                     onUndo={this.props.undo}

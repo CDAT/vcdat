@@ -10,7 +10,7 @@ class PlotInspector extends React.PureComponent {
                 <div className="tools-container">
                     <div className="tools-header">
                         <p>Tools</p>
-                        <span onClick={this.props.startTour} className="help-button main-help btn btn-xs btn-default"><i className="glyphicon glyphicon-question-sign"></i></span>
+                        <span onClick={this.props.startTour} className="help-button main-help btn btn-xs btn-default"><i className="glyphicon glyphicon-question-sign"></i> Help</span>
                     </div>
                     <span className="btn-group" role="group">
                         <button
