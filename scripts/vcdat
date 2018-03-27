@@ -18,17 +18,24 @@ def isBound(port):
     s.close()
     return False
 
+def getPort(env_name, start_port): # string, int
+    env_port = os.environ.get(env_name)
+    if(env_port != None):
+        if(isBound(env_port)):
+            print "{env_name} was set, but the port could not be bound. Searching for an open port automatically."
+        else:
+            return env_port
+    for i in range(0, 30):
+        port = int(start_port) + i
+        if(not isBound(port)):
+            return str(port)
+    raise RuntimeError(
+        "Failed to find an open port. Please set the %s environment variable to an open port." %
+        env_name)
 
-VCSJS_PORT = os.environ.get("VCSJS_PORT", "8888")
-if isBound(VCSJS_PORT):
-    raise RuntimeError(
-        "Could not bind to port %s. Please select another port for the vcs server via the VCSJS_PORT environment variable" %
-        VCSJS_PORT)
-VCDAT_PORT = os.environ.get("VCDAT_PORT", "5000")
-if isBound(VCDAT_PORT):
-    raise RuntimeError(
-        "Could not bind to port %s. Please select another port for the vcdat frontend via the VCDAT_PORT environment variable" %
-        VCSJS_PORT)
+VCSJS_PORT = getPort("VCSJS_PORT", "8000")
+VCDAT_PORT = getPort("VCDAT_PORT", "5000")
+
 os.environ["UVCDAT_ANONYMOUS_LOG"] = "no"
 logfile = tempfile.NamedTemporaryFile()
 
