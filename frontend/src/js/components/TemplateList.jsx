@@ -54,7 +54,7 @@ var TemplateList = React.createClass({
     render() {
         let template = this.state.active_template ? this.props.templates[this.state.active_template] : this.props.templates.default;
         return (
-            <div className='left-side-list scroll-area-list-parent'>
+            <div className='left-side-list scroll-area-list-parent template-list-container'>
                 <AddEditRemoveNav
                     editAction={this.editTemplate}
                     addText="Adding templates is not supported yet"

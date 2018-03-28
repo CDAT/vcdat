@@ -8,45 +8,52 @@ class PlotInspector extends React.PureComponent {
         return (
             <div className="plot-inspector-wrapper">
                 <div className="tools-container">
-                    <p className="tools-header">Tools</p>
-                    <button
-                        className='btn btn-default btn-sm'
-                        onClick={this.props.onUndo}
-                        disabled={!this.props.undoEnabled}>
-                        <i className='glyphicon glyphicon-share-alt icon-flipped'></i>
-                        <span> Undo</span>
-                    </button>
-                    <button
-                        className='btn btn-default btn-sm'
-                        onClick={this.props.onRedo}
-                        disabled={!this.props.redoEnabled}>
-                        <i className='glyphicon glyphicon-share-alt'></i>
-                        <span> Redo</span>
-                    </button>
-                    <button 
-                        id="add-plot-button"
-                        className="btn btn-default btn-sm"
-                        onClick={this.props.handleAddPlot}
-                        disabled={!(this.props.cell_row > -1 && this.props.cell_col > -1)}>
-                        <i className="glyphicon glyphicon-plus green"></i>
-                        <span> Add Plot</span>
-                    </button>
-                    <button 
-                        id="clear-canvas-button"
-                        className="btn btn-default btn-sm material-icons-button"
-                        onClick={this.props.handleClearCell}
-                        title="Clear selected plot">
-                        <i className="material-icons" style={{color: "red"}}>clear</i>
-                        <span> Clear Cell</span>
-                    </button>
-                    <button 
-                        id="open-colormap-editor-button"
-                        className="btn btn-default btn-sm material-icons-button"
-                        onClick={this.props.handleOpenColormapEditor}
-                        title="Open the colormap editor">
-                        <i className="material-icons" style={{color: "blue"}}>color_lens</i>
-                        <span> Colormap Editor</span>
-                    </button>
+                    <div className="tools-header">
+                        <p>Tools</p>
+                        <span onClick={this.props.startTour} className="help-button main-help btn btn-xs btn-default"><i className="glyphicon glyphicon-question-sign"></i> Help</span>
+                    </div>
+                    <span className="btn-group" role="group">
+                        <button
+                            className='btn btn-default btn-sm'
+                            onClick={this.props.onUndo}
+                            disabled={!this.props.undoEnabled}>
+                            <i className='glyphicon glyphicon-share-alt icon-flipped'></i>
+                            <span> Undo</span>
+                        </button>
+                        <button
+                            className='btn btn-default btn-sm'
+                            onClick={this.props.onRedo}
+                            disabled={!this.props.redoEnabled}>
+                            <i className='glyphicon glyphicon-share-alt'></i>
+                            <span> Redo</span>
+                        </button>
+                        <button 
+                            id="add-plot-button"
+                            className="btn btn-default btn-sm"
+                            onClick={this.props.handleAddPlot}
+                            disabled={!(this.props.cell_row > -1 && this.props.cell_col > -1)}>
+                            <i className="glyphicon glyphicon-plus green"></i>
+                            <span> Add Plot</span>
+                        </button>
+                    </span>
+                    <span className="btn-group" role="group">
+                        <button 
+                            id="clear-canvas-button"
+                            className="btn btn-default btn-sm material-icons-button"
+                            onClick={this.props.handleClearCell}
+                            title="Clear selected plot">
+                            <i className="material-icons" style={{color: "red"}}>clear</i>
+                            <span> Clear Cell</span>
+                        </button>
+                        <button 
+                            id="open-colormap-editor-button"
+                            className="btn btn-default btn-sm material-icons-button"
+                            onClick={this.props.handleOpenColormapEditor}
+                            title="Open the colormap editor">
+                            <i className="material-icons" style={{color: "blue"}}>color_lens</i>
+                            <span> Colormap Editor</span>
+                        </button>
+                    </span>
                 </div>
                 <div className="plot-inspector-container">
                     <table className="table table-condensed">
@@ -202,6 +209,7 @@ PlotInspector.propTypes = {
     undoEnabled: PropTypes.bool,
     redoEnabled: PropTypes.bool,
     show_colormap_editor: PropTypes.bool,
+    startTour: PropTypes.func,
 }
 
 export default PlotInspector;
