@@ -51,6 +51,7 @@ def serve_resource_file(path):
             'clt_image.png',
             'bootstrap-themed.min.css',
             'bootstrap.min.css',
+            'bootstrap.min.css.map',
             'bootstrap.min.js',
             'glyphicons-halflings-regular.woff2',
             'glyphicons-halflings-regular.woff',
@@ -59,7 +60,7 @@ def serve_resource_file(path):
             'MaterialIcons-Regular.ttf',
             'MaterialIcons-Regular.woff',
             'MaterialIcons-Regular.woff2',
-            'add_plot.svg']:
+            ]:
             return send_from_directory(dir_path, 'deps/' + path)
         if path in ['Bundle.js', 'Bundle.js.map']:
             return send_from_directory(dir_path, 'dist/' + path)

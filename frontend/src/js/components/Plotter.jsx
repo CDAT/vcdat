@@ -1,53 +1,6 @@
 import React from 'react'
 import Plot from './Plot.jsx'
-import {DropTarget} from 'react-dnd';
-import DragAndDropTypes from '../constants/DragAndDropTypes.js';
-
-
-function AddPlot(props) {
-    return props.connectDropTarget(
-        <div className='plotter-add-plot'>
-            <img src='deps/add_plot.svg' alt='Add Plot'></img>
-        </div>
-    );
-}
-
-const addPlotTarget = {
-    drop(props, monitor, component) {
-        props.onDrop()
-        const item = monitor.getItem();
-        let var_name = null;
-        let graphics_method_parent = null;
-        let graphics_method = null;
-        let template = null;
-        let row = props.row;
-        let col = props.col;
-
-        switch (monitor.getItemType()) {
-            case DragAndDropTypes.GM:
-                graphics_method_parent = item.gmType;
-                graphics_method = item.gmName;
-                break;
-            case DragAndDropTypes.VAR:
-                var_name = item.variable;
-                break;
-            case DragAndDropTypes.TMPL:
-                template = item.template;
-                break;
-        }
-        props.addPlot(var_name, graphics_method_parent, graphics_method, template, row, col);
-    }
-};
-
-const DropPlot = DropTarget(DragAndDropTypes.PLOT_COMPONENTS, addPlotTarget, collect)(AddPlot);
-
-function collect(connect, monitor) {
-    return {
-        connectDropTarget: connect.dropTarget(),
-        isOver: monitor.isOver(),
-    };
-}
-
+import AddPlotZone from './AddPlotZone.jsx'
 /* global $*/
 
 var Plotter = React.createClass({
@@ -90,7 +43,13 @@ var Plotter = React.createClass({
                         }
                         return plotters;
                     })()}
-                    <DropPlot onHover={this.props.onHover} onDrop={this.props.onDrop} addPlot={this.props.addPlot} row={this.props.row} col={this.props.col}/>
+                    <AddPlotZone 
+                        onHover={this.props.onHover}
+                        onDrop={this.props.onDrop}
+                        addPlot={this.props.addPlot}
+                        row={this.props.row}
+                        col={this.props.col}
+                    />
                 </div>
             </div>
         )

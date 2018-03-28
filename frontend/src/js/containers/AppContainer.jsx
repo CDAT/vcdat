@@ -1,36 +1,101 @@
-import React from 'react';
+import React, { Component } from 'react';
 import TopBar from './TopBar/TopBar.jsx'
 import LeftSideBar from './LeftSideBar.jsx';
-import RightSideBar from './RightSideBar.jsx';
 import SpreadsheetContainer from './SpreadsheetContainer/SpreadsheetContainer.jsx';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import { connect } from 'react-redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { ToastContainer } from 'react-toastify';
+import { JOYRIDE_STEPS } from '../constants/Constants.js'
+import Joyride from 'react-joyride'
+import 'react-joyride/lib/react-joyride.scss'
 /* global jQuery */
 
-var AppContainer = React.createClass({
-    propTypes: {
-        undo: React.PropTypes.func,
-        redo: React.PropTypes.func,
-        undoEnabled: React.PropTypes.bool,
-        redoEnabled: React.PropTypes.bool
-    },
+class AppContainer extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            jr_steps: JOYRIDE_STEPS,
+            jr_run: false,
+            jr_auto_start: false,
+        }
+        this.startTour = this.startTour.bind(this)
+        this.handleJoyrideEvents = this.handleJoyrideEvents.bind(this)
+    }
+
+    componentDidMount(){
+        
+    }
+
+    startTour(){
+        if(this.joyride){
+            this.setState({jr_run: true})
+        }
+    }
+
+    handleJoyrideEvents(event){
+        console.log(event)
+        if(!event){
+            console.log("jr event was undefined")
+            return
+        }
+        switch(event.type){
+        case "step:after":
+            if(event.action !== "close"){
+                return // Only continue to reset on a close action
+            }
+            // falls through.
+        case "overlay:click":
+        case "finished":
+            this.setState({jr_run: false},() => {
+                this.joyride.reset(false) // pass .reset(false) so it does not start the tour again immediately
+            })
+            return
+        case "error:target_not_found":
+            console.warn("Joyride element missing on step ", event.index)
+        }
+
+    }
+
     render() {
         return (
             <div id='app-container'>
-                <TopBar />
+                <Joyride ref={(el)=>{this.joyride = el}}
+                    steps={this.state.jr_steps}
+                    run={this.state.jr_run}
+                    autoStart={true}
+                    type='continuous'
+                    showSkipButton={true}
+                    showStepsProgress={true}
+                    scrollToSteps={false}
+                    scrollToFirstStep={false}
+                    holePadding={0}
+                    callback={this.handleJoyrideEvents}
+                />
+                <TopBar
+                    onUndo={this.props.undo}
+                    onRedo={this.props.redo}
+                    undoEnabled={this.props.undoEnabled}
+                    redoEnabled={this.props.redoEnabled}
+                    startTour={this.startTour}
+                />
                 <div id="main-container">
                     <LeftSideBar resizeSpreadsheet={this.resizeSpreadsheet} />
                     <SpreadsheetContainer />
-                    <RightSideBar onUndo={this.props.undo} onRedo={this.props.redo} undoEnabled={this.props.undoEnabled} redoEnabled={this.props.redoEnabled}/>
                 </div>
                 <ToastContainer />
             </div>
         );
     }
-});
+}
+
+AppContainer.propTypes = {
+    undo: React.PropTypes.func,
+    redo: React.PropTypes.func,
+    undoEnabled: React.PropTypes.bool,
+    redoEnabled: React.PropTypes.bool
+}
 
 const mapStateToProps = (state) => {
     var undoEnabled = state.past.length > 0;

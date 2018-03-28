@@ -80,7 +80,7 @@ var GMList = React.createClass({
         });
 
         return (
-            <div className='left-side-list scroll-area-list-parent'>
+            <div className='left-side-list scroll-area-list-parent gm-list-container'>
                 <AddEditRemoveNav 
                     title='Graphics Methods'
                     editAction={this.clickedEdit}

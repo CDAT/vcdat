@@ -72,7 +72,7 @@ var Plot = React.createClass({
         return this.props.connectDropTarget(
             <div className='plot' id={this.props.plotName} data-plot-index={this.props.plotIndex}>
                 <div>
-                    <h4 style={{color: this.props.isOver && this.state.highlight=="variables"? 'lime' : ''}}>Variables:</h4>
+                    <h4 style={{color: this.props.isOver && this.state.highlight==="variables" ? 'lime' : ''}}>Variables:</h4>
                     <div className='plot-var first-var'>{(this.props.plot.variables.length > 0 && this.props.plot.variables[0]
                             ? this.props.plot.variables[0]
                             : '')}
