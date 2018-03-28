@@ -38,7 +38,8 @@ const JOYRIDE_STEPS = [
         text: 'Use the <span style="color: rgba(40, 167, 69, 0.8);">Add</span> <span style="color: rgba(217, 120, 36, 0.8);">Edit</span> and '.concat(
             '<span style="color: rgba(196, 28, 31, 0.8);">Delete</span> buttons to modify what variables are loaded. ',
             'In order to edit or delete a variable, ',
-            'click on it to select it first. Graphics Methods and Templates can be edited in the same manner.'
+            'click on it to <span style="color: white; background-color: #df691a;">Select</span> it first. ',
+            'Graphics Methods and Templates can be edited in the same manner.'
         ), 
         selector: '.var-list-container',
         position: 'right',
@@ -46,7 +47,9 @@ const JOYRIDE_STEPS = [
     },
     {
         title: 'Graphics Methods',
-        text: 'Graphics Methods define what the plot itself should look like. Select one to edit things like the colormap, projection, and more.',
+        text: 'Graphics Methods define what the plot itself should look like. '.concat(
+            '<span style="color: white; background-color: #df691a;">Select</span> one to edit the colormap, projection, and more.'
+        ),
         selector: '.gm-list-container',
         position: 'right',
         type: 'click',
@@ -64,7 +67,7 @@ const JOYRIDE_STEPS = [
         title: 'Spreadsheet',
         text: 'The spreadsheet is made up of Cells. Each cell provides areas to drop variables, '.concat(
             'graphics methods and templates, as well as an area to drop these items to create a new plot within the cell. ',
-            'Clicking on a cell will select and highlight the cell.'
+            'Clicking on a cell will select it.'
         ),
         selector: '.spreadsheet-div',
         position: 'top',
