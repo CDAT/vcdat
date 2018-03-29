@@ -273,17 +273,6 @@ describe('ActionsTest.js', function() {
         expect(result).to.deep.equal(expected)
     });
 
-    it('addFileToCache works', () => {
-        let result = Actions.addFileToCache("filename", "filepath", ["var1", "var2"])
-        let expected = {
-            type: 'ADD_FILE_TO_CACHE',
-            filename: "filename",
-            filepath: "filepath", 
-            variables: ["var1", "var2"]
-        }
-        expect(result).to.deep.equal(expected)
-    });
-
     it('updateGraphicsMethod works', () => {
         let result = Actions.updateGraphicsMethod("graphics_method")
         let expected = {

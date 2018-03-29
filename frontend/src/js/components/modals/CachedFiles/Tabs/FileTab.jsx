@@ -10,7 +10,6 @@ import { findDOMNode } from 'react-dom';
 import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx';
 import FileExplorer from '../../FileExplorer/FileExplorer.jsx';
 import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js';
-import TabBar from './TabBar.jsx'
 import { toast } from 'react-toastify'
 
 import '../CachedFiles.scss';
@@ -315,11 +314,7 @@ class FileTab extends Component {
     render() {
         return (
             <div>
-                <Modal.Header closeButton>
-                    <Modal.Title>Load Variable</Modal.Title>
-                </Modal.Header>
                 <Modal.Body>
-                    <TabBar switchTab={this.props.switchTab} selectedTab={this.props.selectedTab}/>
                     <div className="load-from">
                         <Row>
                             <Col className="text-right" sm={2}>
@@ -578,7 +573,6 @@ FileTab.propTypes = {
     cachedFiles: React.PropTypes.object,
     curVariables: React.PropTypes.object.isRequired,
     loadVariables: React.PropTypes.func,
-    addFileToCache: React.PropTypes.func,
     switchTab: React.PropTypes.func,
     selectedTab: React.PropTypes.string,
     setRecentFolderOpened: React.PropTypes.func,
