@@ -24,6 +24,7 @@ class PlotInspectorWrapper extends React.Component {
         this.handleClearCell = this.handleClearCell.bind(this)
         this.handleCloseColormapEditor = this.handleCloseColormapEditor.bind(this)
         this.handleOpenColormapEditor = this.handleOpenColormapEditor.bind(this)
+        this.handleSavePlot = this.handleSavePlot.bind(this)
     }
 
     handleSelectVar1(var1, plot_index){
@@ -87,6 +88,10 @@ class PlotInspectorWrapper extends React.Component {
     handleCloseColormapEditor(){
         this.setState({show_colormap_editor: false})
     }
+
+    handleSavePlot(){
+        PubSub.publish(PubSubEvents.save_canvas)
+    }
     
     render() {
         return(
@@ -106,6 +111,7 @@ class PlotInspectorWrapper extends React.Component {
                 handleOpenColormapEditor={this.handleOpenColormapEditor}
                 handleCloseColormapEditor={this.handleCloseColormapEditor}
                 handleClearCell={this.handleClearCell}
+                handleSavePlot={this.handleSavePlot}
             />
         )
     }
