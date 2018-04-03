@@ -58,10 +58,10 @@ class PlotInspector extends React.PureComponent {
                         <button 
                             id="save-plot-button"
                             className="btn btn-default btn-sm material-icons-button"
-                            onClick={this.props.handleSavePlot}
-                            title="Open the colormap editor">
+                            onClick={this.props.handleOpenExportModal}
+                            title="Open the Export Modal">
                             <i className="material-icons" >save</i>
-                            <span> Save Plot</span>
+                            <span> Export</span>
                         </button>
                     </span>
                 </div>
@@ -220,7 +220,7 @@ PlotInspector.propTypes = {
     redoEnabled: PropTypes.bool,
     show_colormap_editor: PropTypes.bool,
     startTour: PropTypes.func,
-    handleSavePlot: PropTypes.func,
+    handleOpenExportModal: PropTypes.func,
 }
 
 export default PlotInspector;
