@@ -161,7 +161,7 @@ class Canvas extends Component{
     render() {
         return (
             <div className={this.props.onTop ? "cell-stack-top" : "cell-stack-bottom"}>
-                <div ref={(el) => {this.div = el}} id={this.props.row} className="canvas-container"></div>
+                <div ref={(el) => {this.div = el}} id={`canvas_${this.props.cell_id}`} className="canvas-container"></div>
                 <div ref={(el) => {this.spinner = el}} className="canvas-spinner-show">Loading <span className="loading-spinner"></span></div>
             </div>
         )
@@ -176,7 +176,7 @@ Canvas.propTypes = {
     row: React.PropTypes.number,
     col: React.PropTypes.number,
     selected_cell_id: React.PropTypes.string,
-    cell_id: React.PropTypes.number,
+    cell_id: React.PropTypes.string,
     can_plot: React.PropTypes.bool,
 }
 

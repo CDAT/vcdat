@@ -29,12 +29,13 @@ class ExportModal extends Component {
 
     render(){
         return(
-            <Modal show={this.props.show} onHide={this.props.close}>
+            <Modal show={this.props.show} onHide={this.props.close} bsSize="large">
                 <Modal.Header closeButton>
                     <Modal.Title>Export</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <TabBar tabs={this.state.tabs} selected_tab={this.state.selected_tab} switchTab={this.switchTab}/>
+                    <hr/>
                     {
                         this.state.selected_tab === 1 ? "Not yet implemented" : <SavePlot />
                     }

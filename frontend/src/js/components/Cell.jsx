@@ -76,8 +76,9 @@ class Cell extends React.Component {
         }
     }
     render() {
+        let cell_id = this.getOwnCellId()
         this.cell = this.props.cells[this.props.row][this.props.col];
-        this.class = this.getOwnCellId() == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
+        this.class = cell_id == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
         this.can_plot = this.canPlot(this.cell)
         this.plotter_on_top = this.props.isOver || !this.can_plot
         return this.props.connectDropTarget(
@@ -96,6 +97,7 @@ class Cell extends React.Component {
                 />
                 <Canvas 
                     ref={(el)=>{this.canvas = el}}
+                    cell_id={cell_id}
                     onTop={!this.plotter_on_top}
                     plots={this.cell.plots}
                     row={this.props.row}
