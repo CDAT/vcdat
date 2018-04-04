@@ -13,7 +13,7 @@ class SavePlot extends Component{
         }
         this.savePlot = this.savePlot.bind(this)
     }
-
+    /* istanbul ignore next */
     componentDidMount(){
         let elements = document.querySelectorAll(`.cell-stack-top > #canvas_${this.props.selected_cell_id} > canvas`)
         if(elements && elements.length > 0){
@@ -24,10 +24,13 @@ class SavePlot extends Component{
             })
         }
     }
-    
+    /* istanbul ignore next */
     savePlot(){
         if(this.blob){
             FileSaver.saveAs(this.blob, this.state.name)
+        }
+        else{
+            toast.warn("No image available to save.", {position: toast.POSITION.BOTTOM_CENTER})
         }
     }
 

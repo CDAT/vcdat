@@ -14,7 +14,6 @@ class TabBar extends PureComponent{
                                 key={index}
                                 disabled={tab.disabled}
                                 id={`tabbar-${tab.id}`}
-                                // className={`${tab.class}`}
                                 bsSize={this.props.tab_size}
                                 bsStyle={this.props.selected_tab === index ? this.props.selected_style : this.props.default_style}
                                 onClick={() => {this.props.switchTab(index)}}>
