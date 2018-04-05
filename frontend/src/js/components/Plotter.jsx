@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Plot from './Plot.jsx'
 import AddPlotZone from './AddPlotZone.jsx'
 
-class Plotter extends PureComponent {
+class Plotter extends Component {
     
     render() {
         return (
