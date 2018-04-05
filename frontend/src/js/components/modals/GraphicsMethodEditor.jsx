@@ -1,33 +1,31 @@
-import React from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import widgets from 'vcs-widgets'
 import $ from 'jquery'
 import {Modal, ButtonToolbar, Button} from 'react-bootstrap';
 
-var GraphicsMethodEditor = React.createClass({
-    propTypes: {
-        graphicsMethod: React.PropTypes.object,
-        colormaps: React.PropTypes.object,
-        updateGraphicsMethod: React.PropTypes.func,
-        show: React.PropTypes.bool,
-        onHide: React.PropTypes.func
-    },
-    getInitialState() {
-        return {
+class GraphicsMethodEditor extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
             workingGraphicsMethod: $.extend({}, this.props.graphicsMethod)
         }
-    },
+        this.updateGraphicsMethod = this.updateGraphicsMethod.bind(this)
+    }
+    
     componentWillReceiveProps(nextProps) {
         this.setState({
             workingGraphicsMethod: $.extend({}, nextProps.graphicsMethod)
         });
-    },
+    }
+
     updateGraphicsMethod(gm) {
         const p = $.extend({}, gm);
         this.setState({"workingGraphicsMethod": p})
-    },
+    }
+
     render() {
         var GMForm = widgets.GMEdit;
-        const self = this;
         return (
             <Modal show={this.props.show} onHide={this.props.onHide}>
                 <Modal.Header closeButton>
@@ -41,12 +39,24 @@ var GraphicsMethodEditor = React.createClass({
                 <Modal.Footer>
                     <ButtonToolbar>
                         <Button onClick={this.props.onHide}>Cancel</Button>
-                        <Button onClick={() => {self.props.updateGraphicsMethod(self.state.workingGraphicsMethod); self.props.onHide();}}>Save</Button>
+                        <Button
+                            onClick={() => {
+                                this.props.updateGraphicsMethod(self.state.workingGraphicsMethod); self.props.onHide() 
+                            }}>Save
+                        </Button>
                     </ButtonToolbar>
                 </Modal.Footer>
             </Modal>
         );
     }
-})
+}
+
+GraphicsMethodEditor.propTypes = {
+    graphicsMethod: PropTypes.object,
+    colormaps: PropTypes.object,
+    updateGraphicsMethod: PropTypes.func,
+    show: PropTypes.bool,
+    onHide: PropTypes.func
+}
 
 export default GraphicsMethodEditor;
