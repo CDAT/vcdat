@@ -71,6 +71,7 @@ class AppContainer extends Component{
                     scrollToSteps={false}
                     scrollToFirstStep={false}
                     holePadding={0}
+                    locale={{ back: 'Back', close: 'Close', last: 'Finish', next: 'Next', skip: 'Skip' }}
                     callback={this.handleJoyrideEvents}
                 />
                 <TopBar
