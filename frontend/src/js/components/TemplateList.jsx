@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx';
 import TemplateEditor from './modals/TemplateEditor.jsx';
 import DragAndDropTypes from '../constants/DragAndDropTypes.js';
@@ -36,21 +37,25 @@ function collect(connect, monitor) {
 const DraggableTemplateItem = DragSource(DragAndDropTypes.TMPL, templateSource, collect)(TemplateItem);
 
 
-var TemplateList = React.createClass({
-    propTypes: {
-        templates: React.PropTypes.object,
-        updateTemplate: React.PropTypes.func,
-    },
-    getInitialState(){
-        return {"showTemplateEditor": false};
-    },
+class TemplateList extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            "showTemplateEditor": false
+        }
+        this.editTemplate = this.editTemplate.bind(this)
+        this.updateTemplate = this.updateTemplate.bind(this)
+    }
+    
     editTemplate() {
-        this.setState({"showTemplateEditor": true});
-    },
+        this.setState({"showTemplateEditor": true})
+    }
+
     updateTemplate(t) {
-        this.setState({"showTemplateEditor": false});
+        this.setState({"showTemplateEditor": false})
         this.props.updateTemplate(t);
-    },
+    }
+
     render() {
         let template = this.state.active_template ? this.props.templates[this.state.active_template] : this.props.templates.default;
         return (
@@ -67,9 +72,14 @@ var TemplateList = React.createClass({
                         {Object.keys(this.props.templates).sort((a, b)=>{
                                 return a.toLowerCase().localeCompare(b.toLowerCase());
                             }).map((value, index) => {
-                                return (<DraggableTemplateItem template={value} key={index}
-                                                           active={value === this.state.active_template}
-                                                           selectTemplate={(t) => {this.setState({active_template: t});}} />);
+                                return (
+                                    <DraggableTemplateItem template={value} key={index}
+                                        active={value === this.state.active_template}
+                                        selectTemplate={(t) => {
+                                            this.setState({active_template: t})
+                                        }} 
+                                    />
+                                )
                             })
                         }
                     </ul>
@@ -78,6 +88,10 @@ var TemplateList = React.createClass({
             </div>
         );
     }
-});
+}
+TemplateList.propTypes = {
+    templates: PropTypes.object,
+    updateTemplate: PropTypes.func,
+}
 
 export default TemplateList;
