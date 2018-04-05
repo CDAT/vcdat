@@ -1,19 +1,10 @@
-import React from 'react'
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Plot from './Plot.jsx'
 import AddPlotZone from './AddPlotZone.jsx'
-/* global $*/
 
-var Plotter = React.createClass({
-    propTypes: {
-        addPlot: React.PropTypes.func,
-        row: React.PropTypes.number,
-        col: React.PropTypes.number,
-        cell: React.PropTypes.object,
-        swapTemplateInPlot: React.PropTypes.func,
-        swapVariableInPlot: React.PropTypes.func,
-        swapGraphicsMethodInPlot: React.PropTypes.func,
-        onDrop: React.PropTypes.func,
-    },
+class Plotter extends PureComponent {
+    
     render() {
         return (
             <div className={this.props.onTop ? 'cell-stack-top plotter' : 'cell-stack-bottom plotter'}>
@@ -54,6 +45,18 @@ var Plotter = React.createClass({
             </div>
         )
     }
-})
+}
+
+Plotter.propTypes = {
+    addPlot: PropTypes.func,
+    row: PropTypes.number,
+    col: PropTypes.number,
+    cell: PropTypes.object,
+    swapTemplateInPlot: PropTypes.func,
+    swapVariableInPlot: PropTypes.func,
+    swapGraphicsMethodInPlot: PropTypes.func,
+    onDrop: PropTypes.func,
+    onTop: PropTypes.bool,
+}
 
 export default Plotter;
