@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Modal } from 'react-bootstrap'
 import './CachedFiles.scss'
 import FileTab from './Tabs/FileTab.jsx'
@@ -59,8 +60,8 @@ class CachedFiles extends Component {
 }
 
 CachedFiles.propTypes = {
-    show: React.PropTypes.bool.isRequired,
-    onTryClose: React.PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
+    onTryClose: PropTypes.func.isRequired,
 }
 
 export default CachedFiles

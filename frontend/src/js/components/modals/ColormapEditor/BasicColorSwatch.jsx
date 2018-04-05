@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import reactCSS from 'reactcss'
 
 var { CompactColor } = require('react-color/lib/components/compact/CompactColor')
@@ -56,8 +57,8 @@ BasicColorSwatch.defaultProps = {
 
 
 BasicColorSwatch.propTypes = {
-    colors: React.PropTypes.arrayOf(React.PropTypes.string),
-    onChange: React.PropTypes.func,
+    colors: PropTypes.arrayOf(PropTypes.string),
+    onChange: PropTypes.func,
 }
 
 export default BasicColorSwatch;

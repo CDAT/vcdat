@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 var colorUtility = require('react-color/lib/helpers/color.js').default
 var { EditableInput} = require('react-color/lib/components/common')
 
@@ -10,10 +11,10 @@ class InputFields extends Component{
 
     static get propTypes() { 
         return {
-            onChange: React.PropTypes.func,
-            rgb: React.PropTypes.object.isRequired,
-            hsv: React.PropTypes.object.isRequired,
-            hex: React.PropTypes.string.isRequired,
+            onChange: PropTypes.func,
+            rgb: PropTypes.object.isRequired,
+            hsv: PropTypes.object.isRequired,
+            hex: PropTypes.string.isRequired,
         }; 
     }
     handleChange(val, e){

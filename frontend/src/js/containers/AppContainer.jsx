@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import TopBar from './TopBar/TopBar.jsx'
 import LeftSideBar from './LeftSideBar.jsx'
 import SpreadsheetContainer from './SpreadsheetContainer/SpreadsheetContainer.jsx'
@@ -92,10 +93,10 @@ class AppContainer extends Component{
 }
 
 AppContainer.propTypes = {
-    undo: React.PropTypes.func,
-    redo: React.PropTypes.func,
-    undoEnabled: React.PropTypes.bool,
-    redoEnabled: React.PropTypes.bool
+    undo: PropTypes.func,
+    redo: PropTypes.func,
+    undoEnabled: PropTypes.bool,
+    redoEnabled: PropTypes.bool
 }
 
 const mapStateToProps = (state) => {

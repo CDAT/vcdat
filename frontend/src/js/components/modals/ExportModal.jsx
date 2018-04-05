@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Modal, Button } from 'react-bootstrap'
 import TabBar from '../TabBar/TabBar.jsx'
 import SavePlot from './SavePlot/SavePlot.jsx'
@@ -50,8 +51,8 @@ class ExportModal extends Component {
 
 
 ExportModal.propTypes = {
-    show: React.PropTypes.bool.isRequired,
-    close: React.PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired,
 }
 
 export default ExportModal

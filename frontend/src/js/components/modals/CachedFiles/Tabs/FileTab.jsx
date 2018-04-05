@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Modal, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap'
 import _ from 'lodash'
@@ -569,13 +570,13 @@ class FileTab extends Component {
     }
 }
 FileTab.propTypes = {
-    onTryClose: React.PropTypes.func.isRequired,
-    cachedFiles: React.PropTypes.object,
-    curVariables: React.PropTypes.object.isRequired,
-    loadVariables: React.PropTypes.func,
-    switchTab: React.PropTypes.func,
-    selectedTab: React.PropTypes.string,
-    setRecentFolderOpened: React.PropTypes.func,
+    onTryClose: PropTypes.func.isRequired,
+    cachedFiles: PropTypes.object,
+    curVariables: PropTypes.object.isRequired,
+    loadVariables: PropTypes.func,
+    switchTab: PropTypes.func,
+    selectedTab: PropTypes.string,
+    setRecentFolderOpened: PropTypes.func,
 }
 
 var DimensionContainer = (props) => {

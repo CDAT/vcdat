@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import reactCSS from 'reactcss'
 
 var { CompactColor } = require('react-color/lib/components/compact/CompactColor')
@@ -79,9 +80,9 @@ CustomColorSwatch.defaultProps = {
 }
 
 CustomColorSwatch.PropTypes = {
-    colors: React.PropTypes.arrayOf(React.PropTypes.string),
-    onChange: React.PropTypes.func,
-    hex: React.PropTypes.string,
+    colors: PropTypes.arrayOf(PropTypes.string),
+    onChange: PropTypes.func,
+    hex: PropTypes.string,
 }
 
 export default CustomColorSwatch;

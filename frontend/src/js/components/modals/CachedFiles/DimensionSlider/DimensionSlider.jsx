@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Slider from 'bootstrap-slider'
 import moment from 'moment'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
@@ -162,11 +163,11 @@ class DimensionSlider extends Component {
 }
 
 DimensionSlider.propTypes = {
-    low_value: React.PropTypes.number,
-    high_value: React.PropTypes.number,
-    data: React.PropTypes.array,
-    onChange: React.PropTypes.func,
-    units: React.PropTypes.string,
+    low_value: PropTypes.number,
+    high_value: PropTypes.number,
+    data: PropTypes.array,
+    onChange: PropTypes.func,
+    units: PropTypes.string,
 }
 
 export default DimensionSlider;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { DropTarget } from 'react-dnd'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 
@@ -40,11 +41,11 @@ class AddPlotZone extends Component {
 }
 
 AddPlotZone.propTypes = {
-    connectDropTarget: React.PropTypes.func,
-    is_over: React.PropTypes.bool,
-    addPlot: React.PropTypes.func,
-    row: React.PropTypes.number,
-    col: React.PropTypes.number,
+    connectDropTarget: PropTypes.func,
+    is_over: PropTypes.bool,
+    addPlot: PropTypes.func,
+    row: PropTypes.number,
+    col: PropTypes.number,
 }
 
 const addPlotTarget = {

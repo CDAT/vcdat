@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
 import { Modal, Button } from 'react-bootstrap'
@@ -30,18 +31,18 @@ class ColormapEditor extends Component {
 
     static get propTypes() {
         return {
-            show: React.PropTypes.bool.isRequired, // show the modal
-            close: React.PropTypes.func.isRequired, // close the modal
-            selected_cell_col: React.PropTypes.number,
-            selected_cell_row: React.PropTypes.number,
-            colormaps: React.PropTypes.object,
-            default_colormap: React.PropTypes.string,
-            deleteColormap: React.PropTypes.func,
-            saveColormap: React.PropTypes.func,
-            sheet: React.PropTypes.object,
-            updateGraphicsMethod: React.PropTypes.func,
-            applyColormap: React.PropTypes.func,
-            graphics_methods: React.PropTypes.object,
+            show: PropTypes.bool.isRequired, // show the modal
+            close: PropTypes.func.isRequired, // close the modal
+            selected_cell_col: PropTypes.number,
+            selected_cell_row: PropTypes.number,
+            colormaps: PropTypes.object,
+            default_colormap: PropTypes.string,
+            deleteColormap: PropTypes.func,
+            saveColormap: PropTypes.func,
+            sheet: PropTypes.object,
+            updateGraphicsMethod: PropTypes.func,
+            applyColormap: PropTypes.func,
+            graphics_methods: PropTypes.object,
         }; 
     }
 

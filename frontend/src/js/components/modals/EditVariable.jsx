@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Modal, Button, Row, Col, Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
@@ -144,11 +145,11 @@ class EditVariable extends Component {
     }
 }
 EditVariable.propTypes = {
-    show: React.PropTypes.bool, 
-    onTryClose: React.PropTypes.func.isRequired,
-    variables: React.PropTypes.object,
-    active_variable: React.PropTypes.string,
-    updateVariable: React.PropTypes.func,
+    show: PropTypes.bool, 
+    onTryClose: PropTypes.func.isRequired,
+    variables: PropTypes.object,
+    active_variable: PropTypes.string,
+    updateVariable: PropTypes.func,
 }
 
 var DimensionContainer = (props) => {

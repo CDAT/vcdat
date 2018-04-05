@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { Modal, InputGroup, FormControl, Button, Row, Col, Glyphicon } from 'react-bootstrap'
 import style from './FileExplorer.scss'
@@ -227,10 +228,10 @@ class FileExplorer extends Component {
 }
 
 FileExplorer.propTypes = {
-    show: React.PropTypes.bool,
-    onTryClose: React.PropTypes.func,
-    onFileSelected: React.PropTypes.func,
-    recent_path: React.PropTypes.string,
+    show: PropTypes.bool,
+    onTryClose: PropTypes.func,
+    onFileSelected: PropTypes.func,
+    recent_path: PropTypes.string,
 }
 
 export default FileExplorer;

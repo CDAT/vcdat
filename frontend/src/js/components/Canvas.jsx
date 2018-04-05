@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
@@ -168,16 +169,16 @@ class Canvas extends Component{
     }
 }
 Canvas.propTypes = {
-    plots: React.PropTypes.array,
-    plotVariables: React.PropTypes.array,
-    plotGMs: React.PropTypes.array,
-    onTop: React.PropTypes.bool,
-    clearCell: React.PropTypes.func,
-    row: React.PropTypes.number,
-    col: React.PropTypes.number,
-    selected_cell_id: React.PropTypes.string,
-    cell_id: React.PropTypes.string,
-    can_plot: React.PropTypes.bool,
+    plots: PropTypes.array,
+    plotVariables: PropTypes.array,
+    plotGMs: PropTypes.array,
+    onTop: PropTypes.bool,
+    clearCell: PropTypes.func,
+    row: PropTypes.number,
+    col: PropTypes.number,
+    selected_cell_id: PropTypes.string,
+    cell_id: PropTypes.string,
+    can_plot: PropTypes.bool,
 }
 
 const mapStateToProps = (state, ownProps) => {
