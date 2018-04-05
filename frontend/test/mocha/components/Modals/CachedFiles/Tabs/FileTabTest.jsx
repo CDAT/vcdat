@@ -13,7 +13,6 @@ const props = {
     cachedFiles: {},
     curVariables: {},
     loadVariables: sinon.spy(),
-    addFileToCache: sinon.spy(),
     switchTab: sinon.spy(),
     selectedTab: "file",
 }

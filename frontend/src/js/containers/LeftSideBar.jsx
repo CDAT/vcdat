@@ -8,7 +8,6 @@ import {connect} from 'react-redux'
 
 var LeftSideBar = React.createClass({
     propTypes: {
-        addFileToCache: React.PropTypes.func,
         cached_files: React.PropTypes.object,
         getColormaps: React.PropTypes.func,
         graphics_methods: React.PropTypes.object,
@@ -32,7 +31,6 @@ var LeftSideBar = React.createClass({
             <div id='left-side-bar'>
                 <VarList variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
-                    addFileToCache={this.props.addFileToCache}
                     cachedFiles={this.props.cached_files} 
                     removeVariable={this.props.removeVariable}
                     selectVariable={this.props.selectVariable}
@@ -63,9 +61,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addFileToCache: function(filename, filepath, variables) {
-            dispatch(Actions.addFileToCache(filename, filepath, variables));
-        },
         loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list)),
         removeVariable: (var_name) => {
             if(var_name){

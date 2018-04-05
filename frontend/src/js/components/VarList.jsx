@@ -1,7 +1,6 @@
 import React from 'react'
 import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx';
 import CachedFiles from './modals/CachedFiles/CachedFiles.jsx'
-import { tabs } from './modals/CachedFiles/Tabs/TabBar.jsx'
 import { DragSource } from 'react-dnd'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 import EditVariable from "./modals/EditVariable.jsx"
@@ -35,7 +34,6 @@ const DraggableVariable = DragSource(DragAndDropTypes.VAR, varSource, collect)(V
 
 var VarList = React.createClass({
     propTypes: {
-        addFileToCache: React.PropTypes.func,
         cachedFiles: React.PropTypes.object,
         loadVariables: React.PropTypes.func,
         variables: React.PropTypes.oneOfType([
@@ -69,7 +67,7 @@ var VarList = React.createClass({
             <div className='left-side-list scroll-area-list-parent var-list-container'>
                 <AddEditRemoveNav 
                     title='Variables'
-                    addAction={()=>this.setState({ showFile: true, showEdit: false, selectedTab: tabs.file })} 
+                    addAction={()=>this.setState({ showFile: true, showEdit: false })} 
                     editAction={()=>this.editVariable()}
                     removeAction={()=>this.removeVariable()}
                     addText="Load a variable"
@@ -91,16 +89,14 @@ var VarList = React.createClass({
                     curVariables={this.props.variables}
                     loadVariables={this.props.loadVariables}
                     cachedFiles={this.props.cachedFiles}
-                    addFileToCache={this.props.addFileToCache}
-                    selectedTab={this.state.selectedTab}
-                    switchTab={(tab)=>this.setState({ selectedTab: tab})}
-                    active_variable={this.state.active_variable}/>
+                />
                 {
                     this.state.showEdit &&
                     <EditVariable 
-                    show={this.state.showEdit}
-                    onTryClose={()=>this.setState({ showEdit: false })}
-                    active_variable={this.state.active_variable}/>    
+                        show={this.state.showEdit}
+                        onTryClose={()=>this.setState({ showEdit: false })}
+                        active_variable={this.state.active_variable}
+                    />
                 }
                 
                 

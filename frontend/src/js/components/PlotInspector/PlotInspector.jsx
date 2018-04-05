@@ -54,6 +54,16 @@ class PlotInspector extends React.PureComponent {
                             <span> Colormap Editor</span>
                         </button>
                     </span>
+                    <span className="btn-group" role="group">
+                        <button 
+                            id="save-plot-button"
+                            className="btn btn-default btn-sm material-icons-button"
+                            onClick={this.props.handleOpenExportModal}
+                            title="Open the Export Modal">
+                            <i className="material-icons" >save</i>
+                            <span> Export</span>
+                        </button>
+                    </span>
                 </div>
                 <div className="plot-inspector-container">
                     <table className="table table-condensed">
@@ -210,6 +220,7 @@ PlotInspector.propTypes = {
     redoEnabled: PropTypes.bool,
     show_colormap_editor: PropTypes.bool,
     startTour: PropTypes.func,
+    handleOpenExportModal: PropTypes.func,
 }
 
 export default PlotInspector;

@@ -228,7 +228,6 @@ class FileExplorer extends Component {
 
 FileExplorer.propTypes = {
     show: React.PropTypes.bool,
-    addFileToCache: React.PropTypes.func,
     onTryClose: React.PropTypes.func,
     onFileSelected: React.PropTypes.func,
     recent_path: React.PropTypes.string,

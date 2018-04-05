@@ -5,6 +5,7 @@ import PubSub from 'pubsub-js'
 import PubSubEvents from './../../constants/PubSubEvents.js'
 import { toast } from 'react-toastify'
 import PlotInspector from './PlotInspector.jsx'
+import ExportModal from '../modals/ExportModal.jsx'
 import './PlotInspector.scss'
 
 class PlotInspectorWrapper extends React.Component {
@@ -12,7 +13,8 @@ class PlotInspectorWrapper extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            show_colormap_editor: false
+            show_colormap_editor: false,
+            show_export_modal: false,
         }
         this.handleSelectVar1 = this.handleSelectVar1.bind(this)
         this.handleSelectVar2 = this.handleSelectVar2.bind(this)
@@ -24,6 +26,9 @@ class PlotInspectorWrapper extends React.Component {
         this.handleClearCell = this.handleClearCell.bind(this)
         this.handleCloseColormapEditor = this.handleCloseColormapEditor.bind(this)
         this.handleOpenColormapEditor = this.handleOpenColormapEditor.bind(this)
+        this.handleSavePlot = this.handleSavePlot.bind(this)
+        this.handleOpenExportModal = this.handleOpenExportModal.bind(this)
+        this.handleCloseExportModal = this.handleCloseExportModal.bind(this)
     }
 
     handleSelectVar1(var1, plot_index){
@@ -87,26 +92,49 @@ class PlotInspectorWrapper extends React.Component {
     handleCloseColormapEditor(){
         this.setState({show_colormap_editor: false})
     }
+
+    handleOpenExportModal(){
+        this.setState({show_export_modal: true})
+    }
+
+    handleCloseExportModal(){
+        this.setState({show_export_modal: false})
+    }
+
+    handleSavePlot(){
+        PubSub.publish(PubSubEvents.save_canvas)
+    }
     
     render() {
         return(
-            <PlotInspector
-                {...this.props}
-                variables={this.props.variables}
-                templates={this.props.templates}
-                handleSelectVar1={this.handleSelectVar1}
-                handleSelectVar2={this.handleSelectVar2}
-                handleSelectGMType={this.handleSelectGMType}
-                handleSelectGM={this.handleSelectGM}
-                handleSelectTemplate={this.handleSelectTemplate}
-                handleAddPlot={this.handleAddPlot}
-                handleDeletePlot={this.handleDeletePlot}
-                disable_delete={this.props.plots.length < 2}
-                show_colormap_editor={this.state.show_colormap_editor}
-                handleOpenColormapEditor={this.handleOpenColormapEditor}
-                handleCloseColormapEditor={this.handleCloseColormapEditor}
-                handleClearCell={this.handleClearCell}
-            />
+            <div className="plot-inspector-wrapper">
+                <PlotInspector
+                    {...this.props}
+                    variables={this.props.variables}
+                    templates={this.props.templates}
+                    handleSelectVar1={this.handleSelectVar1}
+                    handleSelectVar2={this.handleSelectVar2}
+                    handleSelectGMType={this.handleSelectGMType}
+                    handleSelectGM={this.handleSelectGM}
+                    handleSelectTemplate={this.handleSelectTemplate}
+                    handleAddPlot={this.handleAddPlot}
+                    handleDeletePlot={this.handleDeletePlot}
+                    disable_delete={this.props.plots.length < 2}
+                    show_colormap_editor={this.state.show_colormap_editor}
+                    handleOpenColormapEditor={this.handleOpenColormapEditor}
+                    handleCloseColormapEditor={this.handleCloseColormapEditor}
+                    handleClearCell={this.handleClearCell}
+                    handleOpenExportModal={this.handleOpenExportModal}
+                />
+                {
+                    this.state.show_export_modal &&
+                    <ExportModal
+                        show={this.state.show_export_modal}
+                        close={this.handleCloseExportModal}
+                    />
+                }
+            </div>
+            
         )
     }
 }

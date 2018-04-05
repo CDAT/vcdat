@@ -187,14 +187,6 @@ var Actions = {
             dimensions: dimensions
         }
     },
-    addFileToCache(filename, filepath, variables){
-        return {
-            type: 'ADD_FILE_TO_CACHE',
-            filename: filename,
-            filepath: filepath,
-            variables: variables
-        }
-    },
     updateGraphicsMethod(graphics_method) {
         return {
             type: 'UPDATE_GRAPHICS_METHOD',

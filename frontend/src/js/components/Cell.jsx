@@ -24,6 +24,7 @@ class Cell extends React.Component {
     }
     componentDidMount(){
         this.token = PubSub.subscribe(PubSubEvents.clear_canvas, this.clearCanvas.bind(this))
+        this.save_canvas_token = PubSub.subscribe(PubSubEvents.save_canvas, this.handleSaveCanvas.bind(this))
     }
     getOwnCellId(){
         return `${this.props.sheet_index}_${this.props.row}_${this.props.col}`
@@ -41,7 +42,7 @@ class Cell extends React.Component {
     }
     clearCanvas(){
         if(this.getOwnCellId() == this.props.selected_cell_id){
-            this.refs.canvas.getWrappedInstance().clearCanvas()
+            this.canvas.getWrappedInstance().clearCanvas()
             this.props.clearCell(this.props.row, this.props.col) // removes plot state from redux
         }
     }
@@ -69,9 +70,15 @@ class Cell extends React.Component {
         }
         return false
     }
+    handleSaveCanvas(){
+        if(this.getOwnCellId() === this.props.selected_cell_id){
+            this.canvas.getWrappedInstance().saveCanvas()
+        }
+    }
     render() {
+        let cell_id = this.getOwnCellId()
         this.cell = this.props.cells[this.props.row][this.props.col];
-        this.class = this.getOwnCellId() == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
+        this.class = cell_id == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
         this.can_plot = this.canPlot(this.cell)
         this.plotter_on_top = this.props.isOver || !this.can_plot
         return this.props.connectDropTarget(
@@ -89,7 +96,8 @@ class Cell extends React.Component {
                     swapTemplateInPlot={this.props.swapTemplateInPlot}
                 />
                 <Canvas 
-                    ref="canvas"
+                    ref={(el)=>{this.canvas = el}}
+                    cell_id={cell_id}
                     onTop={!this.plotter_on_top}
                     plots={this.cell.plots}
                     row={this.props.row}
