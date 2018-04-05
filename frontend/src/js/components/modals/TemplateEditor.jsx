@@ -1,30 +1,38 @@
-import React from 'react'
-import {Modal, ButtonToolbar, Button} from 'react-bootstrap'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Modal, ButtonToolbar, Button } from 'react-bootstrap'
 import widgets from 'vcs-widgets';
+/* globals $ */
 
+class TemplateEditor extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            workingTemplate: $.extend(true, {}, this.props.template)
+        }
+        this.onUpdate = this.onUpdate.bind(this)
+        this.saveWorkingTemplate = this.saveWorkingTemplate.bind(this)
+        this.onHide = this.onHide.bind(this)
+    }
 
-var TemplateEditor = React.createClass({
-    propTypes: {
-        template: React.PropTypes.object,
-        updateTemplate: React.PropTypes.func,
-    },
     onUpdate(attribute, key, value) {
         let new_templ = $.extend(true, {}, this.state.workingTemplate);
         new_templ[attribute][key] = value;
         this.setState({"workingTemplate": new_templ});
-    },
-    getInitialState() {
-        return {workingTemplate: $.extend(true, {}, this.props.template)};
-    },
+    }
+
     componentWillReceiveProps(nextProps) {
         this.setState({workingTemplate: $.extend(true, {}, nextProps.template)});
-    },
-    saveWorkingTemplate(){
+    }
+
+    saveWorkingTemplate() {
         this.props.updateTemplate(this.state.workingTemplate);
-    },
+    }
+
     onHide() {
         this.props.updateTemplate(this.props.template);
-    },
+    }
+
     render() {
         let template = this.state.workingTemplate;
         let template_name = template ? template.name : "";
@@ -35,7 +43,11 @@ var TemplateEditor = React.createClass({
                     <Modal.Title>Edit {template_name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <TemplateEdit templatePreview={"/plotTemplate?tmpl=" + JSON.stringify(template)} template={template} updateTemplate={this.onUpdate} />
+                    <TemplateEdit 
+                        templatePreview={"/plotTemplate?tmpl=" + JSON.stringify(template)}
+                        template={template}
+                        updateTemplate={this.onUpdate} 
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                     <ButtonToolbar>
@@ -46,6 +58,12 @@ var TemplateEditor = React.createClass({
             </Modal>
         );
     }
-})
+}
+
+TemplateEditor.propTypes = {
+    show: PropTypes.bool,
+    template: PropTypes.object,
+    updateTemplate: PropTypes.func,
+}
 
 export default TemplateEditor;
