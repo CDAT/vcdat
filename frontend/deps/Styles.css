@@ -44,6 +44,15 @@
 button:focus {
     outline: 0 !important;
 }
+
+.btn-default:focus {
+    /* Fixes issue where buttons appear to stay pressed when clicked */
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    outline: 0;
+}
+
 .no-bullets {
     list-style-type: none;
 }
