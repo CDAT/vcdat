@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react'
 
-var ExampleComponent = React.createClass({
+class ExampleComponent extends Component {
     render(){
         return (
             <div className="test">
                 <span>TEST</span>
             </div>
-        );
+        )
     }
-})
+}
 
 export default ExampleComponent;
