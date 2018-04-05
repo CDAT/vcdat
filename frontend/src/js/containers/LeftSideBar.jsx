@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import VarList from '../components/VarList.jsx'
 import GMList from '../components/GMList.jsx'
 import TemplateList from '../components/TemplateList.jsx'

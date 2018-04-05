@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
 import CachedFiles from './modals/CachedFiles/CachedFiles.jsx'
 import { DragSource } from 'react-dnd'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js'

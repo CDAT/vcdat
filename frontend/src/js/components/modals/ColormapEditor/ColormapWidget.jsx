@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import './ColormapWidget.css'
 
 class ColormapWidget extends Component {

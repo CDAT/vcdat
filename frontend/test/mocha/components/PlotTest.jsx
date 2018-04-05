@@ -1,9 +1,9 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
-var expect = chai.expect;
-import React from 'react';
+var chai = require('chai')
+var expect = chai.expect
+import React from 'react'
 import { shallow } from 'enzyme'
-import Plot from '../../../src/js/components/Plot.jsx';
+import Plot from '../../../src/js/components/Plot.jsx'
 
 const Unwrapped_Plot = Plot.DecoratedComponent
 const empty_props = {

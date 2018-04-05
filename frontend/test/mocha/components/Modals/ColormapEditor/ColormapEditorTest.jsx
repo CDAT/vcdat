@@ -1,8 +1,8 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
 var assert = chai.assert;
-var React = require('react');
+var React = require('react')
 
 import ColormapEditor from '../../../../../src/js/components/modals/ColormapEditor/ColormapEditor.jsx'
 // import { PureColormapEditor } from '../../../../../src/js/components/modals/ColormapEditor/ColormapEditor.jsx'

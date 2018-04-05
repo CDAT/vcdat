@@ -1,7 +1,7 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
-var React = require('react');
+var React = require('react')
 import PlotInspector from '../../../../src/js/components/PlotInspector/PlotInspector.jsx'
 import { ONE_VAR_PLOTS, TWO_VAR_PLOTS } from '../../../../src/js/constants/Constants.js'
 import { shallow, mount } from 'enzyme'

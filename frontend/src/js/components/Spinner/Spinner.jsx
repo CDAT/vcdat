@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { Button, Glyphicon, FormControl, InputGroup } from 'react-bootstrap';
-import './Spinner.scss';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { Button, Glyphicon, FormControl, InputGroup } from 'react-bootstrap'
+import './Spinner.scss'
 
 class Spinner extends PureComponent {
     constructor(props){

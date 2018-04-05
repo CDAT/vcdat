@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import reactCSS from 'reactcss'
 
-var { CompactColor } = require('react-color/lib/components/compact/CompactColor');
+var { CompactColor } = require('react-color/lib/components/compact/CompactColor')
 
 class CustomColorSwatch extends Component{
     constructor(props){

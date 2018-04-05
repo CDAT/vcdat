@@ -1,13 +1,13 @@
 /* globals TestComponent, it, describe, before */
 // we need the dom-mock script to build a DOM
-var dom_mock = require('../dom-mock');
-var jsdom = require('mocha-jsdom');
+var dom_mock = require('../dom-mock')
+var jsdom = require('mocha-jsdom')
 // we need chai for its various assertion libraries
-var chai = require('chai');
+var chai = require('chai')
 var assert = chai.assert;
-var React = require('react');
+var React = require('react')
 // React's TestUtils allows us to render components and search for them in the mock DOM
-var TestUtils = require('react-addons-test-utils');
+var TestUtils = require('react-addons-test-utils')
 // To test our component, we have to require the source
 var ExampleComponent = require('./Example.jsx').default;
 

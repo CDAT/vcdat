@@ -1,7 +1,7 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
-var React = require('react');
+var React = require('react')
 
 import InfoTab from '../../../../../../src/js/components/modals/CachedFiles/Tabs/InfoTab.jsx'
 import { shallow } from 'enzyme'

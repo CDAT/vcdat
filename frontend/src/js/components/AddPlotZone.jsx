@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { DropTarget } from 'react-dnd';
-import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+import { DropTarget } from 'react-dnd'
+import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 
 class AddPlotZone extends Component {
     constructor(props){

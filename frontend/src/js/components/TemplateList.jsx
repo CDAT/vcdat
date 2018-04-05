@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx';
-import TemplateEditor from './modals/TemplateEditor.jsx';
-import DragAndDropTypes from '../constants/DragAndDropTypes.js';
-import {DragSource} from 'react-dnd';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
+import TemplateEditor from './modals/TemplateEditor.jsx'
+import DragAndDropTypes from '../constants/DragAndDropTypes.js'
+import {DragSource} from 'react-dnd'
 
 
 // Use a simple function-based component, rather than a fancy class one.

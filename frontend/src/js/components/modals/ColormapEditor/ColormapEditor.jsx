@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap'
 import _ from 'lodash'
 import Actions from '../../../constants/Actions.js'
 import PubSub from 'pubsub-js'
@@ -9,8 +9,8 @@ import PubSubEvents from '../../../constants/PubSubEvents.js'
 import ColorPicker from './ColorPicker.jsx'
 import ColormapWidget from './ColormapWidget.jsx'
 import NewColormapModal from './NewColormapModal.jsx'
-import ImportExportModal from "./ImportExportModal.jsx";
-var colorUtility = require('react-color/lib/helpers/color.js').default;
+import ImportExportModal from "./ImportExportModal.jsx"
+var colorUtility = require('react-color/lib/helpers/color.js').default
 
 class ColormapEditor extends Component {
     constructor(props) {

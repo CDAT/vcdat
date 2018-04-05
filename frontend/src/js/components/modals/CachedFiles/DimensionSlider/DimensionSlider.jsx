@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import Slider from 'bootstrap-slider';
-import moment from 'moment';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import React, { Component } from 'react'
+import Slider from 'bootstrap-slider'
+import moment from 'moment'
+import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import _ from 'lodash'
 
-import style from './DimensionSlider.scss';
+import style from './DimensionSlider.scss'
 
-import 'bootstrap-slider/dist/css/bootstrap-slider.min.css';
+import 'bootstrap-slider/dist/css/bootstrap-slider.min.css'
 
 class DimensionSlider extends Component {
     constructor(props) {

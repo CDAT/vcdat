@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx';
-import GraphicsMethodEditor from './modals/GraphicsMethodEditor.jsx';
-import Tree from './Tree.jsx';
-import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
+import GraphicsMethodEditor from './modals/GraphicsMethodEditor.jsx'
+import Tree from './Tree.jsx'
+import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 
 // Drag and Drop integration; passed down to the Tree object
 var gmSource = {

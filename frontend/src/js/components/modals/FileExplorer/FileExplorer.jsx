@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import _ from 'lodash';
-import { Modal, InputGroup, FormControl, Button, Row, Col, Glyphicon } from 'react-bootstrap';
-import style from './FileExplorer.scss';
+import React, { Component } from 'react'
+import _ from 'lodash'
+import { Modal, InputGroup, FormControl, Button, Row, Col, Glyphicon } from 'react-bootstrap'
+import style from './FileExplorer.scss'
 
 var minimatch = require("minimatch")
 /* global $ */

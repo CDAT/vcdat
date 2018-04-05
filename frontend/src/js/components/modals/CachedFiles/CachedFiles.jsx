@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
-import './CachedFiles.scss';
+import React, { Component } from 'react'
+import { Modal } from 'react-bootstrap'
+import './CachedFiles.scss'
 import FileTab from './Tabs/FileTab.jsx'
 // import Esgf from './Tabs/EsgfTab.jsx'
 // import OpendapTab from './Tabs/OpendapTab.jsx'
 import InfoTab from './Tabs/InfoTab.jsx'
-import TabBar from '../../TabBar/TabBar.jsx';
+import TabBar from '../../TabBar/TabBar.jsx'
 
 class CachedFiles extends Component {
     constructor(props) {

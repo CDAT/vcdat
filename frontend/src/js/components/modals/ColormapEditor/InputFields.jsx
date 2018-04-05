@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 var colorUtility = require('react-color/lib/helpers/color.js').default
-var { EditableInput} = require('react-color/lib/components/common');
+var { EditableInput} = require('react-color/lib/components/common')
 
 
 class InputFields extends Component{

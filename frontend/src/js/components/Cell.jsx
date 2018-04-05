@@ -1,12 +1,12 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import Actions from '../constants/Actions.js';
-import Plotter from './Plotter.jsx';
-import Canvas from './Canvas.jsx';
-import {DropTarget} from 'react-dnd';
+import React from 'react'
+import {connect} from 'react-redux'
+import Actions from '../constants/Actions.js'
+import Plotter from './Plotter.jsx'
+import Canvas from './Canvas.jsx'
+import {DropTarget} from 'react-dnd'
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
-import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 import { TWO_VAR_PLOTS } from '../constants/Constants.js'
 
 function collect(connect, monitor) {

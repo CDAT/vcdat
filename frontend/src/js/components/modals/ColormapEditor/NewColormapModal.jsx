@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { Modal, FormGroup } from 'react-bootstrap'
 
 class NewColormapModal extends Component{
     constructor(props){

@@ -1,9 +1,9 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
-var React = require('react');
+var React = require('react')
 import { shallow } from 'enzyme'
-import AddEditRemoveNav from '../../../src/js/components/AddEditRemoveNav/AddEditRemoveNav.jsx';
+import AddEditRemoveNav from '../../../src/js/components/AddEditRemoveNav/AddEditRemoveNav.jsx'
 
 describe('AddEditRemoveNavTest.jsx', function() {
     it('renders without exploding', function() {

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import widgets from 'vcs-widgets'
 import $ from 'jquery'
-import {Modal, ButtonToolbar, Button} from 'react-bootstrap';
+import {Modal, ButtonToolbar, Button} from 'react-bootstrap'
 
 class GraphicsMethodEditor extends Component {
     constructor(props){

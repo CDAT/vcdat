@@ -1,7 +1,7 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
-import React from 'react';
+import React from 'react'
 import { shallow } from 'enzyme'
 // import { createMockStore } from 'redux-test-utils'
 import { PureCell }  from '../../../src/js/components/Cell.jsx'

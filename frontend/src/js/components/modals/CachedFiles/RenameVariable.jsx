@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Modal, Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-import Dialog from 'react-bootstrap-dialog';
-import FileExplorer from '../FileExplorer/FileExplorer.jsx';
+import { Modal, Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
+import Dialog from 'react-bootstrap-dialog'
+import FileExplorer from '../FileExplorer/FileExplorer.jsx'
 
 class RenameVariable extends Component{
     constructor(props){

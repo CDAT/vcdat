@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import React, { Component } from 'react'
+import { Modal, Button } from 'react-bootstrap'
 import TabBar from '../TabBar/TabBar.jsx'
 import SavePlot from './SavePlot/SavePlot.jsx'
 

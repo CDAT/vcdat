@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
-import _ from 'lodash';
+import _ from 'lodash'
 import { toast } from 'react-toastify'
 import FileSaver from 'file-saver'
 

@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Actions from '../../../../constants/Actions.js';
-import { Modal, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
-import _ from 'lodash';
-import Dialog from 'react-bootstrap-dialog';
-import { DropTarget, DragSource } from 'react-dnd';
-import { findDOMNode } from 'react-dom';
-
-import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx';
-import FileExplorer from '../../FileExplorer/FileExplorer.jsx';
-import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js';
+import { Modal, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap'
+import _ from 'lodash'
+import Dialog from 'react-bootstrap-dialog'
+import { DropTarget, DragSource } from 'react-dnd'
+import { findDOMNode } from 'react-dom'
 import { toast } from 'react-toastify'
 
-import '../CachedFiles.scss';
+import Actions from '../../../../constants/Actions.js'
+import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx'
+import FileExplorer from '../../FileExplorer/FileExplorer.jsx'
+import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js'
+
+import '../CachedFiles.scss'
 
 function cleanPath(path) {
     return `/${path.split('/').filter(segment => segment).join('/')}`;

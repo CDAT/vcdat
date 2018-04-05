@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-
+import React, { Component } from 'react'
 import reactCSS from 'reactcss'
-import {CustomPicker} from 'react-color';
-var { Saturation, Hue} = require('react-color/lib/components/common');
+import {CustomPicker} from 'react-color'
+var { Saturation, Hue} = require('react-color/lib/components/common')
 
 import CustomHuePointer from './CustomHuePointer.jsx'
 import BasicColorSwatch from './BasicColorSwatch.jsx'

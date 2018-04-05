@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import {DropTarget} from 'react-dnd';
-import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import {DropTarget} from 'react-dnd'
+import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 import { TWO_VAR_PLOTS } from '../constants/Constants.js'
 
 const plotTarget = {

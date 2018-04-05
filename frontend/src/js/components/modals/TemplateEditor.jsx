@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Modal, ButtonToolbar, Button } from 'react-bootstrap'
-import widgets from 'vcs-widgets';
+import widgets from 'vcs-widgets'
 /* globals $ */
 
 class TemplateEditor extends Component {

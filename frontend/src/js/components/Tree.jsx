@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {DragSource} from 'react-dnd';
+import React, { Component } from 'react'
+import {DragSource} from 'react-dnd'
 
 
 class TreeNode extends Component {
