@@ -30,7 +30,7 @@ describe('DimensionSliderTest.jsx', function() {
             value: [0, 9]
         })
         expect(spy.callCount).to.equal(1)
-        dimension_slider.find("#dimension-slider-select-lower").simulate("change", {
+        dimension_slider.find("select#dimension-slider-select-lower").simulate("change", {
             target: {
                 value: 2
             }
@@ -49,7 +49,7 @@ describe('DimensionSliderTest.jsx', function() {
             value: [0, 9]
         })
         expect(spy.callCount).to.equal(1)
-        dimension_slider.find("#dimension-slider-select-upper").simulate("change", {
+        dimension_slider.find("select#dimension-slider-select-upper").simulate("change", {
             target: {
                 value: 8
             }

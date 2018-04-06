@@ -86,7 +86,7 @@ describe('PlotInspectorTest.jsx', function() {
         for(let gm_type_1var of ONE_VAR_PLOTS){
             props.plots[0].graphics_method_parent = gm_type_1var
             const wrapper = shallow(<PlotInspector {...props} />)            
-            expect(wrapper.find("#plot-inspector-variable2-select").getNode().props.disabled).to.equal(true)
+            expect(wrapper.find("#plot-inspector-variable2-select").getElement().props.disabled).to.equal(true)
         }
     });
 
@@ -95,7 +95,7 @@ describe('PlotInspectorTest.jsx', function() {
         for(let gm_type_2var of TWO_VAR_PLOTS){
             props.plots[0].graphics_method_parent = gm_type_2var
             const wrapper = shallow(<PlotInspector {...props} />)
-            expect(wrapper.find("#plot-inspector-variable2-select").getNode().props.disabled).to.equal(false)
+            expect(wrapper.find("#plot-inspector-variable2-select").getElement().props.disabled).to.equal(false)
         }
     });
 

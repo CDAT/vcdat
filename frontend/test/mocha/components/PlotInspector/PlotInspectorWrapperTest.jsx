@@ -136,6 +136,7 @@ describe('PlotInspectorWrapperTest.jsx', function() {
         const wrapper = shallow(<PlotInspectorWrapper {...props}/>)
         let spy = sinon.spy()
         let clock = sinon.useFakeTimers();
+        PubSub.clearAllSubscriptions();
         PubSub.subscribe(PubSubEvents.clear_canvas, spy)
         wrapper.instance().handleClearCell()
         clock.tick(1) // publish is async. We manually tick here to make sure it runs before testing

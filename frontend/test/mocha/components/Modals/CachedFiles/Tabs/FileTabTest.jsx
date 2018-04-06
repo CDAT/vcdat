@@ -278,6 +278,7 @@ describe('FileTabTest.jsx', function() {
         return cached_files.instance().handleFileSelected(file).then(() => {
             expect(cached_files.state().showFileExplorer).to.be.false
             expect(cached_files.state().selectedVariableName).to.equal("clt")
+            cached_files.setState(cached_files.state()) // work around for componentDidUpdate not firing in shallow
             expect(cached_files.state().selectedVariable.name).to.equal("Total cloudiness")
         })
     });
