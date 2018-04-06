@@ -4,6 +4,9 @@ var expect = chai.expect;
 var React = require('react')
 
 import ImportExportModal from '../../../../../src/js/components/modals/ColormapEditor/ImportExportModal.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow } from 'enzyme'
 import sinon from 'sinon'
 

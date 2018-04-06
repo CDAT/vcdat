@@ -4,6 +4,9 @@ var chai = require('chai')
 var expect = chai.expect
 var React = require('react')
 var Spinner = require('../../../src/js/components/Spinner/Spinner.jsx').default;
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow } from 'enzyme'
 import sinon from 'sinon'
 

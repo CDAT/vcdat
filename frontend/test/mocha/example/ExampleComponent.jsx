@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 
 class ExampleComponent extends Component {
+
+    sayHello(){
+        return "Hello"
+    }
+
     render(){
         return (
             <div className="test">

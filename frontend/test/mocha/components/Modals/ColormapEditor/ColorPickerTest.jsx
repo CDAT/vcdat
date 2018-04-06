@@ -4,6 +4,9 @@ var expect = chai.expect;
 var React = require('react')
 
 import ColorPicker from '../../../../../src/js/components/modals/ColormapEditor/ColorPicker.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { mount } from 'enzyme'
 
 const props = {

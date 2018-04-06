@@ -4,6 +4,9 @@ var expect = chai.expect;
 var React = require('react')
 import { PurePlotInspectorWrapper as PlotInspectorWrapper,
          mapStateToProps } from '../../../../src/js/components/PlotInspector/PlotInspectorWrapper.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow } from 'enzyme'
 import sinon from 'sinon'
 import PubSub from 'pubsub-js'

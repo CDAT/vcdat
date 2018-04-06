@@ -4,6 +4,9 @@ var expect = chai.expect;
 var React = require('react')
 
 import SavePlot from '../../../../src/js/components/modals/SavePlot/SavePlot.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow } from 'enzyme'
 import { createMockStore } from 'redux-test-utils'
 

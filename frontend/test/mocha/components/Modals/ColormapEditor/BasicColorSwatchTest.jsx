@@ -4,6 +4,9 @@ var expect = chai.expect;
 var React = require('react')
 
 import BasicColorSwatch from '../../../../../src/js/components/modals/ColormapEditor/BasicColorSwatch.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow } from 'enzyme'
 
 const basic_color_swatch = shallow(<BasicColorSwatch/>)

@@ -4,6 +4,9 @@ var expect = chai.expect;
 var React = require('react')
 
 import FileExplorer from '../../../../../src/js/components/modals/FileExplorer/FileExplorer.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow } from 'enzyme'
 
 describe('FileExplorerTest.jsx', function() {

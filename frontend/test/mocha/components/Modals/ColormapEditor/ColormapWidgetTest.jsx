@@ -4,7 +4,10 @@ var expect = chai.expect;
 var React = require('react')
 
 import ColormapWidget from '../../../../../src/js/components/modals/ColormapEditor/ColormapWidget.jsx'
-import { shallow, mount } from 'enzyme'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
+import { shallow } from 'enzyme'
 import sinon from 'sinon'
 
 

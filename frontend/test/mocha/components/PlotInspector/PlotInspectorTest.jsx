@@ -4,6 +4,9 @@ var expect = chai.expect;
 var React = require('react')
 import PlotInspector from '../../../../src/js/components/PlotInspector/PlotInspector.jsx'
 import { ONE_VAR_PLOTS, TWO_VAR_PLOTS } from '../../../../src/js/constants/Constants.js'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow, mount } from 'enzyme'
 import sinon from 'sinon'
 
