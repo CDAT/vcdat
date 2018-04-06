@@ -79,7 +79,7 @@ CustomColorSwatch.defaultProps = {
     ]
 }
 
-CustomColorSwatch.PropTypes = {
+CustomColorSwatch.propTypes = {
     colors: PropTypes.arrayOf(PropTypes.string),
     onChange: PropTypes.func,
     hex: PropTypes.string,
