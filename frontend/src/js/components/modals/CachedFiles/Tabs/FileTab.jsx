@@ -19,6 +19,27 @@ function cleanPath(path) {
     return `/${path.split('/').filter(segment => segment).join('/')}`;
 }
 
+function getDefaultVariable(names){
+    // The select box for variables needs to attempt to choose a default variable.
+    // This function attempts to return an index for an entry in the array that is unlikely to be a bounds variable.
+    // If no suitable candidate is found, will return 0 
+
+    const substrings = ["bounds", "bnds", "lat", "lon", "axis"] // substrings that indicate a bounds variable
+    const sorted_names = names.sort(function (a, b) {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+    })
+    for(let name of sorted_names){
+        const is_variable = substrings.reduce((prev_val, substring)=>{
+            return prev_val && !name.includes(substring) // assume name is a variable until detected otherwise
+        }, true)
+
+        if(is_variable){
+            return name // return the name of the first variable that doesnt represent a bound
+        } 
+    }
+    return names[0] // return the first name if none matched
+}
+
 const HISTORY_KEY = "variable_history_files"
 const BOOKMARK_KEY = "variable_bookmark_files"
 
@@ -185,17 +206,18 @@ class FileTab extends Component {
                     vcs.variables(path).then(
                         (variablesAxes) => { // success
                             var historyFiles = [file, ...self.state.historyFiles.filter(historyFile => {
-                                return historyFile.path !== file.path || historyFile.name !== file.name;
-                            })];
+                                return historyFile.path !== file.path || historyFile.name !== file.name
+                            })]
                             window.localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles))
+                            const selected_variable = getDefaultVariable(Object.keys(variablesAxes[0]))
                             self.setState({
                                 variablesAxes,
                                 selectedFile: file,
                                 historyFiles: historyFiles,
-                                selectedVariableName: Object.keys(variablesAxes[0])[0],
+                                selectedVariableName:  selected_variable,
                                 selectedVariable: null,
                                 showFileExplorer: false
-                            });
+                            })
                         },
                         (error) => { // error
                             if(!(error instanceof ReferenceError)){
@@ -497,8 +519,8 @@ class FileTab extends Component {
 
     _formatvariablesAxes() {
         return this.state.variablesAxes && [
-            <optgroup key="variables" label="------">{this._formatVariables(this.state.variablesAxes[0])}</optgroup>,
-            <optgroup key="axes" label="------">{this._formatAxes(this.state.variablesAxes[1])}</optgroup>
+            <optgroup key="variables" label="---Variables---">{this._formatVariables(this.state.variablesAxes[0])}</optgroup>,
+            <optgroup key="axes" label="---Axes---">{this._formatAxes(this.state.variablesAxes[1])}</optgroup>
         ]
     }
 
