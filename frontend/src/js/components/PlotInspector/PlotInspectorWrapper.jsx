@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Actions from '../../constants/Actions.js'
 import PubSub from 'pubsub-js'
@@ -140,20 +141,20 @@ class PlotInspectorWrapper extends React.Component {
 }
 
 PlotInspectorWrapper.propTypes = {
-    plots: React.PropTypes.array,
-    all_graphics_methods: React.PropTypes.object,
-    variables: React.PropTypes.array,
-    graphics_method_types: React.PropTypes.array,
-    templates: React.PropTypes.array,
-    cell_row: React.PropTypes.number,
-    cell_col: React.PropTypes.number,
-    swapVariableInPlot: React.PropTypes.func,
-    swapGraphicsMethodInPlot: React.PropTypes.func,
-    swapTemplateInPlot: React.PropTypes.func,
-    deleteVariableInPlot: React.PropTypes.func,
-    addPlot: React.PropTypes.func,
-    deletePlot: React.PropTypes.func,
-    cell_selected: React.PropTypes.string,
+    plots: PropTypes.array,
+    all_graphics_methods: PropTypes.object,
+    variables: PropTypes.array,
+    graphics_method_types: PropTypes.array,
+    templates: PropTypes.array,
+    cell_row: PropTypes.number,
+    cell_col: PropTypes.number,
+    swapVariableInPlot: PropTypes.func,
+    swapGraphicsMethodInPlot: PropTypes.func,
+    swapTemplateInPlot: PropTypes.func,
+    deleteVariableInPlot: PropTypes.func,
+    addPlot: PropTypes.func,
+    deletePlot: PropTypes.func,
+    cell_selected: PropTypes.string,
 }
 
 const mapStateToProps = (state) => {

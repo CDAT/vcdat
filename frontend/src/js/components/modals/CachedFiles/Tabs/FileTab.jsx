@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import Actions from '../../../../constants/Actions.js';
-import { Modal, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
-import _ from 'lodash';
-import Dialog from 'react-bootstrap-dialog';
-import { DropTarget, DragSource } from 'react-dnd';
-import { findDOMNode } from 'react-dom';
-
-import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx';
-import FileExplorer from '../../FileExplorer/FileExplorer.jsx';
-import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js';
+import { Modal, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap'
+import _ from 'lodash'
+import Dialog from 'react-bootstrap-dialog'
+import { DropTarget, DragSource } from 'react-dnd'
+import { findDOMNode } from 'react-dom'
 import { toast } from 'react-toastify'
 
-import '../CachedFiles.scss';
+import Actions from '../../../../constants/Actions.js'
+import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx'
+import FileExplorer from '../../FileExplorer/FileExplorer.jsx'
+import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js'
+
+import '../CachedFiles.scss'
 
 function cleanPath(path) {
     return `/${path.split('/').filter(segment => segment).join('/')}`;
@@ -569,13 +570,13 @@ class FileTab extends Component {
     }
 }
 FileTab.propTypes = {
-    onTryClose: React.PropTypes.func.isRequired,
-    cachedFiles: React.PropTypes.object,
-    curVariables: React.PropTypes.object.isRequired,
-    loadVariables: React.PropTypes.func,
-    switchTab: React.PropTypes.func,
-    selectedTab: React.PropTypes.string,
-    setRecentFolderOpened: React.PropTypes.func,
+    onTryClose: PropTypes.func.isRequired,
+    cachedFiles: PropTypes.object,
+    curVariables: PropTypes.object.isRequired,
+    loadVariables: PropTypes.func,
+    switchTab: PropTypes.func,
+    selectedTab: PropTypes.string,
+    setRecentFolderOpened: PropTypes.func,
 }
 
 var DimensionContainer = (props) => {

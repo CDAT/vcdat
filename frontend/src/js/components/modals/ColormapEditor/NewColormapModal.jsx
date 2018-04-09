@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Modal, Button, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import PropTypes from 'prop-types'
+import { Modal, FormGroup } from 'react-bootstrap'
 
 class NewColormapModal extends Component{
     constructor(props){
@@ -44,9 +45,9 @@ class NewColormapModal extends Component{
 }
 
 NewColormapModal.propTypes = {
-    show: React.PropTypes.bool,
-    close: React.PropTypes.func,
-    newColormap: React.PropTypes.func,
+    show: PropTypes.bool,
+    close: PropTypes.func,
+    newColormap: PropTypes.func,
 }
 
 export default NewColormapModal

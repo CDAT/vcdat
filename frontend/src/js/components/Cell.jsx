@@ -1,12 +1,13 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import Actions from '../constants/Actions.js';
-import Plotter from './Plotter.jsx';
-import Canvas from './Canvas.jsx';
-import {DropTarget} from 'react-dnd';
+import React from 'react'
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
+import Actions from '../constants/Actions.js'
+import Plotter from './Plotter.jsx'
+import Canvas from './Canvas.jsx'
+import {DropTarget} from 'react-dnd'
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
-import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 import { TWO_VAR_PLOTS } from '../constants/Constants.js'
 
 function collect(connect, monitor) {
@@ -110,20 +111,20 @@ class Cell extends React.Component {
 }
 
 Cell.propTypes = {
-    cells: React.PropTypes.array,
-    row: React.PropTypes.number,
-    col: React.PropTypes.number,
-    addPlot: React.PropTypes.func,
-    swapVariableInPlot: React.PropTypes.func,
-    swapGraphicsMethodInPlot: React.PropTypes.func,
-    swapTemplateInPlot: React.PropTypes.func,
-    connectDropTarget: React.PropTypes.func,
-    isOver: React.PropTypes.bool,
-    selectCell: React.PropTypes.func,
-    deselectCell: React.PropTypes.func,
-    selected_cell_id: React.PropTypes.string,
-    clearCell: React.PropTypes.func,
-    sheet_index: React.PropTypes.number,
+    cells: PropTypes.array,
+    row: PropTypes.number,
+    col: PropTypes.number,
+    addPlot: PropTypes.func,
+    swapVariableInPlot: PropTypes.func,
+    swapGraphicsMethodInPlot: PropTypes.func,
+    swapTemplateInPlot: PropTypes.func,
+    connectDropTarget: PropTypes.func,
+    isOver: PropTypes.bool,
+    selectCell: PropTypes.func,
+    deselectCell: PropTypes.func,
+    selected_cell_id: PropTypes.string,
+    clearCell: PropTypes.func,
+    sheet_index: PropTypes.number,
 }
 
 const mapStateToProps = (state) => {

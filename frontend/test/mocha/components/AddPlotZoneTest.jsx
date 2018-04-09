@@ -1,11 +1,14 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
 var React = require('react') // needed to use jsx
+import Enzyme from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow } from 'enzyme'
 import sinon from 'sinon'
 import AddPlotZone, { addPlotTarget } from '../../../../frontend/src/js/components/AddPlotZone.jsx'
-import DragAndDropTypes from '../../../src/js/constants/DragAndDropTypes';
+import DragAndDropTypes from '../../../src/js/constants/DragAndDropTypes'
 
 
 var UnwrappedAddPlotZone = AddPlotZone.DecoratedComponent

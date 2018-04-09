@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import TopBar from './TopBar/TopBar.jsx'
-import LeftSideBar from './LeftSideBar.jsx';
-import SpreadsheetContainer from './SpreadsheetContainer/SpreadsheetContainer.jsx';
-import { ActionCreators as UndoActionCreators } from 'redux-undo';
-import { connect } from 'react-redux';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { ToastContainer } from 'react-toastify';
+import LeftSideBar from './LeftSideBar.jsx'
+import SpreadsheetContainer from './SpreadsheetContainer/SpreadsheetContainer.jsx'
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
+import { connect } from 'react-redux'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+import { ToastContainer } from 'react-toastify'
 import { JOYRIDE_STEPS } from '../constants/Constants.js'
 import Joyride from 'react-joyride'
 import 'react-joyride/lib/react-joyride.scss'
@@ -92,10 +93,10 @@ class AppContainer extends Component{
 }
 
 AppContainer.propTypes = {
-    undo: React.PropTypes.func,
-    redo: React.PropTypes.func,
-    undoEnabled: React.PropTypes.bool,
-    redoEnabled: React.PropTypes.bool
+    undo: PropTypes.func,
+    redo: PropTypes.func,
+    undoEnabled: PropTypes.bool,
+    redoEnabled: PropTypes.bool
 }
 
 const mapStateToProps = (state) => {

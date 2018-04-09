@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Modal, Button } from 'react-bootstrap'
 class InfoTab extends Component{
 
@@ -19,8 +20,8 @@ class InfoTab extends Component{
 }
 
 InfoTab.propTypes = {
-    onTryClose: React.PropTypes.func,
-    switchTab: React.PropTypes.func,
-    selectedTab: React.PropTypes.string,
+    onTryClose: PropTypes.func,
+    switchTab: PropTypes.func,
+    selectedTab: PropTypes.string,
 }
 export default InfoTab

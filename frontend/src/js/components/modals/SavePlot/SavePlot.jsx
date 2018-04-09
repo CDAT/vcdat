@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
 import FileSaver from 'file-saver'
@@ -69,9 +70,9 @@ const mapStateToProps = (state) => {
 }
 
 SavePlot.propTypes = {
-    onTryClose: React.PropTypes.func,
-    show: React.PropTypes.bool,
-    selected_cell_id: React.PropTypes.string,
+    onTryClose: PropTypes.func,
+    show: PropTypes.bool,
+    selected_cell_id: PropTypes.string,
 }
 
 export default connect(mapStateToProps, null)(SavePlot)

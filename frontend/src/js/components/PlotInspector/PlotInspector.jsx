@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Button } from 'react-bootstrap'
 import ColormapEditor from "../modals/ColormapEditor/ColormapEditor.jsx"
 import { ONE_VAR_PLOTS } from '../../constants/Constants.js'

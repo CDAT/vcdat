@@ -1,9 +1,12 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
-var React = require('react');
+var React = require('react')
 
 import DimensionSlider from '../../../../../../src/js/components/modals/CachedFiles/DimensionSlider/DimensionSlider.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow, mount } from 'enzyme'
 import sinon from 'sinon'
 
@@ -27,7 +30,7 @@ describe('DimensionSliderTest.jsx', function() {
             value: [0, 9]
         })
         expect(spy.callCount).to.equal(1)
-        dimension_slider.find("#dimension-slider-select-lower").simulate("change", {
+        dimension_slider.find("select#dimension-slider-select-lower").simulate("change", {
             target: {
                 value: 2
             }
@@ -46,7 +49,7 @@ describe('DimensionSliderTest.jsx', function() {
             value: [0, 9]
         })
         expect(spy.callCount).to.equal(1)
-        dimension_slider.find("#dimension-slider-select-upper").simulate("change", {
+        dimension_slider.find("select#dimension-slider-select-upper").simulate("change", {
             target: {
                 value: 8
             }

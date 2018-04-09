@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
-import './CachedFiles.scss';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Modal } from 'react-bootstrap'
+import './CachedFiles.scss'
 import FileTab from './Tabs/FileTab.jsx'
 // import Esgf from './Tabs/EsgfTab.jsx'
 // import OpendapTab from './Tabs/OpendapTab.jsx'
 import InfoTab from './Tabs/InfoTab.jsx'
-import TabBar from '../../TabBar/TabBar.jsx';
+import TabBar from '../../TabBar/TabBar.jsx'
 
 class CachedFiles extends Component {
     constructor(props) {
@@ -59,8 +60,8 @@ class CachedFiles extends Component {
 }
 
 CachedFiles.propTypes = {
-    show: React.PropTypes.bool.isRequired,
-    onTryClose: React.PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
+    onTryClose: PropTypes.func.isRequired,
 }
 
 export default CachedFiles

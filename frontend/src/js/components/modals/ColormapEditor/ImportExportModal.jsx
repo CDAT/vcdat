@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Modal, Button } from 'react-bootstrap'
 import './ColormapWidget.css'
 
 class ImportExportModal extends Component {
@@ -15,10 +16,10 @@ class ImportExportModal extends Component {
 
     static get propTypes() { 
         return { 
-            show: React.PropTypes.bool.isRequired, // show the modal
-            close: React.PropTypes.func.isRequired, // close the modal
-            current_colormap: React.PropTypes.array,
-            saveColormap: React.PropTypes.func,
+            show: PropTypes.bool.isRequired, // show the modal
+            close: PropTypes.func.isRequired, // close the modal
+            current_colormap: PropTypes.array,
+            saveColormap: PropTypes.func,
         }; 
     }
 

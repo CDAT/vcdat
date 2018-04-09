@@ -1,9 +1,12 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
-var React = require('react');
+var React = require('react')
 import { PurePlotInspectorWrapper as PlotInspectorWrapper,
          mapStateToProps } from '../../../../src/js/components/PlotInspector/PlotInspectorWrapper.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow } from 'enzyme'
 import sinon from 'sinon'
 import PubSub from 'pubsub-js'
@@ -133,6 +136,7 @@ describe('PlotInspectorWrapperTest.jsx', function() {
         const wrapper = shallow(<PlotInspectorWrapper {...props}/>)
         let spy = sinon.spy()
         let clock = sinon.useFakeTimers();
+        PubSub.clearAllSubscriptions();
         PubSub.subscribe(PubSubEvents.clear_canvas, spy)
         wrapper.instance().handleClearCell()
         clock.tick(1) // publish is async. We manually tick here to make sure it runs before testing

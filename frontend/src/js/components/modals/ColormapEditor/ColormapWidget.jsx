@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import './ColormapWidget.css'
 
 class ColormapWidget extends Component {
@@ -8,11 +9,11 @@ class ColormapWidget extends Component {
 
     static get propTypes() {
         return {
-            current_colormap: React.PropTypes.array,
-            color: React.PropTypes.object,// the current colorpicker color 
-            selected_cells_start: React.PropTypes.number,
-            selected_cells_end: React.PropTypes.number,
-            handleCellClick: React.PropTypes.func,
+            current_colormap: PropTypes.array,
+            color: PropTypes.object,// the current colorpicker color 
+            selected_cells_start: PropTypes.number,
+            selected_cells_end: PropTypes.number,
+            handleCellClick: PropTypes.func,
         }
     }
 

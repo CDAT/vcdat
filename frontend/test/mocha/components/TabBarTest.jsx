@@ -1,9 +1,12 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
-var React = require('react');
+var React = require('react')
 
 import TabBar from '../../../src/js/components/TabBar/TabBar.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow, mount } from 'enzyme'
 import sinon from 'sinon'
 
@@ -34,21 +37,21 @@ describe('TabBarTest.jsx', function() {
             },
         ]
         const tab_bar = mount(<TabBar tabs={tabs} switchTab={spy} selected_tab={0}/>) // use mount because shallow will allow clicks on disabled el. 
-        let tab0 = tab_bar.find(`#tabbar-${tabs[0].id}`)
+        let tab0 = tab_bar.find(`button#tabbar-${tabs[0].id}`)
         expect(tab0).to.have.lengthOf(1)
         expect(tab0.hasClass("btn-default")).to.be.false
         expect(tab0.hasClass("btn-primary")).to.be.true
         tab0.simulate("click")
         expect(spy.calledWith(0)).to.be.true
         
-        let tab1 = tab_bar.find(`#tabbar-${tabs[1].id}`)
+        let tab1 = tab_bar.find(`button#tabbar-${tabs[1].id}`)
         expect(tab1).to.have.lengthOf(1)
         expect(tab1.hasClass("btn-default")).to.be.true
         expect(tab1.hasClass("btn-primary")).to.be.false // it should not be selected
         tab1.simulate("click")
         expect(spy.calledWith(1)).to.be.false // it should be disabled
 
-        let tab2 = tab_bar.find(`#tabbar-${tabs[2].id}`)
+        let tab2 = tab_bar.find(`button#tabbar-${tabs[2].id}`)
         expect(tab2).to.have.lengthOf(1)
         expect(tab2.hasClass("btn-default")).to.be.true
         expect(tab2.hasClass("btn-primary")).to.be.false // it should not be selected
@@ -57,7 +60,7 @@ describe('TabBarTest.jsx', function() {
 
         tab_bar.setProps({selected_tab: 2})
 
-        tab2 = tab_bar.find(`#tabbar-${tabs[2].id}`)
+        tab2 = tab_bar.find(`button#tabbar-${tabs[2].id}`)
         expect(tab2).to.have.lengthOf(1)
         expect(tab2.hasClass("btn-default")).to.be.false
         expect(tab2.hasClass("btn-primary")).to.be.true // it should be selected

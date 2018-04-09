@@ -1,9 +1,12 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
-var React = require('react');
+var React = require('react')
 
 import FileTab from '../../../../../../src/js/components/modals/CachedFiles/Tabs/FileTab.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow } from 'enzyme'
 import sinon from 'sinon'
 import { createMockStore } from 'redux-test-utils'
@@ -275,6 +278,7 @@ describe('FileTabTest.jsx', function() {
         return cached_files.instance().handleFileSelected(file).then(() => {
             expect(cached_files.state().showFileExplorer).to.be.false
             expect(cached_files.state().selectedVariableName).to.equal("clt")
+            cached_files.setState(cached_files.state()) // work around for componentDidUpdate not firing in shallow
             expect(cached_files.state().selectedVariable.name).to.equal("Total cloudiness")
         })
     });

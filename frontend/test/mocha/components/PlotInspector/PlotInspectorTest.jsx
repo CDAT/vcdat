@@ -1,9 +1,12 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
-var React = require('react');
+var React = require('react')
 import PlotInspector from '../../../../src/js/components/PlotInspector/PlotInspector.jsx'
 import { ONE_VAR_PLOTS, TWO_VAR_PLOTS } from '../../../../src/js/constants/Constants.js'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow, mount } from 'enzyme'
 import sinon from 'sinon'
 
@@ -83,7 +86,7 @@ describe('PlotInspectorTest.jsx', function() {
         for(let gm_type_1var of ONE_VAR_PLOTS){
             props.plots[0].graphics_method_parent = gm_type_1var
             const wrapper = shallow(<PlotInspector {...props} />)            
-            expect(wrapper.find("#plot-inspector-variable2-select").getNode().props.disabled).to.equal(true)
+            expect(wrapper.find("#plot-inspector-variable2-select").getElement().props.disabled).to.equal(true)
         }
     });
 
@@ -92,7 +95,7 @@ describe('PlotInspectorTest.jsx', function() {
         for(let gm_type_2var of TWO_VAR_PLOTS){
             props.plots[0].graphics_method_parent = gm_type_2var
             const wrapper = shallow(<PlotInspector {...props} />)
-            expect(wrapper.find("#plot-inspector-variable2-select").getNode().props.disabled).to.equal(false)
+            expect(wrapper.find("#plot-inspector-variable2-select").getElement().props.disabled).to.equal(false)
         }
     });
 
