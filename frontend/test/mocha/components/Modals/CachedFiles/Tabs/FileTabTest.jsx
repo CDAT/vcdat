@@ -3,7 +3,7 @@ var chai = require('chai')
 var expect = chai.expect;
 var React = require('react')
 
-import FileTab from '../../../../../../src/js/components/modals/CachedFiles/Tabs/FileTab.jsx'
+import FileTab, { getDefaultVariable } from '../../../../../../src/js/components/modals/CachedFiles/Tabs/FileTab.jsx'
 import Enzyme from 'enzyme' 
 import Adapter from 'enzyme-adapter-react-16'
 Enzyme.configure({ adapter: new Adapter() })
@@ -317,4 +317,20 @@ describe('FileTabTest.jsx', function() {
         expect(cached_files.state().dimension[0].values.range[1]).to.equal(10)
         expect(cached_files.state().dimension[0].values.stride).to.equal(1)
     });
+
+    it('Selects a default variable that is not a bounds variable', () => {
+        let invalid_variables = ['var_lat', 'var_lon', 'lon_var', 'lat_var', 'variable_bounds','bnds_variable', 'axis']
+        let valid_variables = ['z', 'c', 'y']
+
+        // if all variables are invalid, it should return the first sorted name
+        expect(getDefaultVariable(invalid_variables)).to.equal('axis')
+
+        // The function should sort the array and return the first match
+        expect(getDefaultVariable(valid_variables)).to.equal('c')
+
+        // After sorting, it should ignore invalid matches and return the first sorted match
+        expect(getDefaultVariable(invalid_variables.concat(valid_variables))).to.equal('c')
+        
+    });
+
 });

@@ -24,7 +24,7 @@ function getDefaultVariable(names){
     // This function attempts to return an index for an entry in the array that is unlikely to be a bounds variable.
     // If no suitable candidate is found, will return 0 
 
-    const substrings = ["bounds", "bnds", "lat", "lon", "axis"] // substrings that indicate a bounds variable
+    const substrings = ["bound", "bnds", "lat", "lon", "axis"] // substrings that indicate a bounds variable
     const sorted_names = names.sort(function (a, b) {
         return a.toLowerCase().localeCompare(b.toLowerCase());
     })
@@ -37,7 +37,7 @@ function getDefaultVariable(names){
             return name // return the name of the first variable that doesnt represent a bound
         } 
     }
-    return names[0] // return the first name if none matched
+    return sorted_names[0] // return the first name if none matched
 }
 
 const HISTORY_KEY = "variable_history_files"
@@ -677,4 +677,5 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
+export { getDefaultVariable }
 export default connect(mapStateToProps, mapDispatchToProps)(FileTab);
