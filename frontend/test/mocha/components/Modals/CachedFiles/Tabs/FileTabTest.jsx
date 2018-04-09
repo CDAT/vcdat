@@ -1,9 +1,12 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai');
+var chai = require('chai')
 var expect = chai.expect;
-var React = require('react');
+var React = require('react')
 
 import FileTab from '../../../../../../src/js/components/modals/CachedFiles/Tabs/FileTab.jsx'
+import Enzyme from 'enzyme' 
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
 import { shallow } from 'enzyme'
 import sinon from 'sinon'
 import { createMockStore } from 'redux-test-utils'
@@ -13,7 +16,6 @@ const props = {
     cachedFiles: {},
     curVariables: {},
     loadVariables: sinon.spy(),
-    addFileToCache: sinon.spy(),
     switchTab: sinon.spy(),
     selectedTab: "file",
 }
@@ -180,9 +182,9 @@ describe('FileTabTest.jsx', function() {
             }
         }
         expect(cached_files.state().showBookmarkZone).to.be.false
-        cached_files.instance().handleDragStart(event, {})
+        cached_files.instance().handleDragStart(event, {}, 'add')
         expect(cached_files.state().showBookmarkZone).to.be.true
-        cached_files.instance().handleDragEnd()
+        cached_files.instance().handleDragEnd(event, 'add')
         expect(cached_files.state().showBookmarkZone).to.be.false
     });
 
@@ -205,7 +207,7 @@ describe('FileTabTest.jsx', function() {
                 }
             }
         }
-        cached_files.instance().handleDrop(event)
+        cached_files.instance().handleDrop(event, 'add')
         let bookmarks = cached_files.state().bookmarkFiles
         let new_bookmark = bookmarks[bookmarks.length-1]
         sinon.assert.calledOnce(set_item_spy)
@@ -235,7 +237,7 @@ describe('FileTabTest.jsx', function() {
                 }
             }
         }
-        cached_files.instance().handleDrop(event)
+        cached_files.instance().handleDrop(event, 'add')
         sinon.assert.calledOnce(set_item_spy)
         expect(cached_files.state().bookmarkFiles.length).to.equal(0)
         console.log = log // eslint-disable-line no-console
@@ -276,6 +278,7 @@ describe('FileTabTest.jsx', function() {
         return cached_files.instance().handleFileSelected(file).then(() => {
             expect(cached_files.state().showFileExplorer).to.be.false
             expect(cached_files.state().selectedVariableName).to.equal("clt")
+            cached_files.setState(cached_files.state()) // work around for componentDidUpdate not firing in shallow
             expect(cached_files.state().selectedVariable.name).to.equal("Total cloudiness")
         })
     });

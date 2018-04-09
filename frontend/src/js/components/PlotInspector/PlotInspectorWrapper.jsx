@@ -1,13 +1,22 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Actions from '../../constants/Actions.js'
+import PubSub from 'pubsub-js'
+import PubSubEvents from './../../constants/PubSubEvents.js'
+import { toast } from 'react-toastify'
 import PlotInspector from './PlotInspector.jsx'
+import ExportModal from '../modals/ExportModal.jsx'
 import './PlotInspector.scss'
 
 class PlotInspectorWrapper extends React.Component {
 
     constructor(props){
         super(props)
+        this.state = {
+            show_colormap_editor: false,
+            show_export_modal: false,
+        }
         this.handleSelectVar1 = this.handleSelectVar1.bind(this)
         this.handleSelectVar2 = this.handleSelectVar2.bind(this)
         this.handleSelectGMType = this.handleSelectGMType.bind(this)
@@ -15,6 +24,12 @@ class PlotInspectorWrapper extends React.Component {
         this.handleSelectTemplate = this.handleSelectTemplate.bind(this)
         this.handleAddPlot = this.handleAddPlot.bind(this)
         this.handleDeletePlot = this.handleDeletePlot.bind(this)
+        this.handleClearCell = this.handleClearCell.bind(this)
+        this.handleCloseColormapEditor = this.handleCloseColormapEditor.bind(this)
+        this.handleOpenColormapEditor = this.handleOpenColormapEditor.bind(this)
+        this.handleSavePlot = this.handleSavePlot.bind(this)
+        this.handleOpenExportModal = this.handleOpenExportModal.bind(this)
+        this.handleCloseExportModal = this.handleCloseExportModal.bind(this)
     }
 
     handleSelectVar1(var1, plot_index){
@@ -62,94 +77,84 @@ class PlotInspectorWrapper extends React.Component {
     handleDeletePlot(plot_index){
         this.props.deletePlot(this.props.cell_row, this.props.cell_col, plot_index)
     }
+
+    handleClearCell(){
+        if(this.props.cell_selected === "-1_-1_-1"){
+            toast.info("A cell must be selected to clear", {position: toast.POSITION.BOTTOM_CENTER})
+        }
+        else{
+            PubSub.publish(PubSubEvents.clear_canvas)
+        }
+    }
+    handleOpenColormapEditor(){
+        this.setState({show_colormap_editor: true})
+    }
+
+    handleCloseColormapEditor(){
+        this.setState({show_colormap_editor: false})
+    }
+
+    handleOpenExportModal(){
+        this.setState({show_export_modal: true})
+    }
+
+    handleCloseExportModal(){
+        this.setState({show_export_modal: false})
+    }
+
+    handleSavePlot(){
+        PubSub.publish(PubSubEvents.save_canvas)
+    }
     
     render() {
-        return (
+        return(
             <div className="plot-inspector-wrapper">
-                <nav className="navbar navbar-default">
-                        <div className="container-fluid">
-                            <p className="top-nav-header">Plot Inspector</p>
-                            <button 
-                                id="add-plot-button"
-                                className="btn btn-default btn-sm"
-                                onClick={this.handleAddPlot}
-                                disabled={!(this.props.cell_row > -1 && this.props.cell_col > -1)}>
-                                <i className="glyphicon glyphicon-plus green"></i>
-                                <span> Add Plot</span>
-                            </button>
-                        </div>
-                </nav>
-                <div className="plot-inspector-container">
-                    <table className="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th scope="col" className="no-padding-top">Delete</th>
-                                <th scope="col" className="no-padding-top">Var 1</th>
-                                <th scope="col" className="no-padding-top">Var 2</th>
-                                <th scope="col" className="no-padding-top">Graphics Type</th>
-                                <th scope="col" className="no-padding-top">Graphics Method</th>
-                                <th scope="col" className="no-padding-top">Template</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                this.props.plots && this.props.plots.map((plot, index) => {
-                                    let graphics_methods
-                                    try{
-                                        graphics_methods = Object.keys(this.props.all_graphics_methods[plot.graphics_method_parent])
-                                    }
-                                    catch(e){
-                                        console.log(e)
-                                        graphics_methods = []
-                                    }
-
-                                    return(
-                                        <PlotInspector
-                                            key={index}
-                                            plot_index={index}
-                                            plot={plot}
-                                            variables={this.props.variables}
-                                            graphics_method_types={this.props.graphics_method_types}
-                                            graphics_methods={graphics_methods}
-                                            templates={this.props.templates}
-                                            cur_var1={plot.variables.length > 0 ? plot.variables[0] : ""}
-                                            cur_var2={plot.variables.length > 1 ? plot.variables[1] : ""}
-                                            cur_gm_type={plot.graphics_method_parent}
-                                            cur_gm={plot.graphics_method}
-                                            cur_template={plot.template}
-                                            handleSelectVar1={this.handleSelectVar1}
-                                            handleSelectVar2={this.handleSelectVar2}
-                                            handleSelectGMType={this.handleSelectGMType}
-                                            handleSelectGM={this.handleSelectGM}
-                                            handleSelectTemplate={this.handleSelectTemplate}
-                                            handleDeletePlot={this.handleDeletePlot}
-                                            disable_delete={this.props.plots.length < 2}
-                                        />
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                <PlotInspector
+                    {...this.props}
+                    variables={this.props.variables}
+                    templates={this.props.templates}
+                    handleSelectVar1={this.handleSelectVar1}
+                    handleSelectVar2={this.handleSelectVar2}
+                    handleSelectGMType={this.handleSelectGMType}
+                    handleSelectGM={this.handleSelectGM}
+                    handleSelectTemplate={this.handleSelectTemplate}
+                    handleAddPlot={this.handleAddPlot}
+                    handleDeletePlot={this.handleDeletePlot}
+                    disable_delete={this.props.plots.length < 2}
+                    show_colormap_editor={this.state.show_colormap_editor}
+                    handleOpenColormapEditor={this.handleOpenColormapEditor}
+                    handleCloseColormapEditor={this.handleCloseColormapEditor}
+                    handleClearCell={this.handleClearCell}
+                    handleOpenExportModal={this.handleOpenExportModal}
+                />
+                {
+                    this.state.show_export_modal &&
+                    <ExportModal
+                        show={this.state.show_export_modal}
+                        close={this.handleCloseExportModal}
+                    />
+                }
             </div>
+            
         )
     }
 }
 
 PlotInspectorWrapper.propTypes = {
-    plots: React.PropTypes.array,
-    all_graphics_methods: React.PropTypes.object,
-    variables: React.PropTypes.array,
-    graphics_method_types: React.PropTypes.array,
-    templates: React.PropTypes.array,
-    cell_row: React.PropTypes.number,
-    cell_col: React.PropTypes.number,
-    swapVariableInPlot: React.PropTypes.func,
-    swapGraphicsMethodInPlot: React.PropTypes.func,
-    swapTemplateInPlot: React.PropTypes.func,
-    deleteVariableInPlot: React.PropTypes.func,
-    addPlot: React.PropTypes.func,
-    deletePlot: React.PropTypes.func,
+    plots: PropTypes.array,
+    all_graphics_methods: PropTypes.object,
+    variables: PropTypes.array,
+    graphics_method_types: PropTypes.array,
+    templates: PropTypes.array,
+    cell_row: PropTypes.number,
+    cell_col: PropTypes.number,
+    swapVariableInPlot: PropTypes.func,
+    swapGraphicsMethodInPlot: PropTypes.func,
+    swapTemplateInPlot: PropTypes.func,
+    deleteVariableInPlot: PropTypes.func,
+    addPlot: PropTypes.func,
+    deletePlot: PropTypes.func,
+    cell_selected: PropTypes.string,
 }
 
 const mapStateToProps = (state) => {
@@ -163,6 +168,7 @@ const mapStateToProps = (state) => {
         plots = state.present.sheets_model.sheets[sheet].cells[row][col].plots
     }
     return {
+        cell_selected: cell_id_string,
         plots: plots,
         cell_row: row,
         cell_col: col,
@@ -197,5 +203,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlotInspectorWrapper);
-export {PlotInspectorWrapper as PurePlotInspectorWrapper}
+export { PlotInspectorWrapper as PurePlotInspectorWrapper }
+export { mapDispatchToProps } // for unit testing
+export { mapStateToProps }    // for unit testing
 

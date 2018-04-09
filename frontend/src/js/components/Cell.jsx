@@ -1,12 +1,13 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import Actions from '../constants/Actions.js';
-import Plotter from './Plotter.jsx';
-import Canvas from './Canvas.jsx';
-import {DropTarget} from 'react-dnd';
+import React from 'react'
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
+import Actions from '../constants/Actions.js'
+import Plotter from './Plotter.jsx'
+import Canvas from './Canvas.jsx'
+import {DropTarget} from 'react-dnd'
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
-import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 import { TWO_VAR_PLOTS } from '../constants/Constants.js'
 
 function collect(connect, monitor) {
@@ -24,6 +25,7 @@ class Cell extends React.Component {
     }
     componentDidMount(){
         this.token = PubSub.subscribe(PubSubEvents.clear_canvas, this.clearCanvas.bind(this))
+        this.save_canvas_token = PubSub.subscribe(PubSubEvents.save_canvas, this.handleSaveCanvas.bind(this))
     }
     getOwnCellId(){
         return `${this.props.sheet_index}_${this.props.row}_${this.props.col}`
@@ -41,7 +43,7 @@ class Cell extends React.Component {
     }
     clearCanvas(){
         if(this.getOwnCellId() == this.props.selected_cell_id){
-            this.refs.canvas.getWrappedInstance().clearCanvas()
+            this.canvas.getWrappedInstance().clearCanvas()
             this.props.clearCell(this.props.row, this.props.col) // removes plot state from redux
         }
     }
@@ -69,9 +71,15 @@ class Cell extends React.Component {
         }
         return false
     }
+    handleSaveCanvas(){
+        if(this.getOwnCellId() === this.props.selected_cell_id){
+            this.canvas.getWrappedInstance().saveCanvas()
+        }
+    }
     render() {
+        let cell_id = this.getOwnCellId()
         this.cell = this.props.cells[this.props.row][this.props.col];
-        this.class = this.getOwnCellId() == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
+        this.class = cell_id == this.props.selected_cell_id ? 'cell cell-selected' : 'cell'
         this.can_plot = this.canPlot(this.cell)
         this.plotter_on_top = this.props.isOver || !this.can_plot
         return this.props.connectDropTarget(
@@ -89,7 +97,8 @@ class Cell extends React.Component {
                     swapTemplateInPlot={this.props.swapTemplateInPlot}
                 />
                 <Canvas 
-                    ref="canvas"
+                    ref={(el)=>{this.canvas = el}}
+                    cell_id={cell_id}
                     onTop={!this.plotter_on_top}
                     plots={this.cell.plots}
                     row={this.props.row}
@@ -102,20 +111,20 @@ class Cell extends React.Component {
 }
 
 Cell.propTypes = {
-    cells: React.PropTypes.array,
-    row: React.PropTypes.number,
-    col: React.PropTypes.number,
-    addPlot: React.PropTypes.func,
-    swapVariableInPlot: React.PropTypes.func,
-    swapGraphicsMethodInPlot: React.PropTypes.func,
-    swapTemplateInPlot: React.PropTypes.func,
-    connectDropTarget: React.PropTypes.func,
-    isOver: React.PropTypes.bool,
-    selectCell: React.PropTypes.func,
-    deselectCell: React.PropTypes.func,
-    selected_cell_id: React.PropTypes.string,
-    clearCell: React.PropTypes.func,
-    sheet_index: React.PropTypes.number,
+    cells: PropTypes.array,
+    row: PropTypes.number,
+    col: PropTypes.number,
+    addPlot: PropTypes.func,
+    swapVariableInPlot: PropTypes.func,
+    swapGraphicsMethodInPlot: PropTypes.func,
+    swapTemplateInPlot: PropTypes.func,
+    connectDropTarget: PropTypes.func,
+    isOver: PropTypes.bool,
+    selectCell: PropTypes.func,
+    deselectCell: PropTypes.func,
+    selected_cell_id: PropTypes.string,
+    clearCell: PropTypes.func,
+    sheet_index: PropTypes.number,
 }
 
 const mapStateToProps = (state) => {

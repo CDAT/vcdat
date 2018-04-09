@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import reactCSS from 'reactcss'
-import {CustomPicker} from 'react-color';
-var { Saturation, Hue} = require('react-color/lib/components/common');
+import {CustomPicker} from 'react-color'
+var { Saturation, Hue} = require('react-color/lib/components/common')
 
 import CustomHuePointer from './CustomHuePointer.jsx'
 import BasicColorSwatch from './BasicColorSwatch.jsx'
@@ -106,8 +106,8 @@ class ColorPicker extends Component {
 }
 
 ColorPicker.propTypes = {
-    color: React.PropTypes.object.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    color: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
 }
 
 export default CustomPicker(ColorPicker);

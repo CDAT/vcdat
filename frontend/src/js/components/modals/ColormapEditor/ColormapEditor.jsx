@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap'
 import _ from 'lodash'
 import Actions from '../../../constants/Actions.js'
 import PubSub from 'pubsub-js'
@@ -9,8 +10,8 @@ import PubSubEvents from '../../../constants/PubSubEvents.js'
 import ColorPicker from './ColorPicker.jsx'
 import ColormapWidget from './ColormapWidget.jsx'
 import NewColormapModal from './NewColormapModal.jsx'
-import ImportExportModal from "./ImportExportModal.jsx";
-var colorUtility = require('react-color/lib/helpers/color.js').default;
+import ImportExportModal from "./ImportExportModal.jsx"
+var colorUtility = require('react-color/lib/helpers/color.js').default
 
 class ColormapEditor extends Component {
     constructor(props) {
@@ -30,18 +31,18 @@ class ColormapEditor extends Component {
 
     static get propTypes() {
         return {
-            show: React.PropTypes.bool.isRequired, // show the modal
-            close: React.PropTypes.func.isRequired, // close the modal
-            selected_cell_col: React.PropTypes.number,
-            selected_cell_row: React.PropTypes.number,
-            colormaps: React.PropTypes.object,
-            default_colormap: React.PropTypes.string,
-            deleteColormap: React.PropTypes.func,
-            saveColormap: React.PropTypes.func,
-            sheet: React.PropTypes.object,
-            updateGraphicsMethod: React.PropTypes.func,
-            applyColormap: React.PropTypes.func,
-            graphics_methods: React.PropTypes.object,
+            show: PropTypes.bool.isRequired, // show the modal
+            close: PropTypes.func.isRequired, // close the modal
+            selected_cell_col: PropTypes.number,
+            selected_cell_row: PropTypes.number,
+            colormaps: PropTypes.object,
+            default_colormap: PropTypes.string,
+            deleteColormap: PropTypes.func,
+            saveColormap: PropTypes.func,
+            sheet: PropTypes.object,
+            updateGraphicsMethod: PropTypes.func,
+            applyColormap: PropTypes.func,
+            graphics_methods: PropTypes.object,
         }; 
     }
 

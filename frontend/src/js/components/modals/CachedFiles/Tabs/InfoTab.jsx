@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Modal, Button } from 'react-bootstrap'
-import TabBar from './TabBar.jsx'
 class InfoTab extends Component{
 
     render(){
         return(
             <div>
-               <Modal.Header closeButton>
-                    <Modal.Title>Variable Info</Modal.Title>
-                </Modal.Header>
                 <Modal.Body>
-                    <TabBar switchTab={this.props.switchTab} selectedTab={this.props.selectedTab}/>
                     <div>
                         Variable info goes here...
                     </div>
@@ -24,8 +20,8 @@ class InfoTab extends Component{
 }
 
 InfoTab.propTypes = {
-    onTryClose: React.PropTypes.func,
-    switchTab: React.PropTypes.func,
-    selectedTab: React.PropTypes.string,
+    onTryClose: PropTypes.func,
+    switchTab: PropTypes.func,
+    selectedTab: PropTypes.string,
 }
 export default InfoTab

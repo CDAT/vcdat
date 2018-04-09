@@ -1,11 +1,9 @@
-import React from 'react'
-/* global $ */
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 
-var TemplatePreview = React.createClass({
-    propTypes: {
-        template: React.PropTypes.object
-    },
+class TemplatePreview extends Component {
+    
     componentDidUpdate(prevProps, prevState) {
         const xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(){
@@ -18,7 +16,8 @@ var TemplatePreview = React.createClass({
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.responseType = 'blob';
         xhr.send(JSON.stringify(this.props.template));
-    },
+    }
+
     render() {
         return (
             <div id='tmpl-preview'>
@@ -26,6 +25,10 @@ var TemplatePreview = React.createClass({
             </div>
         )
     }
-})
+}
+
+TemplatePreview.propTypes = {
+    template: PropTypes.object
+}
 
 export default TemplatePreview;

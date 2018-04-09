@@ -1,23 +1,18 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Button } from 'react-bootstrap'
 
-import Cell from 'components/Cell.jsx';
-import { connect } from 'react-redux';
-import Actions from 'constants/Actions.js';
-import Spinner from 'components/Spinner/Spinner.jsx';
+import Cell from '../../components/Cell.jsx'
+import { connect } from 'react-redux'
+import Actions from '../../constants/Actions.js'
+import Spinner from '../../components/Spinner/Spinner.jsx'
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../../constants/PubSubEvents.js'
-import './SpreadsheetContainer.scss';
+import './SpreadsheetContainer.scss'
 /* global $ */
 
-var RenderRow = React.createClass({
-    propTypes: {
-        col: React.PropTypes.number,
-        colCount: React.PropTypes.number,
-        resizeHeader: React.PropTypes.func,
-        row: React.PropTypes.number,
-        sheet_index: React.PropTypes.number,
-    },
+class RenderRow extends Component {
+    
     render() {
         var cols = [];
         for (var i = 0; i < this.props.colCount; i++) {
@@ -36,7 +31,12 @@ var RenderRow = React.createClass({
                         }
                         return;
                     })()}
-                    <Cell resizeHeader={this.props.resizeHeader} row={this.props.row} col={i} sheet_index={this.props.sheet_index}/>
+                    <Cell
+                        resizeHeader={this.props.resizeHeader}
+                        row={this.props.row}
+                        col={i}
+                        sheet_index={this.props.sheet_index}
+                    />
                 </div>
             )
         }
@@ -61,41 +61,46 @@ var RenderRow = React.createClass({
             </div>
         )
     }
-})
+}
 
-var SpreadsheetContainer = React.createClass({
-    propTypes: {
-        addSheet: React.PropTypes.func,
-        changeCurSheetIndex: React.PropTypes.func,
-        colCountChanged: React.PropTypes.func,
-        cur_sheet: React.PropTypes.object,
-        cur_sheet_index: React.PropTypes.number,
-        moveColumn: React.PropTypes.func,
-        moveRow: React.PropTypes.func,
-        remove_enabled: React.PropTypes.bool,
-        removeSheet: React.PropTypes.func,
-        rowCountChanged: React.PropTypes.func,
-        sheets: React.PropTypes.array,
-        shiftSheet: React.PropTypes.func,
-        updateColCount: React.PropTypes.func,
-        updateRowCount: React.PropTypes.func,
-        updateSelectedCells: React.PropTypes.func
-    },
-    getInitialState() {
-        return {};
-    },
+RenderRow.propTypes = {
+    col: PropTypes.number,
+    colCount: PropTypes.number,
+    resizeHeader: PropTypes.func,
+    row: PropTypes.number,
+    sheet_index: PropTypes.number,
+}
+
+class SpreadsheetContainer extends Component {
+    constructor(props){
+        super(props)
+        this.state = {}
+        this.addSheet = this.addSheet.bind(this)
+        this.updateRowCount = this.updateRowCount.bind(this)
+        this.updateColCount = this.updateColCount.bind(this)
+        this.changeCurSheetIndex = this.changeCurSheetIndex.bind(this)
+        this.dropppedColHeader = this.dropppedColHeader.bind(this)
+        this.dropppedRowHeader = this.dropppedRowHeader.bind(this)
+        this.updateSelectedCells = this.updateSelectedCells.bind(this)
+        this.removeSheet = this.removeSheet.bind(this)
+    }
+
     addSheet() {
         this.props.addSheet();
-    },
+    }
+
     updateRowCount(value) {
         this.props.rowCountChanged(value, 10);
-    },
+    }
+
     updateColCount(value) {
         this.props.colCountChanged(value, 10);
-    },
+    }
+
     changeCurSheetIndex(index) {
         this.props.changeCurSheetIndex(index);
-    },
+    }
+
     initDragAndDrop() {
         // col rearrange
         $(".spreadsheet-col .draggable-head").draggable({
@@ -155,59 +160,68 @@ var SpreadsheetContainer = React.createClass({
             }
         }
         );
-    },
+    }
+
     overColDroppable(event, ui) {
         let col = $(event.target).parent().attr('data-col');
         if ($(event.target).attr('data-position') === 'left') {
             col -= 1
         }
         $(':regex(class, border-[0-9]' + col.toString() + ')').css('background-color', '#A3E2F7');
-    },
+    }
+
     outColDroppable(event, ui) {
         let col = $(event.target).parent().attr('data-col');
         if ($(event.target).attr('data-position') === 'left') {
             col -= 1
         }
         $(':regex(class, border-[0-9]' + col.toString() + ')').css('background-color', 'transparent');
-    },
+    }
+
     overRowDroppable(event, ui) {
         let row = $(event.target).parent().attr('data-row');
         if ($(event.target).attr('data-position') === 'top') {
             row -= 1
         }
         $(':regex(class, border-' + row.toString() + '[0-9])').css('background-color', '#A3E2F7');
-    },
+    }
+
     outRowDroppable(event, ui) {
         let row = $(event.target).parent().attr('data-row');
         if ($(event.target).attr('data-position') === 'top') {
             row -= 1
         }
         $(':regex(class, border-' + row.toString() + '[0-9])').css('background-color', 'transparent');
-    },
+    }
+
     componentDidMount() {
         // $('#spreadsheet-div').selectable({filter: '.cell', stop: this.updateSelectedCells});
         this.initDragAndDrop();
-    },
+    }
+
     componentDidUpdate(prevProps) {
         this.initDragAndDrop();
         if(prevProps.cur_sheet.row_count != this.props.cur_sheet.row_count || prevProps.cur_sheet.col_count != this.props.cur_sheet.col_count){
             PubSub.publish(PubSubEvents.resize)
         }
-    },
+    }
+
     dropppedColHeader(event, ui) {
         var dragged_index = ui.draggable.attr('data-col');
         var dropped_index = $(event.target).parent().attr('data-col');
         var dropped_position = $(event.target).attr('data-position');
         $('.border').css('background-color', 'transparent');
         this.props.moveColumn(dragged_index, dropped_index, dropped_position);
-    },
+    }
+
     dropppedRowHeader(event, ui) {
         var dragged_index = ui.draggable.attr('data-row');
         var dropped_index = $(event.target).parent().attr('data-row');
         var dropped_position = $(event.target).attr('data-position');
         $('.border').css('background-color', 'transparent');
         this.props.moveRow(dragged_index, dropped_index, dropped_position);
-    },
+    }
+
     resizeHeader(el) {
         $(".spreadsheet-col .draggable-head").each((index, element) => {
             $(element).width($(el).width());
@@ -215,7 +229,8 @@ var SpreadsheetContainer = React.createClass({
         $(".row-header-container .draggable-head").each((index, element) => {
             $(element).height($(el).height());
         })
-    },
+    }
+
     updateSelectedCells(event, ui) {
         var selected_cells = [];
         $(event.target).find('.ui-selected').each((integer, value) => {
@@ -230,11 +245,13 @@ var SpreadsheetContainer = React.createClass({
             ];
         }
         this.props.updateSelectedCells(selected_cells);
-    },
+    }
+
     removeSheet(index, event) {
         event.stopPropagation();
         this.props.removeSheet(index)
-    },
+    }
+
     render() {
         let rowCount = this.props.cur_sheet.row_count;
         let colCount = this.props.cur_sheet.col_count;
@@ -283,7 +300,25 @@ var SpreadsheetContainer = React.createClass({
             </div>
         )
     }
-});
+}
+
+SpreadsheetContainer.propTypes = {
+    addSheet: PropTypes.func,
+    changeCurSheetIndex: PropTypes.func,
+    colCountChanged: PropTypes.func,
+    cur_sheet: PropTypes.object,
+    cur_sheet_index: PropTypes.number,
+    moveColumn: PropTypes.func,
+    moveRow: PropTypes.func,
+    remove_enabled: PropTypes.bool,
+    removeSheet: PropTypes.func,
+    rowCountChanged: PropTypes.func,
+    sheets: PropTypes.array,
+    shiftSheet: PropTypes.func,
+    updateColCount: PropTypes.func,
+    updateRowCount: PropTypes.func,
+    updateSelectedCells: PropTypes.func
+}
 
 const mapStateToProps = (state) => {
     return {

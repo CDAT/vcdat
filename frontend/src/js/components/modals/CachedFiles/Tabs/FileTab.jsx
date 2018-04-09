@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import Actions from '../../../../constants/Actions.js';
-import { Modal, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap';
-import _ from 'lodash';
-import Dialog from 'react-bootstrap-dialog';
-import { DropTarget, DragSource } from 'react-dnd';
-import { findDOMNode } from 'react-dom';
-
-import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx';
-import FileExplorer from '../../FileExplorer/FileExplorer.jsx';
-import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js';
-import TabBar from './TabBar.jsx'
+import { Modal, Button, Row, Col, Glyphicon, FormGroup, FormControl, ControlLabel, InputGroup } from 'react-bootstrap'
+import _ from 'lodash'
+import Dialog from 'react-bootstrap-dialog'
+import { DropTarget, DragSource } from 'react-dnd'
+import { findDOMNode } from 'react-dom'
 import { toast } from 'react-toastify'
 
-import '../CachedFiles.scss';
+import Actions from '../../../../constants/Actions.js'
+import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx'
+import FileExplorer from '../../FileExplorer/FileExplorer.jsx'
+import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js'
+
+import '../CachedFiles.scss'
 
 function cleanPath(path) {
     return `/${path.split('/').filter(segment => segment).join('/')}`;
@@ -279,27 +279,28 @@ class FileTab extends Component {
             if(option == 'add'){
                 if(!fileInBookmarks){
                     bookmarks.push(file)
+                    this.setState({showBookmarkZone: false})
                 }
             }
             else if(option == 'remove'){
                 if(fileInBookmarks){
                     bookmarks.splice(fileInBookmarksIndex, 1)
+                    this.setState({showRemoveBookmarkZone: false})
                 }
             }
             else{
-                throw error
+                console.error('no parameter passed')
             }
             window.localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bookmarks))
             this.setState({bookmarkFiles: bookmarks})
             
         } catch (e) {
-            console.log(e)
+            console.error(e)
             return;
         }
     }
 
     handleDragEnd(event, option){
-        console.log("drag end " + option)
         if(option == 'add'){
             this.setState({showBookmarkZone: false})
         }
@@ -307,18 +308,14 @@ class FileTab extends Component {
             this.setState({showRemoveBookmarkZone: false})
         }
         else{
-            console.log('Error')
+            console.error('no parameter passed')
         }
     }
 
     render() {
         return (
             <div>
-                <Modal.Header closeButton>
-                    <Modal.Title>Load Variable</Modal.Title>
-                </Modal.Header>
                 <Modal.Body>
-                    <TabBar switchTab={this.props.switchTab} selectedTab={this.props.selectedTab}/>
                     <div className="load-from">
                         <Row>
                             <Col className="text-right" sm={2}>
@@ -363,6 +360,7 @@ class FileTab extends Component {
                                         return (
                                             <div 
                                                 className="file"
+                                                id="history-file-dragable"
                                                 key={i}
                                                 draggable="true"
                                                 onDragStart={(e) => {this.handleDragStart(e, file, 'add')}}
@@ -381,6 +379,7 @@ class FileTab extends Component {
                                 <br/>
                                 <FormControl
                                     className="trash"
+                                    id="trash-span-dropable"
                                     componentClass="div"
                                     style={{backgroundColor: this.state.showRemoveBookmarkZone ? "#ff8888" : "#fff"}}
                                     onDragOver={(e) => {this.handleDragOver(e, "remove")}}
@@ -392,6 +391,7 @@ class FileTab extends Component {
                             <Col sm={9}>
                                 <FormControl 
                                     className="bookmarks"
+                                    
                                     componentClass="div"
                                     style={{backgroundColor: this.state.showBookmarkZone ? "#d1ecf1" : "#fff"}}
                                     onDragOver={(e) => {this.handleDragOver(e, 'add')}}
@@ -570,14 +570,13 @@ class FileTab extends Component {
     }
 }
 FileTab.propTypes = {
-    onTryClose: React.PropTypes.func.isRequired,
-    cachedFiles: React.PropTypes.object,
-    curVariables: React.PropTypes.object.isRequired,
-    loadVariables: React.PropTypes.func,
-    addFileToCache: React.PropTypes.func,
-    switchTab: React.PropTypes.func,
-    selectedTab: React.PropTypes.string,
-    setRecentFolderOpened: React.PropTypes.func,
+    onTryClose: PropTypes.func.isRequired,
+    cachedFiles: PropTypes.object,
+    curVariables: PropTypes.object.isRequired,
+    loadVariables: PropTypes.func,
+    switchTab: PropTypes.func,
+    selectedTab: PropTypes.string,
+    setRecentFolderOpened: PropTypes.func,
 }
 
 var DimensionContainer = (props) => {

@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
-import _ from 'lodash';
-import { toast } from "react-toastify"
+import _ from 'lodash'
+import { toast } from 'react-toastify'
+import FileSaver from 'file-saver'
 
 class Canvas extends Component{
     constructor(props){
@@ -34,7 +36,7 @@ class Canvas extends Component{
 
     componentDidMount() {
         try{
-            this.canvas = vcs.init(this.refs.div);
+            this.canvas = vcs.init(this.div);
             this.resize_token = PubSub.subscribe(PubSubEvents.resize, this.resetCanvas.bind(this))
             this.colormap_token = PubSub.subscribe(PubSubEvents.colormap_update, this.handleColormapUpdate.bind(this))
         }
@@ -57,12 +59,12 @@ class Canvas extends Component{
             // The incorrect order, and corrected order are shown below
             // plotter -> empty_plot -> spinner -> filled_plot
             // plotter -> spinner -> filled_plot
-            this.refs.spinner.className = "canvas-spinner-show"
+            this.spinner.className = "canvas-spinner-show"
             return
         }
         this.canvas.clear().then(() => {
             if(this.props.can_plot){
-                this.refs.spinner.className = "canvas-spinner-show"
+                this.spinner.className = "canvas-spinner-show"
                 this.plotAll.call(this)
             }
         })
@@ -72,7 +74,13 @@ class Canvas extends Component{
         for(let [index, plot] of this.props.plots.entries()){
             await this.plot(plot, index)
         }
-        this.refs.spinner.className = "canvas-spinner-hidden"
+        this.spinner.className = "canvas-spinner-hidden"
+    }
+
+    saveCanvas(name){
+        this.div.firstElementChild.toBlob((blob) => {
+            FileSaver.saveAs(blob, "pretty_image.png"); // https://github.com/eligrey/FileSaver.js
+        })
     }
 
     plot(plot, index){
@@ -107,7 +115,7 @@ class Canvas extends Component{
                 (error) =>{
                     this.canvas.close()
                     delete this.canvas
-                    this.canvas = vcs.init(this.refs.div);
+                    this.canvas = vcs.init(this.div);
                     if(error.data){
                         console.warn("Error while plotting: ", error)
                         toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
@@ -134,7 +142,7 @@ class Canvas extends Component{
     resetCanvas(){
         this.canvas.close()
         delete this.canvas
-        this.canvas = vcs.init(this.refs.div);
+        this.canvas = vcs.init(this.div);
         this.forceUpdate()
     }
 
@@ -154,23 +162,23 @@ class Canvas extends Component{
     render() {
         return (
             <div className={this.props.onTop ? "cell-stack-top" : "cell-stack-bottom"}>
-                <div ref="div" className="canvas-container"></div>
-                <div ref="spinner" className="canvas-spinner-show">Loading <span className="loading-spinner"></span></div>
+                <div ref={(el) => {this.div = el}} id={`canvas_${this.props.cell_id}`} className="canvas-container"></div>
+                <div ref={(el) => {this.spinner = el}} className="canvas-spinner-show">Loading <span className="loading-spinner"></span></div>
             </div>
         )
     }
 }
 Canvas.propTypes = {
-    plots: React.PropTypes.array,
-    plotVariables: React.PropTypes.array,
-    plotGMs: React.PropTypes.array,
-    onTop: React.PropTypes.bool,
-    clearCell: React.PropTypes.func,
-    row: React.PropTypes.number,
-    col: React.PropTypes.number,
-    selected_cell_id: React.PropTypes.string,
-    cell_id: React.PropTypes.number,
-    can_plot: React.PropTypes.bool,
+    plots: PropTypes.array,
+    plotVariables: PropTypes.array,
+    plotGMs: PropTypes.array,
+    onTop: PropTypes.bool,
+    clearCell: PropTypes.func,
+    row: PropTypes.number,
+    col: PropTypes.number,
+    selected_cell_id: PropTypes.string,
+    cell_id: PropTypes.string,
+    can_plot: PropTypes.bool,
 }
 
 const mapStateToProps = (state, ownProps) => {

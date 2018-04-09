@@ -1,15 +1,21 @@
-/* globals TestComponent, it, describe, before */
-// we need the dom-mock script to build a DOM
-var dom_mock = require('../dom-mock');
-var jsdom = require('mocha-jsdom');
-// we need chai for its various assertion libraries
-var chai = require('chai');
-var assert = chai.assert;
-var React = require('react');
-// React's TestUtils allows us to render components and search for them in the mock DOM
-var TestUtils = require('react-addons-test-utils');
-// To test our component, we have to require the source
-var ExampleComponent = require('./Example.jsx').default;
+/* globals it, describe, before, beforeEach, */
+// React has to be in scope when testing
+var React = require('react')
+// chai gives us various assertion tools like assert, and expect
+var chai = require('chai')
+var expect = chai.expect;
+
+// Enzyme provides various testing facilities including shallow rendering a component
+// Shallow rending helps ensure that unit tests only test the top level component in the render tree
+import Enzyme from 'enzyme'
+// Enzyme needs an adapter to connect interface with our version of react
+import Adapter from 'enzyme-adapter-react-16'
+Enzyme.configure({ adapter: new Adapter() })
+import { shallow } from 'enzyme'
+// And of course we have to import the component we are testing
+import ExampleComponent from './ExampleComponent.jsx'
+
+
 
 // Mocha's describe() lets us group tests, and name them with descriptive strings
 //  This allows us to create testing suites, and pick them out easily in the reporter when we run tests
@@ -27,15 +33,20 @@ describe('ExampleTest.jsx : An example React component test', function() {
     //  The first argument should be a string that tells what the test does.
     //  The second argument should be a function that ends by with some sort of assertion
     //      about the contents of the component you are testing.
-    it('should contain text: TEST', function() {
-        // render an instance of <TestComponent /> using TestUtils.renderIntoDocument()
-        var myDiv = TestUtils.renderIntoDocument(
-            <ExampleComponent />
-        );
-        // search the document for the previously rendered component, and return its interior 'span' element.
-        var divText = TestUtils.findRenderedDOMComponentWithTag(myDiv, 'span');
+    it('Renders without exploding', function() {
+        // enzyme's shallow will return a component that is wrapped with various enzyme functions
+        const wrapper = shallow(<ExampleComponent />)
+        // Check that the component rendered
+        expect(wrapper).to.have.lengthOf(1);
+    })
 
-        // check to make sure TestComponent rendered <span>TEST</span>, as specified in Example.jsx
-        assert.equal(divText.textContent, 'TEST');
-      });
+    it('sayHello returns "Hello"', function() {
+        // We can access the component by calling wrapper.instance()
+        const wrapper = shallow(<ExampleComponent />)
+        // Check that a function works
+        expect(wrapper.instance().sayHello()).to.equal("Hello")
+        
+        // Enzyme has functions for finding dom elements just like jQuery, and can simulate events as well
+        // wrapper.find(#my-button).simulate("click")
+    })
 });

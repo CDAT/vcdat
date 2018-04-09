@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import VarList from '../components/VarList.jsx'
 import GMList from '../components/GMList.jsx'
 import TemplateList from '../components/TemplateList.jsx'
@@ -6,47 +7,49 @@ import Actions from '../constants/Actions.js'
 import {connect} from 'react-redux'
 
 
-var LeftSideBar = React.createClass({
-    propTypes: {
-        addFileToCache: React.PropTypes.func,
-        cached_files: React.PropTypes.object,
-        getColormaps: React.PropTypes.func,
-        graphics_methods: React.PropTypes.object,
-        loadVariables: React.PropTypes.func,
-        templates: React.PropTypes.object,
-        variables: React.PropTypes.oneOfType([
-            React.PropTypes.array,
-            React.PropTypes.object
-        ]),
-        colormaps: React.PropTypes.object,
-        sheets_model: React.PropTypes.object,
-        updateGraphicsMethods: React.PropTypes.func,
-        updateTemplate: React.PropTypes.func,
-        removeVariable: React.PropTypes.func,
-        selectVariable: React.PropTypes.func,
-        selected_variable: React.PropTypes.string,
-
-    },
+class LeftSideBar extends Component {
+    
     render() {
         return (
             <div id='left-side-bar'>
                 <VarList variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
-                    addFileToCache={this.props.addFileToCache}
                     cachedFiles={this.props.cached_files} 
                     removeVariable={this.props.removeVariable}
                     selectVariable={this.props.selectVariable}
                     selected_variable={this.props.selected_variable}
-                    />
+                />
                 <GMList graphicsMethods={this.props.graphics_methods}
                     updateGraphicsMethod={this.props.updateGraphicsMethod}
                     colormaps={this.props.colormaps}
-                    defaultMethods={this.props.default_methods}/>
-                <TemplateList templates={this.props.templates} updateTemplate={this.props.updateTemplate}/>
+                    defaultMethods={this.props.default_methods}
+                />
+                <TemplateList
+                    templates={this.props.templates}
+                    updateTemplate={this.props.updateTemplate}
+                />
             </div>
         )
     }
-})
+}
+LeftSideBar.propTypes ={
+    cached_files: PropTypes.object,
+    getColormaps: PropTypes.func,
+    graphics_methods: PropTypes.object,
+    loadVariables: PropTypes.func,
+    templates: PropTypes.object,
+    variables: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object
+    ]),
+    colormaps: PropTypes.object,
+    sheets_model: PropTypes.object,
+    updateGraphicsMethods: PropTypes.func,
+    updateTemplate: PropTypes.func,
+    removeVariable: PropTypes.func,
+    selectVariable: PropTypes.func,
+    selected_variable: PropTypes.string,
+}
 
 const mapStateToProps = (state) => {
     return {
@@ -63,9 +66,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addFileToCache: function(filename, filepath, variables) {
-            dispatch(Actions.addFileToCache(filename, filepath, variables));
-        },
         loadVariables: (var_list) => dispatch(Actions.loadVariables(var_list)),
         removeVariable: (var_name) => {
             if(var_name){

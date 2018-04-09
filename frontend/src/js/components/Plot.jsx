@@ -1,6 +1,7 @@
-import React from 'react';
-import {DropTarget} from 'react-dnd';
-import DragAndDropTypes from '../constants/DragAndDropTypes.js';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import {DropTarget} from 'react-dnd'
+import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 import { TWO_VAR_PLOTS } from '../constants/Constants.js'
 
 const plotTarget = {
@@ -45,34 +46,27 @@ function collect(connect, monitor) {
 }
 
 
-var Plot = React.createClass({
-    propTypes: {
-        plot: React.PropTypes.object,
-        plotIndex: React.PropTypes.number,
-        plotName: React.PropTypes.string,
-        swapVariableInPlot: React.PropTypes.func,
-        swapGraphicsMethodInPlot: React.PropTypes.func,
-        swapTemplateInPlot: React.PropTypes.func,
-        connectDropTarget: React.PropTypes.func,
-        isOver: React.PropTypes.bool,
-    },
+class Plot extends Component {
+    
     validSecondVar(event, ui) {
         if (ui.draggable.attr('data-type') === 'variable' && this.props.plot.graphics_method_parent === 'vector') {
             return true;
         }
         return false;
-    },
+    }
+
     isVector(){
         if(TWO_VAR_PLOTS.indexOf(this.props.plot.graphics_method_parent) >= 0){
             return true;
         }
         return false;
-    },
+    }
+
     render() {
         return this.props.connectDropTarget(
             <div className='plot' id={this.props.plotName} data-plot-index={this.props.plotIndex}>
                 <div>
-                    <h4 style={{color: this.props.isOver && this.state.highlight=="variables"? 'lime' : ''}}>Variables:</h4>
+                    <h4 style={{color: this.props.isOver && this.state.highlight==="variables" ? 'lime' : ''}}>Variables:</h4>
                     <div className='plot-var first-var'>{(this.props.plot.variables.length > 0 && this.props.plot.variables[0]
                             ? this.props.plot.variables[0]
                             : '')}
@@ -97,6 +91,17 @@ var Plot = React.createClass({
             </div>
         )
     }
-})
+}
+
+Plot.propTypes = {
+    plot: PropTypes.object,
+    plotIndex: PropTypes.number,
+    plotName: PropTypes.string,
+    swapVariableInPlot: PropTypes.func,
+    swapGraphicsMethodInPlot: PropTypes.func,
+    swapTemplateInPlot: PropTypes.func,
+    connectDropTarget: PropTypes.func,
+    isOver: PropTypes.bool,
+}
 
 export default DropTarget(DragAndDropTypes.PLOT_COMPONENTS, plotTarget, collect)(Plot);

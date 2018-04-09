@@ -31,7 +31,7 @@ def detect_nvars(g_type, g_method, g_obj):
     Returns the number of variables required by the plot type.
     This isn't really exposed by vcs, so this is written by following this
     insanity:
-    https://github.com/UV-CDAT/uvcdat/blob/master/Packages/vcs/Lib/Canvas.py#L251
+    https://github.com/CDAT/cdat/blob/master/Packages/vcs/Lib/Canvas.py#L251
     The reality is that this api will need to be more complicated in the
     future to account some methods (like meshfill) that can take one or two
     variables depending on the grid.

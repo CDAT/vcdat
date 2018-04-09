@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import PlotTools from '../components/PlotTools/PlotTools.jsx'
-/* global $ */
 
 class RightSideBar extends Component{
 
@@ -14,10 +14,10 @@ class RightSideBar extends Component{
 }
 
 RightSideBar.propTypes = {
-    onUndo: React.PropTypes.func,
-    onRedo: React.PropTypes.func,
-    undoEnabled: React.PropTypes.bool,
-    redoEnabled: React.PropTypes.bool,
+    onUndo: PropTypes.func,
+    onRedo: PropTypes.func,
+    undoEnabled: PropTypes.bool,
+    redoEnabled: PropTypes.bool,
 }
 
 export default RightSideBar

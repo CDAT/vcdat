@@ -44,6 +44,15 @@
 button:focus {
     outline: 0 !important;
 }
+
+.btn-default:focus {
+    /* Fixes issue where buttons appear to stay pressed when clicked */
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    outline: 0;
+}
+
 .no-bullets {
     list-style-type: none;
 }
@@ -240,6 +249,7 @@ button:focus {
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     height: 100%;
 }
 .plotter-plots> div> div {
@@ -247,14 +257,21 @@ button:focus {
 }
 .plotter-add-plot {
     flex: 1;
+    max-width: 350px;
 }
 .plot {
     box-sizing: border-box;
     padding: 0 10px 0 10px;
 }
-.plotter-add-plot> img {
-    height: 100%
+
+.plotter-add-plot > svg:hover circle{
+    stroke: lime;
 }
+
+.plotter-add-plot > svg:hover path{
+    fill: lime;
+}
+
 .plot-var {
     display: inline-block;
     width: 50%;
