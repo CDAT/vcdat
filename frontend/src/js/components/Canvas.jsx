@@ -70,17 +70,11 @@ class Canvas extends Component{
         })
     }
 
-    async plotAll(){ // eslint complains about async functions right now. Just ignore it.
+    async plotAll(){
         for(let [index, plot] of this.props.plots.entries()){
             await this.plot(plot, index)
         }
         this.spinner.className = "canvas-spinner-hidden"
-    }
-
-    saveCanvas(name){
-        this.div.firstElementChild.toBlob((blob) => {
-            FileSaver.saveAs(blob, "pretty_image.png"); // https://github.com/eligrey/FileSaver.js
-        })
     }
 
     plot(plot, index){
