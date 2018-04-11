@@ -182,9 +182,9 @@ describe('FileTabTest.jsx', function() {
             }
         }
         expect(cached_files.state().showBookmarkZone).to.be.false
-        cached_files.instance().handleDragStart(event, {}, 'add')
+        cached_files.instance().handleDragStart(event, {})
         expect(cached_files.state().showBookmarkZone).to.be.true
-        cached_files.instance().handleDragEnd(event, 'add')
+        cached_files.instance().handleDragEnd(event)
         expect(cached_files.state().showBookmarkZone).to.be.false
     });
 
@@ -207,14 +207,40 @@ describe('FileTabTest.jsx', function() {
                 }
             }
         }
-        cached_files.instance().handleDrop(event, 'add')
+        cached_files.instance().handleDrop(event)
         let bookmarks = cached_files.state().bookmarkFiles
         let new_bookmark = bookmarks[bookmarks.length-1]
         sinon.assert.calledOnce(set_item_spy)
         expect(new_bookmark.modifiedTime).to.equal(test_bookmark.modifiedTime)
         expect(new_bookmark.name).to.equal(test_bookmark.name) 
         expect(new_bookmark.path).to.equal(test_bookmark.path)
-    });
+    })
+
+    it('Shouldnt add duplicate bookmarks', () => {
+        const store = createMockStore(state)
+        const set_item_spy = sinon.spy()
+        global.window.localStorage = { setItem: set_item_spy } // localStoarge doesnt exist during testing, so mock it 
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive()
+        let test_bookmark = {
+            directory: false,
+            modifiedTime: "Thu, 04 Jan 2018 19:00:00 GMT",
+            name: "clt.nc",
+            path: "/Users/user/sample_data//",
+            subItems: {}
+        }
+        let event = {
+            dataTransfer:{
+                getData: function(){
+                    return JSON.stringify(test_bookmark)
+                }
+            }
+        }
+        cached_files.setState({bookmarkFiles: [test_bookmark]}) // manually add test_bookmark as a bookmark
+        expect(cached_files.state().bookmarkFiles.length).to.equal(1)
+        cached_files.instance().handleDrop(event)
+        expect(set_item_spy.notCalled).to.be.true
+        expect(cached_files.state().bookmarkFiles.length).to.equal(1)
+    })
 
     it('Drop error is caught, and state isnt set', () => {
         let log = console.log // eslint-disable-line no-console
@@ -237,11 +263,30 @@ describe('FileTabTest.jsx', function() {
                 }
             }
         }
-        cached_files.instance().handleDrop(event, 'add')
+        cached_files.instance().handleDrop(event)
         sinon.assert.calledOnce(set_item_spy)
         expect(cached_files.state().bookmarkFiles.length).to.equal(0)
         console.log = log // eslint-disable-line no-console
     });
+
+    it('Deletes bookmarks', () => {
+        const store = createMockStore(state)
+        const set_item_spy = sinon.spy()
+        global.window.localStorage = { setItem: set_item_spy } // localStoarge doesnt exist during testing, so mock it 
+        const cached_files = shallow(<FileTab {...props} store={store}/>).dive()
+        let test_bookmark = {
+            directory: false,
+            modifiedTime: "Thu, 04 Jan 2018 19:00:00 GMT",
+            name: "clt.nc",
+            path: "/Users/user/sample_data//",
+            subItems: {}
+        }
+        cached_files.setState({bookmarkFiles: [test_bookmark]}) // manually add test_bookmark as a bookmark
+        expect(cached_files.state().bookmarkFiles.length).to.equal(1)
+        cached_files.instance().handleDeleteBookmark(0)
+        sinon.assert.calledOnce(set_item_spy)
+        expect(cached_files.state().bookmarkFiles.length).to.equal(0)
+    })
 
     it('Handles file selection', () => {
         global.vcs = {
@@ -330,7 +375,6 @@ describe('FileTabTest.jsx', function() {
 
         // After sorting, it should ignore invalid matches and return the first sorted match
         expect(getDefaultVariable(invalid_variables.concat(valid_variables))).to.equal('c')
-        
     });
 
 });

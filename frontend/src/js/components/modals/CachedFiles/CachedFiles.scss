@@ -60,8 +60,29 @@ div.dimension-slider div.slider.slider-horizontal {
         overflow-x: hidden;
         overflow-y: auto;
         .file {
+            display: block;
             cursor: pointer;
             &:hover {
+                background-color: $lighter;
+                color: black;
+            }
+        }
+        .bookmark {
+            display: flex;
+            justify-content: space-between;
+            .file {
+                display: inline-block;
+                flex-grow: 1;
+            }
+            .delete-bookmark-button {
+                display: none;
+            }
+            &:hover .delete-bookmark-button {
+                display: inline-block;
+                height: 20px;
+                margin-left: 1px;
+            }
+            &:hover .file {
                 background-color: $lighter;
                 color: black;
             }
