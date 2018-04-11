@@ -41,7 +41,7 @@ class GraphicsMethodEditor extends Component {
                         <Button onClick={this.props.onHide}>Cancel</Button>
                         <Button
                             onClick={() => {
-                                this.props.updateGraphicsMethod(self.state.workingGraphicsMethod); self.props.onHide() 
+                                this.props.updateGraphicsMethod(this.state.workingGraphicsMethod); this.props.onHide() 
                             }}>Save
                         </Button>
                     </ButtonToolbar>
