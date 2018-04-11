@@ -1,3 +1,4 @@
+/* global jQuery */
 import BaseModel from './BaseModel.js';
 
 // sheetsModelReducer + helpers
@@ -128,6 +129,26 @@ class SpreadsheetModel extends BaseModel {
                     template: "default",
                     variables: [],
                 }]
+                return new_state
+            case 'REMOVE_VARIABLE':
+                // when a variable is removed from the left sidebar
+                // we have to iterate over every variable of every plot
+                // If the removed variable is used anywhere we remove it
+                // This prevents the cell from having a stale variable name which causes errors
+                new_state = jQuery.extend(true, {}, state);
+                for(let sheet of new_state.sheets){
+                    for(let cell_rows of sheet.cells){
+                        for(let cell_col of cell_rows){
+                            for(let plot of cell_col.plots){ // Holy nested arrays, batman!
+                                for(let variable_index in plot.variables){ // notice that this is a for...in loop
+                                    if(plot.variables[variable_index] === action.name){ 
+                                        plot.variables[variable_index] = ""
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 return new_state
             default:
                 return state;
