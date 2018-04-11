@@ -142,14 +142,16 @@ class Canvas extends Component{
 
     handleColormapUpdate(msg, name){
         let needs_render = false
-        for(let plot of this.props.plotGMs){
-            if(plot.colormap === name){
-                needs_render = true
-                break
+        if(this.props.plotGMs && this.props.plotGMs.length > 0){
+            for(let plot of this.props.plotGMs){
+                if(plot.colormap === name){
+                    needs_render = true
+                    break
+                }
             }
-        }
-        if(needs_render){
-            this.forceUpdate()
+            if(needs_render){
+                this.forceUpdate()
+            }
         }
     }
 
