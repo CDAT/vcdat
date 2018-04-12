@@ -48,7 +48,7 @@ class EditVariable extends Component {
                 )
             }
             catch(e){
-                console.log(e)
+                console.warn(e)
                 reject(e)
             }
         })
