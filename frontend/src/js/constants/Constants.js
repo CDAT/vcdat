@@ -5,7 +5,9 @@ const JOYRIDE_STEPS = [
     {
         title: 'Welcome to vCDAT!',
         text: 'The following tour will help guide you through the basic features of vCDAT. '.concat(
-            'Click "Next" to continue the tour.'
+            'Click "Next" to continue the tour. ',
+            '<div class="contact-us-link">Found a bug or need help? ',
+            '<a href="https://github.com/CDAT/vcdat/wiki/Contact-Us" target="_blank">Contact Us</a></div>'
         ),
         selector: '.joyride',
         position: 'top',
@@ -109,6 +111,7 @@ const JOYRIDE_STEPS = [
         type: 'click',
     },
 ]
+
 export { JOYRIDE_STEPS }
 export { ONE_VAR_PLOTS }
 export { TWO_VAR_PLOTS }

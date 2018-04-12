@@ -4,6 +4,8 @@ import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
 import GraphicsMethodEditor from './modals/GraphicsMethodEditor.jsx'
 import Tree from './Tree.jsx'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js'
+import { SUPPORTED_GM_EDITORS } from 'vcs-widgets'
+import { toast } from "react-toastify"
 
 // Drag and Drop integration; passed down to the Tree object
 var gmSource = {
@@ -37,7 +39,13 @@ class GMList extends Component {
     }
 
     clickedEdit() {
-        this.setState({showModal: true});
+        const gm = this.props.graphicsMethods[this.state.activeGMParent][this.state.activeGM] 
+        if (SUPPORTED_GM_EDITORS && !SUPPORTED_GM_EDITORS.includes(gm.g_name)) {
+            toast.warn("This graphics method does not have an editor yet.", { position: toast.POSITION.BOTTOM_CENTER })
+        }
+        else {
+            this.setState({showModal: true});
+        }
     }
 
     closedModal() {
