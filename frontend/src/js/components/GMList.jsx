@@ -13,7 +13,7 @@ var gmSource = {
         return {
             'gmType': props.gmType,
             'gmName': props.title
-        };
+        }
     }
 }
 
@@ -21,7 +21,7 @@ function collect(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging()
-    };
+    }
 }
 
 
@@ -44,22 +44,22 @@ class GMList extends Component {
             toast.warn("This graphics method does not have an editor yet.", { position: toast.POSITION.BOTTOM_CENTER })
         }
         else {
-            this.setState({showModal: true});
+            this.setState({showModal: true})
         }
     }
 
     closedModal() {
-        this.setState({showModal: false});
+        this.setState({showModal: false})
     }
 
     selectedChild(path) {
         if (path.length === 2) {
-            let gm = path[1];
-            let gm_parent = path[0];
+            let gm = path[1]
+            let gm_parent = path[0]
             this.setState({
                 activeGM: gm,
                 activeGMParent: gm_parent,
-            });
+            })
         }
     }
 
@@ -70,13 +70,13 @@ class GMList extends Component {
                     'title': gmname,
                     'gmType': gmType
                 }
-            });
+            })
 
             return {
                 'title': gmType,
                 'contents': gms,
-            };
-        });
+            }
+        })
 
         return (
             <div className='left-side-list scroll-area-list-parent gm-list-container'>
@@ -100,13 +100,15 @@ class GMList extends Component {
                         ""
                 }
                 <div className='scroll-area'>
-                    <Tree 
+                    <Tree
+                        activeLeaf={this.state.activeGM}
+                        activeParent={this.state.activeGMParent}
                         dragSource={gmSource}
                         dragCollect={collect}
                         dragType={DragAndDropTypes.GM}
                         contents={gmModel}
                         activate={(activatePath) => {
-                            this.selectedChild(activatePath);
+                            this.selectedChild(activatePath)
                         }}
                     />
                 </div>
@@ -121,4 +123,4 @@ GMList.propTypes = {
     colormaps: PropTypes.object,
 }
 
-export default GMList;
+export default GMList

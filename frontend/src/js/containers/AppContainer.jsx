@@ -36,9 +36,8 @@ class AppContainer extends Component{
     }
 
     handleJoyrideEvents(event){
-        console.log(event)
         if(!event){
-            console.log("jr event was undefined")
+            console.warn("jr event was undefined")
             return
         }
         switch(event.type){

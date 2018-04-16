@@ -247,7 +247,7 @@ class FileTab extends Component {
                 if(e instanceof ReferenceError){
                     toast.error("VCS is not loaded. Try restarting vCDAT", { position: toast.POSITION.BOTTOM_CENTER })
                 }
-                console.log(e)
+                console.warn(e)
                 reject(e)
             }
         })
