@@ -5,7 +5,7 @@ import requests
 import sys
 import tempfile
 import os
-
+import argparse
 
 def isBound(port):
     import socket
@@ -38,6 +38,14 @@ VCDAT_PORT = getPort("VCDAT_PORT", "5000")
 
 os.environ["UVCDAT_ANONYMOUS_LOG"] = "no"
 logfile = tempfile.NamedTemporaryFile()
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--print-log", help="Output to screen instead of log file", action='store_true') # Because i cant do --print for whatever reason.
+parser.add_argument("--no-browser", help="Don't start a browser automatically", action='store_true')
+
+args = parser.parse_args()
+if(args.print_log):
+    logfile = sys.stdout
 
 print "Logs are going to:", logfile.name
 
@@ -79,6 +87,8 @@ while True:
     except BaseException:
         continue
     if resp.status_code == 200:
+        if(args.no_browser):
+            break
         import webbrowser
         webbrowser.open("http://localhost:%s" % VCDAT_PORT)
         break
