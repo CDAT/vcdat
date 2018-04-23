@@ -216,4 +216,4 @@ if __name__ == "__main__":   # pragma: no cover
 
     args = parser.parse_args()
     app.config["vcs_server"] = args.vcs_server
-    app.run(host='0.0.0.0', debug=(not args.production), port=int(args.port))
+    app.run(debug=(not args.production), port=int(args.port))
