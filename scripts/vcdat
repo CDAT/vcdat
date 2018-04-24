@@ -82,7 +82,7 @@ while True:
 
 # Now we'll wait till the user terminates the process.
 try:
-    for line in sys.stdin:
+    while True:
         pass
 except KeyboardInterrupt:
     print ""
