@@ -83,7 +83,7 @@ while True:
 # Now we'll wait till the user terminates the process.
 try:
     while True:
-        pass
+        time.sleep(0.1)
 except KeyboardInterrupt:
     print ""
 
