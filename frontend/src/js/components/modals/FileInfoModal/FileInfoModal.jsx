@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Panel, PanelGroup } from 'react-bootstrap'
 
 import "./FileInfoModal.scss"
 
@@ -33,16 +33,28 @@ class FileInfoModal extends Component{
     }
 
     getSuccessContent(){
-        return Object.keys(this.state.info).map((name) => {
-            return <div key={name} style={{whiteSpace: "pre-wrap"}}>{this.state.info[name]}</div>
-        })
+        return (
+            <PanelGroup id="info-panels" defaultActiveKey="1">
+                {
+                    Object.keys(this.state.info).map((name, index) => {
+                        return (
+                            <Panel eventKey={index} key={index}>
+                                <Panel.Heading>
+                                    <Panel.Title toggle>{name}</Panel.Title>
+                                </Panel.Heading>
+                                <Panel.Body collapsible><div style={{whiteSpace: "pre-wrap"}}>{this.state.info[name]}</div></Panel.Body>
+                            </Panel>
+                        )
+                    })
+                }
+            </PanelGroup>
+        )
     }
 
     getFileInfo(file){
         return vcs.getvarinfofromfile(file).then(
             (data) => { // on success
                 this.setState({info: data, load_status: status.SUCCESS})
-
             },
             (error) => { // on failure
                 console.error(error)
@@ -55,21 +67,19 @@ class FileInfoModal extends Component{
         return(
             <Modal show={this.props.show} onHide={this.props.onTryClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-sm">File Info for {this.props.file}</Modal.Title>
+                    <Modal.Title bsClass="modal-title word-break-fix">File Info for {this.props.file}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body bsClass="modal-body limit-height">
                     <div className="file-info-container">
-                        { 
+                        {
                             this.state.load_status === status.LOADING ? this.getLoadingContent() :
                             this.state.load_status === status.FAILURE ? this.getFailureContent() : 
                             this.state.load_status === status.SUCCESS ? this.getSuccessContent() : ()=>{
                                 console.error("Invalid load status", this.state.load_status)
                                 return null
                             }
-                            
                         }
                     </div>
-                    
                 </Modal.Body>
                 <Modal.Footer>
                     <Button id="infotab-close" bsStyle="default" bsSize="small" onClick={() => this.props.onTryClose()}>Close</Button>
@@ -84,4 +94,5 @@ FileInfoModal.propTypes = {
     onTryClose: PropTypes.func,
     file: PropTypes.string,
 }
+
 export default FileInfoModal
