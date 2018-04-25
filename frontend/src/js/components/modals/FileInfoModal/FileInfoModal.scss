@@ -1,0 +1,4 @@
+.modal-body.limit-height{
+    max-height: calc(100vh - 188px);
+    overflow: auto;
+}
