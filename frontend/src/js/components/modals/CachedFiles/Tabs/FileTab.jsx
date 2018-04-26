@@ -12,6 +12,7 @@ import Actions from '../../../../constants/Actions.js'
 import DimensionSlider from './../DimensionSlider/DimensionSlider.jsx'
 import FileExplorer from '../../FileExplorer/FileExplorer.jsx'
 import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js'
+import FileInfoModal from '../../FileInfoModal/FileInfoModal.jsx'
 
 import '../CachedFiles.scss'
 
@@ -66,7 +67,6 @@ class FileTab extends Component {
         catch(e){
             bookmark_files = []
         }
-        
         this.state = {
             showFileExplorer: false,
             showRedefineVariableModal: false,
@@ -81,7 +81,9 @@ class FileTab extends Component {
             temporaryRedefinedVariableName: '',
             dimension: null,
             recent_path: "",
+            showFileInfoModal: false,
         }
+        this.handleCloseFileInfoModal = this.handleCloseFileInfoModal.bind(this)
     }
 
     get selectedFilePath() {
@@ -313,7 +315,16 @@ class FileTab extends Component {
         }
     }
 
+    handleCloseFileInfoModal(){
+        this.setState({showFileInfoModal: false})
+    }
+
     render() {
+        let selected_file_path = ""
+        if(this.state.selectedFile){
+            selected_file_path = cleanPath(this.state.selectedFile.path) + '/' + this.state.selectedFile.name
+        }
+        
         return (
             <div>
                 <Modal.Body>
@@ -331,8 +342,17 @@ class FileTab extends Component {
                                 <InputGroup bsSize="small">
                                     <FormControl className="full-width file-path" type="text" value={this.selectedFilePath} />
                                     <InputGroup.Button>
-                                        <Button bsStyle="primary" onClick={
-                                            () => this.setState({ showFileExplorer: true })}><Glyphicon glyph="file" /></Button>
+                                        <Button 
+                                            bsStyle="primary"
+                                            onClick={
+                                                () => this.setState({ showFileExplorer: true })}><Glyphicon glyph="file" />
+                                        </Button>
+                                        <Button
+                                            bsStyle="default"
+                                            disabled={!this.state.selectedFile}
+                                            onClick={
+                                                () => this.setState({ showFileInfoModal: true })}><Glyphicon glyph="info-sign" />
+                                        </Button>
                                     </InputGroup.Button>
                                 </InputGroup>
                             </Col>
@@ -476,6 +496,13 @@ class FileTab extends Component {
                         <Button bsSize="small" onClick={() => this.setState({ showRedefineVariableModal: false })}>Close</Button>
                     </Modal.Footer>
                 </Modal>
+                {this.state.showFileInfoModal &&
+                    <FileInfoModal 
+                        show={this.state.showFileInfoModal}
+                        onTryClose={this.handleCloseFileInfoModal}
+                        file={selected_file_path}
+                    />
+                }
                 <Dialog ref="dialog" />
                 {this.state.showFileExplorer &&
                     <FileExplorer

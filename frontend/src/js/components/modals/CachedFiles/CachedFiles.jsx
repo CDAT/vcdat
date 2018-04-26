@@ -5,7 +5,6 @@ import './CachedFiles.scss'
 import FileTab from './Tabs/FileTab.jsx'
 // import Esgf from './Tabs/EsgfTab.jsx'
 // import OpendapTab from './Tabs/OpendapTab.jsx'
-import InfoTab from './Tabs/InfoTab.jsx'
 import TabBar from '../../TabBar/TabBar.jsx'
 
 class CachedFiles extends Component {
@@ -28,10 +27,6 @@ class CachedFiles extends Component {
                     display_name: "OpenDAP",
                     disabled: true,
                 },
-                {
-                    id: "info",
-                    display_name: "Info",
-                },
             ]
         }
         this.switchTab = this.switchTab.bind(this)
@@ -51,7 +46,6 @@ class CachedFiles extends Component {
                     {
                         this.state.selected_tab == 1 ? <div className="Dummy-esgf-component">ESGF</div> :
                         this.state.selected_tab == 2 ? <div className="Dummy-opendap-component">OpenDAP</div> :
-                        this.state.selected_tab == 3 ? <InfoTab {...this.props} /> :
                         <FileTab {...this.props} />
                     }
             </Modal>

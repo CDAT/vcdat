@@ -1,0 +1,8 @@
+.modal-body.limit-height{
+    max-height: calc(100vh - 188px);
+    overflow: auto;
+}
+
+.modal-title.word-break-fix{
+    word-break: break-word;
+}
