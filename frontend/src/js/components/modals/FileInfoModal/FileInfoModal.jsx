@@ -29,7 +29,7 @@ class FileInfoModal extends Component{
     }
 
     getFailureContent(){
-        return <div>Failed to retrieve file info</div>
+        return <div id="file-info-failed">Failed to retrieve file info</div>
     }
 
     getSuccessContent(){
@@ -52,7 +52,7 @@ class FileInfoModal extends Component{
     }
 
     getFileInfo(file){
-        return vcs.getvarinfofromfile(file).then(
+        return vcs.getvarinfofromfile(file).then( // make sure to return the promise so that this function can be tested by mocha
             (data) => { // on success
                 this.setState({info: data, load_status: status.SUCCESS})
             },
@@ -73,8 +73,10 @@ class FileInfoModal extends Component{
                     <div className="file-info-container">
                         {
                             this.state.load_status === status.LOADING ? this.getLoadingContent() :
-                            this.state.load_status === status.FAILURE ? this.getFailureContent() : 
-                            this.state.load_status === status.SUCCESS ? this.getSuccessContent() : ()=>{
+                            this.state.load_status === status.FAILURE ? this.getFailureContent() :
+                            this.state.load_status === status.SUCCESS ? this.getSuccessContent() :
+                            /* istanbul ignore next */
+                            () => {
                                 console.error("Invalid load status", this.state.load_status)
                                 return null
                             }
@@ -94,5 +96,5 @@ FileInfoModal.propTypes = {
     onTryClose: PropTypes.func,
     file: PropTypes.string,
 }
-
+export { status }
 export default FileInfoModal

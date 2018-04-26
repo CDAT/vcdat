@@ -325,7 +325,6 @@ class FileTab extends Component {
             selected_file_path = cleanPath(this.state.selectedFile.path) + '/' + this.state.selectedFile.name
         }
         
-        console.log(this.state)
         return (
             <div>
                 <Modal.Body>
