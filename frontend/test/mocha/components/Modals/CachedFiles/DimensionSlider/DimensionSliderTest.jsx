@@ -7,16 +7,16 @@ import DimensionSlider from '../../../../../../src/js/components/modals/CachedFi
 import Enzyme from 'enzyme' 
 import Adapter from 'enzyme-adapter-react-16'
 Enzyme.configure({ adapter: new Adapter() })
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import sinon from 'sinon'
 
 
 describe('DimensionSliderTest.jsx', function() {
     it('Renders without exploding', () => {
         let props = {
-            data: [0]
+            data: [0, 1]
         }
-        const dimension_slider = shallow(<DimensionSlider {...props}/>)
+        const dimension_slider = mount(<DimensionSlider {...props} />)
         expect(dimension_slider).to.have.lengthOf(1);
     });
 
