@@ -86,6 +86,10 @@ class DimensionSlider extends Component {
             high_value = this.state.data.indexOf(this.props.data[this.props.data.length -1])
         }
 
+        if (this.singleValue) {
+            return;
+        }
+
         this.slider = new Slider(this.input, {
             min: this.state.min,
             max: this.state.max,

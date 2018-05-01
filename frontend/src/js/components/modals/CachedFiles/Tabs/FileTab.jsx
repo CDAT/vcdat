@@ -324,7 +324,7 @@ class FileTab extends Component {
         if(this.state.selectedFile){
             selected_file_path = cleanPath(this.state.selectedFile.path) + '/' + this.state.selectedFile.name
         }
-        
+
         return (
             <div>
                 <Modal.Body>
@@ -437,7 +437,7 @@ class FileTab extends Component {
                                 </Col>
                             </Row>
                             {/* If is a variable */}
-                            {this.state.dimension &&
+                            {this.state.dimension && Array.isArray(this.state.dimension) &&
                                 this.state.dimension.map(dimension => dimension.axisName).map((axisName, i) => {
                                     let axis = this.state.variablesAxes[1][axisName];
                                     return (
