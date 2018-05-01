@@ -174,6 +174,11 @@ class DimensionSlider extends Component {
                                 value={this.state.stride}
                                 onChange={(e) => this.setState({ stride: parseInt(e.target.value) })} />
                         </FormGroup>
+                        { !this.props.isTime &&
+                            <small className="units">
+                                {this.props.units}
+                            </small>
+                        }
                         <input ref={input => this.input = input} />
                     </div>
                 }
@@ -193,6 +198,7 @@ DimensionSlider.propTypes = {
     onChange: PropTypes.func,
     units: PropTypes.string,
     modulo: PropTypes.number,
+    isTime: PropTypes.bool,
 }
 
 export default DimensionSlider;
