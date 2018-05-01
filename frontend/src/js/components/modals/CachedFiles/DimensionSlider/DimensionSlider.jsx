@@ -5,67 +5,87 @@ import moment from 'moment'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import _ from 'lodash'
 
-import style from './DimensionSlider.scss'
+import './DimensionSlider.scss'
 
 import 'bootstrap-slider/dist/css/bootstrap-slider.min.css'
 
 class DimensionSlider extends Component {
     constructor(props) {
-        super(props);
-        this.slider = null;
-        var type = 'number';
-        var format = null;
+        super(props)
+        this.slider = null
+        let format = null
+        let possible_values = props.data
         this.formatter = function (data) {
             if (data.toFixed) {
                 return data.toFixed(5);
             }
-            return data;
+            return data
         }
         if (_.includes(props.units, 'since')) {
-            type = 'date';
             let [span, , startTime] = props.units.split(' ');
             switch (span) {
                 case 'years':
-                    format = 'YYYY';
-                    break;
+                    format = 'YYYY'
+                    break
                 case 'months':
-                    format = 'YYYY-MM';
-                    break;
+                    format = 'YYYY-MM'
+                    break
                 case 'days':
-                    format = 'YYYY-MM-DD';
-                    break;
+                    format = 'YYYY-MM-DD'
+                    break
                 case 'hours':
                 case 'minutes':
-                    format = 'YYYY-MM-DD HH:mm';
-                    break;
+                    format = 'YYYY-MM-DD HH:mm'
+                    break
                 case 'seconds':
-                    format = 'YYYY-MM-DD HH:mm:ss';
-                    break;
+                    format = 'YYYY-MM-DD HH:mm:ss'
+                    break
             }
             this.formatter = function (data) {
-                return moment(startTime, 'YYYY-MM-DD').add(data, span).format(format);
+                return moment(startTime, 'YYYY-MM-DD').add(data, span).format(format)
             }
         }
-        this.singleValue = props.data.length == 1;
-        let low_value = props.data.indexOf(this.props.low_value)
-        let high_value = props.data.indexOf(this.props.high_value)
+        if(props.modulo){
+            let new_possible_values = []
+            let step = Math.abs(props.data[0] - props.data[1])
+            for(let i = -props.modulo; i <= props.modulo; i += step){
+                new_possible_values.push(i)
+            }
+            possible_values = new_possible_values
+        }
+        this.singleValue = props.data.length == 1
+        let low_value = possible_values.indexOf(this.props.low_value)
+        let high_value = possible_values.indexOf(this.props.high_value)
         this.state = {
             min: 0,
-            max: props.data.length - 1,
+            max: possible_values.length - 1,
             value: [
-                props.data[(low_value !== -1 ? low_value : 0)],
-                props.data[(high_value !== -1 ? high_value : props.data.length - 1)],
+                possible_values[(low_value !== -1 ? low_value : possible_values.indexOf(this.props.data[0]))],
+                possible_values[(high_value !== -1 ? 
+                    high_value : possible_values.indexOf(this.props.data[this.props.data.length - 1])
+                )],
             ],
-            stride: 1
+            stride: 1,
+            data: possible_values
         };
     }
 
     componentDidMount() {
-        let low_value = this.props.data.indexOf(this.props.low_value)
-        let high_value = this.props.data.indexOf(this.props.high_value)
-        if (this.singleValue) {
-            return;
+        // props.data represents the original data array of values
+        // state.data is the array of data created to allow greater ranges than the data contains
+        // This is based of the modulo provided to us. 
+        // Example: props.data = [-180, ..., 175] 
+        //          state.data = [-360, ..., 360] (modulo: 360)
+
+        let low_value = this.state.data.indexOf(this.props.low_value)
+        if(low_value === -1){
+            low_value = this.state.data.indexOf(this.props.data[0])
         }
+        let high_value = this.state.data.indexOf(this.props.high_value)
+        if(high_value === -1){
+            high_value = this.state.data.indexOf(this.props.data[this.props.data.length -1])
+        }
+
         this.slider = new Slider(this.input, {
             min: this.state.min,
             max: this.state.max,
@@ -80,10 +100,10 @@ class DimensionSlider extends Component {
             tooltip: 'hide',
             formatter: this.formatter
         }).on('change', (arg) => {
-            var sliderValues = arg.newValue;
-            var value = [this.props.data[sliderValues[0]], this.props.data[sliderValues[1]]];
-            this.setState({ value });
-        });
+            var sliderValues = arg.newValue
+            var value = [this.state.data[sliderValues[0]], this.state.data[sliderValues[1]]]
+            this.setState({ value })
+        })
     }
 
     componentWillUnmount() {
@@ -94,7 +114,7 @@ class DimensionSlider extends Component {
 
     componentWillUpdate(nextProps, nextState) {
         if (this.state.value !== nextState.value) {
-            this.slider.setValue([this.props.data.indexOf(nextState.value[0]), this.props.data.indexOf(nextState.value[1])]);
+            this.slider.setValue([this.state.data.indexOf(nextState.value[0]), this.state.data.indexOf(nextState.value[1])]);
         }
     }
 
@@ -124,7 +144,7 @@ class DimensionSlider extends Component {
                             componentClass="select"
                             onChange={(e) => {this.setState({ value: [parseInt(e.target.value), this.state.value[1]] })}}
                             value={this.state.value[0]}>
-                            {this.props.data.map((data) => {
+                            {this.state.data.map((data) => {
                                 return <option key={data} value={data}>{this.formatter(data)}</option>;
                             })}
                         </FormControl>
@@ -135,7 +155,7 @@ class DimensionSlider extends Component {
                             componentClass="select"
                             onChange={(e) => this.setState({ value: [this.state.value[0], parseInt(e.target.value)] })}
                             value={this.state.value[1]}>
-                            {this.props.data.map((data) => {
+                            {this.state.data.map((data) => {
                                 return <option key={data} value={data}>{this.formatter(data)}</option>;
                             })}
                         </FormControl>
@@ -168,6 +188,7 @@ DimensionSlider.propTypes = {
     data: PropTypes.array,
     onChange: PropTypes.func,
     units: PropTypes.string,
+    modulo: PropTypes.number,
 }
 
 export default DimensionSlider;
