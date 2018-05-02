@@ -176,7 +176,7 @@ class DimensionSlider extends Component {
                         </FormGroup>
                         { !this.props.isTime &&
                             <small className="units">
-                                {this.props.units}
+                                ({this.props.units})
                             </small>
                         }
                         <input ref={input => this.input = input} />
