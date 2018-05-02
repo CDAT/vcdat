@@ -110,17 +110,20 @@ def plot_template():
     t.plot(canvas, v, g)
     if t.legend.priority:
         t.drawColorBar([(0,0,0,0)], [0, 1], x=canvas)
-
-    canvas.backend.renWin.Render()
-
-    del vcs.elements["template"][t.name]
-
     _, tmp = tempfile.mkstemp(suffix=".png")
-    canvas.png(tmp)
-    resp = send_file(tmp)
+    # For certain templates the renWin can be None
+    if(canvas.backend.renWin):
+        # Only call render if renWin exists
+        canvas.backend.renWin.Render() 
+        canvas.png(tmp)
+    # create response from the tmp file, blank or otherwise
+    resp = send_file(tmp) 
     # Clean up file automatically after request
     wr = weakref.ref(resp, lambda x: os.remove(tmp))
     canvas.close()
+    # clean up temporary boxfill and template we created
+    del vcs.elements["boxfill"][g.name] 
+    del vcs.elements["template"][t.name]
     return resp
 
   
