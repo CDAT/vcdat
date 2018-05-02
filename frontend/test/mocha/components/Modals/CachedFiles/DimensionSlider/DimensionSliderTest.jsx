@@ -14,7 +14,7 @@ import sinon from 'sinon'
 describe('DimensionSliderTest.jsx', function() {
     it('Renders without exploding', () => {
         let props = {
-            data: [0, 1]
+            data: [0]
         }
         const dimension_slider = mount(<DimensionSlider {...props} />)
         expect(dimension_slider).to.have.lengthOf(1);

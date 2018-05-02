@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Button, Panel, PanelGroup } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 
 import "./FileInfoModal.scss"
 
@@ -58,6 +59,9 @@ class FileInfoModal extends Component{
             },
             (error) => { // on failure
                 console.error(error)
+                if(error.data && error.data.exception){
+                    toast.error(error.data.exception, { position: toast.POSITION.BOTTOM_CENTER })
+                }
                 this.setState({load_status: status.FAILURE})
             }
         )
