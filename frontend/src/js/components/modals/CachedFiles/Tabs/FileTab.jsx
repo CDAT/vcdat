@@ -15,6 +15,7 @@ import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js'
 import FileInfoModal from '../../FileInfoModal/FileInfoModal.jsx'
 
 import '../CachedFiles.scss'
+import AxisTransform from '../AxisTransform.jsx';
 
 function cleanPath(path) {
     return `/${path.split('/').filter(segment => segment).join('/')}`;
@@ -75,6 +76,7 @@ class FileTab extends Component {
             bookmarkFiles: bookmark_files,
             showBookmarkZone: false,
             variablesAxes: null,
+            axisTransforms: {},
             selectedVariable: null,
             selectedVariableName: '',
             redefinedVariableName: '',
@@ -82,8 +84,10 @@ class FileTab extends Component {
             dimension: null,
             recent_path: "",
             showFileInfoModal: false,
+
         }
         this.handleCloseFileInfoModal = this.handleCloseFileInfoModal.bind(this)
+        this.handleAxisTransform = this.handleAxisTransform.bind(this)
     }
 
     get selectedFilePath() {
@@ -130,8 +134,10 @@ class FileTab extends Component {
             axisList: this.state.selectedVariable.axisList,
             filename: filename,
             path: path,
-            dimension: this.state.dimension
+            dimension: this.state.dimension,
+            transforms: this.state.axisTransforms
         };
+        
         this.props.loadVariables([var_obj]);
         toast.success(`Successfully Loaded ${variable}`, { position: toast.POSITION.BOTTOM_CENTER})
         this.setState({ redefinedVariableName: '' });
@@ -319,6 +325,14 @@ class FileTab extends Component {
         this.setState({showFileInfoModal: false})
     }
 
+    handleAxisTransform(axis_name, transform){
+        let new_transforms = _.cloneDeep(this.state.axisTransforms)
+        new_transforms[axis_name] = transform
+        this.setState({
+            axisTransforms: new_transforms
+        })
+    }
+
     render() {
         let selected_file_path = ""
         if(this.state.selectedFile){
@@ -437,15 +451,30 @@ class FileTab extends Component {
                                 </Col>
                             </Row>
                             {/* If is a variable */}
+                            {/* Then we likely have many axes. They need to be reorderable so use the DnDContainer */}
                             {this.state.dimension && Array.isArray(this.state.dimension) &&
                                 this.state.dimension.map(dimension => dimension.axisName).map((axisName, i) => {
                                     let axis = this.state.variablesAxes[1][axisName];
                                     return (
-                                        <DimensionDnDContainer key={axisName} index={i} axis={axis} axisName={axisName} handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)} moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} />
+                                        <div key={axisName}>
+                                            <DimensionDnDContainer
+                                                index={i}
+                                                axis={axis}
+                                                axisName={axisName}
+                                                handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)}
+                                                moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} 
+                                            />
+                                            <AxisTransform
+                                                axis_name={axisName}
+                                                axis_transform={this.state.axisTransforms[axisName] || "def"}
+                                                handleChange={this.handleAxisTransform}
+                                            />
+                                        </div>
                                     )
                                 })
                             }
                             {/* if is an Axis */}
+                            {/* Then there will only be one slider. No need to make it drag and drop */}
                             {!this.state.selectedVariable.axisList &&
                                 <Row key={this.state.selectedVariable.name} className="dimension">
                                     <Col sm={2} className="text-right"><span>{this.state.selectedVariable.name}</span></Col>

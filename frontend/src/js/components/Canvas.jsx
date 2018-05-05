@@ -94,7 +94,13 @@ class Canvas extends Component{
                 if (!_.isEmpty(subRegion)) {
                     dataSpec['operations'] = [{ subRegion }];
                 }
-
+                if(!_.isEmpty(variable.transforms)){
+                    if (!dataSpec['operations']) {
+                        dataSpec['operations'] = []
+                    }
+                    dataSpec['operations'].push({transform: variable.transforms})
+                }
+                
                 var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName));
                 if (axis_order.some((order, index) => order !== index)) {
                     dataSpec['axis_order'] = axis_order;
