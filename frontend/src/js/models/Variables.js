@@ -1,3 +1,4 @@
+/* globals $ */
 import BaseModel from './BaseModel.js';
 
 
@@ -18,8 +19,10 @@ class VariablesModel extends BaseModel {
                 return new_state
             case 'UPDATE_VARIABLE':
                 new_state = $.extend(true, {}, state)
-                var new_dim = $.extend(true, [], action.dimensions)
-                new_state[action.name].dimension = new_dim
+                var new_dimensions = $.extend(true, [], action.dimensions)
+                var new_transforms = $.extend(true, {}, action.transforms)
+                new_state[action.name].dimension = new_dimensions
+                new_state[action.name].transforms = new_transforms
                 return new_state
             default: return state
         }

@@ -78,20 +78,20 @@ class Canvas extends Component{
 
     plot(plot, index){
         if (plot.variables.length > 0) {
-            var variables = this.props.plotVariables[index];
+            var variables = this.props.plotVariables[index]
             var dataSpecs = variables.map(function (variable) {
                 var dataSpec = {
                     uri: variable.path,
                     variable: variable.cdms_var_name 
-                };
-                var subRegion = {};
+                }
+                var subRegion = {}
                 variable.dimension
                     .filter(dimension => dimension.values)
                     .forEach((dimension) => {
-                        subRegion[dimension.axisName] = dimension.values.range;
+                        subRegion[dimension.axisName] = dimension.values.range
                     })
                 if (!_.isEmpty(subRegion)) {
-                    dataSpec['operations'] = [{ subRegion }];
+                    dataSpec['operations'] = [{ subRegion }]
                 }
                 if(!_.isEmpty(variable.transforms)){
                     if (!dataSpec['operations']) {
@@ -99,13 +99,12 @@ class Canvas extends Component{
                     }
                     dataSpec['operations'].push({transform: variable.transforms})
                 }
-                
-                var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName));
+                var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName))
                 if (axis_order.some((order, index) => order !== index)) {
-                    dataSpec['axis_order'] = axis_order;
+                    dataSpec['axis_order'] = axis_order
                 }
-                return dataSpec;
-            });
+                return dataSpec
+            })
             console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
             return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).then(
                 (success)=>{
@@ -130,8 +129,8 @@ class Canvas extends Component{
     /* istanbul ignore next */
     componentWillUnmount() {
         this.canvas.close()
-        PubSub.unsubscribe(resize_token)
-        PubSub.unsubscribe(colormap_token)
+        PubSub.unsubscribe(this.resize_token)
+        PubSub.unsubscribe(this.colormap_token)
     }
 
     /* istanbul ignore next */

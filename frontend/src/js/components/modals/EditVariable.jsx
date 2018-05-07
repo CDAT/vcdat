@@ -7,20 +7,25 @@ import { DropTarget, DragSource } from 'react-dnd'
 import { findDOMNode } from 'react-dom'
 
 import DimensionSlider from './CachedFiles/DimensionSlider/DimensionSlider.jsx'
+import AxisTransform from './CachedFiles/AxisTransform.jsx'
 import DragAndDropTypes from '../../constants/DragAndDropTypes.js'
 import Actions from '../../constants/Actions.js'
 import $ from 'jquery'
+
 
 class EditVariable extends Component {
     constructor(props) {
         super(props);
         
+        const transforms = $.extend(true, {}, this.props.variables[this.props.active_variable].transforms)
         this.state = {
             variablesAxes: null,
             selectedVariable: null,
             dimension: null,
+            axis_transforms: transforms || {},
         }
         this.getVariableInfo()
+        this.handleAxisTransform = this.handleAxisTransform.bind(this)
     }
 
     getVariableInfo(){
@@ -67,8 +72,16 @@ class EditVariable extends Component {
         }
     }
 
+    handleAxisTransform(axis_name, transform){
+        let new_transforms = _.cloneDeep(this.state.axis_transforms)
+        new_transforms[axis_name] = transform
+        this.setState({
+            axis_transforms: new_transforms
+        })
+    }
+
     save(){
-        this.props.updateVariable(this.props.active_variable, this.state.dimension)
+        this.props.updateVariable(this.props.active_variable, this.state.dimension, this.state.axis_transforms)
         this.props.onTryClose()
     }
 
@@ -106,26 +119,31 @@ class EditVariable extends Component {
                                 this.state.dimension.map(dimension => dimension.axisName).map((axisName, i) => {
                                     let axis = this.state.variablesAxes[1][axisName];
                                     return (
-                                        <DimensionDnDContainer 
-                                            key={axisName}
-                                            low_value={slider_values[axisName].range[0]}
-                                            high_value={slider_values[axisName].range[1]}
-                                            index={i}
-                                            axis={axis}
-                                            axisName={axisName}
-                                            handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)}
-                                            moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} />
+                                        <div key={axisName} className="axis">
+                                            <DimensionDnDContainer 
+                                                key={axisName}
+                                                low_value={slider_values[axisName].range[0]}
+                                                high_value={slider_values[axisName].range[1]}
+                                                index={i}
+                                                axis={axis}
+                                                axisName={axisName}
+                                                handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)}
+                                                moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)}
+                                                axis_transform={this.state.axis_transforms[axisName] || "def"}
+                                                handleAxisTransform={this.handleAxisTransform}
+                                            />
+                                        </div>
                                     )
                                 })
                             }
                             {/* if is an Axis */}
                             {!this.state.selectedVariable.axisList &&
-                                <Row key={this.state.selectedVariable.name} className="dimension">
-                                    <Col sm={2} className="text-right"><span>{this.state.selectedVariable.name}</span></Col>
-                                    <Col sm={8} className="right-content">
+                                <div key={this.state.selectedVariable.name} className="dimension">
+                                    <div className="text-right"><span>{this.state.selectedVariable.name}</span></div>
+                                    <div className="right-content">
                                         <DimensionSlider {...this.state.selectedVariable} onChange={(values) => this.handleDimensionValueChange(values)} />
-                                    </Col>
-                                </Row>
+                                    </div>
+                            </div>
                             }
                         </div>
                     }
@@ -154,12 +172,18 @@ EditVariable.propTypes = {
 
 var DimensionContainer = (props) => {
     const opacity = props.isDragging ? 0 : 1;
-    return props.connectDropTarget(props.connectDragPreview(<div className="row dimension" style={{ opacity }}>
-        <Col sm={2} className="text-right"><span>{props.axis.name}</span></Col>
-        {props.connectDragSource(<div className="sort col-sm-1"><Glyphicon glyph="menu-hamburger" /></div>)}
-        <div className="col-sm-7 right-content">
-            <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} low_value={props.low_value} high_value={props.high_value} />
+    return props.connectDropTarget(props.connectDragPreview(
+    <div className="dimension" style={{ opacity }}>
+        <div className="axis-name text-right"><span>{props.axis.name}</span></div>
+        {props.connectDragSource(<div className="sort"><Glyphicon glyph="menu-hamburger" /></div>)}
+        <div className="right-content">
+            <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
         </div>
+        <AxisTransform
+            axis_name={props.axis.name}
+            axis_transform={props.axis_transform}
+            handleAxisTransform={props.handleAxisTransform}
+        />
     </div>));
 }
 
@@ -217,8 +241,8 @@ var DimensionDnDContainer = _.flow(
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateVariable: (name, dimensions) => {
-            dispatch(Actions.updateVariable(name, dimensions))
+        updateVariable: (name, dimensions, transforms) => {
+            dispatch(Actions.updateVariable(name, dimensions, transforms))
         }
     }
 }

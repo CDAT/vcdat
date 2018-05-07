@@ -338,7 +338,6 @@ class FileTab extends Component {
         if(this.state.selectedFile){
             selected_file_path = cleanPath(this.state.selectedFile.path) + '/' + this.state.selectedFile.name
         }
-
         return (
             <div>
                 <Modal.Body>
