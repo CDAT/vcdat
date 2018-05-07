@@ -200,12 +200,12 @@ button:focus {
 .edit-button {
     width: 60.55px;
 }
-.dropdown-menu {
+/* .dropdown-menu {
     background-color: #31b0d5;
     position: absolute;
     top: 100%;
     right: 0;
-}
+} */
 .dropdown-container {
     position: relative;
 }

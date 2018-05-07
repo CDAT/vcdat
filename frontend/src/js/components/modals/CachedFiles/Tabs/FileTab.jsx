@@ -456,7 +456,7 @@ class FileTab extends Component {
                                 this.state.dimension.map(dimension => dimension.axisName).map((axisName, i) => {
                                     let axis = this.state.variablesAxes[1][axisName];
                                     return (
-                                        <div key={axisName}>
+                                        <div key={axisName} className="axis">
                                             <DimensionDnDContainer
                                                 index={i}
                                                 axis={axis}
@@ -476,12 +476,12 @@ class FileTab extends Component {
                             {/* if is an Axis */}
                             {/* Then there will only be one slider. No need to make it drag and drop */}
                             {!this.state.selectedVariable.axisList &&
-                                <Row key={this.state.selectedVariable.name} className="dimension">
-                                    <Col sm={2} className="text-right"><span>{this.state.selectedVariable.name}</span></Col>
-                                    <Col sm={8} className="right-content">
+                                <div key={this.state.selectedVariable.name} className="dimension">
+                                    <div className="text-right"><span>{this.state.selectedVariable.name}</span></div>
+                                    <div className="right-content">
                                         <DimensionSlider {...this.state.selectedVariable} onChange={(values) => this.handleDimensionValueChange(values)} />
-                                    </Col>
-                                </Row>
+                                    </div>
+                                </div>
                             }
                         </div>
                     }
@@ -631,10 +631,11 @@ FileTab.propTypes = {
 
 var DimensionContainer = (props) => {
     const opacity = props.isDragging ? 0 : 1;
-    return props.connectDropTarget(props.connectDragPreview(<div className="row dimension" style={{ opacity }}>
-        <Col sm={2} className="text-right"><span>{props.axis.name}</span></Col>
-        {props.connectDragSource(<div className="sort col-sm-1"><Glyphicon glyph="menu-hamburger" /></div>)}
-        <div className="col-sm-7 right-content">
+    return props.connectDropTarget(props.connectDragPreview(
+    <div className="dimension" style={{ opacity }}>
+        <div className="axis-name text-right"><span>{props.axis.name}</span></div>
+        {props.connectDragSource(<div className="sort"><Glyphicon glyph="menu-hamburger" /></div>)}
+        <div className="right-content">
             <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
         </div>
     </div>));
