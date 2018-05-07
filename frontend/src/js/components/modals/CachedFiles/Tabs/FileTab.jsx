@@ -15,7 +15,7 @@ import DragAndDropTypes from '../../../../constants/DragAndDropTypes.js'
 import FileInfoModal from '../../FileInfoModal/FileInfoModal.jsx'
 
 import '../CachedFiles.scss'
-import AxisTransform from '../AxisTransform.jsx';
+import AxisTransform from '../AxisTransform.jsx'
 
 function cleanPath(path) {
     return `/${path.split('/').filter(segment => segment).join('/')}`;
@@ -462,12 +462,9 @@ class FileTab extends Component {
                                                 axis={axis}
                                                 axisName={axisName}
                                                 handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)}
-                                                moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)} 
-                                            />
-                                            <AxisTransform
-                                                axis_name={axisName}
+                                                moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)}
                                                 axis_transform={this.state.axisTransforms[axisName] || "def"}
-                                                handleChange={this.handleAxisTransform}
+                                                handleAxisTransform={this.handleAxisTransform}
                                             />
                                         </div>
                                     )
@@ -638,6 +635,11 @@ var DimensionContainer = (props) => {
         <div className="right-content">
             <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
         </div>
+        <AxisTransform
+            axis_name={props.axis.name}
+            axis_transform={props.axis_transform}
+            handleAxisTransform={props.handleAxisTransform}
+        />
     </div>));
 }
 
