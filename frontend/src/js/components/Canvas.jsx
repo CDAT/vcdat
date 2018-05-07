@@ -5,7 +5,6 @@ import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
 import _ from 'lodash'
 import { toast } from 'react-toastify'
-import FileSaver from 'file-saver'
 
 class Canvas extends Component{
     constructor(props){
@@ -130,7 +129,9 @@ class Canvas extends Component{
     }
     /* istanbul ignore next */
     componentWillUnmount() {
-        this.canvas.close();
+        this.canvas.close()
+        PubSub.unsubscribe(resize_token)
+        PubSub.unsubscribe(colormap_token)
     }
 
     /* istanbul ignore next */
@@ -142,7 +143,7 @@ class Canvas extends Component{
     resetCanvas(){
         this.canvas.close()
         delete this.canvas
-        this.canvas = vcs.init(this.div);
+        this.canvas = vcs.init(this.div)
         this.forceUpdate()
     }
 
