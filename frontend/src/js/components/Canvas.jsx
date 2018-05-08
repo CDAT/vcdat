@@ -5,7 +5,6 @@ import PubSub from 'pubsub-js'
 import PubSubEvents from '../constants/PubSubEvents.js'
 import _ from 'lodash'
 import { toast } from 'react-toastify'
-import FileSaver from 'file-saver'
 
 class Canvas extends Component{
     constructor(props){
@@ -79,28 +78,33 @@ class Canvas extends Component{
 
     plot(plot, index){
         if (plot.variables.length > 0) {
-            var variables = this.props.plotVariables[index];
+            var variables = this.props.plotVariables[index]
             var dataSpecs = variables.map(function (variable) {
                 var dataSpec = {
                     uri: variable.path,
                     variable: variable.cdms_var_name 
-                };
-                var subRegion = {};
+                }
+                var subRegion = {}
                 variable.dimension
                     .filter(dimension => dimension.values)
                     .forEach((dimension) => {
-                        subRegion[dimension.axisName] = dimension.values.range;
+                        subRegion[dimension.axisName] = dimension.values.range
                     })
                 if (!_.isEmpty(subRegion)) {
-                    dataSpec['operations'] = [{ subRegion }];
+                    dataSpec['operations'] = [{ subRegion }]
                 }
-
-                var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName));
+                if(!_.isEmpty(variable.transforms)){
+                    if (!dataSpec['operations']) {
+                        dataSpec['operations'] = []
+                    }
+                    dataSpec['operations'].push({transform: variable.transforms})
+                }
+                var axis_order = variable.dimension.map((dimension) => variable.axisList.indexOf(dimension.axisName))
                 if (axis_order.some((order, index) => order !== index)) {
-                    dataSpec['axis_order'] = axis_order;
+                    dataSpec['axis_order'] = axis_order
                 }
-                return dataSpec;
-            });
+                return dataSpec
+            })
             console.log('plotting', dataSpecs, this.props.plotGMs[index], plot.template);
             return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).then(
                 (success)=>{
@@ -124,7 +128,9 @@ class Canvas extends Component{
     }
     /* istanbul ignore next */
     componentWillUnmount() {
-        this.canvas.close();
+        this.canvas.close()
+        PubSub.unsubscribe(this.resize_token)
+        PubSub.unsubscribe(this.colormap_token)
     }
 
     /* istanbul ignore next */
@@ -136,7 +142,7 @@ class Canvas extends Component{
     resetCanvas(){
         this.canvas.close()
         delete this.canvas
-        this.canvas = vcs.init(this.div);
+        this.canvas = vcs.init(this.div)
         this.forceUpdate()
     }
 

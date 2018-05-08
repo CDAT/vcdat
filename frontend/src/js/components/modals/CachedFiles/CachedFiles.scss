@@ -20,22 +20,35 @@ div.dimension-slider div.slider.slider-horizontal {
     width: 100%;
 }
 
+.axis {
+    display: flex;
+    align-items: center;
+}
+
 .dimensions .dimension {
     padding-top: 15px;
     padding-bottom: 20px;
-    display: flex;
-    align-items: center;
+    flex: 1;
+    display: inline-flex;
+    align-items: flex-end;
+
+    .axis-name {
+        width:14%;
+        word-break: break-all; /* in case break-word isnt supported */
+        word-break: break-word;
+    }
 
     .sort {
         cursor: ns-resize;
         color: #bbb;
-        width: 5%;
+        margin-left: 2%;
+        margin-right: 2%;
         padding-right: 0;
         font-size: 15px;
     }
 
     .right-content {
-        width: 70%;
+        flex: 1;
         padding-left: 0;
 
         &::after {

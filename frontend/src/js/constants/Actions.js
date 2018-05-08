@@ -180,11 +180,15 @@ var Actions = {
             var_list: var_list
         }
     },
-    updateVariable(name, dimensions){
+    updateVariable(name, dimensions, transforms){
+        if(!transforms){
+            transforms = {}
+        }
         return {
             type: 'UPDATE_VARIABLE',
             name: name,
-            dimensions: dimensions
+            dimensions: dimensions,
+            transforms: transforms,
         }
     },
     updateGraphicsMethod(graphics_method) {
