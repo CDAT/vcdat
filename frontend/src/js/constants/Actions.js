@@ -181,6 +181,9 @@ var Actions = {
         }
     },
     updateVariable(name, dimensions, transforms){
+        if(!transforms){
+            transforms = {}
+        }
         return {
             type: 'UPDATE_VARIABLE',
             name: name,

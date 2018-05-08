@@ -8,7 +8,7 @@ class AxisTransform extends PureComponent {
     } 
 
     render(){
-        return(
+        return (
             <DropdownButton
                 bsStyle="default"
                 id={`${this.props.axis_name}-axis-transform`}

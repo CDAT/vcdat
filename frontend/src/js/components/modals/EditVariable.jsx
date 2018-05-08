@@ -16,8 +16,14 @@ import $ from 'jquery'
 class EditVariable extends Component {
     constructor(props) {
         super(props);
-        
-        const transforms = $.extend(true, {}, this.props.variables[this.props.active_variable].transforms)
+
+        let transforms = {}
+        try{
+            transforms = $.extend(true, {}, this.props.variables[this.props.active_variable].transforms)
+        }
+        catch(e){
+            transforms = {}
+        }
         this.state = {
             variablesAxes: null,
             selectedVariable: null,

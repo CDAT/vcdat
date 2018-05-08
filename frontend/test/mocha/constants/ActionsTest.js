@@ -264,13 +264,24 @@ describe('ActionsTest.js', function() {
 
     it('updateVariable works', () => {
         let dimensions = [{values:[1,2]}, {values: [3,4]}]
-        let result = Actions.updateVariable("name", dimensions)
+        let no_tranforms_result = Actions.updateVariable("name", dimensions)
         let expected = {
             type: 'UPDATE_VARIABLE',
             name: "name",
-            dimensions: dimensions
+            dimensions: dimensions,
+            transforms: {}
         }
-        expect(result).to.deep.equal(expected)
+        expect(no_tranforms_result).to.deep.equal(expected)
+
+        let transforms = {latitude: "avg"}
+        let with_transforms_result = Actions.updateVariable("name", dimensions, transforms)
+        expected = {
+            type: 'UPDATE_VARIABLE',
+            name: "name",
+            dimensions: dimensions,
+            transforms: {latitude: "avg"}
+        }
+        expect(with_transforms_result).to.deep.equal(expected)
     });
 
     it('updateGraphicsMethod works', () => {
