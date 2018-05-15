@@ -6,7 +6,7 @@ import cdms2
 import json
 from flask import Flask, send_from_directory, request, send_file, Response, jsonify
 from GraphicsMethods import get_gm, get_default_gms
-from Templates import get_t, templ_from_json
+from Templates import templ_from_json
 from Files import getFilesObject
 from Colormaps import get_cmaps
 import weakref
@@ -80,13 +80,6 @@ def serve_resource_file(path):
             mimetype = "text/plain"
 
         return Response(pkg_resources.resource_string(__name__, "resources/" + path), mimetype=mimetype)
-
-
-@app.route("/getTemplates")
-@jsonresp
-def get_templates():
-    templates = get_t()
-    return json.dumps(templates)
 
   
 @app.route("/plotTemplate")
