@@ -14,7 +14,7 @@ class LeftSideBar extends Component {
             <div id='left-side-bar'>
                 <VarList variables={this.props.variables}
                     loadVariables={this.props.loadVariables}
-                    cachedFiles={this.props.cached_files} 
+                    cachedFiles={this.props.cached_files}
                     removeVariable={this.props.removeVariable}
                     selectVariable={this.props.selectVariable}
                     selected_variable={this.props.selected_variable}
@@ -37,7 +37,7 @@ LeftSideBar.propTypes ={
     getColormaps: PropTypes.func,
     graphics_methods: PropTypes.object,
     loadVariables: PropTypes.func,
-    templates: PropTypes.object,
+    templates: PropTypes.arrayOf(PropTypes.string),
     variables: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object

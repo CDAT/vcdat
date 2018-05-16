@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
 import TemplateEditor from './modals/TemplateEditor.jsx'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js'
-import {DragSource} from 'react-dnd'
+import { DragSource } from 'react-dnd'
+import { toast } from 'react-toastify'
 
 
 // Use a simple function-based component, rather than a fancy class one.
@@ -41,23 +42,37 @@ class TemplateList extends Component {
     constructor(props){
         super(props)
         this.state = {
-            "showTemplateEditor": false
+            showTemplateEditor: false,
+            active_template: undefined,
         }
         this.editTemplate = this.editTemplate.bind(this)
-        this.updateTemplate = this.updateTemplate.bind(this)
+        this.handleClose = this.handleClose.bind(this)
     }
     
     editTemplate() {
-        this.setState({"showTemplateEditor": true})
+        if(this.state.active_template === undefined){
+            toast.info("A template must be selected to edit", { position: toast.POSITION.BOTTOM_CENTER })
+        }
+        else{
+            this.setState({showTemplateEditor: true, template_data: "loading"})
+            vcs.gettemplatedata(this.state.active_template).then((data)=>{
+                this.setState({template_data: data})
+            },
+            (error) => {
+                console.warn(error)
+                toast.error("Failed to get template data. If this happens with other templates, try restarting vCDAT.",
+                    { position: toast.POSITION.BOTTOM_CENTER }
+                )
+                this.setState({template_data: "error"})
+            })
+        }
     }
 
-    updateTemplate(t) {
-        this.setState({"showTemplateEditor": false})
-        this.props.updateTemplate(t);
+    handleClose(){
+        this.setState({showTemplateEditor: false})
     }
 
     render() {
-        let template = this.state.active_template ? this.props.templates[this.state.active_template] : this.props.templates.default;
         return (
             <div className='left-side-list scroll-area-list-parent template-list-container'>
                 <AddEditRemoveNav
@@ -69,28 +84,32 @@ class TemplateList extends Component {
                 />
                 <div className='scroll-area'>
                     <ul id='temp-list' className='no-bullets left-list'>
-                        {Object.keys(this.props.templates).sort((a, b)=>{
-                                return a.toLowerCase().localeCompare(b.toLowerCase());
-                            }).map((value, index) => {
+                        {this.props.templates.map((value, index) => {
                                 return (
-                                    <DraggableTemplateItem template={value} key={index}
+                                    <DraggableTemplateItem
+                                        template={value}
+                                        key={index}
                                         active={value === this.state.active_template}
                                         selectTemplate={(t) => {
                                             this.setState({active_template: t})
-                                        }} 
+                                        }}
                                     />
                                 )
                             })
                         }
                     </ul>
                 </div>
-                <TemplateEditor show={this.state.showTemplateEditor} template={template} updateTemplate={this.updateTemplate}/>
+                <TemplateEditor
+                    show={this.state.showTemplateEditor}
+                    close={this.handleClose}
+                    template={this.state.template_data}
+                />
             </div>
         );
     }
 }
 TemplateList.propTypes = {
-    templates: PropTypes.object,
+    templates: PropTypes.arrayOf(PropTypes.string),
     updateTemplate: PropTypes.func,
 }
 

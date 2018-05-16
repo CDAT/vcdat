@@ -17,18 +17,17 @@ class TemplateModel extends BaseModel {
 
     static getInitialState() {
         try{
-            return vcs.gettemplates()
+            return vcs.getalltemplatenames()
         }
         catch(e){
-            if(e instanceof TypeError && e.message === "vcs.gettemplates is not a function"){
+            if(e instanceof TypeError && e.message === "vcs.getalltemplatenames is not a function"){
                 const message = "Unable to retrieve templates. You may need to update vcs-js. Run: conda install -c cdat vcs-js"
-                console.log(message)
                 toast.error(message, { position: toast.POSITION.BOTTOM_CENTER, autoClose: 8000 })
             }
             else{
                 console.warn(e)
             }
-            return {}
+            return []
         }
         
     }
