@@ -38,6 +38,7 @@ class Canvas extends Component{
             this.canvas = vcs.init(this.div);
             this.resize_token = PubSub.subscribe(PubSubEvents.resize, this.resetCanvas.bind(this))
             this.colormap_token = PubSub.subscribe(PubSubEvents.colormap_update, this.handleColormapUpdate.bind(this))
+            this.template_token = PubSub.subscribe(PubSubEvents.template_update, this.handleTemplateUpdate.bind(this))
         }
         catch(e){
             if(e instanceof ReferenceError && e.message == "vcs is not defined"){
@@ -46,7 +47,7 @@ class Canvas extends Component{
                 )
             }
             else{
-                console.log(e)
+                console.warn(e)
             }
         }
     }
@@ -131,6 +132,7 @@ class Canvas extends Component{
         this.canvas.close()
         PubSub.unsubscribe(this.resize_token)
         PubSub.unsubscribe(this.colormap_token)
+        PubSub.unsubscribe(this.template_token)
     }
 
     /* istanbul ignore next */
@@ -157,6 +159,15 @@ class Canvas extends Component{
             }
             if(needs_render){
                 this.forceUpdate()
+            }
+        }
+    }
+
+    handleTemplateUpdate(msg, updated_template){
+        for(let plot of this.props.plots){
+            if(plot.template === updated_template){
+                this.forceUpdate()
+                break
             }
         }
     }

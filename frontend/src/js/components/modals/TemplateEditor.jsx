@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, ButtonToolbar, Button } from 'react-bootstrap'
 import widgets from 'vcs-widgets'
+import PubSub from 'pubsub-js'
+import PubSubEvents from '../../constants/PubSubEvents.js'
 import { toast } from 'react-toastify'
 /* globals $ */
 const TemplateEdit = widgets.TemplateEdit
@@ -34,6 +36,7 @@ class TemplateEditor extends Component {
     saveTemplate() {
         if(this.state.workingTemplate && this.state.workingTemplate.name){
             vcs.settemplate(this.state.workingTemplate.name, this.state.workingTemplate).then(()=>{
+                PubSub.publish(PubSubEvents.template_update, this.state.workingTemplate.name)
                 this.props.close()
             },
             (error) => {
@@ -56,7 +59,7 @@ class TemplateEditor extends Component {
                 <Modal.Body>
                     {
                         this.props.template === "loading" ? <div>Spinner</div>
-                        : this.props.template === "error" ? <div>error</div>
+                        : this.props.template === "error" ? <div>Error retrieving template data. Try another template, or restart vCDAT. If the problem persists, please send an email to cdat-support@llnl.gov detailing the issue.</div>
                         : <TemplateEdit 
                                 templatePreview={"/plotTemplate?tmpl=" + JSON.stringify(this.state.workingTemplate)}
                                 template={this.state.workingTemplate}
