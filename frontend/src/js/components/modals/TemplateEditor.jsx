@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, ButtonToolbar, Button } from 'react-bootstrap'
+import { Modal, Button } from 'react-bootstrap'
 import widgets from 'vcs-widgets'
 import PubSub from 'pubsub-js'
 import PubSubEvents from '../../constants/PubSubEvents.js'
@@ -68,10 +68,8 @@ class TemplateEditor extends Component {
                     }
                 </Modal.Body>
                 <Modal.Footer>
-                    <ButtonToolbar>
-                        <Button onClick={this.props.close}>Cancel</Button>
-                        <Button onClick={this.saveTemplate}>Save</Button>
-                    </ButtonToolbar>
+                    <Button onClick={this.saveTemplate} bsStyle="primary">Save</Button>
+                    <Button onClick={this.props.close} bsStyle="default">Cancel</Button>    
                 </Modal.Footer>
             </Modal>
         );

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import widgets from 'vcs-widgets'
 import $ from 'jquery'
-import {Modal, ButtonToolbar, Button} from 'react-bootstrap'
+import {Modal, Button} from 'react-bootstrap'
 
 class GraphicsMethodEditor extends Component {
     constructor(props){
@@ -37,14 +37,13 @@ class GraphicsMethodEditor extends Component {
                             updateGraphicsMethod={this.updateGraphicsMethod} />
                 </Modal.Body>
                 <Modal.Footer>
-                    <ButtonToolbar>
-                        <Button onClick={this.props.onHide}>Cancel</Button>
                         <Button
+                            bsStyle="primary"
                             onClick={() => {
                                 this.props.updateGraphicsMethod(this.state.workingGraphicsMethod); this.props.onHide() 
                             }}>Save
                         </Button>
-                    </ButtonToolbar>
+                        <Button onClick={this.props.onHide}>Cancel</Button>
                 </Modal.Footer>
             </Modal>
         );

@@ -483,16 +483,16 @@ class FileTab extends Component {
                     }
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button bsStyle="primary" bsSize="small" onClick={(e) => {
+                    <Button bsStyle="primary" onClick={(e) => {
                         this.load()
                     }}>Load</Button>
-                    <Button bsStyle="primary" bsSize="small" onClick={(e) => {
+                    <Button bsStyle="primary" onClick={(e) => {
                         this.loadAndClose()
                     }}>Load and Close</Button>
-                    <Button bsStyle="primary" bsSize="small" onClick={(e) => {
+                    <Button bsStyle="primary" onClick={(e) => {
                         this.loadAs()
                     }}>Load As</Button>
-                    <Button bsStyle="default" bsSize="small" onClick={() => this.props.onTryClose()}>Close</Button>
+                    <Button bsStyle="default" onClick={() => this.props.onTryClose()}>Close</Button>
                 </Modal.Footer>
                 <Modal show={this.state.showRedefineVariableModal}>
                     <Modal.Header>
@@ -508,7 +508,7 @@ class FileTab extends Component {
                         </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button bsStyle="primary" bsSize="small"
+                        <Button bsStyle="primary"
                             onClick={() => {
                                 if (this.state.temporaryRedefinedVariableName) {
                                     this.doneRedefineVariable();
@@ -518,7 +518,7 @@ class FileTab extends Component {
                                     });
                                 }
                             }}>Confirm</Button>
-                        <Button bsSize="small" onClick={() => this.setState({ showRedefineVariableModal: false })}>Close</Button>
+                        <Button onClick={() => this.setState({ showRedefineVariableModal: false })}>Close</Button>
                     </Modal.Footer>
                 </Modal>
                 {this.state.showFileInfoModal &&
