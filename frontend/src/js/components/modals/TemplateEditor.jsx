@@ -58,7 +58,7 @@ class TemplateEditor extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     {
-                        this.props.template === "loading" ? <div>Spinner</div>
+                        this.props.template === "loading" ? <div style={{display: "flex", justifyContent: "center"}}><span className="loading-spinner"></span></div>
                         : this.props.template === "error" ? <div>Error retrieving template data. Try another template, or restart vCDAT. If the problem persists, please send an email to cdat-support@llnl.gov detailing the issue.</div>
                         : <TemplateEdit 
                                 templatePreview={"/plotTemplate?tmpl=" + JSON.stringify(this.state.workingTemplate)}

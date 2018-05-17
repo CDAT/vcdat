@@ -55,7 +55,7 @@ class TemplateList extends Component {
         }
         else{
             this.setState({showTemplateEditor: true, template_data: "loading"})
-            vcs.gettemplatedata(this.state.active_template).then((data)=>{
+            vcs.gettemplate(this.state.active_template).then((data)=>{
                 this.setState({template_data: data})
             },
             (error) => {
