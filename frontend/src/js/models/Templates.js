@@ -21,6 +21,13 @@ class TemplateModel extends BaseModel {
                     }
                 }
                 return new_state
+            case 'REMOVE_TEMPLATE':
+                new_state = $.extend(true, {}, state);
+                new_state.names.splice(new_state.names.indexOf(action.name), 1)
+                if(new_state.names.indexOf(new_state.selected_template) === -1){
+                    new_state.selected_template = ""
+                }
+                return new_state
             case 'UPDATE_TEMPLATE':
                 new_state = $.extend(true, {}, state);
                 new_state[action.template.name] = action.template;

@@ -47,6 +47,8 @@ class TemplateList extends Component {
             showTemplateCreator: false,
         }
         this.editTemplate = this.editTemplate.bind(this)
+        this.removeTemplate = this.removeTemplate.bind(this)
+        this.confirmRemove = this.confirmRemove.bind(this)
     }
     
     editTemplate() {
@@ -68,6 +70,39 @@ class TemplateList extends Component {
         }
     }
 
+    confirmRemove() {
+        if(this.props.selected_template === ""){
+            toast.info("A template must be selected to delete", { position: toast.POSITION.BOTTOM_CENTER })
+        }
+        else{
+            let user_confirmed = confirm(`Are you sure you want to delete ${this.props.selected_template}?`)
+            if(user_confirmed){
+                this.removeTemplate()
+            }
+        }
+    }
+
+    removeTemplate(){
+        try{
+            return vcs.removetemplate(this.props.selected_template).then(()=>{ // remove template from server
+                this.props.removeTemplate(this.props.selected_template) // remove template from redux
+            },
+            (error) => {
+                try{
+                    console.warn(error)
+                    toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
+                }
+                catch(e){
+                    toast.error("A VCS error occurred when attempting to delete the template.", { position: toast.POSITION.BOTTOM_CENTER });        
+                }
+            })
+        }
+        catch(e) {
+            console.warn(e)
+            toast.error("Failed to delete template")
+        }
+    }
+
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent template-list-container'>
@@ -76,6 +111,7 @@ class TemplateList extends Component {
                     addAction={() => { this.setState({showTemplateCreator: true}) }}
                     editAction={this.editTemplate}
                     editText="Edit a selected template"
+                    removeAction={this.confirmRemove}
                     removeText="Removing a template is not supported yet"
                     title='Templates'
                 />
@@ -109,16 +145,17 @@ class TemplateList extends Component {
                         templates={this.props.templates}
                     />
                 }
-                
             </div>
         );
     }
 }
+
 TemplateList.propTypes = {
     templates: PropTypes.arrayOf(PropTypes.string),
     selected_template: PropTypes.string,
     selectTemplate: PropTypes.func,
     updateTemplate: PropTypes.func,
+    removeTemplate: PropTypes.func,
 }
 
 export default TemplateList;

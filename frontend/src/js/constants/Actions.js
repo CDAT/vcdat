@@ -221,6 +221,12 @@ var Actions = {
             name: name,
         }
     },
+    removeTemplate(name) {
+        return {
+            type: 'REMOVE_TEMPLATE',
+            name: name,
+        }
+    },
     updateTemplate(template) {
         return {
             type: 'UPDATE_TEMPLATE',

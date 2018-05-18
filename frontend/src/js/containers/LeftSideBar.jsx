@@ -29,6 +29,7 @@ class LeftSideBar extends Component {
                     selected_template={this.props.selected_template}
                     selectTemplate={this.props.selectTemplate}
                     updateTemplate={this.props.updateTemplate}
+                    removeTemplate={this.props.removeTemplate}
                 />
             </div>
         )
@@ -40,7 +41,6 @@ LeftSideBar.propTypes ={
     graphics_methods: PropTypes.object,
     loadVariables: PropTypes.func,
     templates: PropTypes.arrayOf(PropTypes.string),
-    selected_template: PropTypes.string,
     variables: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object
@@ -49,7 +49,9 @@ LeftSideBar.propTypes ={
     sheets_model: PropTypes.object,
     updateGraphicsMethods: PropTypes.func,
     selectTemplate: PropTypes.func,
+    selected_template: PropTypes.string,
     updateTemplate: PropTypes.func,
+    removeTemplate: PropTypes.func,
     removeVariable: PropTypes.func,
     selectVariable: PropTypes.func,
     selected_variable: PropTypes.string,
@@ -85,6 +87,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         selectTemplate: (name) => dispatch(Actions.selectTemplate(name)),
         updateTemplate: (template) => dispatch(Actions.updateTemplate(template)),
+        removeTemplate: (name) => dispatch(Actions.removeTemplate(name)),
     }
 }
 
