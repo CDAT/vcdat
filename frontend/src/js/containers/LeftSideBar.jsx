@@ -26,6 +26,8 @@ class LeftSideBar extends Component {
                 />
                 <TemplateList
                     templates={this.props.templates}
+                    selected_template={this.props.selected_template}
+                    selectTemplate={this.props.selectTemplate}
                     updateTemplate={this.props.updateTemplate}
                 />
             </div>
@@ -38,6 +40,7 @@ LeftSideBar.propTypes ={
     graphics_methods: PropTypes.object,
     loadVariables: PropTypes.func,
     templates: PropTypes.arrayOf(PropTypes.string),
+    selected_template: PropTypes.string,
     variables: PropTypes.oneOfType([
         PropTypes.array,
         PropTypes.object
@@ -45,6 +48,7 @@ LeftSideBar.propTypes ={
     colormaps: PropTypes.object,
     sheets_model: PropTypes.object,
     updateGraphicsMethods: PropTypes.func,
+    selectTemplate: PropTypes.func,
     updateTemplate: PropTypes.func,
     removeVariable: PropTypes.func,
     selectVariable: PropTypes.func,
@@ -55,7 +59,8 @@ const mapStateToProps = (state) => {
     return {
         variables: state.present.variables,
         graphics_methods: state.present.graphics_methods,
-        templates: state.present.templates,
+        templates: state.present.templates.names,
+        selected_template: state.present.templates.selected_template,
         cached_files: state.present.cached_files,
         sheets_model: state.present.sheets_model,
         colormaps: state.present.colormaps,
@@ -78,6 +83,7 @@ const mapDispatchToProps = (dispatch) => {
         updateGraphicsMethod: (graphics_method) => {
             dispatch(Actions.updateGraphicsMethod(graphics_method))
         },
+        selectTemplate: (name) => dispatch(Actions.selectTemplate(name)),
         updateTemplate: (template) => dispatch(Actions.updateTemplate(template)),
     }
 }

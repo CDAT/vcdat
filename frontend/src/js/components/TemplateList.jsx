@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
 import TemplateEditor from './modals/TemplateEditor.jsx'
+import TemplateCreator from './modals/TemplateCreator.jsx'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js'
 import { DragSource } from 'react-dnd'
 import { toast } from 'react-toastify'
@@ -43,19 +44,18 @@ class TemplateList extends Component {
         super(props)
         this.state = {
             showTemplateEditor: false,
-            active_template: undefined,
+            showTemplateCreator: false,
         }
         this.editTemplate = this.editTemplate.bind(this)
-        this.handleClose = this.handleClose.bind(this)
     }
     
     editTemplate() {
-        if(this.state.active_template === undefined){
+        if(this.props.selected_template === ""){
             toast.info("A template must be selected to edit", { position: toast.POSITION.BOTTOM_CENTER })
         }
         else{
             this.setState({showTemplateEditor: true, template_data: "loading"})
-            vcs.gettemplate(this.state.active_template).then((data)=>{
+            vcs.gettemplate(this.props.selected_template).then((data)=>{
                 this.setState({template_data: data})
             },
             (error) => {
@@ -68,16 +68,13 @@ class TemplateList extends Component {
         }
     }
 
-    handleClose(){
-        this.setState({showTemplateEditor: false})
-    }
-
     render() {
         return (
             <div className='left-side-list scroll-area-list-parent template-list-container'>
                 <AddEditRemoveNav
-                    editAction={this.editTemplate}
                     addText="Adding templates is not supported yet"
+                    addAction={() => { this.setState({showTemplateCreator: true}) }}
+                    editAction={this.editTemplate}
                     editText="Edit a selected template"
                     removeText="Removing a template is not supported yet"
                     title='Templates'
@@ -89,9 +86,9 @@ class TemplateList extends Component {
                                     <DraggableTemplateItem
                                         template={value}
                                         key={index}
-                                        active={value === this.state.active_template}
+                                        active={value === this.props.selected_template}
                                         selectTemplate={(t) => {
-                                            this.setState({active_template: t})
+                                            this.props.selectTemplate(t)
                                         }}
                                     />
                                 )
@@ -101,15 +98,26 @@ class TemplateList extends Component {
                 </div>
                 <TemplateEditor
                     show={this.state.showTemplateEditor}
-                    close={this.handleClose}
+                    close={() => this.setState({showTemplateEditor: false})}
                     template={this.state.template_data}
                 />
+                {
+                    this.state.showTemplateCreator &&
+                    <TemplateCreator
+                        show={this.state.showTemplateCreator}
+                        close={() => this.setState({showTemplateCreator: false})}
+                        templates={this.props.templates}
+                    />
+                }
+                
             </div>
         );
     }
 }
 TemplateList.propTypes = {
     templates: PropTypes.arrayOf(PropTypes.string),
+    selected_template: PropTypes.string,
+    selectTemplate: PropTypes.func,
     updateTemplate: PropTypes.func,
 }
 
