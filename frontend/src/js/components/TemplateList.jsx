@@ -4,6 +4,7 @@ import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
 import TemplateEditor from './modals/TemplateEditor.jsx'
 import TemplateCreator from './modals/TemplateCreator.jsx'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js'
+import Dialog from 'react-bootstrap-dialog'
 import { DragSource } from 'react-dnd'
 import { toast } from 'react-toastify'
 
@@ -75,10 +76,19 @@ class TemplateList extends Component {
             toast.info("A template must be selected to delete", { position: toast.POSITION.BOTTOM_CENTER })
         }
         else{
-            let user_confirmed = confirm(`Are you sure you want to delete ${this.props.selected_template}?`)
-            if(user_confirmed){
-                this.removeTemplate()
-            }
+            this.dialog.show({
+                body: `Are you sure you want to delete ${this.props.selected_template}?`,
+                actions: [
+                    Dialog.DefaultAction(
+                        'Remove',
+                        () => {
+                            this.removeTemplate()
+                        },
+                        'btn-danger'
+                    ),
+                    Dialog.CancelAction()
+                ]
+            })
         }
     }
 
@@ -86,6 +96,7 @@ class TemplateList extends Component {
         try{
             return vcs.removetemplate(this.props.selected_template).then(()=>{ // remove template from server
                 this.props.removeTemplate(this.props.selected_template) // remove template from redux
+                toast.success("Template removed successfully!", { position: toast.POSITION.BOTTOM_CENTER })
             },
             (error) => {
                 try{
@@ -107,12 +118,12 @@ class TemplateList extends Component {
         return (
             <div className='left-side-list scroll-area-list-parent template-list-container'>
                 <AddEditRemoveNav
-                    addText="Adding templates is not supported yet"
+                    addText="Create a new template"
                     addAction={() => { this.setState({showTemplateCreator: true}) }}
                     editAction={this.editTemplate}
                     editText="Edit a selected template"
                     removeAction={this.confirmRemove}
-                    removeText="Removing a template is not supported yet"
+                    removeText="Remove a template"
                     title='Templates'
                 />
                 <div className='scroll-area'>
@@ -144,7 +155,8 @@ class TemplateList extends Component {
                         close={() => this.setState({showTemplateCreator: false})}
                         templates={this.props.templates}
                     />
-                }
+                }  
+                <Dialog ref={(el) => {this.dialog = el}} />
             </div>
         );
     }

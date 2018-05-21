@@ -68,7 +68,7 @@ class TemplateEditor extends Component {
                     }
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.saveTemplate} bsStyle="primary">Save</Button>
+                    <Button onClick={this.saveTemplate} bsStyle="primary" disabled={this.props.template === "error"}>Save</Button>
                     <Button onClick={this.props.close} bsStyle="default">Cancel</Button>    
                 </Modal.Footer>
             </Modal>

@@ -107,7 +107,7 @@ class TemplateCreator extends Component {
                 <Modal.Footer>
                     <Button
                         bsStyle="primary"
-                        disabled={this.state.validation_state !== "success"} 
+                        disabled={this.state.validation_state !== "success" } 
                         onClick={this.createTemplate}
                     >Create
                     </Button>
