@@ -42,17 +42,16 @@ function getProps() {
                 "polar": {}
             }
         },
-        "variables": ["clt"],
-        "graphics_method_types": [
-        "isoline",
-        "boxfill",
-        "isofill",
-        "vector",
+        variables: ["clt"],
+        graphics_method_types: [
+            "isoline",
+            "boxfill",
+            "isofill",
+            "vector",
         ],
-        "templates": [
-        "default",
-        "quick"
-        ],
+        templates: {
+            names: ["default", "quick"],
+        },
         swapGraphicsMethodInPlot: sinon.spy(),
         swapVariableInPlot: sinon.spy(),
         swapTemplateInPlot: sinon.spy(),
@@ -191,8 +190,7 @@ describe('PlotInspectorWrapperTest.jsx', function() {
                     clt: {},
                 },
                 templates: {
-                    default: {},
-                    quick: {}
+                    names: ["default", "quick"]
                 },
                 sheets_model: {
                     selected_cell_id: "0_0_0",

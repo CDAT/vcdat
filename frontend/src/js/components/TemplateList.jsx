@@ -8,7 +8,7 @@ import Dialog from 'react-bootstrap-dialog'
 import { DragSource } from 'react-dnd'
 import { toast } from 'react-toastify'
 
-
+/* istanbul ignore next */
 // Use a simple function-based component, rather than a fancy class one.
 function TemplateItem(props) {
     // This function is injected by the Dra
@@ -19,6 +19,7 @@ function TemplateItem(props) {
     );
 }
 
+/* istanbul ignore next */
 // Formats the data object passed to drop targets using the draggable component's props
 const templateSource = {
     beginDrag(props) {
@@ -28,6 +29,7 @@ const templateSource = {
     }
 };
 
+/* istanbul ignore next */
 // Assemble the functions and properties to inject into the TemplateItem
 function collect(connect, monitor) {
     return {
@@ -36,6 +38,7 @@ function collect(connect, monitor) {
     };
 }
 
+/* istanbul ignore next */
 // Create a draggable version of the TemplateItem
 const DraggableTemplateItem = DragSource(DragAndDropTypes.TMPL, templateSource, collect)(TemplateItem);
 
@@ -53,12 +56,12 @@ class TemplateList extends Component {
     }
     
     editTemplate() {
-        if(this.props.selected_template === ""){
+        if(!this.props.selected_template){
             toast.info("A template must be selected to edit", { position: toast.POSITION.BOTTOM_CENTER })
         }
         else{
             this.setState({showTemplateEditor: true, template_data: "loading"})
-            vcs.gettemplate(this.props.selected_template).then((data)=>{
+            return vcs.gettemplate(this.props.selected_template).then((data)=>{ // return promise for testing purposes
                 this.setState({template_data: data})
             },
             (error) => {
@@ -71,6 +74,7 @@ class TemplateList extends Component {
         }
     }
 
+    /* istanbul ignore next */
     confirmRemove() {
         if(this.props.selected_template === ""){
             toast.info("A template must be selected to delete", { position: toast.POSITION.BOTTOM_CENTER })
@@ -98,6 +102,7 @@ class TemplateList extends Component {
                 this.props.removeTemplate(this.props.selected_template) // remove template from redux
                 toast.success("Template removed successfully!", { position: toast.POSITION.BOTTOM_CENTER })
             },
+            /* istanbul ignore next */
             (error) => {
                 try{
                     console.warn(error)
@@ -109,7 +114,9 @@ class TemplateList extends Component {
             })
         }
         catch(e) {
+            /* istanbul ignore next */
             console.warn(e)
+            /* istanbul ignore next */
             toast.error("Failed to delete template")
         }
     }
@@ -119,7 +126,7 @@ class TemplateList extends Component {
             <div className='left-side-list scroll-area-list-parent template-list-container'>
                 <AddEditRemoveNav
                     addText="Create a new template"
-                    addAction={() => { this.setState({showTemplateCreator: true}) }}
+                    addAction={/* istanbul ignore next */ () => { this.setState({showTemplateCreator: true}) }}
                     editAction={this.editTemplate}
                     editText="Edit a selected template"
                     removeAction={this.confirmRemove}
@@ -134,7 +141,7 @@ class TemplateList extends Component {
                                         template={value}
                                         key={index}
                                         active={value === this.props.selected_template}
-                                        selectTemplate={(t) => {
+                                        selectTemplate={/* istanbul ignore next */ (t) => {
                                             this.props.selectTemplate(t)
                                         }}
                                     />
@@ -145,18 +152,18 @@ class TemplateList extends Component {
                 </div>
                 <TemplateEditor
                     show={this.state.showTemplateEditor}
-                    close={() => this.setState({showTemplateEditor: false})}
+                    close={/* istanbul ignore next */ () => this.setState({showTemplateEditor: false})}
                     template={this.state.template_data}
                 />
                 {
                     this.state.showTemplateCreator &&
                     <TemplateCreator
                         show={this.state.showTemplateCreator}
-                        close={() => this.setState({showTemplateCreator: false})}
+                        close={/* istanbul ignore next */ () => this.setState({showTemplateCreator: false})}
                         templates={this.props.templates}
                     />
                 }  
-                <Dialog ref={(el) => {this.dialog = el}} />
+                <Dialog ref={/* istanbul ignore next */ (el) => {this.dialog = el}} />
             </div>
         );
     }
