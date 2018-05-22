@@ -50,6 +50,7 @@ class TemplateCreator extends Component {
                     toast.success("Template created successfully!", {position: toast.POSITION.BOTTOM_CENTER})
                     this.props.close()
                 },
+                /* istanbul ignore next */
                 (error) => {
                     console.warn("Error while creating template: ", error)
                     if(error.data && error.data.exception) {
@@ -62,7 +63,9 @@ class TemplateCreator extends Component {
             )
         }
         catch(e) {
+            /* istanbul ignore next */
             console.warn(e)
+            /* istanbul ignore next */
             toast.error("An error occurred while creating the template. Try restarting vCDAT.")
         }
     }
@@ -132,5 +135,5 @@ const mapDispatchToProps = (dispatch) => {
         }
     }
 }
-
+export { TemplateCreator as PureTemplateCreator}
 export default connect(null, mapDispatchToProps)(TemplateCreator);
