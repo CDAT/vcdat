@@ -7,7 +7,7 @@ import TemplateCreator from '../../../../src/js/components/modals/TemplateCreato
 import Enzyme from 'enzyme' 
 import Adapter from 'enzyme-adapter-react-16'
 Enzyme.configure({ adapter: new Adapter() })
-import { shallow, mount } from 'enzyme'
+import { shallow } from 'enzyme'
 import sinon from 'sinon'
 import { createMockStore } from 'redux-test-utils'
 
