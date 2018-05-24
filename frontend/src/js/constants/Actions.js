@@ -209,6 +209,24 @@ var Actions = {
             defaultmethods: defaults
         }
     },
+    selectTemplate(name){
+        return {
+            type: 'SELECT_TEMPLATE',
+            selected_template: name,
+        }
+    },
+    createTemplate(name) {
+        return {
+            type: 'CREATE_TEMPLATE',
+            name: name,
+        }
+    },
+    removeTemplate(name) {
+        return {
+            type: 'REMOVE_TEMPLATE',
+            name: name,
+        }
+    },
     updateTemplate(template) {
         return {
             type: 'UPDATE_TEMPLATE',

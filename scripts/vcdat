@@ -36,7 +36,6 @@ VCSJS_PORT = getPort("VCSJS_PORT", "8000")
 VCDAT_PORT = getPort("VCDAT_PORT", "5000")
 
 os.environ["UVCDAT_ANONYMOUS_LOG"] = "no"
-logfile = open(os.path.join(tempfile.gettempdir(), "vcdat.log"), 'w+')
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--print-log", help="Output to screen instead of log file", action='store_true') # Because i cant do --print for whatever reason.
@@ -45,6 +44,12 @@ parser.add_argument("--no-browser", help="Don't start a browser automatically", 
 args = parser.parse_args()
 if(args.print_log):
     logfile = sys.stdout
+else:
+    try:
+        logfile = open(os.path.join(tempfile.gettempdir(), "vcdat.log"), 'w+')
+    except IOError:
+        print "Unable to write to temp file directory. Falling back to standard out for logs"
+        logfile = sys.stdout
 
 print "Logs are going to:", logfile.name
 

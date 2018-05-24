@@ -25,7 +25,7 @@ class RenameVariable extends Component{
                         </FormGroup>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button bsStyle="primary" bsSize="small"
+                        <Button bsStyle="primary"
                             onClick={() => {
                                 if (this.state.temporaryRedefinedVariableName) {
                                     this.doneRedefineVariable();
@@ -35,7 +35,7 @@ class RenameVariable extends Component{
                                     });
                                 }
                             }}>Confirm</Button>
-                        <Button bsSize="small" onClick={() => this.setState({ showRedefineVariableModal: false })}>Close</Button>
+                        <Button onClick={() => this.setState({ showRedefineVariableModal: false })}>Close</Button>
                     </Modal.Footer>
                 </Modal>
                 <Dialog ref="dialog" />

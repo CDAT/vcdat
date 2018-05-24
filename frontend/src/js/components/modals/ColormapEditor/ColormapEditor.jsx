@@ -406,7 +406,7 @@ class ColormapEditor extends Component {
                             onClick={() => {this.handleApplyColormap()}}>
                             Apply
                         </Button>
-                        <Button onClick={() => {this.saveColormap(this.state.selected_colormap_name)}}>Save</Button>
+                        <Button onClick={() => {this.saveColormap(this.state.selected_colormap_name)}} bsStyle="primary">Save</Button>
                         <Button onClick={this.openImportExportModal.bind(this)}>Import/Export</Button>
                         <Button onClick={this.props.close}>Close</Button>
                     </Modal.Footer>

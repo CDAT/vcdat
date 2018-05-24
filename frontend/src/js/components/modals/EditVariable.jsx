@@ -155,8 +155,8 @@ class EditVariable extends Component {
                     }
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button id="edit-var-save" bsStyle="default" bsSize="small" onClick={() => this.save()}>Save</Button>
-                    <Button id="edit-var-close" bsStyle="default" bsSize="small" onClick={() => this.props.onTryClose()}>Close</Button>
+                    <Button id="edit-var-save" bsStyle="primary" onClick={() => this.save()}>Save</Button>
+                    <Button id="edit-var-close" bsStyle="default" onClick={() => this.props.onTryClose()}>Close</Button>
                 </Modal.Footer>
             </Modal>
         )
