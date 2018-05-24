@@ -191,6 +191,13 @@ var Actions = {
             transforms: transforms,
         }
     },
+    createGraphicsMethod(name, gm_type, base_method) {
+        return {
+            type: "CREATE_GRAPHICS_METHOD",
+            gm_type: gm_type,
+            base_method: base_method
+        }
+    },
     updateGraphicsMethod(graphics_method) {
         return {
             type: 'UPDATE_GRAPHICS_METHOD',

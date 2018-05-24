@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
+import GraphicsMethodCreator from './modals/GraphicsMethodCreator.jsx'
 import GraphicsMethodEditor from './modals/GraphicsMethodEditor.jsx'
 import Tree from './Tree.jsx'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js'
@@ -31,11 +32,18 @@ class GMList extends Component {
         this.state = {
             activeGM: false,
             activeGMParent: false,
-            showModal: false
+            show_edit_modal: false,
+            show_create_modal: false,
         }
+        this.clickedAdd = this.clickedAdd.bind(this)
         this.clickedEdit = this.clickedEdit.bind(this)
-        this.closedModal = this.closedModal.bind(this)
+        this.clickedRemove= this.clickedRemove.bind(this)
+        this.closeModal = this.closeEditModal.bind(this)
         this.selectedChild = this.selectedChild.bind(this)
+    }
+
+    clickedAdd() {
+        this.setState({show_create_modal: true})
     }
 
     clickedEdit() {
@@ -44,12 +52,16 @@ class GMList extends Component {
             toast.warn("This graphics method does not have an editor yet.", { position: toast.POSITION.BOTTOM_CENTER })
         }
         else {
-            this.setState({showModal: true})
+            this.setState({show_edit_modal: true})
         }
     }
 
-    closedModal() {
-        this.setState({showModal: false})
+    clickedRemove() {
+
+    }
+
+    closeEditModal() {
+        this.setState({show_edit_modal: false})
     }
 
     selectedChild(path) {
@@ -82,9 +94,11 @@ class GMList extends Component {
             <div className='left-side-list scroll-area-list-parent gm-list-container'>
                 <AddEditRemoveNav 
                     title='Graphics Methods'
+                    addAction={this.clickedAdd}
+                    addText="Create a new Graphics Method"
                     editAction={this.clickedEdit}
-                    addText="Creating a graphics method is not supported yet"
                     editText="Edit a selected graphics method"
+                    removeAction={this.clickedRemove}
                     removeText="Removing a graphics method is not supported yet"
                 />
                 {
@@ -93,8 +107,8 @@ class GMList extends Component {
                             colormaps={this.props.colormaps}
                             graphicsMethod={this.props.graphicsMethods[this.state.activeGMParent][this.state.activeGM]}
                             updateGraphicsMethod={this.props.updateGraphicsMethod}
-                            show={this.state.showModal}
-                            onHide={this.closedModal}
+                            show={this.state.show_edit_modal}
+                            onHide={this.closeEditModal}
                         />
                     :   
                         ""

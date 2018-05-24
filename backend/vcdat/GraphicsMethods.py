@@ -3,28 +3,9 @@ import json
 import numpy
 
 _ = vcs.init()
-_methods = {}
 _2d_methods = ('scatter', 'vector', 'xvsy', 'stream', 'glyph', '3d_vector', '3d_dual_scalar')
 _primitives = ('line', 'marker', 'fillarea', 'text')
 
-
-def get_gm():
-    for t in vcs.graphicsmethodlist():
-        _methods[t] = {}
-        for m in vcs.elements[t].keys():
-            gm = vcs.elements[t][m]
-            _methods[t][m] = vcs.dumpToDict(gm)[0]
-            if hasattr(gm, "levels"):
-                arr = numpy.array(gm.levels)
-                if numpy.allclose(arr, 1e20) and arr.shape[-1] == 2:
-                    _methods[t][m]["levels"] = [1e20, 1e20]
-    return _methods
-
-def get_default_gms():
-    _defaults = {}
-    for t in vcs.graphicsmethodlist():
-        _defaults[t] = vcs.elements[t].keys()
-    return _defaults
 
 def detect_nvars(g_type, g_method, g_obj):
     """Try to return the number of variables required for the plot method.
