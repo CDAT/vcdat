@@ -32,15 +32,13 @@ class GMList extends Component {
     constructor(props){
         super(props)
         this.state = {
-            activeGM: false,
-            activeGMParent: false,
             show_edit_modal: false,
             show_create_modal: false,
         }
         this.clickedAdd = this.clickedAdd.bind(this)
         this.clickedEdit = this.clickedEdit.bind(this)
         this.clickedRemove= this.clickedRemove.bind(this)
-        this.closeModal = this.closeEditModal.bind(this)
+        this.closeEditModal = this.closeEditModal.bind(this)
         this.selectedChild = this.selectedChild.bind(this)
     }
 
@@ -49,7 +47,7 @@ class GMList extends Component {
     }
 
     clickedEdit() {
-        const gm = this.props.graphics_methods[this.state.activeGMParent][this.state.activeGM] 
+        const gm = this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method] 
         if (SUPPORTED_GM_EDITORS && !SUPPORTED_GM_EDITORS.includes(gm.g_name)) {
             toast.warn("This graphics method does not have an editor yet.", { position: toast.POSITION.BOTTOM_CENTER })
         }
@@ -104,7 +102,7 @@ class GMList extends Component {
                     this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method]) ?
                         <GraphicsMethodEditor
                             colormaps={this.props.colormaps}
-                            graphicsMethod={this.props.graphics_methods[this.state.activeGMParent][this.state.activeGM]}
+                            graphicsMethod={this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method]}
                             updateGraphicsMethod={this.props.updateGraphicsMethod}
                             show={this.state.show_edit_modal}
                             onHide={this.closeEditModal}
