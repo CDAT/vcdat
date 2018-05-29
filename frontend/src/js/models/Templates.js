@@ -1,5 +1,6 @@
-import BaseModel from './BaseModel.js';
+import BaseModel from './BaseModel.js'
 import { toast } from 'react-toastify'
+import $ from 'jquery'
 
 class TemplateModel extends BaseModel {
     static reduce(state={}, action) {
@@ -7,29 +8,21 @@ class TemplateModel extends BaseModel {
         switch (action.type) {
             case 'INITIALIZE_TEMPLATE_VALUES':
                 return action.templates;
-            case 'SELECT_TEMPLATE':
-                new_state = $.extend(true, {}, state);
-                new_state.selected_template = action.selected_template
-                return new_state
             case 'CREATE_TEMPLATE':
-                new_state = $.extend(true, {}, state);
-                for(let i=0; i < new_state.names.length; i++){
-                    if(new_state.names[i].toLocaleLowerCase() > action.name.toLocaleLowerCase()){
-                        new_state.names.splice(i, 0, action.name) // inserts name into alphabetical index
-                        new_state.selected_template = action.name
+                new_state = $.extend(true, [], state);
+                for(let i=0; i < new_state.length; i++){
+                    if(new_state[i].toLocaleLowerCase() > action.name.toLocaleLowerCase()){
+                        new_state.splice(i, 0, action.name) // inserts name into alphabetical index
                         break
                     }
                 }
                 return new_state
             case 'REMOVE_TEMPLATE':
-                new_state = $.extend(true, {}, state);
-                new_state.names.splice(new_state.names.indexOf(action.name), 1)
-                if(new_state.names.indexOf(new_state.selected_template) === -1){
-                    new_state.selected_template = ""
-                }
+                new_state = $.extend(true, [], state);
+                new_state.splice(new_state.indexOf(action.name), 1)
                 return new_state
             case 'UPDATE_TEMPLATE':
-                new_state = $.extend(true, {}, state);
+                new_state = $.extend(true, [], state);
                 new_state[action.template.name] = action.template;
                 return new_state;
             default:
@@ -40,10 +33,7 @@ class TemplateModel extends BaseModel {
     static getInitialState() {
         try{
             return vcs.getalltemplatenames().then((names) => {
-                return {
-                    names: names,
-                    selected_template: ""
-                }
+                return names // ["ASD", "default"] etc
             })
         }
         catch(e){
@@ -54,7 +44,7 @@ class TemplateModel extends BaseModel {
             else{
                 console.warn(e)
             }
-            return {names: [], selected_template: ""}
+            return []
         }
         
     }

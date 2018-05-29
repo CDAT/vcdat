@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import Actions from '../constants/Actions.js'
 import PropTypes from 'prop-types'
 import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
 import GraphicsMethodCreator from './modals/GraphicsMethodCreator.jsx'
@@ -47,7 +49,7 @@ class GMList extends Component {
     }
 
     clickedEdit() {
-        const gm = this.props.graphicsMethods[this.state.activeGMParent][this.state.activeGM] 
+        const gm = this.props.graphics_methods[this.state.activeGMParent][this.state.activeGM] 
         if (SUPPORTED_GM_EDITORS && !SUPPORTED_GM_EDITORS.includes(gm.g_name)) {
             toast.warn("This graphics method does not have an editor yet.", { position: toast.POSITION.BOTTOM_CENTER })
         }
@@ -57,7 +59,6 @@ class GMList extends Component {
     }
 
     clickedRemove() {
-
     }
 
     closeEditModal() {
@@ -68,16 +69,13 @@ class GMList extends Component {
         if (path.length === 2) {
             let gm = path[1]
             let gm_parent = path[0]
-            this.setState({
-                activeGM: gm,
-                activeGMParent: gm_parent,
-            })
+            this.props.selectGraphicsMethod(gm_parent, gm)
         }
     }
 
     render() {
-        const gmModel = Object.keys(this.props.graphicsMethods).sort().map((gmType) => {
-            const gms = Object.keys(this.props.graphicsMethods[gmType]).sort().map((gmname) => {
+        const gmModel = Object.keys(this.props.graphics_methods).sort().map((gmType) => {
+            const gms = Object.keys(this.props.graphics_methods[gmType]).sort().map((gmname) => {
                 return {
                     'title': gmname,
                     'gmType': gmType
@@ -101,11 +99,12 @@ class GMList extends Component {
                     removeAction={this.clickedRemove}
                     removeText="Removing a graphics method is not supported yet"
                 />
-                {
-                    (this.state && this.state.activeGM) ?
+                {(this.props.selected_graphics_type &&
+                    this.props.selected_graphics_method &&
+                    this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method]) ?
                         <GraphicsMethodEditor
                             colormaps={this.props.colormaps}
-                            graphicsMethod={this.props.graphicsMethods[this.state.activeGMParent][this.state.activeGM]}
+                            graphicsMethod={this.props.graphics_methods[this.state.activeGMParent][this.state.activeGM]}
                             updateGraphicsMethod={this.props.updateGraphicsMethod}
                             show={this.state.show_edit_modal}
                             onHide={this.closeEditModal}
@@ -115,8 +114,8 @@ class GMList extends Component {
                 }
                 <div className='scroll-area'>
                     <Tree
-                        activeLeaf={this.state.activeGM}
-                        activeParent={this.state.activeGMParent}
+                        activeLeaf={this.props.selected_graphics_method}
+                        activeParent={this.props.selected_graphics_type}
                         dragSource={gmSource}
                         dragCollect={collect}
                         dragType={DragAndDropTypes.GM}
@@ -126,15 +125,45 @@ class GMList extends Component {
                         }}
                     />
                 </div>
+                { this.state.show_create_modal &&
+                    <GraphicsMethodCreator
+                        show={this.state.show_create_modal}
+                        close={()=>{this.setState({show_create_modal: false})}}
+                        graphics_methods={this.props.graphics_methods}
+                        selectGM={this.props.selectGraphicsMethod}
+                    />
+                }
             </div>
         )
     }
 }
 
 GMList.propTypes = {
-    graphicsMethods: PropTypes.object,
-    updateGraphicsMethod: PropTypes.func,
+    graphics_methods: PropTypes.object,
     colormaps: PropTypes.object,
+    updateGraphicsMethod: PropTypes.func,
+    selectGraphicsMethod: PropTypes.func,
+    selected_graphics_method: PropTypes.string,
+    selected_graphics_type: PropTypes.string,
 }
 
-export default GMList
+const mapStateToProps = (state) => {
+    return {
+        graphics_methods: state.present.graphics_methods,
+        selected_graphics_method: state.present.ui.selected_graphics_method,
+        selected_graphics_type: state.present.ui.selected_graphics_type,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateGraphicsMethod: (graphics_method) => {
+            dispatch(Actions.updateGraphicsMethod(graphics_method))
+        },
+        selectGraphicsMethod: (type, method) => {
+            dispatch(Actions.selectGraphicsMethod(type, method))
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GMList)

@@ -6,6 +6,7 @@ import GraphicsMethodModel from './models/GraphicsMethods.js';
 import TemplateModel from './models/Templates.js';
 import VariableModel from './models/Variables.js';
 import SpreadsheetModel from './models/Spreadsheet.js';
+import UIModel from './models/UI.js';
 
 /* global $ */
 
@@ -16,7 +17,8 @@ const reducers = combineReducers({
     graphics_methods: GraphicsMethodModel.reduce,
     templates: TemplateModel.reduce,
     sheets_model: SpreadsheetModel.reduce,
-    colormaps: ColormapModel.reduce
+    colormaps: ColormapModel.reduce,
+    ui: UIModel.reduce,
 });
 
 const undoableReducer = undoable(reducers,{
@@ -31,12 +33,12 @@ var store = null;
 const configureStore = (initialState = {}) => {
     let state = Promise.resolve(initialState);
     if (Object.keys(initialState).length === 0) {
-        const models = [CachedFileModel, VariableModel, GraphicsMethodModel, TemplateModel, SpreadsheetModel, ColormapModel]
+        const models = [CachedFileModel, VariableModel, GraphicsMethodModel, TemplateModel, SpreadsheetModel, ColormapModel, UIModel]
         const initialStates = models.map((m) => {
             return m.getInitialState();
         });
         state = Promise.all(initialStates).then((values) => {
-            const cached_files = values[0], variables = values[1], graphics_methods = values[2], templates = values[3], sheets_model = values[4], colormaps = values[5];
+            const cached_files = values[0], variables = values[1], graphics_methods = values[2], templates = values[3], sheets_model = values[4], colormaps = values[5], ui = values[6];
             return {
                 present: {
                     cached_files,
@@ -44,7 +46,8 @@ const configureStore = (initialState = {}) => {
                     graphics_methods,
                     templates,
                     sheets_model,
-                    colormaps
+                    colormaps,
+                    ui,
                 },
             };
         });

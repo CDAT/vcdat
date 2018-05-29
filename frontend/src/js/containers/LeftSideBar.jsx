@@ -19,10 +19,13 @@ class LeftSideBar extends Component {
                     selectVariable={this.props.selectVariable}
                     selected_variable={this.props.selected_variable}
                 />
-                <GMList graphicsMethods={this.props.graphics_methods}
+                <GMList 
                     updateGraphicsMethod={this.props.updateGraphicsMethod}
                     colormaps={this.props.colormaps}
                     defaultMethods={this.props.default_methods}
+                    selected_graphics_type={this.props.selected_graphics_type}
+                    selected_graphics_method={this.props.selected_graphics_method}
+                    selectGraphicsMethod={this.props.selectGraphicsMethod}
                 />
                 <TemplateList
                     templates={this.props.templates}
@@ -38,7 +41,7 @@ class LeftSideBar extends Component {
 LeftSideBar.propTypes ={
     cached_files: PropTypes.object,
     getColormaps: PropTypes.func,
-    graphics_methods: PropTypes.object,
+    
     loadVariables: PropTypes.func,
     templates: PropTypes.arrayOf(PropTypes.string),
     variables: PropTypes.oneOfType([
@@ -47,7 +50,6 @@ LeftSideBar.propTypes ={
     ]),
     colormaps: PropTypes.object,
     sheets_model: PropTypes.object,
-    updateGraphicsMethods: PropTypes.func,
     selectTemplate: PropTypes.func,
     selected_template: PropTypes.string,
     updateTemplate: PropTypes.func,
@@ -60,9 +62,8 @@ LeftSideBar.propTypes ={
 const mapStateToProps = (state) => {
     return {
         variables: state.present.variables,
-        graphics_methods: state.present.graphics_methods,
-        templates: state.present.templates.names,
-        selected_template: state.present.templates.selected_template,
+        templates: state.present.templates,
+        selected_template: state.present.ui.selected_template,
         cached_files: state.present.cached_files,
         sheets_model: state.present.sheets_model,
         colormaps: state.present.colormaps,
@@ -82,9 +83,7 @@ const mapDispatchToProps = (dispatch) => {
                 // error handling here. No variable selected when delete was pressed
             }
         },
-        updateGraphicsMethod: (graphics_method) => {
-            dispatch(Actions.updateGraphicsMethod(graphics_method))
-        },
+        
         selectTemplate: (name) => dispatch(Actions.selectTemplate(name)),
         updateTemplate: (template) => dispatch(Actions.updateTemplate(template)),
         removeTemplate: (name) => dispatch(Actions.removeTemplate(name)),

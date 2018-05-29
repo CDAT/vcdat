@@ -194,8 +194,16 @@ var Actions = {
     createGraphicsMethod(name, gm_type, base_method) {
         return {
             type: "CREATE_GRAPHICS_METHOD",
+            name: name,
             gm_type: gm_type,
-            base_method: base_method
+            method: base_method
+        }
+    },
+    selectGraphicsMethod(type, method){
+        return {
+            type: "SELECT_GRAPHICS_METHOD",
+            gm_type: type,
+            method: method
         }
     },
     updateGraphicsMethod(graphics_method) {

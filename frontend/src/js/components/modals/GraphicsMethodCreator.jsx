@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Actions from '../../constants/Actions.js'
-import { Modal, Button, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap'
+import { Modal, Button, FormGroup, FormControl, ControlLabel, HelpBlock, Row, Col} from 'react-bootstrap'
 import { toast } from 'react-toastify'
 
 class GraphicsMethodCreator extends Component {
@@ -13,7 +13,7 @@ class GraphicsMethodCreator extends Component {
         const gm_types = Object.keys(props.graphics_methods)
 
         if(gm_types.length > 0) {
-            default_gm_type = props.graphics_methods[0] // just grab the first one each time since there isnt really a default
+            default_gm_type = Object.keys(props.graphics_methods)[0] // just grab the first one each time since there isnt really a default
         }
 
         if(default_gm_type){ // can't select a graphics method if the types weren't defined
@@ -40,7 +40,7 @@ class GraphicsMethodCreator extends Component {
     handleChange(event) {
         const name = event.target.value
         const validation_state = this.getValidationState(name, this.state.selected_gm_type)
-        this.setState({new_template_name: name, validation_state: validation_state})
+        this.setState({new_gm_name: name, validation_state: validation_state})
     }
 
     getValidationState(name, gm_type){
@@ -53,11 +53,11 @@ class GraphicsMethodCreator extends Component {
         return "success"
     }
 
-    createTemplate() {
+    createGraphicsMethod() {
         try {
             return vcs.creategraphicsmethod(this.state.selected_gm_type, this.state.new_gm_name, this.state.selected_gm_method).then(
                 (/* success */) => {
-                    this.props.createGraphicsMethod(this.state.selected_gm_type, this.state.new_gm_name)
+                    this.props.createGraphicsMethod(this.state.new_gm_name, this.state.selected_gm_type, this.state.selected_gm_method)
                     toast.success("Graphics Method created successfully!", {position: toast.POSITION.BOTTOM_CENTER})
                     this.props.close()
                 },
@@ -68,7 +68,7 @@ class GraphicsMethodCreator extends Component {
                         toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
                     }
                     catch(e){
-                        toast.error("Failed to create template", {position: toast.POSITION.BOTTOM_CENTER})
+                        toast.error("Failed to create Graphics Method", {position: toast.POSITION.BOTTOM_CENTER})
                     }
                 }
             )
@@ -77,7 +77,7 @@ class GraphicsMethodCreator extends Component {
             /* istanbul ignore next */
             console.warn(e)
             /* istanbul ignore next */
-            toast.error("An error occurred while creating the template. Try restarting vCDAT.")
+            toast.error("An error occurred while creating the Graphics Method. Try restarting vCDAT.")
         }
     }
 
@@ -87,7 +87,49 @@ class GraphicsMethodCreator extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title>Create a Graphics Method</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>    
+                <Modal.Body>
+                    <Row>
+                        <Col sm={6}>
+                            <FormGroup controlId="formControlsSelectType">
+                                <ControlLabel>Base Graphics Type</ControlLabel>
+                                <FormControl
+                                    componentClass="select"
+                                    value={this.state.selected_gm_type}
+                                    onChange={(e)=>this.setState({selected_gm_type: e.target.value})}
+                                >
+                                {
+                                    Object.keys(this.props.graphics_methods).map((name) => {
+                                        return <option key={name} value={name}>{name}</option>
+                                    })
+                                }
+                                </FormControl>
+                                <HelpBlock style={{fontSize: "12px"}}>
+                                    Select a type for your new graphics method
+                                </HelpBlock>
+                            </FormGroup>
+                        </Col>
+                        <Col sm={6}>
+                            <FormGroup controlId="formControlsSelectMethod">
+                                <ControlLabel>Base Graphics Method</ControlLabel>
+                                <FormControl
+                                    componentClass="select"
+                                    value={this.state.selected_gm_method}
+                                    onChange={(e)=>this.setState({selected_gm_method: e.target.value})}
+                                >
+                                { this.props.graphics_methods[this.state.selected_gm_type] ?
+                                    Object.keys(this.props.graphics_methods[this.state.selected_gm_type]).map((name) => {
+                                        return <option key={name} value={name}>{name}</option>
+                                    })
+                                    :
+                                        <option value=""></option>
+                                }
+                                </FormControl>
+                                <HelpBlock style={{fontSize: "12px"}}>
+                                    Select an existing graphics method to copy and use as a base.
+                                </HelpBlock>
+                            </FormGroup>
+                        </Col>
+                    </Row>
                     <FormGroup
                         controlId="formBasicText"
                         validationState={this.state.validation_state}
@@ -103,42 +145,12 @@ class GraphicsMethodCreator extends Component {
                             { this.state.validation_state === "error" ? "A graphics method with that name already exists." : null }
                         </HelpBlock>
                     </FormGroup>
-                    <FormGroup controlId="formControlsSelectType">
-                        <ControlLabel>Base Graphics Type</ControlLabel>
-                        <FormControl
-                            componentClass="select"
-                            value={this.state.selected_gm_type}
-                            onChange={(e)=>this.setState({selected_gm_type: e.target.value})}
-                        >
-                        {
-                            Object.keys(this.props.graphics_methods).map((name) => {
-                                return <option key={name} value={name}>{name}</option>
-                            })
-                        }
-                        </FormControl>
-                    </FormGroup>
-                    <FormGroup controlId="formControlsSelectMethod">
-                        <ControlLabel>Base Graphics Method</ControlLabel>
-                        <FormControl
-                            componentClass="select"
-                            value={this.state.selected_gm_method}
-                            onChange={(e)=>this.setState({selected_gm_method: e.target.value})}
-                        >
-                        { this.props.graphics_methods[this.state.selected_gm_type] ?
-                            Object.keys(this.props.graphics_methods[this.state.selected_gm_type]).map((name) => {
-                                return <option key={name} value={name}>{name}</option>
-                            })
-                            :
-                                <option value=""></option>
-                        }
-                        </FormControl>
-                    </FormGroup>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
                         bsStyle="primary"
                         disabled={this.state.validation_state !== "success" } 
-                        onClick={this.createTemplate}
+                        onClick={this.createGraphicsMethod}
                     >Create
                     </Button>
                     <Button onClick={this.props.close} bsStyle="default">Cancel</Button>    
@@ -157,14 +169,21 @@ GraphicsMethodCreator.propTypes = {
         )
     ),
     createGraphicsMethod: PropTypes.func,
+    selectGraphicsMethod: PropTypes.func,
+}
+
+const mapStateToProps = (state) => {
+    return {
+        gms: state.present.graphics_methods
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createGraphicsMethod: (type, name) => {
-            dispatch(Actions.createGraphicsMethod(type, name))
+        createGraphicsMethod: (name, type, base) => {
+            dispatch(Actions.createGraphicsMethod(name, type, base))
         }
     }
 }
 export { GraphicsMethodCreator as PureGraphicsMethodCreator}
-export default connect(null, mapDispatchToProps)(GraphicsMethodCreator);
+export default connect(mapStateToProps, mapDispatchToProps)(GraphicsMethodCreator);
