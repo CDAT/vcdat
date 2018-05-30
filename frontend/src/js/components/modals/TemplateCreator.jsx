@@ -34,7 +34,7 @@ class TemplateCreator extends Component {
     }
 
     handleKeyPress(event) {
-        if(event.charCode==13 && this.state.validation_state === "success") {
+        if(event.charCode === 13 && this.state.validation_state === "success") {
             this.createTemplate()
         }
     }
