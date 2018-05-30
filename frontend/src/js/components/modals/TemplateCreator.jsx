@@ -24,12 +24,19 @@ class TemplateCreator extends Component {
 
         this.createTemplate = this.createTemplate.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleKeyPress = this.handleKeyPress.bind(this)
     }
 
     handleChange(event) {
         const name = event.target.value
         const validation_state = this.getValidationState(name)
         this.setState({new_template_name: name, validation_state: validation_state})
+    }
+
+    handleKeyPress(event) {
+        if(event.charCode === 13 && this.state.validation_state === "success") {
+            this.createTemplate()
+        }
     }
 
     getValidationState(name){
@@ -76,22 +83,7 @@ class TemplateCreator extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title>Create a Template</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>    
-                    <FormGroup
-                        controlId="formBasicText"
-                        validationState={this.state.validation_state}
-                    >
-                        <ControlLabel>New Template Name</ControlLabel>
-                        <FormControl
-                            type="text"
-                            value={this.state.new_template_name}
-                            onChange={this.handleChange}
-                        />
-                        <FormControl.Feedback />
-                        <HelpBlock>
-                            { this.state.validation_state === "error" ? "A template with that name already exists." : null }
-                        </HelpBlock>
-                    </FormGroup>
+                <Modal.Body>
                     <FormGroup controlId="formControlsSelect">
                         <ControlLabel>Base Template</ControlLabel>
                         <FormControl
@@ -106,6 +98,22 @@ class TemplateCreator extends Component {
                         }
                         </FormControl>
                     </FormGroup>
+                    <FormGroup
+                        controlId="formBasicText"
+                        validationState={this.state.validation_state}
+                    >
+                        <ControlLabel>New Template Name</ControlLabel>
+                        <FormControl
+                            type="text"
+                            value={this.state.new_template_name}
+                            onChange={this.handleChange}
+                            onKeyPress={this.handleKeyPress}
+                        />
+                        <FormControl.Feedback />
+                        <HelpBlock>
+                            { this.state.validation_state === "error" ? "A template with that name already exists." : null }
+                        </HelpBlock>
+                    </FormGroup>                    
                 </Modal.Body>
                 <Modal.Footer>
                     <Button

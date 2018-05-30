@@ -7,7 +7,7 @@ import TemplateCreator from '../../../../src/js/components/modals/TemplateCreato
 import Enzyme from 'enzyme' 
 import Adapter from 'enzyme-adapter-react-16'
 Enzyme.configure({ adapter: new Adapter() })
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import sinon from 'sinon'
 import { createMockStore } from 'redux-test-utils'
 
@@ -99,5 +99,29 @@ describe('TemplateCreatorTest.jsx', function() {
             expect(vcs.createtemplate.getCall(0).args[1]).to.equal("default")
             expect(props.close.callCount).to.equal(1)
         })
+    });
+
+    it('handleKeyPress only causes a save when valid', () => {
+        let props = {
+            show: true,
+            close: sinon.spy(),
+            templates: ["ASD", "default", "quick"],
+            createTemplate: sinon.spy(),
+            store: createMockStore({})
+        }
+        var template_creator = shallow(<TemplateCreator {...props} />).dive() // fuuuuuu
+        let stub = sinon.stub(template_creator.instance(), 'createTemplate').callsFake(() => {})
+        template_creator.instance().forceUpdate()
+        template_creator.setState({validation_state: "error"})
+        template_creator.instance().handleKeyPress({charCode: 13}) // 13 is the 'enter' key
+        expect(stub.callCount).to.equal(0) // should not be called with invalid name
+        template_creator.instance().handleKeyPress({charCode: 100})
+        expect(stub.callCount).to.equal(0) // should not be called with keys besides enter
+
+        template_creator.setState({validation_state: "success"})
+        template_creator.instance().handleKeyPress({charCode: 100})
+        expect(stub.callCount).to.equal(0) // should not be called with keys besides enter
+        template_creator.instance().handleKeyPress({charCode: 13})
+        expect(stub.callCount).to.equal(1) // should be called now that validation is 'success'
     });
 });

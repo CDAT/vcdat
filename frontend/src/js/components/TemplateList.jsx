@@ -84,7 +84,7 @@ class TemplateList extends Component {
                 body: `Are you sure you want to delete ${this.props.selected_template}?`,
                 actions: [
                     Dialog.DefaultAction(
-                        'Remove',
+                        'Delete',
                         () => {
                             this.removeTemplate()
                         },
@@ -100,7 +100,7 @@ class TemplateList extends Component {
         try{
             return vcs.removetemplate(this.props.selected_template).then(()=>{ // remove template from server
                 this.props.removeTemplate(this.props.selected_template) // remove template from redux
-                toast.success("Template removed successfully!", { position: toast.POSITION.BOTTOM_CENTER })
+                toast.success("Template deleted successfully!", { position: toast.POSITION.BOTTOM_CENTER })
             },
             /* istanbul ignore next */
             (error) => {
