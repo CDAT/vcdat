@@ -46,6 +46,15 @@ class GraphicsMethodModel extends BaseModel {
                 new_graphics_methods = $.extend(true, {}, state)
                 new_graphics_methods[action.gm_type][action.name] = $.extend(true, {}, new_graphics_methods[action.gm_type][action.base_method])
                 return new_graphics_methods
+            case "REMOVE_GRAPHICS_METHOD":
+                new_graphics_methods = $.extend(true, {}, state)
+                try {
+                    delete new_graphics_methods[action.gm_type][action.name]
+                }
+                catch(e) {
+                    console.warn(e)
+                }
+                return new_graphics_methods
             case "DELETE_COLORMAP":
                 new_graphics_methods = Object.assign({}, state)
                 for(let type of Object.keys(new_graphics_methods)){
@@ -62,7 +71,13 @@ class GraphicsMethodModel extends BaseModel {
     }
 
     static getInitialState() {
-        return vcs.getallgraphicsmethods() 
+        try {
+            return vcs.getallgraphicsmethods() 
+        }
+        catch(e){
+            console.warn(e)
+            return {}
+        }
     }
 
 }

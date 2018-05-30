@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Actions from '../constants/Actions.js'
 import PropTypes from 'prop-types'
+import Dialog from 'react-bootstrap-dialog'
 import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
 import GraphicsMethodCreator from './modals/GraphicsMethodCreator.jsx'
 import GraphicsMethodEditor from './modals/GraphicsMethodEditor.jsx'
@@ -47,7 +48,7 @@ class GMList extends Component {
     }
 
     clickedEdit() {
-        const gm = this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method] 
+        const gm = this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method]
         if (SUPPORTED_GM_EDITORS && !SUPPORTED_GM_EDITORS.includes(gm.g_name)) {
             toast.warn("This graphics method does not have an editor yet.", { position: toast.POSITION.BOTTOM_CENTER })
         }
@@ -56,7 +57,50 @@ class GMList extends Component {
         }
     }
 
-    clickedRemove() {
+    confirmRemove() {
+        const type = this.props.selected_graphics_type
+        const name = this.props.selected_graphics_method
+        if( type && name ) {
+            this.dialog.show({
+                body: `Are you sure you want to delete "${name}"?`,
+                actions: [
+                    Dialog.DefaultAction(
+                        'Delete',
+                        () => {
+                            this.removeGM(type, name)
+                        },
+                        'btn-danger'
+                    ),
+                    Dialog.CancelAction()
+                ]
+            })
+        }
+        else {
+            toast.info("A Graphics Method must be selected to delete", { position: toast.POSITION.BOTTOM_CENTER })
+        }
+    }
+
+    removeGM(type, name) {
+        try {
+            vcs.removegraphicsmethod(type, name).then(() => {
+                this.props.removeGraphicsMethod(type, name)
+            },
+            (error) => {
+                console.warn(error)
+                try {
+                    toast.error(error.data.exception, { position: toast.POSITION.BOTTOM_CENTER })
+                }
+                catch(e){
+                    toast.error("An error occurred while attempting to delete a graphics method.", { position: toast.POSITION.BOTTOM_CENTER })
+                }
+            })
+        }
+        catch(e){
+            console.warn(e)
+            if(e instanceof ReferenceError) {
+                toast.error("VCS is not loaded. Try restarting vCDAT", { position: toast.POSITION.BOTTOM_CENTER })
+            }
+        }
     }
 
     closeEditModal() {
@@ -131,6 +175,7 @@ class GMList extends Component {
                         selectGM={this.props.selectGraphicsMethod}
                     />
                 }
+                <Dialog ref={/* istanbul ignore next */ (el) => {this.dialog = el}} />
             </div>
         )
     }
@@ -141,6 +186,7 @@ GMList.propTypes = {
     colormaps: PropTypes.object,
     updateGraphicsMethod: PropTypes.func,
     selectGraphicsMethod: PropTypes.func,
+    removeGraphicsMethod: PropTypes.func,
     selected_graphics_method: PropTypes.string,
     selected_graphics_type: PropTypes.string,
 }
@@ -158,9 +204,12 @@ const mapDispatchToProps = (dispatch) => {
         updateGraphicsMethod: (graphics_method) => {
             dispatch(Actions.updateGraphicsMethod(graphics_method))
         },
-        selectGraphicsMethod: (type, method) => {
-            dispatch(Actions.selectGraphicsMethod(type, method))
+        selectGraphicsMethod: (type, name) => {
+            dispatch(Actions.selectGraphicsMethod(type, name))
         },
+        removeGraphicsMethod: (type, name) => {
+            dispatch(Actions.removeGraphicsMethod(type, name))
+        }
     }
 }
 

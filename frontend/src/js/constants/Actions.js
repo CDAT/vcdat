@@ -196,10 +196,10 @@ var Actions = {
             type: "CREATE_GRAPHICS_METHOD",
             name: name,
             gm_type: gm_type,
-            method: base_method
+            base_method: base_method
         }
     },
-    selectGraphicsMethod(type, method){
+    selectGraphicsMethod(type, method) {
         return {
             type: "SELECT_GRAPHICS_METHOD",
             gm_type: type,
@@ -210,6 +210,13 @@ var Actions = {
         return {
             type: 'UPDATE_GRAPHICS_METHOD',
             graphics_method
+        }
+    },
+    removeGraphicsMethod(gm_type, name) {
+        return {
+            type: 'REMOVE_GRAPHICS_METHOD',
+            gm_type: gm_type,
+            name: name
         }
     },
     initializeColormaps(colormaps) {

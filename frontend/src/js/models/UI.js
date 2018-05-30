@@ -21,7 +21,6 @@ class UIModel extends BaseModel {
                 return new_state
             case "CREATE_GRAPHICS_METHOD":
                 new_state = $.extend(true, {}, state);
-                console.log(action)
                 new_state.selected_graphics_method = action.name
                 new_state.selected_graphics_type= action.gm_type
                 return new_state
