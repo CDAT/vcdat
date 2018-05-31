@@ -31,6 +31,7 @@ class GraphicsMethodCreator extends Component {
             validation_state: null,
             selected_gm_type: default_gm_type,
             selected_gm_method: default_gm_method,
+            error_message: "",
         }
 
         this.createGraphicsMethod = this.createGraphicsMethod.bind(this)
@@ -39,18 +40,25 @@ class GraphicsMethodCreator extends Component {
 
     handleChange(event) {
         const name = event.target.value
-        const validation_state = this.getValidationState(name, this.state.selected_gm_type)
-        this.setState({new_gm_name: name, validation_state: validation_state})
+        const {status: validation_state, message} = this.getValidationState(name, this.state.selected_gm_type)
+        this.setState({new_gm_name: name, validation_state: validation_state, error_message: message})
     }
 
     getValidationState(name, gm_type){
+        // Checks if the given input is a valid name for a new GM
+        // returns an object with the following keys:
+        //    status: A string or null that indicates the validity of the input
+        //    message: A string that contains the error message to display when the status is "error"
         if(name.length === 0 || gm_type === "" ){
-            return null
+            return {status: null, message: ""}
         }
         else if(Object.keys(this.props.graphics_methods[gm_type]).indexOf(name) > -1) {
-            return "error"
+            return {status: "error", message: "A Graphics Method with that name already exists"}
         }
-        return "success"
+        else if(name.startsWith("__")) {
+            return {status: "error", message: "Graphics Method names should not start with two underscores"}
+        }
+        return {status: "success", message: ""}
     }
 
     createGraphicsMethod() {
@@ -98,7 +106,9 @@ class GraphicsMethodCreator extends Component {
                                     onChange={(e)=>this.setState({selected_gm_type: e.target.value})}
                                 >
                                 {
-                                    Object.keys(this.props.graphics_methods).map((name) => {
+                                    Object.keys(this.props.graphics_methods).sort(function (a, b) {
+                                        return a.toLowerCase().localeCompare(b.toLowerCase())
+                                    }).map((name) => {
                                         return <option key={name} value={name}>{name}</option>
                                     })
                                 }
@@ -117,7 +127,9 @@ class GraphicsMethodCreator extends Component {
                                     onChange={(e)=>this.setState({selected_gm_method: e.target.value})}
                                 >
                                 { this.props.graphics_methods[this.state.selected_gm_type] ?
-                                    Object.keys(this.props.graphics_methods[this.state.selected_gm_type]).map((name) => {
+                                    Object.keys(this.props.graphics_methods[this.state.selected_gm_type]).sort(function (a, b) {
+                                        return a.toLowerCase().localeCompare(b.toLowerCase())
+                                    }).map((name) => {
                                         return <option key={name} value={name}>{name}</option>
                                     })
                                     :
@@ -142,7 +154,7 @@ class GraphicsMethodCreator extends Component {
                         />
                         <FormControl.Feedback />
                         <HelpBlock>
-                            { this.state.validation_state === "error" ? "A graphics method with that name already exists." : null }
+                            { this.state.validation_state === "error" ? this.state.error_message : null }
                         </HelpBlock>
                     </FormGroup>
                 </Modal.Body>

@@ -38,7 +38,8 @@ class GMList extends Component {
         }
         this.clickedAdd = this.clickedAdd.bind(this)
         this.clickedEdit = this.clickedEdit.bind(this)
-        this.clickedRemove= this.clickedRemove.bind(this)
+        this.confirmRemove = this.confirmRemove.bind(this)
+        this.removeGM = this.removeGM.bind(this)
         this.closeEditModal = this.closeEditModal.bind(this)
         this.selectedChild = this.selectedChild.bind(this)
     }
@@ -138,7 +139,7 @@ class GMList extends Component {
                     addText="Create a new Graphics Method"
                     editAction={this.clickedEdit}
                     editText="Edit a selected graphics method"
-                    removeAction={this.clickedRemove}
+                    removeAction={this.confirmRemove}
                     removeText="Removing a graphics method is not supported yet"
                 />
                 {(this.props.selected_graphics_type &&

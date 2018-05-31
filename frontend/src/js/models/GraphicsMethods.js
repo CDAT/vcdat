@@ -45,6 +45,7 @@ class GraphicsMethodModel extends BaseModel {
             case "CREATE_GRAPHICS_METHOD":
                 new_graphics_methods = $.extend(true, {}, state)
                 new_graphics_methods[action.gm_type][action.name] = $.extend(true, {}, new_graphics_methods[action.gm_type][action.base_method])
+                new_graphics_methods[action.gm_type][action.name].name = action.name
                 return new_graphics_methods
             case "REMOVE_GRAPHICS_METHOD":
                 new_graphics_methods = $.extend(true, {}, state)
@@ -72,7 +73,18 @@ class GraphicsMethodModel extends BaseModel {
 
     static getInitialState() {
         try {
-            return vcs.getallgraphicsmethods() 
+            return vcs.getallgraphicsmethods().then((methods) => {
+                // search through each gm type and check if any names start with "__"
+                // If any are found, they are removed from being displayed since they are temporary names
+                for(let type of Object.keys(methods)){
+                    for(let name of Object.keys(methods[type])){
+                        if(name.startsWith("__")){
+                            delete methods[type][name]
+                        }
+                    }
+                }
+                return methods
+            })
         }
         catch(e){
             console.warn(e)

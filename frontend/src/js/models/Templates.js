@@ -33,7 +33,7 @@ class TemplateModel extends BaseModel {
     static getInitialState() {
         try{
             return vcs.getalltemplatenames().then((names) => {
-                return names // ["ASD", "default"] etc
+                return names.filter((name) => {return !name.startsWith("__")}) // ["ASD", "default"] etc. filter out temp names like "__boxfill_12345"
             })
         }
         catch(e){
