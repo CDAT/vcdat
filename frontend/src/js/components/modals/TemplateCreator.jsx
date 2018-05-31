@@ -19,6 +19,7 @@ class TemplateCreator extends Component {
         this.state = {
             new_template_name: "",
             validation_state: null,
+            error_message: "",
             selected_base_template: default_base_template
         }
 
@@ -29,8 +30,8 @@ class TemplateCreator extends Component {
 
     handleChange(event) {
         const name = event.target.value
-        const validation_state = this.getValidationState(name)
-        this.setState({new_template_name: name, validation_state: validation_state})
+        const {status: validation_state, message} = this.getValidationState(name)
+        this.setState({new_template_name: name, validation_state: validation_state, error_message: message})
     }
 
     handleKeyPress(event) {
@@ -41,12 +42,15 @@ class TemplateCreator extends Component {
 
     getValidationState(name){
         if(name.length === 0){
-            return null
+            return {status: null, message: ""}
         }
         else if(this.props.templates.indexOf(name) > -1) {
-            return "error"
+            return {status: "error", message: "A Graphics Method with that name already exists"}
         }
-        return "success"
+        else if(name.startsWith("__")) {
+            return {status: "error", message: "Template names should not start with two underscores"}
+        }
+        return {status: "success", message: ""}
     }
 
     createTemplate() {
@@ -111,7 +115,7 @@ class TemplateCreator extends Component {
                         />
                         <FormControl.Feedback />
                         <HelpBlock>
-                            { this.state.validation_state === "error" ? "A template with that name already exists." : null }
+                            { this.state.validation_state === "error" ? this.state.error_message : null }
                         </HelpBlock>
                     </FormGroup>                    
                 </Modal.Body>
