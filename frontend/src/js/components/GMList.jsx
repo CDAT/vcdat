@@ -49,8 +49,13 @@ class GMList extends Component {
     }
 
     clickedEdit() {
+        if(!this.props.selected_graphics_type || !this.props.selected_graphics_method) {
+            toast.info("A Graphics Method must be selected to edit", { position: toast.POSITION.BOTTOM_CENTER })
+            return
+        }
+
         const gm = this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method]
-        if (SUPPORTED_GM_EDITORS && !SUPPORTED_GM_EDITORS.includes(gm.g_name)) {
+        if(SUPPORTED_GM_EDITORS && !SUPPORTED_GM_EDITORS.includes(gm.g_name)) {
             toast.warn("This graphics method does not have an editor yet.", { position: toast.POSITION.BOTTOM_CENTER })
         }
         else {
