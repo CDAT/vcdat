@@ -45,7 +45,7 @@ class TemplateCreator extends Component {
             return {status: null, message: ""}
         }
         else if(this.props.templates.indexOf(name) > -1) {
-            return {status: "error", message: "A Graphics Method with that name already exists"}
+            return {status: "error", message: "A Template with that name already exists"}
         }
         else if(name.startsWith("__")) {
             return {status: "error", message: "Template names should not start with two underscores"}
