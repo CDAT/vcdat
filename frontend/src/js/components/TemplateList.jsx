@@ -62,7 +62,15 @@ class TemplateList extends Component {
         else{
             this.setState({showTemplateEditor: true, template_data: "loading"})
             return vcs.gettemplate(this.props.selected_template).then((data)=>{ // return promise for testing purposes
-                this.setState({template_data: data})
+                if(data) { 
+                    this.setState({template_data: data})
+                }
+                else { // data will be null if the selected template doesnt exist
+                    // We can probably do more error handling here. Refresh the names, and deselect the selected template
+                    toast.error(`${this.props.selected_template} doesn't exist on the server. Try refreshing the browser window.`,
+                        { position: toast.POSITION.BOTTOM_CENTER }
+                    )
+                }
             },
             (error) => {
                 console.warn(error)

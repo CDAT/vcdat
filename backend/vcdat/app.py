@@ -5,7 +5,6 @@ import vcs
 import cdms2
 import json
 from flask import Flask, send_from_directory, request, send_file, Response, jsonify
-from GraphicsMethods import get_gm, get_default_gms
 from Templates import templ_from_json
 from Files import getFilesObject
 from Colormaps import get_cmaps
@@ -118,13 +117,6 @@ def plot_template():
     del vcs.elements["boxfill"][g.name] 
     del vcs.elements["template"][t.name]
     return resp
-
-  
-@app.route("/getGraphicsMethods")
-@jsonresp
-def get_graphics_methods():
-    graphics_methods = get_gm()
-    return json.dumps(graphics_methods)
 
   
 @app.route("/getDefaultMethods")

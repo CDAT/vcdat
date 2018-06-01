@@ -4,6 +4,10 @@
   "description": "Front-end GUI for CDAT",
   "main": "src/js/app.js",
   "private": true,
+  "prettier": {
+    "printWidth": 150,
+    "tabWidth": 4
+  },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "bootstrap-slider": "git://github.com/matthewma7/bootstrap-slider",

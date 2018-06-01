@@ -191,10 +191,32 @@ var Actions = {
             transforms: transforms,
         }
     },
+    createGraphicsMethod(name, gm_type, base_method) {
+        return {
+            type: "CREATE_GRAPHICS_METHOD",
+            name: name,
+            gm_type: gm_type,
+            base_method: base_method
+        }
+    },
+    selectGraphicsMethod(type, method) {
+        return {
+            type: "SELECT_GRAPHICS_METHOD",
+            gm_type: type,
+            method: method
+        }
+    },
     updateGraphicsMethod(graphics_method) {
         return {
             type: 'UPDATE_GRAPHICS_METHOD',
             graphics_method
+        }
+    },
+    removeGraphicsMethod(gm_type, name) {
+        return {
+            type: 'REMOVE_GRAPHICS_METHOD',
+            gm_type: gm_type,
+            name: name
         }
     },
     initializeColormaps(colormaps) {

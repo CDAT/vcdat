@@ -42,6 +42,20 @@ class GraphicsMethodModel extends BaseModel {
                         break;
                 }
                 return new_graphics_methods;
+            case "CREATE_GRAPHICS_METHOD":
+                new_graphics_methods = $.extend(true, {}, state)
+                new_graphics_methods[action.gm_type][action.name] = $.extend(true, {}, new_graphics_methods[action.gm_type][action.base_method])
+                new_graphics_methods[action.gm_type][action.name].name = action.name
+                return new_graphics_methods
+            case "REMOVE_GRAPHICS_METHOD":
+                new_graphics_methods = $.extend(true, {}, state)
+                try {
+                    delete new_graphics_methods[action.gm_type][action.name]
+                }
+                catch(e) {
+                    console.warn(e)
+                }
+                return new_graphics_methods
             case "DELETE_COLORMAP":
                 new_graphics_methods = Object.assign({}, state)
                 for(let type of Object.keys(new_graphics_methods)){
@@ -58,7 +72,24 @@ class GraphicsMethodModel extends BaseModel {
     }
 
     static getInitialState() {
-        return $.get("getGraphicsMethods");
+        try {
+            return vcs.getallgraphicsmethods().then((methods) => {
+                // search through each gm type and check if any names start with "__"
+                // If any are found, they are removed from being displayed since they are temporary names
+                for(let type of Object.keys(methods)){
+                    for(let name of Object.keys(methods[type])){
+                        if(name.startsWith("__")){
+                            delete methods[type][name]
+                        }
+                    }
+                }
+                return methods
+            })
+        }
+        catch(e){
+            console.warn(e)
+            return {}
+        }
     }
 
 }

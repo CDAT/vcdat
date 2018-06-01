@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import Actions from '../constants/Actions.js'
 import PropTypes from 'prop-types'
+import Dialog from 'react-bootstrap-dialog'
 import AddEditRemoveNav from './AddEditRemoveNav/AddEditRemoveNav.jsx'
+import GraphicsMethodCreator from './modals/GraphicsMethodCreator.jsx'
 import GraphicsMethodEditor from './modals/GraphicsMethodEditor.jsx'
 import Tree from './Tree.jsx'
 import DragAndDropTypes from '../constants/DragAndDropTypes.js'
@@ -29,43 +33,97 @@ class GMList extends Component {
     constructor(props){
         super(props)
         this.state = {
-            activeGM: false,
-            activeGMParent: false,
-            showModal: false
+            show_edit_modal: false,
+            show_create_modal: false,
         }
+        this.clickedAdd = this.clickedAdd.bind(this)
         this.clickedEdit = this.clickedEdit.bind(this)
-        this.closedModal = this.closedModal.bind(this)
+        this.confirmRemove = this.confirmRemove.bind(this)
+        this.removeGM = this.removeGM.bind(this)
+        this.closeEditModal = this.closeEditModal.bind(this)
         this.selectedChild = this.selectedChild.bind(this)
     }
 
+    clickedAdd() {
+        this.setState({show_create_modal: true})
+    }
+
     clickedEdit() {
-        const gm = this.props.graphicsMethods[this.state.activeGMParent][this.state.activeGM] 
-        if (SUPPORTED_GM_EDITORS && !SUPPORTED_GM_EDITORS.includes(gm.g_name)) {
+        if(!this.props.selected_graphics_type || !this.props.selected_graphics_method) {
+            toast.info("A Graphics Method must be selected to edit", { position: toast.POSITION.BOTTOM_CENTER })
+            return
+        }
+
+        const gm = this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method]
+        if(SUPPORTED_GM_EDITORS && !SUPPORTED_GM_EDITORS.includes(gm.g_name)) {
             toast.warn("This graphics method does not have an editor yet.", { position: toast.POSITION.BOTTOM_CENTER })
         }
         else {
-            this.setState({showModal: true})
+            this.setState({show_edit_modal: true})
         }
     }
 
-    closedModal() {
-        this.setState({showModal: false})
+    confirmRemove() {
+        const type = this.props.selected_graphics_type
+        const name = this.props.selected_graphics_method
+        if( type && name ) {
+            this.dialog.show({
+                body: `Are you sure you want to delete "${name}"?`,
+                actions: [
+                    Dialog.DefaultAction(
+                        'Delete',
+                        () => {
+                            this.removeGM(type, name)
+                        },
+                        'btn-danger'
+                    ),
+                    Dialog.CancelAction()
+                ]
+            })
+        }
+        else {
+            toast.info("A Graphics Method must be selected to delete", { position: toast.POSITION.BOTTOM_CENTER })
+        }
+    }
+
+    removeGM(type, name) {
+        try {
+            vcs.removegraphicsmethod(type, name).then(() => {
+                this.props.removeGraphicsMethod(type, name)
+            },
+            (error) => {
+                console.warn(error)
+                try {
+                    toast.error(error.data.exception, { position: toast.POSITION.BOTTOM_CENTER })
+                }
+                catch(e){
+                    toast.error("An error occurred while attempting to delete a graphics method.", { position: toast.POSITION.BOTTOM_CENTER })
+                }
+            })
+        }
+        catch(e){
+            console.warn(e)
+            if(e instanceof ReferenceError) {
+                toast.error("VCS is not loaded. Try restarting vCDAT", { position: toast.POSITION.BOTTOM_CENTER })
+            }
+        }
+    }
+
+    closeEditModal() {
+        this.setState({show_edit_modal: false})
     }
 
     selectedChild(path) {
         if (path.length === 2) {
             let gm = path[1]
             let gm_parent = path[0]
-            this.setState({
-                activeGM: gm,
-                activeGMParent: gm_parent,
-            })
+            this.props.selectGraphicsMethod(gm_parent, gm)
         }
     }
 
     render() {
-        const gmModel = Object.keys(this.props.graphicsMethods).sort().map((gmType) => {
-            const gms = Object.keys(this.props.graphicsMethods[gmType]).sort().map((gmname) => {
+        const gmModel = Object.keys(this.props.graphics_methods).sort().map((gmType) => {
+            const gms = Object.keys(this.props.graphics_methods[gmType]).sort().map((gmname) => {
                 return {
                     'title': gmname,
                     'gmType': gmType
@@ -82,27 +140,30 @@ class GMList extends Component {
             <div className='left-side-list scroll-area-list-parent gm-list-container'>
                 <AddEditRemoveNav 
                     title='Graphics Methods'
+                    addAction={this.clickedAdd}
+                    addText="Create a new Graphics Method"
                     editAction={this.clickedEdit}
-                    addText="Creating a graphics method is not supported yet"
                     editText="Edit a selected graphics method"
+                    removeAction={this.confirmRemove}
                     removeText="Removing a graphics method is not supported yet"
                 />
-                {
-                    (this.state && this.state.activeGM) ?
+                {(this.props.selected_graphics_type &&
+                    this.props.selected_graphics_method &&
+                    this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method]) ?
                         <GraphicsMethodEditor
                             colormaps={this.props.colormaps}
-                            graphicsMethod={this.props.graphicsMethods[this.state.activeGMParent][this.state.activeGM]}
+                            graphicsMethod={this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method]}
                             updateGraphicsMethod={this.props.updateGraphicsMethod}
-                            show={this.state.showModal}
-                            onHide={this.closedModal}
+                            show={this.state.show_edit_modal}
+                            onHide={this.closeEditModal}
                         />
                     :   
                         ""
                 }
                 <div className='scroll-area'>
                     <Tree
-                        activeLeaf={this.state.activeGM}
-                        activeParent={this.state.activeGMParent}
+                        activeLeaf={this.props.selected_graphics_method}
+                        activeParent={this.props.selected_graphics_type}
                         dragSource={gmSource}
                         dragCollect={collect}
                         dragType={DragAndDropTypes.GM}
@@ -112,15 +173,50 @@ class GMList extends Component {
                         }}
                     />
                 </div>
+                { this.state.show_create_modal &&
+                    <GraphicsMethodCreator
+                        show={this.state.show_create_modal}
+                        close={()=>{this.setState({show_create_modal: false})}}
+                        graphics_methods={this.props.graphics_methods}
+                        selectGM={this.props.selectGraphicsMethod}
+                    />
+                }
+                <Dialog ref={/* istanbul ignore next */ (el) => {this.dialog = el}} />
             </div>
         )
     }
 }
 
 GMList.propTypes = {
-    graphicsMethods: PropTypes.object,
-    updateGraphicsMethod: PropTypes.func,
+    graphics_methods: PropTypes.object,
     colormaps: PropTypes.object,
+    updateGraphicsMethod: PropTypes.func,
+    selectGraphicsMethod: PropTypes.func,
+    removeGraphicsMethod: PropTypes.func,
+    selected_graphics_method: PropTypes.string,
+    selected_graphics_type: PropTypes.string,
 }
 
-export default GMList
+const mapStateToProps = (state) => {
+    return {
+        graphics_methods: state.present.graphics_methods,
+        selected_graphics_method: state.present.ui.selected_graphics_method,
+        selected_graphics_type: state.present.ui.selected_graphics_type,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateGraphicsMethod: (graphics_method) => {
+            dispatch(Actions.updateGraphicsMethod(graphics_method))
+        },
+        selectGraphicsMethod: (type, name) => {
+            dispatch(Actions.selectGraphicsMethod(type, name))
+        },
+        removeGraphicsMethod: (type, name) => {
+            dispatch(Actions.removeGraphicsMethod(type, name))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GMList)
