@@ -189,9 +189,10 @@ describe('PlotInspectorWrapperTest.jsx', function() {
                 variables: {
                     clt: {},
                 },
-                templates: {
-                    names: ["default", "quick"]
-                },
+                templates: [
+                    "default",
+                    "quick"
+                ],
                 sheets_model: {
                     selected_cell_id: "0_0_0",
                     sheets: [{
