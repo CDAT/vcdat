@@ -175,7 +175,7 @@ const mapStateToProps = (state) => {
         all_graphics_methods: state.present.graphics_methods,
         variables: state.present.variables ? Object.keys(state.present.variables) : [],
         graphics_method_types: state.present.graphics_methods ? Object.keys(state.present.graphics_methods) : [],
-        templates: state.present.templates.names ? state.present.templates.names : [],
+        templates: state.present.templates ? state.present.templates : [],
     }
 }
 
