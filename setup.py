@@ -22,7 +22,7 @@ setup(
   packages=['vcdat'],
   package_dir={'vcdat': 'backend/vcdat'},
   package_data={"vcdat": ["resources/" + f for f in os.listdir("backend/vcdat/resources") if f[0] != "."]},
-  scripts=["scripts/vcdat", "scripts/check_vcdat_update.py"]
+  scripts=["scripts/vcdat", "scripts/check_vcdat_update.py"],
   extras_require={
       'test':  ["pytest", "pytest-cov"],
   }
