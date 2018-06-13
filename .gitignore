@@ -19,5 +19,7 @@ backend/vcdat/resources
 build/
 dist/
 *.egg-info
+.pytest_cache
+.dods_cookies
 
  
