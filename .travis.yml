@@ -19,6 +19,8 @@ script:
     - npm install
     - cd ..
     - python setup.py install
+    - pip install -e .[test]
+    - py.test --cov vcdat
     - cd frontend
     - npm run coverage
     - npm run coveralls
