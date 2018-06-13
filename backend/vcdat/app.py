@@ -26,7 +26,7 @@ _ = vcs.init()
 
 
 @app.route("/")
-def hello():
+def home():
     if app.debug:
         path = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'frontend/src/'))
         with open(os.path.join(path, "index.html")) as ind:
@@ -77,8 +77,10 @@ def serve_resource_file(path):
             mimetype = "image/svg"
         else:
             mimetype = "text/plain"
-
-        return Response(pkg_resources.resource_string(__name__, "resources/" + path), mimetype=mimetype)
+        try: 
+            return Response(pkg_resources.resource_string(__name__, "resources/" + path), mimetype=mimetype)
+        except IOError:
+            return Response(status=404)
 
   
 @app.route("/plotTemplate")
