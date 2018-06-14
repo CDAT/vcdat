@@ -1,0 +1,70 @@
+
+$numeric-button-lighter-color: rgb(233, 246, 255);
+$numeric-button-darker-color: rgb(135, 183, 214);
+$numeric-button-hover-color: rgb(84, 155, 203);
+
+$save-clear-button-lighter-color: rgb(255, 223, 223);
+$save-clear-button-darker-color: rgb(255, 132, 132);
+$save-clear-button-hover-color: rgb(203, 88, 88);
+
+$math-button-lighter-color: rgb(255, 245, 223);
+$math-button-darker-color: rgb(255, 245, 132);
+$math-button-hover-color: rgb(222, 210, 83);
+
+.input-container{
+    
+}
+
+button.calc-button{
+    width: 100%;
+    font-size: 15px;
+    font-weight: 700;
+    &.numeric{
+        background: $numeric-button-lighter-color;
+        background-image: -webkit-linear-gradient(top, $numeric-button-lighter-color, $numeric-button-darker-color);
+        background-image: -moz-linear-gradient(top, $numeric-button-lighter-color, $numeric-button-darker-color);
+        background-image: -ms-linear-gradient(top, $numeric-button-lighter-color, $numeric-button-darker-color);
+        background-image: -o-linear-gradient(top, $numeric-button-lighter-color, $numeric-button-darker-color);
+        background-image: linear-gradient(to bottom, $numeric-button-lighter-color, $numeric-button-darker-color);
+        &:hover{
+            background: $numeric-button-lighter-color;
+            background-image: -webkit-linear-gradient(top, $numeric-button-lighter-color, $numeric-button-hover-color);
+            background-image: -moz-linear-gradient(top, $numeric-button-lighter-color, $numeric-button-hover-color);
+            background-image: -ms-linear-gradient(top, $numeric-button-lighter-color, $numeric-button-hover-color);
+            background-image: -o-linear-gradient(top, $numeric-button-lighter-color, $numeric-button-hover-color);
+            background-image: linear-gradient(to bottom, $numeric-button-lighter-color, $numeric-button-hover-color);
+        }
+    }
+    &.save-clear{
+        background: $save-clear-button-lighter-color;
+        background-image: -webkit-linear-gradient(top, $save-clear-button-lighter-color, $save-clear-button-darker-color);
+        background-image: -moz-linear-gradient(top, $save-clear-button-lighter-color, $save-clear-button-darker-color);
+        background-image: -ms-linear-gradient(top, $save-clear-button-lighter-color, $save-clear-button-darker-color);
+        background-image: -o-linear-gradient(top, $save-clear-button-lighter-color, $save-clear-button-darker-color);
+        background-image: linear-gradient(to bottom, $save-clear-button-lighter-color, $save-clear-button-darker-color);
+        &:hover{
+            background: $save-clear-button-lighter-color;
+            background-image: -webkit-linear-gradient(top, $save-clear-button-lighter-color, $save-clear-button-hover-color);
+            background-image: -moz-linear-gradient(top, $save-clear-button-lighter-color, $save-clear-button-hover-color);
+            background-image: -ms-linear-gradient(top, $save-clear-button-lighter-color, $save-clear-button-hover-color);
+            background-image: -o-linear-gradient(top, $save-clear-button-lighter-color, $save-clear-button-hover-color);
+            background-image: linear-gradient(to bottom, $save-clear-button-lighter-color, $save-clear-button-hover-color);
+        }
+    }
+    &.math{
+        background: $math-button-lighter-color;
+        background-image: -webkit-linear-gradient(top, $math-button-lighter-color, $math-button-darker-color);
+        background-image: -moz-linear-gradient(top, $math-button-lighter-color, $math-button-darker-color);
+        background-image: -ms-linear-gradient(top, $math-button-lighter-color, $math-button-darker-color);
+        background-image: -o-linear-gradient(top, $math-button-lighter-color, $math-button-darker-color);
+        background-image: linear-gradient(to bottom, $math-button-lighter-color, $math-button-darker-color);
+        &:hover{
+            background: $math-button-lighter-color;
+            background-image: -webkit-linear-gradient(top, $math-button-lighter-color, $math-button-hover-color);
+            background-image: -moz-linear-gradient(top, $math-button-lighter-color, $math-button-hover-color);
+            background-image: -ms-linear-gradient(top, $math-button-lighter-color, $math-button-hover-color);
+            background-image: -o-linear-gradient(top, $math-button-lighter-color, $math-button-hover-color);
+            background-image: linear-gradient(to bottom, $math-button-lighter-color, $math-button-hover-color);
+        }
+    }
+}
