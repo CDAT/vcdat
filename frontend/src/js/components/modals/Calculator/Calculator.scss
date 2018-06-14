@@ -11,9 +11,29 @@ $math-button-lighter-color: rgb(255, 245, 223);
 $math-button-darker-color: rgb(255, 245, 132);
 $math-button-hover-color: rgb(222, 210, 83);
 
-.input-container{
-    
+.main-container{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 250px 250px;
 }
+.variable-list{
+    grid-column: 1 / 2;
+    grid-row: 1 / 2; 
+}
+.operation-list {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3; 
+}
+.input-container {
+    grid-column: 2 / 3; 
+    grid-row: 1 / 2; 
+}
+.calculator-buttons{
+    grid-column: 2 / 3; 
+    grid-row: 2 / 3; 
+}
+
+
 
 button.calc-button{
     width: 100%;
