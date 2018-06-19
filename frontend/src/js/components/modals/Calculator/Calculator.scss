@@ -39,6 +39,12 @@ $math-button-hover-color: rgb(222, 210, 83);
     border-left: lightgray 1px solid;
     border-right: lightgray 1px solid;
     border-bottom: lightgray 1px solid;
+    &.drop-hint {
+        border-color: cyan;
+    }
+    &.drop-success {
+        border-color: lime;
+    }
     .input-wrapper {
         display: flex;
         width: 80%;
@@ -54,7 +60,7 @@ $math-button-hover-color: rgb(222, 210, 83);
         }
         .calculation {
             flex-grow: 5;
-            background-color: rgba(128, 128, 128, 0.149);
+            background-color: rgb(238, 239, 238);
         }
     }
 }
