@@ -32,9 +32,6 @@ $math-button-hover-color: rgb(222, 210, 83);
 .input-area {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border-top: lightgray 1px solid;
     border-left: lightgray 1px solid;
     border-right: lightgray 1px solid;
@@ -45,23 +42,36 @@ $math-button-hover-color: rgb(222, 210, 83);
     &.drop-success {
         border-color: lime;
     }
-    .input-wrapper {
+    display: grid;
+    grid-template-columns: 10fr minmax(15px, 1fr) 14fr;
+    grid-template-rows: 1fr 1fr;
+    input {
+        font-size: 18px;
+    }
+    #new-variable-name {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+    }
+    #new-variable-name-help-text  {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+    }
+    #assignment  {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+        line-height: 25px;
         display: flex;
-        width: 80%;
-        margin-bottom: 5px;
-        input {
-            font-size: 18px;
-        }
-        .new-variable-name {
-            flex-grow: 1;
-        }
-        span.equals {
-            margin: 0 5px;
-        }
-        .calculation {
-            flex-grow: 5;
-            background-color: rgb(238, 239, 238);
-        }
+        justify-content: center;
+        align-items: center;
+    }
+    #calculation {
+        grid-column: 3 / 4;
+        grid-row: 1 / 2;
+        background-color: rgb(238, 239, 238);
+    }
+    #calculation-help-text {
+        grid-column: 3 / 4;
+        grid-row: 2 / 3;
     }
 }
 .calculator-buttons {
@@ -126,5 +136,12 @@ button.calc-button {
             background-image: -o-linear-gradient(top, $math-button-lighter-color, $math-button-hover-color);
             background-image: linear-gradient(to bottom, $math-button-lighter-color, $math-button-hover-color);
         }
+    }
+}
+
+
+@media(min-width: 992px) {
+    .input-area {
+        padding: 9px 15px;
     }
 }

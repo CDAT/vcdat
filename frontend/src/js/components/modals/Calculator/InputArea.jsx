@@ -41,11 +41,21 @@ class InputArea extends React.Component {
 
         return connectDropTarget(
             <div className={`input-area ${drop_class}`}>
-                <div className="input-wrapper">
-                    <input className="new-variable-name" type="text" placeholder={this.props.new_variable_placeholder} />
-                    <span className="equals"> = </span>
-                    <input className="calculation" type="text" value={this.props.calculation} disabled />
+                <input
+                    id="new-variable-name"
+                    type="text"
+                    placeholder={this.props.new_variable_placeholder ? this.props.new_variable_placeholder : "New_Variable_Name"}
+                />
+                <small id="new-variable-name-help-text" className="form-text text-muted">
+                    New variable name
+                </small>
+                <div id="assignment">
+                    <span className="glyphicon glyphicon-arrow-left" />
                 </div>
+                <input id="calculation" type="text" value={this.props.calculation} disabled />
+                <small id="calculation-help-text" className="form-text text-muted">
+                    Construct a calculation by dragging variables here.
+                </small>
             </div>
         );
     }

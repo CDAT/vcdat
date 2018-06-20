@@ -75,7 +75,7 @@ class Calculator extends React.Component {
             // Ex: "2" -> "21"
             this.setState({
                 calculation_left_side: {
-                    value: this.state.calculation_left_side.value + number,
+                    value: this.state.calculation_left_side.value + "" + number,
                     type: CALC_TYPES.const
                 }
             });
@@ -88,6 +88,13 @@ class Calculator extends React.Component {
                 this.setState({
                     calculation_right_side: {
                         value: number,
+                        type: CALC_TYPES.const
+                    }
+                });
+            } else if (this.state.calculation_right_side.type === CALC_TYPES.const) {
+                this.setState({
+                    calculation_right_side: {
+                        value: this.state.calculation_right_side.value + "" + number,
                         type: CALC_TYPES.const
                     }
                 });
