@@ -28,6 +28,16 @@ const collect = function(connect, monitor) {
 class InputArea extends React.Component {
     constructor(props) {
         super(props);
+        this.handleBlur = this.handleBlur.bind(this)
+        this.handleFocus = this.handleFocus.bind(this)
+    }
+
+    handleFocus(){
+        this.props.setFocus(true);
+    }
+
+    handleBlur(){
+        this.props.setFocus(false);
     }
 
     render() {
@@ -44,10 +54,14 @@ class InputArea extends React.Component {
                 <input
                     id="new-variable-name"
                     type="text"
+                    onFocus={this.handleFocus}
+                    onBlur={this.handleBlur}
+                    value={this.props.new_variable_name}
+                    onChange={this.props.handleNewVariableName}
                     placeholder={this.props.new_variable_placeholder ? this.props.new_variable_placeholder : "New_Variable_Name"}
                 />
                 <small id="new-variable-name-help-text" className="form-text text-muted">
-                    New variable name
+                    Enter a new variable name to save the calculation to.
                 </small>
                 <div id="assignment">
                     <span className="glyphicon glyphicon-arrow-left" />
@@ -64,7 +78,9 @@ class InputArea extends React.Component {
 InputArea.propTypes = {
     new_variable_name: PropTypes.string,
     new_variable_placeholder: PropTypes.string,
+    handleNewVariableName: PropTypes.func,
     calculation: PropTypes.string,
+    setFocus: PropTypes.func,
     connectDropTarget: PropTypes.func,
     onDrop: PropTypes.func,
     can_drop: PropTypes.bool, // prop added by react-dnd

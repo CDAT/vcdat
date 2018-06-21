@@ -19,11 +19,13 @@ class Calculator extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            input_focus: false,
             new_variable_name: "",
             calculation_left_side: undefined,
             calculation_operator: undefined,
             calculation_right_side: undefined
         };
+        this.handleNewVariableName = this.handleNewVariableName.bind(this);
         this.handleVariable = this.handleVariable.bind(this);
         this.handleConstant = this.handleConstant.bind(this);
         this.handleClear = this.handleClear.bind(this);
@@ -31,6 +33,17 @@ class Calculator extends React.Component {
         this.handleEnter = this.handleEnter.bind(this);
         this.handleOperator = this.handleOperator.bind(this);
         this.printCalculation = this.printCalculation.bind(this);
+        this.setInputFocus = this.setInputFocus.bind(this);
+        this.isValidCalculation = this.isValidCalculation.bind(this);
+        this.getOperand = this.getOperand.bind(this);
+    }
+
+    setInputFocus(state) {
+        this.setState({ input_focus: state });
+    }
+
+    handleNewVariableName(event){
+        this.setState({new_variable_name: event.target.value})
     }
 
     handleVariable(variable) {
@@ -119,6 +132,20 @@ class Calculator extends React.Component {
 
     handleEnter() {
         // send to vcs-js then clear
+        if(this.isValidCalculation()){
+            const left_value = this.getOperand(this.state.calculation_left_side);
+            const right_value = this.getOperand(this.state.calculation_right_side);
+            return vcs.calculate({
+                left_value: left_value,
+                op: this.state.calculation_operator,
+                right_value: right_value
+            }).then(json => {
+                
+            });
+        }       
+        else {
+            toast.warning("Invalid Calculation", { position: toast.POSITION.BOTTOM_CENTER });
+        }
     }
 
     handleOperator(operator) {
@@ -152,6 +179,46 @@ class Calculator extends React.Component {
         return `${left} ${operator} ${right}`;
     }
 
+    isValidCalculation(){
+        // Left value and an op must exist to be valid
+        // If an op is binary, there must be a right side
+        // Otherwise, if an op is unary, it can't have a right side
+        const left = this.state.calculation_left_side
+        const op = this.state.calculation_operator;
+        const right = this.state.calculation_right_side
+        if (left && op && ((BINARY_OPERATORS.includes(op) && right) || (UNARY_OPERATORS.includes(op) && !right))){
+                return true
+        } 
+        return false
+    }
+
+    getOperand(obj){
+        // Used to retrieve a properly formatted object that represents a variable.
+        // The returned object should have the correct keys/values to be passed to vcs-js
+        switch(obj.type){
+            case CALC_TYPES.const:
+                return {
+                    type: obj.type,
+                    value: obj.value,
+                }
+            case CALC_TYPES.var:
+                if(this.props.variables[obj.value].json){
+                    return {
+                        type: obj.type,
+                        json: this.props.variables[obj.value].json
+                    }
+                }else {
+                    return {
+                        type: obj.type,
+                        path: this.props.variables[obj.value].path,
+                        name: this.props.variables[obj.value].cdms_var_name
+                    }
+                }
+            default:
+                toast.error(`Invalid operand type "${obj.type}"`, { position: toast.POSITION.BOTTOM_CENTER });
+        }
+    }
+
     render() {
         const calculation_string = this.printCalculation();
         return (
@@ -161,8 +228,14 @@ class Calculator extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="main-container" onKeyPress={this.handleKeyPress}>
-                        <VariableList variables={this.props.variables} removeVariable={this.props.removeVariable} />
-                        <InputArea new_variable_name={this.state.new_variable_name} calculation={calculation_string} onDrop={this.handleVariable} />
+                        <VariableList variables={this.props.variable_names} removeVariable={this.props.removeVariable} />
+                        <InputArea
+                            new_variable_name={this.state.new_variable_name}
+                            handleNewVariableName={this.handleNewVariableName}
+                            calculation={calculation_string}
+                            onDrop={this.handleVariable}
+                            setFocus={this.setInputFocus}
+                        />
                         <CalculatorButtons
                             handleConstant={this.handleConstant}
                             handleClear={this.handleClear}
@@ -183,19 +256,33 @@ class Calculator extends React.Component {
 Calculator.propTypes = {
     show: PropTypes.bool,
     close: PropTypes.func,
-    variables: PropTypes.arrayOf(PropTypes.string),
+    variables: PropTypes.object,
+    variable_names: PropTypes.arrayOf(PropTypes.string),
     removeVariable: PropTypes.func
 };
 
 const mapStateToProps = state => {
     return {
-        variables: state.present.variables ? Object.keys(state.present.variables) : []
+        variable_names: state.present.variables ? Object.keys(state.present.variables) : [],
+        variables: state.present.variables
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        removeVariable: name => dispatch(Actions.removeVariable(name))
+        removeVariable: name => dispatch(Actions.removeVariable(name)),
+        loadVariable: (name, dimensions, transforms, json) => {
+            dispatch(
+                Actions.loadVariables([
+                    {
+                        name: name,
+                        dimensions: dimensions,
+                        transforms: transforms,
+                        json: json
+                    }
+                ])
+            );
+        }
     };
 };
 
