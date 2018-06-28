@@ -32,6 +32,7 @@ class Calculator extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleEnter = this.handleEnter.bind(this);
         this.handleOperator = this.handleOperator.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
         this.printCalculation = this.printCalculation.bind(this);
         this.setInputFocus = this.setInputFocus.bind(this);
         this.isValidCalculation = this.isValidCalculation.bind(this);
@@ -42,8 +43,8 @@ class Calculator extends React.Component {
         this.setState({ input_focus: state });
     }
 
-    handleNewVariableName(event){
-        this.setState({new_variable_name: event.target.value})
+    handleNewVariableName(event) {
+        this.setState({ new_variable_name: event.target.value });
     }
 
     handleVariable(variable) {
@@ -128,22 +129,91 @@ class Calculator extends React.Component {
         });
     }
 
-    handleDelete() {}
+    handleDelete() {
+        if (this.state.calculation_right_side) {
+            if (this.state.calculation_right_side.type === CALC_TYPES.const) {
+                let right = Object.assign({}, this.state.calculation_right_side);
+                right.value = right.value.slice(0, right.value.length - 1);
+                if (right.value.length === 0) {
+                    this.setState({
+                        calculation_right_side: undefined
+                    });
+                } else {
+                    this.setState({
+                        calculation_right_side: right
+                    });
+                }
+            } else {
+                // calculation_right_side.type === CALC_TYPES.var
+                this.setState({
+                    calculation_right_side: undefined
+                });
+            }
+        } else if (this.state.calculation_operator) {
+            this.setState({
+                calculation_operator: undefined
+            });
+        } else if (this.state.calculation_left_side) {
+            if (this.state.calculation_left_side.type === CALC_TYPES.const) {
+                let left = Object.assign({}, this.state.calculation_left_side);
+                left.value = left.value.slice(0, left.value.length - 1);
+                if (left.value.length === 0) {
+                    this.setState({
+                        calculation_left_side: undefined
+                    });
+                } else {
+                    this.setState({
+                        calculation_left_side: left
+                    });
+                }
+            } else {
+                // calculation_left_side.type === CALC_TYPES.var
+                this.setState({
+                    calculation_left_side: undefined
+                });
+            }
+        }
+    }
 
     handleEnter() {
         // send to vcs-js then clear
-        if(this.isValidCalculation()){
+        if (this.isValidCalculation()) {
             const left_value = this.getOperand(this.state.calculation_left_side);
             const right_value = this.getOperand(this.state.calculation_right_side);
-            return vcs.calculate({
-                left_value: left_value,
-                op: this.state.calculation_operator,
-                right_value: right_value
-            }).then(json => {
-                
-            });
-        }       
-        else {
+            try {
+                return vcs
+                    .calculate({
+                        left_value: left_value,
+                        op: this.state.calculation_operator,
+                        right_value: right_value
+                    })
+                    .then(
+                        json => {
+                            this.props.loadVariable(this.state.new_variable_name, [], [], json);
+                            this.setState({
+                                calculation_left_side: undefined,
+                                calculation_operator: undefined,
+                                calculation_right_side: undefined
+                            });
+                        },
+                        error => {
+                            try {
+                                toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
+                            } catch (e) {
+                                console.warn(error);
+                                toast.error("An unknown error occurred while trying to calculate a new variable. Check the console for details.", {
+                                    position: toast.POSITION.BOTTOM_CENTER
+                                });
+                            }
+                        }
+                    );
+            } catch (e) {
+                console.warn(e);
+                if (e instanceof ReferenceError) {
+                    toast.error("VCS is not loaded. Try restarting vCDAT", { position: toast.POSITION.BOTTOM_CENTER });
+                }
+            }
+        } else {
             toast.warning("Invalid Calculation", { position: toast.POSITION.BOTTOM_CENTER });
         }
     }
@@ -179,55 +249,89 @@ class Calculator extends React.Component {
         return `${left} ${operator} ${right}`;
     }
 
-    isValidCalculation(){
+    isValidCalculation() {
         // Left value and an op must exist to be valid
         // If an op is binary, there must be a right side
         // Otherwise, if an op is unary, it can't have a right side
-        const left = this.state.calculation_left_side
+        const left = this.state.calculation_left_side;
         const op = this.state.calculation_operator;
-        const right = this.state.calculation_right_side
-        if (left && op && ((BINARY_OPERATORS.includes(op) && right) || (UNARY_OPERATORS.includes(op) && !right))){
-                return true
-        } 
-        return false
+        const right = this.state.calculation_right_side;
+        if (left && op && ((BINARY_OPERATORS.includes(op) && right) || (UNARY_OPERATORS.includes(op) && !right))) {
+            return true;
+        }
+        return false;
     }
 
-    getOperand(obj){
+    getOperand(obj) {
         // Used to retrieve a properly formatted object that represents a variable.
         // The returned object should have the correct keys/values to be passed to vcs-js
-        switch(obj.type){
+        switch (obj.type) {
             case CALC_TYPES.const:
                 return {
                     type: obj.type,
-                    value: obj.value,
-                }
+                    value: obj.value
+                };
             case CALC_TYPES.var:
-                if(this.props.variables[obj.value].json){
+                if (this.props.variables[obj.value].json) {
                     return {
                         type: obj.type,
                         json: this.props.variables[obj.value].json
-                    }
-                }else {
+                    };
+                } else {
                     return {
                         type: obj.type,
                         path: this.props.variables[obj.value].path,
                         name: this.props.variables[obj.value].cdms_var_name
-                    }
+                    };
                 }
             default:
                 toast.error(`Invalid operand type "${obj.type}"`, { position: toast.POSITION.BOTTOM_CENTER });
         }
     }
 
+    // Function to handle keyboard shortcuts for the calculator
+    handleKeyDown(event) {
+        if (!this.state.input_focus) {
+            // If the user is entering a new variable name, dont change the calculation input
+            let code = event.which;
+
+            if (code === 8) {
+                // backspace key
+                this.handleDelete();
+            } else if (code === 13) {
+                // enter key
+                this.handleEnter();
+            } else if (code === 46) {
+                // delete key
+                this.handleClear();
+            } else if (code === 107 || (code === 187 && event.shiftKey)) {
+                // plus key
+                this.handleOperator("+");
+            } else if (code === 109 || code === 189) {
+                // minus key
+                this.handleOperator("-");
+            } else if (code === 106 || (code === 56 && event.shiftKey)) {
+                // multiply key
+                this.handleOperator("*");
+            } else if (code === 111 || code === 191) {
+                // divide key
+                this.handleOperator("/");
+            } else if (code >= 48 && code <= 57) {
+                const num = code - 48; // gives 0-9
+                this.handleConstant(num);
+            }
+        }
+    }
+
     render() {
         const calculation_string = this.printCalculation();
         return (
-            <Modal show={this.props.show} onHide={this.props.close} bsSize="large">
+            <Modal show={this.props.show} onHide={this.props.close} bsSize="large" onKeyDown={this.handleKeyDown}>
                 <Modal.Header closeButton>
                     <Modal.Title>Calculator</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="main-container" onKeyPress={this.handleKeyPress}>
+                    <div className="main-container">
                         <VariableList variables={this.props.variable_names} removeVariable={this.props.removeVariable} />
                         <InputArea
                             new_variable_name={this.state.new_variable_name}
@@ -258,7 +362,8 @@ Calculator.propTypes = {
     close: PropTypes.func,
     variables: PropTypes.object,
     variable_names: PropTypes.arrayOf(PropTypes.string),
-    removeVariable: PropTypes.func
+    removeVariable: PropTypes.func,
+    loadVariable: PropTypes.func
 };
 
 const mapStateToProps = state => {
@@ -271,17 +376,14 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         removeVariable: name => dispatch(Actions.removeVariable(name)),
-        loadVariable: (name, dimensions, transforms, json) => {
-            dispatch(
-                Actions.loadVariables([
-                    {
-                        name: name,
-                        dimensions: dimensions,
-                        transforms: transforms,
-                        json: json
-                    }
-                ])
-            );
+        loadVariable: (name, dimension, transforms, json) => {
+            let var_obj = {};
+            var_obj[name] = {
+                dimension: dimension,
+                transforms: transforms,
+                json: json
+            };
+            dispatch(Actions.loadVariables([var_obj]));
         }
     };
 };
