@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Modal, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
+import _ from "lodash";
 import Actions from "../../../constants/Actions.js";
 import VariableList from "./VariableList.jsx";
 import InputArea from "./InputArea.jsx";
@@ -265,6 +266,8 @@ class Calculator extends React.Component {
     getOperand(obj) {
         // Used to retrieve a properly formatted object that represents a variable.
         // The returned object should have the correct keys/values to be passed to vcs-js
+        let operand = undefined;
+        let subRegion = {};
         switch (obj.type) {
             case CALC_TYPES.const:
                 return {
@@ -273,17 +276,30 @@ class Calculator extends React.Component {
                 };
             case CALC_TYPES.var:
                 if (this.props.variables[obj.value].json) {
-                    return {
+                    operand = {
                         type: obj.type,
                         json: this.props.variables[obj.value].json
                     };
                 } else {
-                    return {
+                    operand = {
                         type: obj.type,
                         path: this.props.variables[obj.value].path,
                         name: this.props.variables[obj.value].cdms_var_name
                     };
                 }
+                this.props.variables[obj.value].dimension.filter(dimension => dimension.values).forEach(dimension => {
+                    subRegion[dimension.axisName] = dimension.values.range;
+                });
+                if (!_.isEmpty(subRegion)) {
+                    operand["operations"] = [{ subRegion }];
+                }
+                if (!_.isEmpty(this.props.variables[obj.value].transforms)) {
+                    if (!operand["operations"]) {
+                        operand["operations"] = [];
+                    }
+                    operand["operations"].push({ transform: this.props.variables[obj.value].transforms });
+                }
+                return operand;
             default:
                 toast.error(`Invalid operand type "${obj.type}"`, { position: toast.POSITION.BOTTOM_CENTER });
         }
