@@ -42,19 +42,16 @@ class EditVariable extends Component {
         try {
             return vcs.variable(spec).then(variablesAxes => {
                 let selectedVariable, dimension;
-                debugger;
-                // if (variablesAxes[0]) {
-                // it's a variablevar
                 selectedVariable = variablesAxes[0];
                 dimension = $.extend(true, [], this.props.variables[this.props.active_variable].dimension);
+                if (dimension.length === 0) {
+                    dimension = Object.keys(variablesAxes[1]).map(name => {
+                        return { axisName: name };
+                    });
+                }
                 if (this.props.variables[this.props.active_variable].json) {
                     selectedVariable.json = this.props.variables[this.props.active_variable].json;
                 }
-                // } else {
-                //     // it's an axis
-                //     selectedVariable = variablesAxes[1][this.props.active_variable];
-                //     dimension = { axisName: this.props.active_variable };
-                // }
                 this.setState({
                     selectedVariable,
                     variablesAxes,
@@ -93,17 +90,23 @@ class EditVariable extends Component {
 
     render() {
         let slider_values = {};
-        for (let dimension of this.props.variables[this.props.active_variable].dimension) {
-            if (dimension.values) {
-                slider_values[dimension.axisName] = {
-                    range: dimension.values.range,
-                    stride: dimension.stride
-                };
-            } else {
-                slider_values[dimension.axisName] = {
-                    range: [undefined, undefined],
-                    stride: undefined
-                };
+        let dimensions =
+            this.props.variables[this.props.active_variable].dimension.length > 0
+                ? this.props.variables[this.props.active_variable].dimension
+                : this.state.dimension;
+        if (dimensions) {
+            for (let dimension of dimensions) {
+                if (dimension.values) {
+                    slider_values[dimension.axisName] = {
+                        range: dimension.values.range,
+                        stride: dimension.stride
+                    };
+                } else {
+                    slider_values[dimension.axisName] = {
+                        range: [undefined, undefined],
+                        stride: undefined
+                    };
+                }
             }
         }
         return (
@@ -120,7 +123,7 @@ class EditVariable extends Component {
                                 </Col>
                             </Row>
                             {/* If is a variable */}
-                            {this.state.dimension &&
+                            {this.state.dimension.length > 0 &&
                                 this.state.dimension.map(dimension => dimension.axisName).map((axisName, i) => {
                                     let axis = this.state.variablesAxes[1][axisName];
                                     return (
