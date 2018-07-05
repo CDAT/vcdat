@@ -1,110 +1,109 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Modal, Button, Row, Col, Glyphicon } from 'react-bootstrap'
-import _ from 'lodash'
-import { DropTarget, DragSource } from 'react-dnd'
-import { findDOMNode } from 'react-dom'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Modal, Button, Row, Col, Glyphicon } from "react-bootstrap";
+import _ from "lodash";
+import { DropTarget, DragSource } from "react-dnd";
+import { findDOMNode } from "react-dom";
 
-import DimensionSlider from './CachedFiles/DimensionSlider/DimensionSlider.jsx'
-import AxisTransform from './CachedFiles/AxisTransform.jsx'
-import DragAndDropTypes from '../../constants/DragAndDropTypes.js'
-import Actions from '../../constants/Actions.js'
-import $ from 'jquery'
-
+import DimensionSlider from "./CachedFiles/DimensionSlider/DimensionSlider.jsx";
+import AxisTransform from "./CachedFiles/AxisTransform.jsx";
+import DragAndDropTypes from "../../constants/DragAndDropTypes.js";
+import Actions from "../../constants/Actions.js";
+import $ from "jquery";
 
 class EditVariable extends Component {
     constructor(props) {
         super(props);
 
-        let transforms = {}
-        try{
-            transforms = $.extend(true, {}, this.props.variables[this.props.active_variable].transforms)
-        }
-        catch(e){
-            transforms = {}
+        let transforms = {};
+        try {
+            transforms = $.extend(true, {}, this.props.variables[this.props.active_variable].transforms);
+        } catch (e) {
+            transforms = {};
         }
         this.state = {
             variablesAxes: null,
             selectedVariable: null,
             dimension: null,
-            axis_transforms: transforms || {},
-        }
-        this.getVariableInfo()
-        this.handleAxisTransform = this.handleAxisTransform.bind(this)
+            axis_transforms: transforms || {}
+        };
+        this.getVariableInfo();
+        this.handleAxisTransform = this.handleAxisTransform.bind(this);
     }
 
-    getVariableInfo(){
-        return new Promise((resolve, reject) => {
-            try{
-                resolve(
-                    vcs.variables(this.props.variables[this.props.active_variable].path).then((variablesAxes) => {
-                        let selectedVariable, dimension;
-                        if (variablesAxes[0][this.props.active_variable]) {
-                            // it's a variablevar 
-                            selectedVariable = variablesAxes[0][this.props.active_variable];
-                            dimension = $.extend(true, [], this.props.variables[this.props.active_variable].dimension)
-                        }
-                        else {
-                            // it's a axis
-                            selectedVariable = variablesAxes[1][this.props.active_variable];
-                            dimension = { axisName: this.props.active_variable };
-                        }
-                        this.setState({
-                            selectedVariable,
-                            variablesAxes,
-                            dimension,
-                        });
-                    })
-                )
-            }
-            catch(e){
-                console.warn(e)
-                reject(e)
-            }
-        })
+    getVariableInfo() {
+        let spec = this.props.variables[this.props.active_variable].path;
+        if (this.props.variables[this.props.active_variable].json) {
+            spec = {
+                json: this.props.variables[this.props.active_variable].json
+            };
+        }
+        try {
+            return vcs.variable(spec).then(variablesAxes => {
+                let selectedVariable, dimension;
+                debugger;
+                // if (variablesAxes[0]) {
+                // it's a variablevar
+                selectedVariable = variablesAxes[0];
+                dimension = $.extend(true, [], this.props.variables[this.props.active_variable].dimension);
+                if (this.props.variables[this.props.active_variable].json) {
+                    selectedVariable.json = this.props.variables[this.props.active_variable].json;
+                }
+                // } else {
+                //     // it's an axis
+                //     selectedVariable = variablesAxes[1][this.props.active_variable];
+                //     dimension = { axisName: this.props.active_variable };
+                // }
+                this.setState({
+                    selectedVariable,
+                    variablesAxes,
+                    dimension
+                });
+            });
+        } catch (e) {
+            console.warn(e);
+        }
     }
 
     handleDimensionValueChange(values, axisName = undefined) {
         if (axisName) {
-            let new_dimension = this.state.dimension.slice()
+            let new_dimension = this.state.dimension.slice();
             new_dimension.find(dimension => dimension.axisName === axisName).values = values;
-            this.setState({dimension: new_dimension})
-        }
-        else {
-            let new_dimension = this.state.dimension
+            this.setState({ dimension: new_dimension });
+        } else {
+            let new_dimension = this.state.dimension;
             new_dimension.values = values;
-            this.setState({dimension: new_dimension})
+            this.setState({ dimension: new_dimension });
         }
     }
 
-    handleAxisTransform(axis_name, transform){
-        let new_transforms = _.cloneDeep(this.state.axis_transforms)
-        new_transforms[axis_name] = transform
+    handleAxisTransform(axis_name, transform) {
+        let new_transforms = _.cloneDeep(this.state.axis_transforms);
+        new_transforms[axis_name] = transform;
         this.setState({
             axis_transforms: new_transforms
-        })
+        });
     }
 
-    save(){
-        this.props.updateVariable(this.props.active_variable, this.state.dimension, this.state.axis_transforms)
-        this.props.onTryClose()
+    save() {
+        this.props.updateVariable(this.props.active_variable, this.state.dimension, this.state.axis_transforms);
+        this.props.onTryClose();
     }
 
     render() {
-        let slider_values = {}
-        for(let dimension of this.props.variables[this.props.active_variable].dimension){
-            if(dimension.values){
+        let slider_values = {};
+        for (let dimension of this.props.variables[this.props.active_variable].dimension) {
+            if (dimension.values) {
                 slider_values[dimension.axisName] = {
                     range: dimension.values.range,
                     stride: dimension.stride
-                }
-            }
-            else{
+                };
+            } else {
                 slider_values[dimension.axisName] = {
                     range: [undefined, undefined],
                     stride: undefined
-                }
+                };
             }
         }
         return (
@@ -113,7 +112,7 @@ class EditVariable extends Component {
                     <Modal.Title>Edit Variable</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {this.state.selectedVariable &&
+                    {this.state.selectedVariable && (
                         <div className="dimensions">
                             <Row>
                                 <Col className="text-right" sm={2}>
@@ -126,40 +125,48 @@ class EditVariable extends Component {
                                     let axis = this.state.variablesAxes[1][axisName];
                                     return (
                                         <div key={axisName} className="axis">
-                                            <DimensionDnDContainer 
+                                            <DimensionDnDContainer
                                                 key={axisName}
                                                 low_value={slider_values[axisName].range[0]}
                                                 high_value={slider_values[axisName].range[1]}
                                                 index={i}
                                                 axis={axis}
                                                 axisName={axisName}
-                                                handleDimensionValueChange={(values) => this.handleDimensionValueChange(values, axisName)}
+                                                handleDimensionValueChange={values => this.handleDimensionValueChange(values, axisName)}
                                                 moveDimension={(dragIndex, hoverIndex) => this.moveDimension(dragIndex, hoverIndex)}
                                                 axis_transform={this.state.axis_transforms[axisName] || "def"}
                                                 handleAxisTransform={this.handleAxisTransform}
                                             />
                                         </div>
-                                    )
-                                })
-                            }
+                                    );
+                                })}
                             {/* if is an Axis */}
-                            {!this.state.selectedVariable.axisList &&
+                            {!this.state.selectedVariable.axisList && (
                                 <div key={this.state.selectedVariable.name} className="dimension">
-                                    <div className="text-right"><span>{this.state.selectedVariable.name}</span></div>
-                                    <div className="right-content">
-                                        <DimensionSlider {...this.state.selectedVariable} onChange={(values) => this.handleDimensionValueChange(values)} />
+                                    <div className="text-right">
+                                        <span>{this.state.selectedVariable.name}</span>
                                     </div>
-                            </div>
-                            }
+                                    <div className="right-content">
+                                        <DimensionSlider
+                                            {...this.state.selectedVariable}
+                                            onChange={values => this.handleDimensionValueChange(values)}
+                                        />
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                    }
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button id="edit-var-save" bsStyle="primary" onClick={() => this.save()}>Save</Button>
-                    <Button id="edit-var-close" bsStyle="default" onClick={() => this.props.onTryClose()}>Close</Button>
+                    <Button id="edit-var-save" bsStyle="primary" onClick={() => this.save()}>
+                        Save
+                    </Button>
+                    <Button id="edit-var-close" bsStyle="default" onClick={() => this.props.onTryClose()}>
+                        Close
+                    </Button>
                 </Modal.Footer>
             </Modal>
-        )
+        );
     }
 
     moveDimension(dragIndex, hoverIndex) {
@@ -169,38 +176,44 @@ class EditVariable extends Component {
     }
 }
 EditVariable.propTypes = {
-    show: PropTypes.bool, 
+    show: PropTypes.bool,
     onTryClose: PropTypes.func.isRequired,
     variables: PropTypes.object,
     active_variable: PropTypes.string,
-    updateVariable: PropTypes.func,
-}
+    updateVariable: PropTypes.func
+};
 
-var DimensionContainer = (props) => {
+var DimensionContainer = props => {
     const opacity = props.isDragging ? 0 : 1;
-    return props.connectDropTarget(props.connectDragPreview(
-    <div className="dimension" style={{ opacity }}>
-        <div className="axis-name text-right"><span>{props.axis.name}</span></div>
-        {props.connectDragSource(<div className="sort"><Glyphicon glyph="menu-hamburger" /></div>)}
-        <div className="right-content">
-            <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
-        </div>
-        <AxisTransform
-            axis_name={props.axis.name}
-            axis_transform={props.axis_transform}
-            handleAxisTransform={props.handleAxisTransform}
-        />
-    </div>));
-}
+    return props.connectDropTarget(
+        props.connectDragPreview(
+            <div className="dimension" style={{ opacity }}>
+                <div className="axis-name text-right">
+                    <span>{props.axis.name}</span>
+                </div>
+                {props.connectDragSource(
+                    <div className="sort">
+                        <Glyphicon glyph="menu-hamburger" />
+                    </div>
+                )}
+                <div className="right-content">
+                    <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
+                </div>
+                <AxisTransform axis_name={props.axis.name} axis_transform={props.axis_transform} handleAxisTransform={props.handleAxisTransform} />
+            </div>
+        )
+    );
+};
 
 var DimensionDnDContainer = _.flow(
-    DragSource(DragAndDropTypes.DIMENSION,
+    DragSource(
+        DragAndDropTypes.DIMENSION,
         {
-            beginDrag: (props) => {
+            beginDrag: props => {
                 return {
                     id: props.id,
                     index: props.index
-                }
+                };
             }
         },
         (connect, monitor) => {
@@ -225,8 +238,7 @@ var DimensionDnDContainer = _.flow(
                 const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
                 const clientOffset = monitor.getClientOffset();
                 const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-                if ((dragIndex < hoverIndex && hoverClientY < hoverMiddleY)
-                    || (dragIndex > hoverIndex && hoverClientY > hoverMiddleY)) {
+                if ((dragIndex < hoverIndex && hoverClientY < hoverMiddleY) || (dragIndex > hoverIndex && hoverClientY > hoverMiddleY)) {
                     return;
                 }
                 props.moveDimension(dragIndex, hoverIndex);
@@ -235,29 +247,33 @@ var DimensionDnDContainer = _.flow(
                 // but it's good here for the sake of performance
                 // to avoid expensive index searches.
                 monitor.getItem().index = hoverIndex;
-            },
+            }
         },
         (connect, monitor) => {
             return {
                 connectDropTarget: connect.dropTarget(),
-                isOver: monitor.isOver(),
+                isOver: monitor.isOver()
             };
         }
-    ))(DimensionContainer);
+    )
+)(DimensionContainer);
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
         updateVariable: (name, dimensions, transforms) => {
-            dispatch(Actions.updateVariable(name, dimensions, transforms))
+            dispatch(Actions.updateVariable(name, dimensions, transforms));
         }
-    }
-}
+    };
+};
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
-        variables: state.present.variables,
-    }
-}
+        variables: state.present.variables
+    };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditVariable);
-export {EditVariable as PureEditVariable}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(EditVariable);
+export { EditVariable as PureEditVariable };
