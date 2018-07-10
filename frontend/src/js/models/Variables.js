@@ -18,8 +18,10 @@ class VariablesModel extends BaseModel {
                 return new_state;
             case "UPDATE_VARIABLE":
                 new_state = $.extend(true, {}, state);
+                var axis_list = $.extend(true, [], action.axis_list);
                 var new_dimensions = $.extend(true, [], action.dimensions);
                 var new_transforms = $.extend(true, {}, action.transforms);
+                new_state[action.name].axisList = axis_list;
                 new_state[action.name].dimension = new_dimensions;
                 new_state[action.name].transforms = new_transforms;
                 return new_state;

@@ -180,13 +180,14 @@ var Actions = {
             var_list: var_list
         };
     },
-    updateVariable(name, dimensions, transforms) {
+    updateVariable(name, axis_list, dimensions, transforms) {
         if (!transforms) {
             transforms = {};
         }
         return {
             type: "UPDATE_VARIABLE",
             name: name,
+            axis_list: axis_list,
             dimensions: dimensions,
             transforms: transforms
         };

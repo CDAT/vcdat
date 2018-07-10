@@ -24,7 +24,8 @@ class Calculator extends React.Component {
             new_variable_name: "",
             calculation_left_side: undefined,
             calculation_operator: undefined,
-            calculation_right_side: undefined
+            calculation_right_side: undefined,
+            placeholder_text: ""
         };
         this.handleNewVariableName = this.handleNewVariableName.bind(this);
         this.handleVariable = this.handleVariable.bind(this);
@@ -55,7 +56,8 @@ class Calculator extends React.Component {
                 calculation_left_side: {
                     value: variable.name,
                     type: CALC_TYPES.var
-                }
+                },
+                placeholder_text: this.getPlaceholderText(variable.name)
             });
         } else if (!this.state.calculation_operator) {
             // Ex: "u "
@@ -69,7 +71,8 @@ class Calculator extends React.Component {
                 calculation_right_side: {
                     value: variable.name,
                     type: CALC_TYPES.var
-                }
+                },
+                placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, this.state.calculation_operator, variable.name)
             });
         } else {
             // Ex: "u + v"
@@ -78,21 +81,25 @@ class Calculator extends React.Component {
     }
 
     handleConstant(number) {
+        number = number.toString();
         if (!this.state.calculation_left_side) {
             // Ex: "" -> "1"
             this.setState({
                 calculation_left_side: {
                     value: number,
                     type: CALC_TYPES.const
-                }
+                },
+                placeholder_text: this.getPlaceholderText(number)
             });
         } else if (this.state.calculation_left_side.type === CALC_TYPES.const && !this.state.calculation_operator) {
             // Ex: "2" -> "21"
+            const new_value = this.state.calculation_left_side.value + number;
             this.setState({
                 calculation_left_side: {
-                    value: this.state.calculation_left_side.value + "" + number,
+                    value: new_value,
                     type: CALC_TYPES.const
-                }
+                },
+                placeholder_text: this.getPlaceholderText(new_value)
             });
         } else if (this.state.calculation_left_side.type === CALC_TYPES.var && !this.state.calculation_operator) {
             toast.warning("Cannot append a number to a variable. Try selecting an operator first.", { position: toast.POSITION.BOTTOM_CENTER });
@@ -104,14 +111,17 @@ class Calculator extends React.Component {
                     calculation_right_side: {
                         value: number,
                         type: CALC_TYPES.const
-                    }
+                    },
+                    placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, this.state.calculation_operator, number)
                 });
             } else if (this.state.calculation_right_side.type === CALC_TYPES.const) {
+                const new_value = this.state.calculation_right_side.value + number;
                 this.setState({
                     calculation_right_side: {
-                        value: this.state.calculation_right_side.value + "" + number,
+                        value: new_value,
                         type: CALC_TYPES.const
-                    }
+                    },
+                    placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, this.state.calculation_operator, new_value)
                 });
             } else if (this.state.calculation_right_side.type === CALC_TYPES.var) {
                 toast.warning("The calculator expression appears to be full. Try deleting an operand first.", {
@@ -126,7 +136,8 @@ class Calculator extends React.Component {
             new_variable_name: "",
             calculation_left_side: undefined,
             calculation_operator: undefined,
-            calculation_right_side: undefined
+            calculation_right_side: undefined,
+            placeholder_text: ""
         });
     }
 
@@ -137,22 +148,26 @@ class Calculator extends React.Component {
                 right.value = right.value.slice(0, right.value.length - 1);
                 if (right.value.length === 0) {
                     this.setState({
-                        calculation_right_side: undefined
+                        calculation_right_side: undefined,
+                        placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, this.state.calculation_operator)
                     });
                 } else {
                     this.setState({
-                        calculation_right_side: right
+                        calculation_right_side: right,
+                        placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, this.state.calculation_operator, right)
                     });
                 }
             } else {
                 // calculation_right_side.type === CALC_TYPES.var
                 this.setState({
-                    calculation_right_side: undefined
+                    calculation_right_side: undefined,
+                    placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, this.state.calculation_operator)
                 });
             }
         } else if (this.state.calculation_operator) {
             this.setState({
-                calculation_operator: undefined
+                calculation_operator: undefined,
+                placeholder_text: this.getPlaceholderText(this.state.calculation_left_side)
             });
         } else if (this.state.calculation_left_side) {
             if (this.state.calculation_left_side.type === CALC_TYPES.const) {
@@ -160,17 +175,20 @@ class Calculator extends React.Component {
                 left.value = left.value.slice(0, left.value.length - 1);
                 if (left.value.length === 0) {
                     this.setState({
-                        calculation_left_side: undefined
+                        calculation_left_side: undefined,
+                        placeholder_text: this.getPlaceholderText()
                     });
                 } else {
                     this.setState({
-                        calculation_left_side: left
+                        calculation_left_side: left,
+                        placeholder_text: this.getPlaceholderText(left)
                     });
                 }
             } else {
                 // calculation_left_side.type === CALC_TYPES.var
                 this.setState({
-                    calculation_left_side: undefined
+                    calculation_left_side: undefined,
+                    placeholder_text: this.getPlaceholderText()
                 });
             }
         }
@@ -190,11 +208,13 @@ class Calculator extends React.Component {
                     })
                     .then(
                         json => {
-                            this.props.loadVariable(this.state.new_variable_name, [], [], json);
+                            const new_variable_name = this.state.new_variable_name ? this.state.new_variable_name : this.state.placeholder_text;
+                            this.props.loadVariable(new_variable_name, [], [], json);
                             this.setState({
                                 calculation_left_side: undefined,
                                 calculation_operator: undefined,
-                                calculation_right_side: undefined
+                                calculation_right_side: undefined,
+                                placeholder_text: this.getPlaceholderText()
                             });
                         },
                         error => {
@@ -226,7 +246,8 @@ class Calculator extends React.Component {
             });
         } else if (UNARY_OPERATORS.includes(operator)) {
             this.setState({
-                calculation_operator: operator
+                calculation_operator: operator,
+                placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, operator)
             });
         } else if (!this.state.calculation_left_side) {
             toast.warning("Binary operators require two operands. Please enter one first.", {
@@ -238,7 +259,8 @@ class Calculator extends React.Component {
             });
         } else {
             this.setState({
-                calculation_operator: operator
+                calculation_operator: operator,
+                placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, operator)
             });
         }
     }
@@ -305,6 +327,44 @@ class Calculator extends React.Component {
         }
     }
 
+    getPlaceholderText(left, op, right) {
+        let op_string;
+        let increment = 0;
+        switch (op) {
+            case "/":
+                op_string = "div";
+                break;
+            case "*":
+                op_string = "mult";
+                break;
+            case "-":
+                op_string = "minus";
+                break;
+            case "+":
+                op_string = "plus";
+                break;
+            default:
+                op_string = "";
+        }
+        let placeholder = "";
+        do {
+            if (left) {
+                placeholder = left.value ? `${left.value}` : `${left}`;
+            }
+            if (op) {
+                placeholder = `${placeholder}_${op_string}`;
+            }
+            if (right) {
+                placeholder = right.value ? `${placeholder}_${right.value}` : `${placeholder}_${right}`;
+            }
+            if (increment) {
+                placeholder = `${placeholder}_${increment}`;
+            }
+            increment++;
+        } while (this.props.variable_names.includes(placeholder));
+        return placeholder;
+    }
+
     // Function to handle keyboard shortcuts for the calculator
     handleKeyDown(event) {
         if (!this.state.input_focus) {
@@ -355,6 +415,7 @@ class Calculator extends React.Component {
                             calculation={calculation_string}
                             onDrop={this.handleVariable}
                             setFocus={this.setInputFocus}
+                            new_variable_placeholder={this.state.placeholder_text}
                         />
                         <CalculatorButtons
                             handleConstant={this.handleConstant}

@@ -33,7 +33,10 @@ class EditVariable extends Component {
     }
 
     getVariableInfo() {
-        let spec = this.props.variables[this.props.active_variable].path;
+        let spec = {
+            file_name: this.props.variables[this.props.active_variable].path,
+            var_name: this.props.variables[this.props.active_variable].cdms_var_name
+        };
         if (this.props.variables[this.props.active_variable].json) {
             spec = {
                 json: this.props.variables[this.props.active_variable].json
@@ -45,7 +48,7 @@ class EditVariable extends Component {
                 selectedVariable = variablesAxes[0];
                 dimension = $.extend(true, [], this.props.variables[this.props.active_variable].dimension);
                 if (dimension.length === 0) {
-                    dimension = Object.keys(variablesAxes[1]).map(name => {
+                    dimension = variablesAxes[0].axisList.map(name => {
                         return { axisName: name };
                     });
                 }
@@ -55,6 +58,7 @@ class EditVariable extends Component {
                 this.setState({
                     selectedVariable,
                     variablesAxes,
+                    axisList: selectedVariable.axisList,
                     dimension
                 });
             });
@@ -84,16 +88,13 @@ class EditVariable extends Component {
     }
 
     save() {
-        this.props.updateVariable(this.props.active_variable, this.state.dimension, this.state.axis_transforms);
+        this.props.updateVariable(this.props.active_variable, this.state.axisList, this.state.dimension, this.state.axis_transforms);
         this.props.onTryClose();
     }
 
     render() {
         let slider_values = {};
-        let dimensions =
-            this.props.variables[this.props.active_variable].dimension.length > 0
-                ? this.props.variables[this.props.active_variable].dimension
-                : this.state.dimension;
+        let dimensions = this.state.dimension && this.state.dimension.length > 0 ? this.state.dimension : [];
         if (dimensions) {
             for (let dimension of dimensions) {
                 if (dimension.values) {
@@ -200,7 +201,12 @@ var DimensionContainer = props => {
                     </div>
                 )}
                 <div className="right-content">
-                    <DimensionSlider {...props.axis} onChange={props.handleDimensionValueChange} />
+                    <DimensionSlider
+                        {...props.axis}
+                        low_value={props.low_value}
+                        high_value={props.high_value}
+                        onChange={props.handleDimensionValueChange}
+                    />
                 </div>
                 <AxisTransform axis_name={props.axis.name} axis_transform={props.axis_transform} handleAxisTransform={props.handleAxisTransform} />
             </div>
@@ -263,8 +269,8 @@ var DimensionDnDContainer = _.flow(
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateVariable: (name, dimensions, transforms) => {
-            dispatch(Actions.updateVariable(name, dimensions, transforms));
+        updateVariable: (name, axis_list, dimensions, transforms) => {
+            dispatch(Actions.updateVariable(name, axis_list, dimensions, transforms));
         }
     };
 };

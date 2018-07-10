@@ -28,15 +28,15 @@ const collect = function(connect, monitor) {
 class InputArea extends React.Component {
     constructor(props) {
         super(props);
-        this.handleBlur = this.handleBlur.bind(this)
-        this.handleFocus = this.handleFocus.bind(this)
+        this.handleBlur = this.handleBlur.bind(this);
+        this.handleFocus = this.handleFocus.bind(this);
     }
 
-    handleFocus(){
+    handleFocus() {
         this.props.setFocus(true);
     }
 
-    handleBlur(){
+    handleBlur() {
         this.props.setFocus(false);
     }
 
@@ -58,7 +58,7 @@ class InputArea extends React.Component {
                     onBlur={this.handleBlur}
                     value={this.props.new_variable_name}
                     onChange={this.props.handleNewVariableName}
-                    placeholder={this.props.new_variable_placeholder ? this.props.new_variable_placeholder : "New_Variable_Name"}
+                    placeholder={this.props.new_variable_placeholder}
                 />
                 <small id="new-variable-name-help-text" className="form-text text-muted">
                     Enter a new variable name to save the calculation to.
@@ -85,6 +85,10 @@ InputArea.propTypes = {
     onDrop: PropTypes.func,
     can_drop: PropTypes.bool, // prop added by react-dnd
     is_over: PropTypes.bool // prop added by react-dnd
+};
+
+InputArea.defaultProps = {
+    new_variable_placeholder: ""
 };
 
 export default DropTarget(DragAndDropTypes.VAR, spec, collect)(InputArea);
