@@ -11,7 +11,7 @@ import CalculatorButtons from "./CalculatorButtons.jsx";
 import { BINARY_OPERATORS, UNARY_OPERATORS } from "../../../constants/Constants";
 import "./Calculator.scss";
 
-const CALC_TYPES = {
+export const CALC_TYPES = {
     var: "variable",
     const: "constant"
 };
@@ -465,6 +465,7 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
+export { Calculator as PureCalculator };
 export default connect(
     mapStateToProps,
     mapDispatchToProps
