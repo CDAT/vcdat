@@ -881,4 +881,41 @@ describe("CalculatorTest.jsx", function() {
             expect(calculator.instance().printCalculation()).to.equal(test_case.expected);
         });
     });
+
+    test_cases = [
+        { left: undefined, operator: undefined, right: undefined, expected: "" },
+        { left: { value: "0", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: "-0" },
+        { left: { value: "-0", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: "0" },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: "-1" },
+        { left: { value: "-1", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: "1" },
+        { left: { value: "12", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: "-12" },
+        { left: { value: "-12", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: "12" },
+        { left: { value: "12.", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: "-12." },
+        { left: { value: "-12.", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: "12." },
+        { left: { value: "12.0", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: "-12.0" },
+        { left: { value: "-12.0", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: "12.0" },
+        { left: { value: "clt", type: CALC_TYPES.var }, operator: undefined, right: undefined, expected: "clt" }, // not supported for variables.
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: undefined, expected: "1 +" },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "0", type: CALC_TYPES.const }, expected: "1 + -0" },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "0.", type: CALC_TYPES.const }, expected: "1 + -0." },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "0.1", type: CALC_TYPES.const }, expected: "1 + -0.1" },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "-0.1", type: CALC_TYPES.const }, expected: "1 + 0.1" },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "2", type: CALC_TYPES.const }, expected: "1 + -2" },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "2.", type: CALC_TYPES.const }, expected: "1 + -2." },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "2.2", type: CALC_TYPES.const }, expected: "1 + -2.2" },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "clt", type: CALC_TYPES.var }, expected: "1 + clt" }
+    ];
+    test_cases.forEach(function(test_case, index) {
+        it(`handlePlusMinus works. Case: ${index}`, function() {
+            let props = getProps();
+            let calculator = shallow(<Calculator {...props} />);
+            calculator.setState({
+                calculation_left_side: test_case.left,
+                calculation_operator: test_case.operator,
+                calculation_right_side: test_case.right
+            });
+            calculator.instance().handlePlusMinus();
+            expect(calculator.instance().printCalculation()).to.equal(test_case.expected);
+        });
+    });
 });

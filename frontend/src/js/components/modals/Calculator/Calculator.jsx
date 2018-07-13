@@ -40,6 +40,7 @@ class Calculator extends React.Component {
         this.isValidCalculation = this.isValidCalculation.bind(this);
         this.getOperand = this.getOperand.bind(this);
         this.handleDecimal = this.handleDecimal.bind(this);
+        this.handlePlusMinus = this.handlePlusMinus.bind(this);
     }
 
     setInputFocus(state) {
@@ -461,6 +462,72 @@ class Calculator extends React.Component {
         }
     }
 
+    handlePlusMinus() {
+        if (!this.state.calculation_left_side) {
+            // Ex: "" -> ""
+            toast.warning("A number must be entered to change signs.", { position: toast.POSITION.BOTTOM_CENTER });
+        } else if (this.state.calculation_left_side.type === CALC_TYPES.const && !this.state.calculation_operator) {
+            if (this.state.calculation_left_side.value.startsWith("-")) {
+                // Ex: "-1" -> "1"
+                const new_value = this.state.calculation_left_side.value.slice(1, this.state.calculation_left_side.value.length);
+                this.setState({
+                    calculation_left_side: {
+                        value: new_value,
+                        type: CALC_TYPES.const
+                    },
+                    placeholder_text: this.getPlaceholderText(new_value)
+                });
+            } else {
+                // Ex: "1" -> "-1"
+                const new_value = "-" + this.state.calculation_left_side.value;
+                this.setState({
+                    calculation_left_side: {
+                        value: new_value,
+                        type: CALC_TYPES.const
+                    },
+                    placeholder_text: this.getPlaceholderText(new_value)
+                });
+            }
+        } else if (this.state.calculation_left_side.type === CALC_TYPES.var && !this.state.calculation_operator) {
+            toast.warning(
+                "Changing the sign of a variable is not supported in this manner. Use the 'subtract' operator with a single variable to do this.",
+                { position: toast.POSITION.BOTTOM_CENTER }
+            );
+        } else if (this.state.calculation_operator) {
+            if (!BINARY_OPERATORS.includes(this.state.calculation_operator)) {
+                toast.warning("Cannot add a second argument to unary operator", { position: toast.POSITION.BOTTOM_CENTER });
+            } else if (!this.state.calculation_right_side) {
+                toast.warning("A number must be entered to change signs.", { position: toast.POSITION.BOTTOM_CENTER });
+            } else if (this.state.calculation_right_side.type === CALC_TYPES.const) {
+                if (this.state.calculation_right_side.value.startsWith("-")) {
+                    // Ex: "-1" -> "1"
+                    const new_value = this.state.calculation_right_side.value.slice(1, this.state.calculation_right_side.value.length);
+                    this.setState({
+                        calculation_right_side: {
+                            value: new_value,
+                            type: CALC_TYPES.const
+                        },
+                        placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, this.state.calculation_operator, new_value)
+                    });
+                } else {
+                    const new_value = "-" + this.state.calculation_right_side.value;
+                    this.setState({
+                        calculation_right_side: {
+                            value: new_value,
+                            type: CALC_TYPES.const
+                        },
+                        placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, this.state.calculation_operator, new_value)
+                    });
+                }
+            } else if (this.state.calculation_right_side.type === CALC_TYPES.var) {
+                toast.warning(
+                    "Changing the sign of a variable is not supported in this manner. Use the 'subtract' operator with a single variable to do this.",
+                    { position: toast.POSITION.BOTTOM_CENTER }
+                );
+            }
+        }
+    }
+
     render() {
         const calculation_string = this.printCalculation();
         return (
@@ -486,6 +553,7 @@ class Calculator extends React.Component {
                             handleEnter={this.handleEnter}
                             handleOperator={this.handleOperator}
                             handleDecimal={this.handleDecimal}
+                            handlePlusMinus={this.handlePlusMinus}
                         />
                     </div>
                 </Modal.Body>
