@@ -35,7 +35,7 @@ class CalculatorButtons extends React.Component {
                 <div style={{ display: "flex", flexWrap: "nowrap" }}>
                     <button className="calc-button save-clear" onClick={this.props.handleEnter}>Enter</button>
                     <button className="calc-button numeric" onClick={() => {this.props.handleConstant(0)}}>0</button>
-                    <button className="calc-button numeric">.</button>
+                    <button className="calc-button numeric" onClick={() => {this.props.handleDecimal()}}>.</button>
                     <button className="calc-button numeric">+/-</button>
                     <button className="calc-button math" onClick={() => {this.props.handleOperator("+")}}>+</button>
                 </div>
@@ -49,7 +49,8 @@ CalculatorButtons.propTypes = {
     handleClear: PropTypes.func,
     handleDelete: PropTypes.func,
     handleEnter: PropTypes.func,
-    handleOperator: PropTypes.func
+    handleOperator: PropTypes.func,
+    handleDecimal: PropTypes.func
 };
 
 export default CalculatorButtons;

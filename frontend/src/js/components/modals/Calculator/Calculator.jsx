@@ -39,6 +39,7 @@ class Calculator extends React.Component {
         this.setInputFocus = this.setInputFocus.bind(this);
         this.isValidCalculation = this.isValidCalculation.bind(this);
         this.getOperand = this.getOperand.bind(this);
+        this.handleDecimal = this.handleDecimal.bind(this);
     }
 
     setInputFocus(state) {
@@ -267,9 +268,9 @@ class Calculator extends React.Component {
 
     printCalculation() {
         const left = this.state.calculation_left_side ? this.state.calculation_left_side.value : "";
-        const right = this.state.calculation_right_side ? this.state.calculation_right_side.value : "";
-        const operator = this.state.calculation_operator ? this.state.calculation_operator : "";
-        return `${left} ${operator} ${right}`;
+        const right = this.state.calculation_right_side ? " " + this.state.calculation_right_side.value : "";
+        const operator = this.state.calculation_operator ? " " + this.state.calculation_operator : "";
+        return `${left}${operator}${right}`;
     }
 
     isValidCalculation() {
@@ -399,6 +400,67 @@ class Calculator extends React.Component {
         }
     }
 
+    handleDecimal() {
+        if (!this.state.calculation_left_side) {
+            // Ex: "" -> "0."
+            const new_value = "0.";
+            this.setState({
+                calculation_left_side: {
+                    value: new_value,
+                    type: CALC_TYPES.const
+                },
+                placeholder_text: this.getPlaceholderText(new_value)
+            });
+        } else if (this.state.calculation_left_side.type === CALC_TYPES.const && !this.state.calculation_operator) {
+            if (this.state.calculation_left_side.value.includes(".")) {
+                // Ex: "2.2" -> "2.2"
+                toast.warning("Cannot add a second decimal to a number.", { position: toast.POSITION.BOTTOM_CENTER });
+            } else {
+                // Ex: "2" -> "2."
+                const new_value = this.state.calculation_left_side.value + ".";
+                this.setState({
+                    calculation_left_side: {
+                        value: new_value,
+                        type: CALC_TYPES.const
+                    },
+                    placeholder_text: this.getPlaceholderText(new_value)
+                });
+            }
+        } else if (this.state.calculation_left_side.type === CALC_TYPES.var && !this.state.calculation_operator) {
+            toast.warning("Cannot append a decimal to a variable. Try selecting an operator first.", { position: toast.POSITION.BOTTOM_CENTER });
+        } else if (this.state.calculation_operator) {
+            if (!BINARY_OPERATORS.includes(this.state.calculation_operator)) {
+                toast.warning("Cannot add a second argument to unary operator", { position: toast.POSITION.BOTTOM_CENTER });
+            } else if (!this.state.calculation_right_side) {
+                const new_value = "0.";
+                this.setState({
+                    calculation_right_side: {
+                        value: new_value,
+                        type: CALC_TYPES.const
+                    },
+                    placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, this.state.calculation_operator, new_value)
+                });
+            } else if (this.state.calculation_right_side.type === CALC_TYPES.const) {
+                if (this.state.calculation_right_side.value.includes(".")) {
+                    toast.warning("Cannot add a second decimal to a number.", { position: toast.POSITION.BOTTOM_CENTER });
+                } else {
+                    const new_value = this.state.calculation_right_side.value + ".";
+                    this.setState({
+                        calculation_right_side: {
+                            value: new_value,
+                            type: CALC_TYPES.const
+                        },
+                        placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, this.state.calculation_operator, new_value)
+                    });
+                }
+            } else if (this.state.calculation_right_side.type === CALC_TYPES.var) {
+                toast.warning("The calculator expression appears to be full. Try deleting an operand first.", {
+                    position: toast.POSITION.BOTTOM_CENTER
+                });
+            }
+        }
+    }
+
     render() {
         const calculation_string = this.printCalculation();
         return (
@@ -423,6 +485,7 @@ class Calculator extends React.Component {
                             handleDelete={this.handleDelete}
                             handleEnter={this.handleEnter}
                             handleOperator={this.handleOperator}
+                            handleDecimal={this.handleDecimal}
                         />
                     </div>
                 </Modal.Body>
