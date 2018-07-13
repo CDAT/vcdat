@@ -260,9 +260,16 @@ describe("FileTabTest.jsx", function() {
 
     it("Drop error is caught, and state isnt set", () => {
         let log = console.log; // eslint-disable-line no-console
-        console.log = function() {
+        let error = console.error;
+        /* prettier-ignore */
+        console.log = function() { // eslint-disable-line no-console
             return;
-        }; // eslint-disable-line no-console
+        };
+
+        /* prettier-ignore */
+        console.error = function(e) { // eslint-disable-line no-console
+            return;
+        };
         const set_item_spy = sinon.stub().throws();
         global.window.localStorage = { setItem: set_item_spy }; // localStorage doesnt exist during testing, so mock it
         const store = createMockStore(state);
@@ -285,6 +292,7 @@ describe("FileTabTest.jsx", function() {
         sinon.assert.calledOnce(set_item_spy);
         expect(cached_files.state().bookmarkFiles.length).to.equal(0);
         console.log = log; // eslint-disable-line no-console
+        console.error = error; // eslint-disable-line no-console
     });
 
     it("Deletes bookmarks", () => {

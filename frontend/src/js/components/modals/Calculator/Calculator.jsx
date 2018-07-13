@@ -443,6 +443,7 @@ Calculator.propTypes = {
     loadVariable: PropTypes.func
 };
 
+/* istanbul ignore next */
 const mapStateToProps = state => {
     return {
         variable_names: state.present.variables ? Object.keys(state.present.variables) : [],
@@ -450,6 +451,7 @@ const mapStateToProps = state => {
     };
 };
 
+/* istanbul ignore next */
 const mapDispatchToProps = dispatch => {
     return {
         removeVariable: name => dispatch(Actions.removeVariable(name)),

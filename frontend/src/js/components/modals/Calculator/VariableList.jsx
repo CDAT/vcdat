@@ -30,7 +30,7 @@ function VariableItem(props) {
 
 const DraggableVariable = DragSource(DragAndDropTypes.VAR, varSource, collect)(VariableItem);
 
-class VarList extends Component {
+class VariableList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -64,11 +64,11 @@ class VarList extends Component {
     }
 }
 
-VarList.propTypes = {
+VariableList.propTypes = {
     cachedFiles: PropTypes.object,
     loadVariables: PropTypes.func,
     variables: PropTypes.arrayOf(PropTypes.string),
     removeVariable: PropTypes.func
 };
 
-export default VarList;
+export default VariableList;

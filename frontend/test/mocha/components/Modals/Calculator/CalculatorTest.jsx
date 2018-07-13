@@ -562,4 +562,290 @@ describe("CalculatorTest.jsx", function() {
         expect(calculator.state().calculation_left_side).to.deep.equal(left_side);
         expect(calculator.state().calculation_operator).to.deep.equal(operator);
     });
+
+    it("handleoperator does not add a binary operator if the left side is undefined", () => {
+        let props = getProps();
+        let operator = "+";
+        let calculator = shallow(<Calculator {...props} />);
+        // Check that operator is added when the left side is undefined
+        expect(calculator.state().calculation_left_side).to.deep.equal(undefined);
+        expect(calculator.state().calculation_operator).to.deep.equal(undefined);
+        calculator.instance().handleOperator(operator);
+        expect(calculator.state().calculation_left_side).to.deep.equal(undefined);
+        expect(calculator.state().calculation_operator).to.deep.equal(undefined);
+    });
+
+    it("handleoperator will not set a new operator if the calculation is full", () => {
+        let props = getProps();
+        let left_side = {
+            value: "1",
+            type: CALC_TYPES.const
+        };
+        let set_operator = "+";
+        let new_operator = "-";
+        let right_side = {
+            value: "2",
+            type: CALC_TYPES.const
+        };
+        let calculator = shallow(<Calculator {...props} />);
+        // Check that operator is added when the left side is undefined
+        expect(calculator.state().calculation_left_side).to.deep.equal(undefined);
+        expect(calculator.state().calculation_operator).to.deep.equal(undefined);
+        expect(calculator.state().calculation_right_side).to.deep.equal(undefined);
+        calculator.setState({
+            calculation_left_side: left_side,
+            calculation_operator: set_operator,
+            calculation_right_side: right_side
+        });
+        expect(calculator.state().calculation_left_side).to.deep.equal(left_side);
+        expect(calculator.state().calculation_operator).to.deep.equal(set_operator);
+        expect(calculator.state().calculation_right_side).to.deep.equal(right_side);
+
+        calculator.instance().handleOperator(new_operator);
+
+        expect(calculator.state().calculation_left_side).to.deep.equal(left_side);
+        expect(calculator.state().calculation_operator).to.deep.equal(set_operator);
+        expect(calculator.state().calculation_right_side).to.deep.equal(right_side);
+    });
+
+    it("handleoperator adds an operation when the left side is defined", () => {
+        let props = getProps();
+        let left_side = {
+            value: "1",
+            type: CALC_TYPES.const
+        };
+        let operator = "+";
+        let calculator = shallow(<Calculator {...props} />);
+        // Check that operator is added when the left side is undefined
+        expect(calculator.state().calculation_left_side).to.deep.equal(undefined);
+        expect(calculator.state().calculation_operator).to.deep.equal(undefined);
+        expect(calculator.state().calculation_right_side).to.deep.equal(undefined);
+        calculator.setState({
+            calculation_left_side: left_side,
+            calculation_operator: operator
+        });
+        expect(calculator.state().calculation_left_side).to.deep.equal(left_side);
+        expect(calculator.state().calculation_operator).to.deep.equal(operator);
+        expect(calculator.state().calculation_right_side).to.deep.equal(undefined);
+    });
+
+    let test_cases = [
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "2", type: CALC_TYPES.const }, expected: "1 + 2" },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "-", right: { value: "clt", type: CALC_TYPES.var }, expected: "1 - clt" },
+        { left: { value: "clt", type: CALC_TYPES.var }, operator: "/", right: { value: "2", type: CALC_TYPES.const }, expected: "clt / 2" },
+        { left: { value: "u", type: CALC_TYPES.var }, operator: "*", right: { value: "v", type: CALC_TYPES.var }, expected: "u * v" }
+    ];
+
+    test_cases.forEach(function(test_case, index) {
+        it(`printCalculation works with case ${index}`, function() {
+            let props = getProps();
+            let calculator = shallow(<Calculator {...props} />);
+            calculator.setState({
+                calculation_left_side: test_case.left,
+                calculation_operator: test_case.operator,
+                calculation_right_side: test_case.right
+            });
+            let result = calculator.instance().printCalculation();
+            expect(result).to.equal(test_case.expected);
+        });
+    });
+
+    test_cases = [
+        { left: undefined, operator: undefined, right: undefined, expected: false }, // no args -> false
+        { left: { value: "1", type: CALC_TYPES.const }, operator: undefined, right: undefined, expected: false }, // 1 arg no op -> false
+        { left: { value: "clt", type: CALC_TYPES.var }, operator: undefined, right: undefined, expected: false }, // 1 arg no op -> false
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: undefined, expected: false }, // 1 arg, binary -> false
+        { left: { value: "clt", type: CALC_TYPES.var }, operator: "+", right: undefined, expected: false }, // 1 arg, binary -> false
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "~", right: undefined, expected: true }, // 1 arg, unary -> true
+        { left: { value: "clt", type: CALC_TYPES.var }, operator: "~", right: undefined, expected: true }, // 1 arg, unary -> true
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "2", type: CALC_TYPES.const }, expected: true },
+        { left: { value: "clt", type: CALC_TYPES.var }, operator: "+", right: { value: "2", type: CALC_TYPES.const }, expected: true },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "+", right: { value: "u", type: CALC_TYPES.var }, expected: true },
+        { left: { value: "clt", type: CALC_TYPES.var }, operator: "+", right: { value: "u", type: CALC_TYPES.var }, expected: true },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "~", right: { value: "2", type: CALC_TYPES.const }, expected: false },
+        { left: { value: "clt", type: CALC_TYPES.var }, operator: "~", right: { value: "2", type: CALC_TYPES.const }, expected: false },
+        { left: { value: "1", type: CALC_TYPES.const }, operator: "~", right: { value: "u", type: CALC_TYPES.var }, expected: false },
+        { left: { value: "clt", type: CALC_TYPES.var }, operator: "~", right: { value: "u", type: CALC_TYPES.var }, expected: false }
+    ];
+    test_cases.forEach(function(test_case, index) {
+        it(`isValidCalculation works with case ${index}`, function() {
+            let props = getProps();
+            let calculator = shallow(<Calculator {...props} />);
+            calculator.setState({
+                calculation_left_side: test_case.left,
+                calculation_operator: test_case.operator,
+                calculation_right_side: test_case.right
+            });
+            let result = calculator.instance().isValidCalculation();
+            expect(result).to.equal(test_case.expected);
+        });
+    });
+
+    test_cases = [
+        { left: undefined, operator: undefined, right: undefined, expected: "" },
+        { left: "1", operator: undefined, right: undefined, expected: "1" },
+        { left: "1", operator: "/", right: undefined, expected: "1_div" },
+        { left: "1", operator: "*", right: undefined, expected: "1_mult" },
+        { left: "1", operator: "-", right: undefined, expected: "1_minus" },
+        { left: "1", operator: "+", right: undefined, expected: "1_plus" },
+
+        { left: "1", operator: "+", right: "2", expected: "1_plus_2" },
+        { left: "1", operator: "+", right: { value: "2", type: CALC_TYPES.const }, expected: "1_plus_2" },
+        { left: "1", operator: "+", right: "clt", expected: "1_plus_clt" },
+        { left: "1", operator: "+", right: { value: "clt", type: CALC_TYPES.var }, expected: "1_plus_clt" },
+
+        { left: "u", operator: "+", right: "2", expected: "u_plus_2" },
+        { left: "u", operator: "+", right: { value: "2", type: CALC_TYPES.const }, expected: "u_plus_2" },
+        { left: "u", operator: "+", right: "clt", expected: "u_plus_clt" },
+        { left: "u", operator: "+", right: { value: "clt", type: CALC_TYPES.var }, expected: "u_plus_clt" },
+
+        { left: { value: "v", type: CALC_TYPES.var }, operator: "+", right: "2", expected: "v_plus_2" },
+        { left: { value: "v", type: CALC_TYPES.var }, operator: "+", right: { value: "2", type: CALC_TYPES.const }, expected: "v_plus_2" },
+        { left: { value: "v", type: CALC_TYPES.var }, operator: "+", right: "clt", expected: "v_plus_clt" },
+        { left: { value: "v", type: CALC_TYPES.var }, operator: "+", right: { value: "clt", type: CALC_TYPES.var }, expected: "v_plus_clt" }
+    ];
+    test_cases.forEach(function(test_case, index) {
+        it(`getPlaceholderText works with case ${index}`, function() {
+            let props = getProps();
+            let calculator = shallow(<Calculator {...props} />);
+            let result = calculator.instance().getPlaceholderText(test_case.left, test_case.operator, test_case.right);
+            expect(result).to.equal(test_case.expected);
+        });
+    });
+
+    test_cases = [
+        { focus: false, event: { which: 107 }, expected: "+" },
+        { focus: false, event: { which: 187, shiftKey: true }, expected: "+" },
+        { focus: false, event: { which: 109 }, expected: "-" },
+        { focus: false, event: { which: 189 }, expected: "-" },
+        { focus: false, event: { which: 106 }, expected: "*" },
+        { focus: false, event: { which: 56, shiftKey: true }, expected: "*" },
+        { focus: false, event: { which: 111 }, expected: "/" },
+        { focus: false, event: { which: 191 }, expected: "/" }
+    ];
+    test_cases.forEach(function(test_case, index) {
+        it(`handleKeyDown works for basic operators. Case: ${index}`, function() {
+            let props = getProps();
+            let calculator = shallow(<Calculator {...props} />);
+            calculator.setState({
+                input_focus: test_case.focus
+            });
+            let stub = sinon.stub(calculator.instance(), "handleOperator").callsFake(() => {});
+            calculator.instance().handleKeyDown(test_case.event);
+            expect(stub.getCall(0).args[0]).to.equal(test_case.expected);
+        });
+    });
+
+    test_cases = [
+        { focus: false, event: { which: 48 }, expected: 0 },
+        { focus: false, event: { which: 49 }, expected: 1 },
+        { focus: false, event: { which: 50 }, expected: 2 },
+        { focus: false, event: { which: 51 }, expected: 3 },
+        { focus: false, event: { which: 52 }, expected: 4 },
+        { focus: false, event: { which: 53 }, expected: 5 },
+        { focus: false, event: { which: 54 }, expected: 6 },
+        { focus: false, event: { which: 55 }, expected: 7 },
+        { focus: false, event: { which: 56 }, expected: 8 },
+        { focus: false, event: { which: 57 }, expected: 9 }
+    ];
+    test_cases.forEach(function(test_case, index) {
+        it(`handleKeyDown works for numbers. Case: ${index}`, function() {
+            let props = getProps();
+            let calculator = shallow(<Calculator {...props} />);
+            calculator.setState({
+                input_focus: test_case.focus
+            });
+            let stub = sinon.stub(calculator.instance(), "handleConstant").callsFake(() => {});
+            calculator.instance().handleKeyDown(test_case.event);
+            expect(stub.getCall(0).args[0]).to.equal(test_case.expected);
+        });
+    });
+
+    it(`handleKeyDown works for other cases.`, function() {
+        let props = getProps();
+        let event;
+        let calculator = shallow(<Calculator {...props} />);
+        calculator.setState({
+            input_focus: true
+        });
+
+        let handle_delete_stub = sinon.stub(calculator.instance(), "handleDelete").callsFake(() => {});
+        let handle_enter_stub = sinon.stub(calculator.instance(), "handleEnter").callsFake(() => {});
+        let handle_clear_stub = sinon.stub(calculator.instance(), "handleClear").callsFake(() => {});
+        let handle_operator_stub = sinon.stub(calculator.instance(), "handleOperator").callsFake(() => {});
+        let handle_constant_stub = sinon.stub(calculator.instance(), "handleConstant").callsFake(() => {});
+
+        event = { which: 49 }; // when input is focused keydown shouldn't call any functions
+        calculator.instance().handleKeyDown(event);
+        expect(handle_delete_stub.callCount).to.equal(0);
+        expect(handle_enter_stub.callCount).to.equal(0);
+        expect(handle_clear_stub.callCount).to.equal(0);
+        expect(handle_operator_stub.callCount).to.equal(0);
+        expect(handle_constant_stub.callCount).to.equal(0);
+
+        calculator.setState({
+            input_focus: false
+        });
+
+        event = { which: 8 }; // backspace key
+        calculator.instance().handleKeyDown(event);
+        expect(handle_delete_stub.callCount).to.equal(1);
+        expect(handle_enter_stub.callCount).to.equal(0);
+        expect(handle_clear_stub.callCount).to.equal(0);
+        expect(handle_operator_stub.callCount).to.equal(0);
+        expect(handle_constant_stub.callCount).to.equal(0);
+
+        event = { which: 13 }; // enter key
+        calculator.instance().handleKeyDown(event);
+        expect(handle_delete_stub.callCount).to.equal(1);
+        expect(handle_enter_stub.callCount).to.equal(1);
+        expect(handle_clear_stub.callCount).to.equal(0);
+        expect(handle_operator_stub.callCount).to.equal(0);
+        expect(handle_constant_stub.callCount).to.equal(0);
+
+        event = { which: 46 }; // delete key
+        calculator.instance().handleKeyDown(event);
+        expect(handle_delete_stub.callCount).to.equal(1);
+        expect(handle_enter_stub.callCount).to.equal(1);
+        expect(handle_clear_stub.callCount).to.equal(1);
+        expect(handle_operator_stub.callCount).to.equal(0);
+        expect(handle_constant_stub.callCount).to.equal(0);
+    });
+
+    it(`getOperand works with constants.`, function() {
+        let props = getProps();
+        let calc_obj = {
+            value: "1",
+            type: CALC_TYPES.const
+        };
+        let calculator = shallow(<Calculator {...props} />);
+        let operand = calculator.instance().getOperand(calc_obj);
+        expect(operand).to.deep.equal(calc_obj);
+    });
+
+    it(`getOperand works with simple variables.`, function() {
+        let props = getProps();
+        let calc_obj = {
+            value: "clt",
+            type: CALC_TYPES.var
+        };
+
+        let expected = {
+            type: CALC_TYPES.var,
+            path: props.variables.clt.path,
+            name: props.variables.clt.cdms_var_name
+        };
+
+        let calculator = shallow(<Calculator {...props} />);
+        let operand = calculator.instance().getOperand(calc_obj);
+        expect(operand).to.deep.equal(expected);
+
+        props.variables.clt.json = "some_json"; // set the prop that getOperand will use
+        expected = {
+            type: CALC_TYPES.var,
+            json: "some_json"
+        };
+        operand = calculator.instance().getOperand(calc_obj);
+        expect(operand).to.deep.equal(expected);
+    });
 });

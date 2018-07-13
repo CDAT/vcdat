@@ -10,9 +10,6 @@ const spec = {
     },
     hover(/* props, monitor, component */) {},
     canDrop(/* props, monitor */) {
-        // console.log("Printing canDrop props and monitor")
-        // console.log(props)
-        // console.log(monitor)
         return true;
     }
 };

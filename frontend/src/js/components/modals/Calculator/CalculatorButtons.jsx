@@ -7,6 +7,7 @@ class CalculatorButtons extends React.Component {
     }
 
     render() {
+        /* istanbul ignore next */
         return (
             /* prettier-ignore */
             <div className="calculator-buttons">

@@ -27,7 +27,7 @@ const props = {
 };
 
 const dummy_vcs = {
-    variables: function() {
+    variable: function() {
         return Promise.resolve([
             {
                 clt: {
