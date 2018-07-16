@@ -382,6 +382,9 @@ class Calculator extends React.Component {
             } else if (code === 46) {
                 // delete key
                 this.handleClear();
+            } else if (code === 190 || code === 110) {
+                // period key
+                this.handleDecimal();
             } else if (code === 107 || (code === 187 && event.shiftKey)) {
                 // plus key
                 this.handleOperator("+");
