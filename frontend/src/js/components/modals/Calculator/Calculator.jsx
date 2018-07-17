@@ -41,6 +41,7 @@ class Calculator extends React.Component {
         this.getOperand = this.getOperand.bind(this);
         this.handleDecimal = this.handleDecimal.bind(this);
         this.handlePlusMinus = this.handlePlusMinus.bind(this);
+        this.handleRegrid = this.handleRegrid.bind(this);
     }
 
     setInputFocus(state) {
@@ -531,6 +532,10 @@ class Calculator extends React.Component {
         }
     }
 
+    handleRegrid() {
+        console.log("regrid");
+    }
+
     render() {
         const calculation_string = this.printCalculation();
         return (
@@ -541,23 +546,25 @@ class Calculator extends React.Component {
                 <Modal.Body>
                     <div className="main-container">
                         <VariableList variables={this.props.variable_names} removeVariable={this.props.removeVariable} />
-                        <InputArea
-                            new_variable_name={this.state.new_variable_name}
-                            handleNewVariableName={this.handleNewVariableName}
-                            calculation={calculation_string}
-                            onDrop={this.handleVariable}
-                            setFocus={this.setInputFocus}
-                            new_variable_placeholder={this.state.placeholder_text}
-                        />
-                        <CalculatorButtons
-                            handleConstant={this.handleConstant}
-                            handleClear={this.handleClear}
-                            handleDelete={this.handleDelete}
-                            handleEnter={this.handleEnter}
-                            handleOperator={this.handleOperator}
-                            handleDecimal={this.handleDecimal}
-                            handlePlusMinus={this.handlePlusMinus}
-                        />
+                        <div className="calc-right-side">
+                            <InputArea
+                                new_variable_name={this.state.new_variable_name}
+                                handleNewVariableName={this.handleNewVariableName}
+                                calculation={calculation_string}
+                                onDrop={this.handleVariable}
+                                setFocus={this.setInputFocus}
+                                new_variable_placeholder={this.state.placeholder_text}
+                            />
+                            <CalculatorButtons
+                                handleConstant={this.handleConstant}
+                                handleClear={this.handleClear}
+                                handleDelete={this.handleDelete}
+                                handleEnter={this.handleEnter}
+                                handleOperator={this.handleOperator}
+                                handleDecimal={this.handleDecimal}
+                                handlePlusMinus={this.handlePlusMinus}
+                            />
+                        </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

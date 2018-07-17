@@ -10,32 +10,37 @@ $math-button-lighter-color: rgb(255, 245, 223);
 $math-button-darker-color: rgb(255, 245, 132);
 $math-button-hover-color: rgb(222, 210, 83);
 
+$advanced-button-lighter-color: rgb(230, 255, 223);
+$advanced-button-darker-color: rgb(153, 255, 132);
+$advanced-button-hover-color: rgb(90, 222, 83);
+
 .main-container {
     display: grid;
     grid-template-columns: 2fr 7fr;
-    grid-template-rows: 80px 320px;
     grid-column-gap: 15px;
 }
 .variable-list {
     grid-column: 1 / 2;
-    grid-row: 1 / 3;
+    grid-row: 1 / 2;
     height: 100%;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
     .scroll-area {
         border: 1px #d3d3d373 solid;
     }
 }
+
 // .operation-list {
 //     grid-column: 1 / 2;
 //     grid-row: 2 / 3;
 // }
+
+.calc-right-side {
+    display: flex;
+    flex-direction: column;
+}
 .input-area {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-    border-top: lightgray 1px solid;
-    border-left: lightgray 1px solid;
-    border-right: lightgray 1px solid;
-    border-bottom: lightgray 1px solid;
+    height: 80px;
+    border: lightgray 1px solid;
     &.drop-hint {
         border-color: cyan;
     }
@@ -52,11 +57,11 @@ $math-button-hover-color: rgb(222, 210, 83);
         grid-column: 1 / 2;
         grid-row: 1 / 2;
     }
-    #new-variable-name-help-text  {
+    #new-variable-name-help-text {
         grid-column: 1 / 2;
         grid-row: 2 / 3;
     }
-    #assignment  {
+    #assignment {
         grid-column: 2 / 3;
         grid-row: 1 / 2;
         line-height: 25px;
@@ -75,14 +80,21 @@ $math-button-hover-color: rgb(222, 210, 83);
     }
 }
 .calculator-buttons {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    border-bottom: lightgray 1px solid;
-    border-left: lightgray 1px solid;
-    border-right: lightgray 1px solid;
+    // The contents of this div is the individual buttons
+    // We now define a grid for those buttons to populate
+    height: 320px;
+    width: 100%;
+    border: lightgray 1px solid;
+    border-top: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: repeat(5, minmax(28px, 45px));
+    align-content: end;
+    grid-template-areas:
+        "regrid power . . ."// periods indicate blank cells
+        "unused seven eight nine divide""clear four five six multiply"
+        "delete one two three subtract"
+        "enter zero decimal plusminus add";
 }
 
 button.calc-button {
@@ -137,10 +149,95 @@ button.calc-button {
             background-image: linear-gradient(to bottom, $math-button-lighter-color, $math-button-hover-color);
         }
     }
+
+    &.advanced {
+        background: $advanced-button-lighter-color;
+        background-image: -webkit-linear-gradient(top, $advanced-button-lighter-color, $advanced-button-darker-color);
+        background-image: -moz-linear-gradient(top, $advanced-button-lighter-color, $advanced-button-darker-color);
+        background-image: -ms-linear-gradient(top, $advanced-button-lighter-color, $advanced-button-darker-color);
+        background-image: -o-linear-gradient(top, $advanced-button-lighter-color, $advanced-button-darker-color);
+        background-image: linear-gradient(to bottom, $advanced-button-lighter-color, $advanced-button-darker-color);
+        &:hover {
+            background: $advanced-button-lighter-color;
+            background-image: -webkit-linear-gradient(top, $advanced-button-lighter-color, $advanced-button-hover-color);
+            background-image: -moz-linear-gradient(top, $advanced-button-lighter-color, $advanced-button-hover-color);
+            background-image: -ms-linear-gradient(top, $advanced-button-lighter-color, $advanced-button-hover-color);
+            background-image: -o-linear-gradient(top, $advanced-button-lighter-color, $advanced-button-hover-color);
+            background-image: linear-gradient(to bottom, $advanced-button-lighter-color, $advanced-button-hover-color);
+        }
+    }
 }
 
+// We individually map each button to a named grid location.
+// Hopefully this should make rearranging items easy (E.g. for media queries)
+#regrid {
+    grid-area: regrid;
+}
+#power {
+    grid-area: power;
+}
+#unused {
+    grid-area: unused;
+}
+#seven {
+    grid-area: seven;
+}
+#eight {
+    grid-area: eight;
+}
+#nine {
+    grid-area: nine;
+}
+#divide {
+    grid-area: divide;
+}
+#clear {
+    grid-area: clear;
+}
+#four {
+    grid-area: four;
+}
+#five {
+    grid-area: five;
+}
+#six {
+    grid-area: six;
+}
+#multiply {
+    grid-area: multiply;
+}
+#delete {
+    grid-area: delete;
+}
+#one {
+    grid-area: one;
+}
+#two {
+    grid-area: two;
+}
+#three {
+    grid-area: three;
+}
+#subtract {
+    grid-area: subtract;
+}
+#enter {
+    grid-area: enter;
+}
+#zero {
+    grid-area: zero;
+}
+#decimal {
+    grid-area: decimal;
+}
+#plusminus {
+    grid-area: plusminus;
+}
+#add {
+    grid-area: add;
+}
 
-@media(min-width: 992px) {
+@media (min-width: 992px) {
     .input-area {
         padding: 9px 15px;
     }
