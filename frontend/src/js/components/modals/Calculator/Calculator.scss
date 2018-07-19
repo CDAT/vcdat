@@ -79,6 +79,7 @@ $advanced-button-hover-color: rgb(90, 222, 83);
         grid-row: 2 / 3;
     }
 }
+
 .calculator-buttons {
     // The contents of this div is the individual buttons
     // We now define a grid for those buttons to populate
@@ -91,13 +92,30 @@ $advanced-button-hover-color: rgb(90, 222, 83);
     grid-template-rows: repeat(5, minmax(28px, 45px));
     align-content: end;
     grid-template-areas:
-        "regrid power . . ."// periods indicate blank cells
-        "unused seven eight nine divide""clear four five six multiply"
+    // periods indicate blank cells
+        "regrid power . . ."
+        "unused seven eight nine divide"
+        "clear four five six multiply"
         "delete one two three subtract"
         "enter zero decimal plusminus add";
+    .dropdown.btn-group {
+        // This section fixes some bootstrap css issues
+        // flex settings fix button sizing
+        // border settings make dropdown buttons consistent with other buttons
+        // width setting overwrites a previous rule that we dont want applied to the carat button
+        display: flex;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        button.btn:first-child {
+            flex-grow: 1;
+        }
+        .dropdown-toggle.calc-button {
+            width: unset;
+        }
+    }
 }
 
-button.calc-button {
+.calc-button {
     width: 100%;
     font-size: 15px;
     font-weight: 700;
@@ -166,6 +184,11 @@ button.calc-button {
             background-image: linear-gradient(to bottom, $advanced-button-lighter-color, $advanced-button-hover-color);
         }
     }
+}
+
+.sub-text {
+    font-size: smaller;
+    font-weight: 100;
 }
 
 // We individually map each button to a named grid location.

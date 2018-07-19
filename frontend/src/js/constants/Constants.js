@@ -1,7 +1,7 @@
 const ONE_VAR_PLOTS = ["boxfill", "isofill", "isoline"]; // meshfill can be either 1 or 2
 const TWO_VAR_PLOTS = ["vector", "3d_vector", "streamline"];
 const UNARY_OPERATORS = ["-", "~", "not"];
-const BINARY_OPERATORS = ["+", "-", "^", "/", ">>", "<<", "%", "*", "**", "|", "&", ">", "<", ">=", "<=", "!=", "=="];
+const BINARY_OPERATORS = ["+", "-", "^", "/", ">>", "<<", "%", "*", "**", "|", "&", ">", "<", ">=", "<=", "!=", "==", "regrid"];
 
 const JOYRIDE_STEPS = [
     {

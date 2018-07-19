@@ -25,6 +25,7 @@ class Calculator extends React.Component {
             calculation_left_side: undefined,
             calculation_operator: undefined,
             calculation_right_side: undefined,
+            arguments: undefined,
             placeholder_text: ""
         };
         this.handleNewVariableName = this.handleNewVariableName.bind(this);
@@ -41,7 +42,6 @@ class Calculator extends React.Component {
         this.getOperand = this.getOperand.bind(this);
         this.handleDecimal = this.handleDecimal.bind(this);
         this.handlePlusMinus = this.handlePlusMinus.bind(this);
-        this.handleRegrid = this.handleRegrid.bind(this);
     }
 
     setInputFocus(state) {
@@ -207,7 +207,8 @@ class Calculator extends React.Component {
                     .calculate({
                         left_value: left_value,
                         op: this.state.calculation_operator,
-                        right_value: right_value
+                        right_value: right_value,
+                        args: this.state.arguments
                     })
                     .then(
                         json => {
@@ -221,10 +222,10 @@ class Calculator extends React.Component {
                             });
                         },
                         error => {
+                            console.warn(error);
                             try {
                                 toast.error(error.message, { position: toast.POSITION.BOTTOM_CENTER });
                             } catch (e) {
-                                console.warn(error);
                                 toast.error("An unknown error occurred while trying to calculate a new variable. Check the console for details.", {
                                     position: toast.POSITION.BOTTOM_CENTER
                                 });
@@ -242,7 +243,7 @@ class Calculator extends React.Component {
         }
     }
 
-    handleOperator(operator) {
+    handleOperator(operator, args) {
         if (this.state.calculation_operator) {
             toast.warning("There is already an operator selected.", {
                 position: toast.POSITION.BOTTOM_CENTER
@@ -250,7 +251,8 @@ class Calculator extends React.Component {
         } else if (UNARY_OPERATORS.includes(operator)) {
             this.setState({
                 calculation_operator: operator,
-                placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, operator)
+                placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, operator),
+                arguments: args
             });
         } else if (!this.state.calculation_left_side) {
             toast.warning("Binary operators require two operands. Please enter one first.", {
@@ -263,15 +265,26 @@ class Calculator extends React.Component {
         } else {
             this.setState({
                 calculation_operator: operator,
-                placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, operator)
+                placeholder_text: this.getPlaceholderText(this.state.calculation_left_side, operator),
+                arguments: args
             });
         }
     }
 
     printCalculation() {
-        const left = this.state.calculation_left_side ? this.state.calculation_left_side.value : "";
-        const right = this.state.calculation_right_side ? " " + this.state.calculation_right_side.value : "";
-        const operator = this.state.calculation_operator ? " " + this.state.calculation_operator : "";
+        // first we make sure that we don't print 'undefined' accidentally
+        let left = this.state.calculation_left_side ? this.state.calculation_left_side.value : "";
+        let right = this.state.calculation_right_side ? this.state.calculation_right_side.value : "";
+        let operator = this.state.calculation_operator ? this.state.calculation_operator : "";
+
+        // regrid is printed differently than other operators thus far
+        if (operator === "regrid") {
+            return `${left}.regrid(${right})`;
+        }
+
+        operator = operator ? " " + operator : "";
+        right = right ? " " + right : "";
+        // Lastly, we print. To avoid having needless spaces we handle them above
         return `${left}${operator}${right}`;
     }
 
@@ -345,6 +358,9 @@ class Calculator extends React.Component {
                 break;
             case "+":
                 op_string = "plus";
+                break;
+            case "regrid":
+                op_string = "regrid";
                 break;
             default:
                 op_string = "";
@@ -530,10 +546,6 @@ class Calculator extends React.Component {
                 );
             }
         }
-    }
-
-    handleRegrid() {
-        console.log("regrid");
     }
 
     render() {
