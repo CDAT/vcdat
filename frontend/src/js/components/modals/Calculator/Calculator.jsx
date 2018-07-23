@@ -359,6 +359,9 @@ class Calculator extends React.Component {
             case "+":
                 op_string = "plus";
                 break;
+            case "**":
+                op_string = "power";
+                break;
             case "regrid":
                 op_string = "regrid";
                 break;

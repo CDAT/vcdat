@@ -85,10 +85,10 @@ class CalculatorButtons extends React.Component {
                     id="power"
                     className="calc-button advanced"
                     onClick={() => {
-                        this.props.handleOperator("^");
+                        this.props.handleOperator("**");
                     }}
                 >
-                    x^y
+                    x<sup>y</sup>
                 </Button>
 
                 <Button id="unused" className="calc-button" disabled={true} />
