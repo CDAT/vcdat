@@ -1,0 +1,27 @@
+version: 2.0
+
+jobs:
+  macos_vcdat:
+    macos:
+      xcode: "9.2.0"
+    steps:
+      - run:
+          name: Pre install script for mac OS
+          command: |
+            ls
+            pwd
+            bash vcdat/ci-support/circleci_mac_machine_pre.sh
+      - run:
+          name: Checkout merge commit
+          command: |
+            ./ci-support/checkout_merge_commit.sh
+      - run:
+          name: Install dependencies
+          command: |
+            bash ./ci-support/circleci_mac_dep.sh
+      - run:
+          name: Run tests
+          command: |
+            bash ./ci-support/circleci_mac.sh
+
+      
