@@ -1,31 +1,33 @@
 ## Testing
 
 ### New Tests
-* Add Test to `test_flask.py` in `backend/vcdat/test_flask.py`
+
+- Add Test to `test_flask.py` in `backend/vcdat/test_flask.py`
 
 ### Reading
-* http://flask.pocoo.org/docs/0.11/testing/
-* http://damyanon.net/flask-series-testing/
-* https://docs.pytest.org/en/latest/getting-started.html#getstarted
 
-### Running the backend tests 
+- http://flask.pocoo.org/docs/0.11/testing/
+- http://damyanon.net/flask-series-testing/
+- https://docs.pytest.org/en/latest/getting-started.html#getstarted
+
+### Running the backend tests
 
     > cd ~/project/vcdat
     > source activate backend/venv
     > pip install -e .[test]
     > python setup.py install
     > py.test
-    
+
     backend/tests/test_flask.py ...........                            [100%]
 
     ======================= 11 passed in 3.24 seconds ========================
 
     OK
-    
+
 ### Coverage
 
-__Make sure the dev dependencies have been installed via the pip command above__
-__Additionally, the coverage code gets confused with relative paths, so installing is the easiest way to get accurate coverage numbers__
+**Make sure the dev dependencies have been installed via the pip command above**
+**Additionally, the coverage code gets confused with relative paths, so installing is the easiest way to get accurate coverage numbers**
 
     > python setup.py install
     > py.test --cov backend/vcdat --cov-report term-missing
@@ -64,3 +66,10 @@ You can generate html files with the coverage report with detailed information a
 ### pep8
 
     > pep8 backend/vcdat
+
+### End to End Selenium Tests
+
+Because the selenium tests are not compatible with headless environments (yet), they are skipped by default.
+Developers can run the Selenium end to end tests manually by adding the `--selenium` option when running the pytest/coverage suites like so: `py.test --selenium`.
+
+_Please note that the tests expect that the vCDAT server is already running on port 5000. If the server is not running, the selenium tests WILL NOT start a server on their own, and the tests will fail._

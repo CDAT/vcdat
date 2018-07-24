@@ -1,47 +1,46 @@
 /* globals it, describe, before, beforeEach, */
-var chai = require('chai')
+var chai = require("chai");
 var expect = chai.expect;
-var React = require('react')
+var React = require("react");
 
-import ImportExportModal from '../../../../../src/js/components/modals/ColormapEditor/ImportExportModal.jsx'
-import Enzyme from 'enzyme' 
-import Adapter from 'enzyme-adapter-react-16'
-Enzyme.configure({ adapter: new Adapter() })
-import { shallow } from 'enzyme'
-import sinon from 'sinon'
+import ImportExportModal from "../../../../../src/js/components/modals/ColormapEditor/ImportExportModal.jsx";
+import Enzyme from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+Enzyme.configure({ adapter: new Adapter() });
+import { shallow } from "enzyme";
+import sinon from "sinon";
 
+var import_export_modal = shallow(<ImportExportModal show={true} close={() => {}} />);
 
-var import_export_modal = shallow(<ImportExportModal/>)
-
-describe('ImportExportModalTest.jsx', function() {
-    it('renders without exploding', () => {
-        expect(import_export_modal).to.have.lengthOf(1)
+describe("ImportExportModalTest.jsx", function() {
+    it("renders without exploding", () => {
+        expect(import_export_modal).to.have.lengthOf(1);
     });
-    it('Handles importing a file', () => {
+    it("Handles importing a file", () => {
         let mockColormap = {
-            "name": "mockColormap",
-            "colormap":[[100,100,100,100]]
-        }
-        let fakeFile = new Blob([JSON.stringify(mockColormap)], { type: 'text/html' });
-        fakeFile["lastModifiedDate"] = ""
-        fakeFile["name"] = "mockColormapFile"
+            name: "mockColormap",
+            colormap: [[100, 100, 100, 100]]
+        };
+        let fakeFile = new Blob([JSON.stringify(mockColormap)], { type: "text/html" });
+        fakeFile["lastModifiedDate"] = "";
+        fakeFile["name"] = "mockColormapFile";
         let event = {
-            target:{
-                files:[fakeFile]
+            target: {
+                files: [fakeFile]
             }
-        }
-        let stub = sinon.stub(window.FileReader.prototype, 'readAsText').callsFake(function() {
+        };
+        let stub = sinon.stub(window.FileReader.prototype, "readAsText").callsFake(function() {
             let event = {
                 target: {
                     result: JSON.stringify(mockColormap)
                 }
-            }
+            };
             this.onload(event);
         });
-        import_export_modal.instance().handleFileChange(event)
-        expect(import_export_modal.state().importName).to.equal(mockColormap.name)
-        for(let i = 0; i < mockColormap.colormap[0].length; i++){
-            expect(import_export_modal.state().importColormap[0][i]).to.equal(mockColormap.colormap[0][i])
+        import_export_modal.instance().handleFileChange(event);
+        expect(import_export_modal.state().importName).to.equal(mockColormap.name);
+        for (let i = 0; i < mockColormap.colormap[0].length; i++) {
+            expect(import_export_modal.state().importColormap[0][i]).to.equal(mockColormap.colormap[0][i]);
         }
     });
     // it('Creates the correct json for download', () => {
@@ -54,7 +53,7 @@ describe('ImportExportModalTest.jsx', function() {
     //             value: "mockName"
     //         }
     //     }
-         
+
     //     import_export_modal = shallow(<ImportExportModal currentColormap={result.colormap} />)
 
     //     import_export_modal.instance().handleChange(event)

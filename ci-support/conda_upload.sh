@@ -23,7 +23,7 @@ git clone git://github.com/cdat/conda-recipes
 cd conda-recipes
 # cdat creates issues for build -c cdat confuses package and channel
 ln -s ../conda vcdat
-python ./prep_for_build.py -l 0.7.0
+python ./prep_for_build.py -l 0.8.0
 echo "Building now"
 conda build -c cdat/label/nightly -c conda-forge -c cdat $PKG_NAME
 echo "Uploading"

@@ -1,195 +1,196 @@
 var Actions = {
     rowCountChanged(count) {
         return {
-            type: 'ROW_COUNT_CHANGED',
+            type: "ROW_COUNT_CHANGED",
             count: count
-        }
+        };
     },
     colCountChanged(count) {
         return {
-            type: 'COL_COUNT_CHANGED',
-            count: count,
-        }
+            type: "COL_COUNT_CHANGED",
+            count: count
+        };
     },
     addSheet() {
         return {
-            type: 'ADD_SHEET'
-        }
+            type: "ADD_SHEET"
+        };
     },
     removeSheet(index) {
         return {
-            type: 'REMOVE_SHEET',
+            type: "REMOVE_SHEET",
             sheet_index: index
-        }
+        };
     },
     changeCurSheetIndex(index) {
         return {
-            type: 'CHANGE_CUR_SHEET_INDEX',
+            type: "CHANGE_CUR_SHEET_INDEX",
             index: index
-        }
+        };
     },
     changePlot(value) {
         return {
-            type: 'CHANGE_PLOT',
+            type: "CHANGE_PLOT",
             value: value
-        }
+        };
     },
     changePlotVar(var_being_changed, value) {
         return {
-            type: 'CHANGE_PLOT_VAR',
+            type: "CHANGE_PLOT_VAR",
             var_being_changed: var_being_changed,
             value: value
-        }
+        };
     },
     changePlotGM(parent, value) {
         var obj = {
-            type: 'CHANGE_PLOT_GM',
-        }
+            type: "CHANGE_PLOT_GM"
+        };
         if (parent) {
-            obj.graphics_method_parent = value
+            obj.graphics_method_parent = value;
         } else {
-            obj.graphics_method = value
+            obj.graphics_method = value;
         }
         return obj;
     },
     changePlotTemplate(value) {
         return {
-            type: 'CHANGE_PLOT_TEMPLATE',
+            type: "CHANGE_PLOT_TEMPLATE",
             value: value
-        }
+        };
     },
     initializeTemplateValues(templates) {
         return {
-            type: 'INITIALIZE_TEMPLATE_VALUES',
+            type: "INITIALIZE_TEMPLATE_VALUES",
             templates: templates
-        }
+        };
     },
     initializeGraphicsMethodsValues(gm) {
         return {
-            type: 'INITIALIZE_GRAPHICS_METHODS_VALUES',
+            type: "INITIALIZE_GRAPHICS_METHODS_VALUES",
             graphics_methods: gm
-        }
+        };
     },
-    selectCell(cell_id){
+    selectCell(cell_id) {
         return {
-            type: 'SELECT_CELL',
+            type: "SELECT_CELL",
             cell_id: cell_id
-        }
+        };
     },
-    deselectCell(){
+    deselectCell() {
         return {
-            type: 'DESELECT_CELL',
-        }
+            type: "DESELECT_CELL"
+        };
     },
     updateSelectedCells(selected_cells) {
         return {
-            type: 'UPDATE_SELECTED_CELLS',
+            type: "UPDATE_SELECTED_CELLS",
             selected_cells: selected_cells
-        }
+        };
     },
     moveColumn(dragged_index, dropped_index, position) {
         return {
-            type: 'MOVE_COLUMN',
+            type: "MOVE_COLUMN",
             dragged_index: dragged_index,
             dropped_index: dropped_index,
             position: position
-        }
+        };
     },
     moveRow(dragged_index, dropped_index, position) {
         return {
-            type: 'MOVE_ROW',
+            type: "MOVE_ROW",
             dragged_index: dragged_index,
             dropped_index: dropped_index,
             position: position
-        }
+        };
     },
-    clearCell(row, col){
-        return({
-            type: 'CLEAR_CELL',
+    clearCell(row, col) {
+        return {
+            type: "CLEAR_CELL",
             row: row,
-            col: col,
-        })
+            col: col
+        };
     },
     addPlot(variable, graphics_method_parent, graphics_method, template, row, col) {
         return {
-            type: 'ADD_PLOT',
+            type: "ADD_PLOT",
             variable: variable,
             graphics_method_parent: graphics_method_parent,
             graphics_method: graphics_method,
             template: template,
             row: row,
             col: col
-        }
+        };
     },
-    deletePlot(row, col, index){
+    deletePlot(row, col, index) {
         return {
-            type: 'DELETE_PLOT',
+            type: "DELETE_PLOT",
             row: row,
             col: col,
             index: index
-        }
+        };
     },
     swapVariableInPlot(value, row, col, plot_index, var_being_changed) {
         return {
-            type: 'CHANGE_PLOT_VAR',
+            type: "CHANGE_PLOT_VAR",
             value: value,
             row: row,
             col: col,
             plot_index: plot_index,
             var_being_changed: var_being_changed
-        }
+        };
     },
-    deleteVariableInPlot(row, col, plot_index, var_index){
-        return{
-            type: 'DELETE_PLOT_VAR',
+    deleteVariableInPlot(row, col, plot_index, var_index) {
+        return {
+            type: "DELETE_PLOT_VAR",
             row: row,
             col: col,
             plot_index: plot_index,
             var_index: var_index
-        }
+        };
     },
     swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, plot_index) {
         return {
-            type: 'CHANGE_PLOT_GM',
+            type: "CHANGE_PLOT_GM",
             graphics_method_parent: graphics_method_parent,
             graphics_method: graphics_method,
             row: row,
             col: col,
             plot_index: plot_index
-        }
+        };
     },
     swapTemplateInPlot(value, row, col, plot_index) {
         return {
-            type: 'CHANGE_PLOT_TEMPLATE',
+            type: "CHANGE_PLOT_TEMPLATE",
             value: value,
             row: row,
             col: col,
             plot_index: plot_index
-        }
+        };
     },
     shiftSheet(old_position, new_position) {
         return {
-            type: 'SHIFT_SHEET',
+            type: "SHIFT_SHEET",
             old_position: old_position,
             new_position: new_position
-        }
+        };
     },
     loadVariables(var_list) {
         return {
-            type: 'LOAD_VARIABLES',
+            type: "LOAD_VARIABLES",
             var_list: var_list
-        }
+        };
     },
-    updateVariable(name, dimensions, transforms){
-        if(!transforms){
-            transforms = {}
+    updateVariable(name, axis_list, dimensions, transforms) {
+        if (!transforms) {
+            transforms = {};
         }
         return {
-            type: 'UPDATE_VARIABLE',
+            type: "UPDATE_VARIABLE",
             name: name,
+            axis_list: axis_list,
             dimensions: dimensions,
-            transforms: transforms,
-        }
+            transforms: transforms
+        };
     },
     createGraphicsMethod(name, gm_type, base_method) {
         return {
@@ -197,92 +198,93 @@ var Actions = {
             name: name,
             gm_type: gm_type,
             base_method: base_method
-        }
+        };
     },
     selectGraphicsMethod(type, method) {
         return {
             type: "SELECT_GRAPHICS_METHOD",
             gm_type: type,
             method: method
-        }
+        };
     },
     updateGraphicsMethod(graphics_method) {
         return {
-            type: 'UPDATE_GRAPHICS_METHOD',
+            type: "UPDATE_GRAPHICS_METHOD",
             graphics_method
-        }
+        };
     },
     removeGraphicsMethod(gm_type, name) {
         return {
-            type: 'REMOVE_GRAPHICS_METHOD',
+            type: "REMOVE_GRAPHICS_METHOD",
             gm_type: gm_type,
             name: name
-        }
+        };
     },
     initializeColormaps(colormaps) {
         return {
-            type: 'INITIALIZE_COLORMAPS',
+            type: "INITIALIZE_COLORMAPS",
             colormaps: colormaps
-        }
+        };
     },
     initializeDefaultMethods(defaults) {
         return {
-            type: 'INITIALIZE_DEFAULT_METHODS',
+            type: "INITIALIZE_DEFAULT_METHODS",
             defaultmethods: defaults
-        }
+        };
     },
-    selectTemplate(name){
+    selectTemplate(name) {
         return {
-            type: 'SELECT_TEMPLATE',
-            selected_template: name,
-        }
+            type: "SELECT_TEMPLATE",
+            selected_template: name
+        };
     },
     createTemplate(name) {
         return {
-            type: 'CREATE_TEMPLATE',
-            name: name,
-        }
+            type: "CREATE_TEMPLATE",
+            name: name
+        };
     },
     removeTemplate(name) {
         return {
-            type: 'REMOVE_TEMPLATE',
-            name: name,
-        }
+            type: "REMOVE_TEMPLATE",
+            name: name
+        };
     },
     updateTemplate(template) {
         return {
-            type: 'UPDATE_TEMPLATE',
+            type: "UPDATE_TEMPLATE",
             template: template
-        }
+        };
     },
     saveColormap(colormap) {
         return {
-            type: 'SAVE_COLORMAP',
-            colormap: colormap,
-        }
+            type: "SAVE_COLORMAP",
+            colormap: colormap
+        };
     },
     deleteColormap(name) {
         return {
-            type: 'DELETE_COLORMAP',
-            name: name,
-        }
+            type: "DELETE_COLORMAP",
+            name: name
+        };
     },
-    removeVariable(name) { // Removes variable from list of loaded variables (left side bar)
+    removeVariable(name) {
+        // Removes variable from list of loaded variables (left side bar)
         return {
-            type: 'REMOVE_VARIABLE',
-            name: name,
-        }
+            type: "REMOVE_VARIABLE",
+            name: name
+        };
     },
-    setRecentLocalPath(path){
+    setRecentLocalPath(path) {
         // Used with the file explorer and file tab
         // The file tab passes this value to the file explorer
         // The file explorer will open the path it is given
         // This makes it so that a user doesnt have to navigate to the same place over and over
         return {
-            type: 'SET_RECENT_LOCAL_PATH',
-            path: path,
-        }
+            type: "SET_RECENT_LOCAL_PATH",
+            path: path
+        };
     }
-}
+};
 
 export default Actions;
