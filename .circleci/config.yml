@@ -5,11 +5,7 @@ jobs:
     macos:
       xcode: "9.2.0"
     steps:
-      - run:
-          name: Debug info
-          command: |
-            ls
-            pwd
+      - checkout
       - run:
           name: Pre install script for mac OS
           command: |
