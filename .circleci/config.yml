@@ -13,7 +13,7 @@ jobs:
       - run:
           name: Pre install script for mac OS
           command: |
-            bash vcdat/ci-support/circleci_mac_machine_pre.sh
+            bash ./ci-support/circleci_mac_machine_pre.sh
       - run:
           name: Install dependencies
           command: |
