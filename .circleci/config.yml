@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Pre install script for mac OS
           command: |
-            bash ~/vcdat/ci-support/circleci_mac_machine_pre.sh
+            bash ~/project/vcdat/ci-support/circleci_mac_machine_pre.sh
       - run:
           name: Checkout merge commit
           command: |
