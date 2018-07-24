@@ -6,10 +6,13 @@ jobs:
       xcode: "9.2.0"
     steps:
       - run:
-          name: Pre install script for mac OS
+          name: Debug info
           command: |
             ls
             pwd
+      - run:
+          name: Pre install script for mac OS
+          command: |
             bash vcdat/ci-support/circleci_mac_machine_pre.sh
       - run:
           name: Checkout merge commit
