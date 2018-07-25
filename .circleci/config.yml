@@ -1,20 +1,24 @@
 version: 2.0
 
+checkout:
+  post:
+    - ./ci-support/checkout_merge_commit.sh
+
 jobs:
   build:
     macos:
       xcode: "9.2.0"
     steps:
+      - checkout
+      - run:
+          name: debug
+          command: |
+            echo $PATH > path_file
+            cat path_file
       - run:
           name: Pre install script for mac OS
           command: |
-            ls
-            pwd
-            bash vcdat/ci-support/circleci_mac_machine_pre.sh
-      - run:
-          name: Checkout merge commit
-          command: |
-            ./ci-support/checkout_merge_commit.sh
+            bash ./ci-support/circleci_mac_machine_pre.sh
       - run:
           name: Install dependencies
           command: |
