@@ -9,8 +9,7 @@ set -o errexit
 set -o pipefail
 
 export UVCDAT_ANONYMOUS_LOG=False
-export UVCDAT_SETUP_PATH=${HOME}
-export PATH=${HOME}/miniconda/bin:${PATH}
+# export PATH=${HOME}/miniconda/bin:${PATH}
 
 cd frontend
 npm install
