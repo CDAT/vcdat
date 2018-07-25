@@ -11,6 +11,11 @@ jobs:
     steps:
       - checkout
       - run:
+        name: debug
+        command: |
+          echo $PATH > path_file
+          cat path_file
+      - run:
           name: Pre install script for mac OS
           command: |
             bash ./ci-support/circleci_mac_machine_pre.sh
