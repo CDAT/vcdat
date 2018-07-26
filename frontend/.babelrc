@@ -1,9 +1,0 @@
-{
-  "presets": [ "react", "es2015" ],
-  "sourceMaps": true,
-  "env": {
-    "test": {
-      "plugins": ["istanbul"]
-    }
-  }
-}
