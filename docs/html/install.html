@@ -184,42 +184,30 @@
 <div class="section" id="server-installation">
 <h2>Server Installation<a class="headerlink" href="#server-installation" title="Permalink to this headline">¶</a></h2>
 <p><em>Please note that vCDAT is still under development. While it is is capable of running on a remote server, the installation process often requires a few extra steps depending on the environment. Please consult our</em> <a class="reference internal" href="troubleshooting.html#user-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> <em>and</em> contact <em>pages for additional help.</em></p>
-<ol class="arabic simple">
-<li>SSH into the remote server and run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">-n</span> <span class="pre">vcdat</span> <span class="pre">-c</span> <span class="pre">cdat</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">vcdat</span></code></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
+<li>SSH into the remote server and run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">-n</span> <span class="pre">vcdat</span> <span class="pre">-c</span> <span class="pre">cdat</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">vcdat</span></code><ul>
 <li>This will make an environment named ‘vcdat’ and install vcdat inside of it.</li>
 </ul>
-</div></blockquote>
-<ol class="arabic simple">
+</li>
 <li>Run <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">vcdat</span></code> to use the environment that we created.</li>
 <li>Run the following command to start up vcdat: <code class="docutils literal notranslate"><span class="pre">vcdat</span> <span class="pre">--print</span> <span class="pre">--no-browser</span></code></li>
 <li>vCDAT will output a variety of log information. Note down the two port numbers that it bound to. In general these will be 5000 and 8000, but they might change slightly if those ports are not available.</li>
-<li>Keep that terminal window open and running. In a new window (on your local machine), type this command with the following modifications: <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">-Y</span> <span class="pre">-N</span> <span class="pre">-L</span> <span class="pre">5000:SERVER:5000</span> <span class="pre">-L</span> <span class="pre">8000:SERVER:8000</span> <span class="pre">SERVER</span></code></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
+<li>Keep that terminal window open and running. In a new window (on your local machine), type this command with the following modifications: <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">-Y</span> <span class="pre">-N</span> <span class="pre">-L</span> <span class="pre">5000:SERVER:5000</span> <span class="pre">-L</span> <span class="pre">8000:SERVER:8000</span> <span class="pre">SERVER</span></code><ul>
 <li>Replace ‘SERVER’ with your remote server address/name.</li>
 <li>Replace 5000 with the VCDAT_PORT that you noted down previously</li>
 <li>Replace 8000 with the VCSJS_PORT that you noted down previously</li>
 <li>Then run the command, and enter your credentials. <strong>Your terminal window will appear to freeze. This is normal.</strong></li>
 <li>Now, all network traffic that would normally be sent to <em>your</em> port 5000 will now be sent to the <em>server’s</em> port 5000. The same is also true of port 8000. The -N option tells ssh to not start up a remote terminal, which is why it seems to hang. We do this to help keep track of which terminal is making the tunnel.</li>
 </ul>
-</div></blockquote>
-<ol class="arabic simple">
+</li>
 <li>You should now have two terminals open. One for running vcdat, and the other for setting up a way to connect to it. Keep both open while using vcdat.</li>
-<li>Open your browser and navigate to the address <cite>localhost:5000</cite></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
+<li>Open your browser and navigate to the address <cite>localhost:5000</cite><ul>
 <li>If vcdat gave a different port than 5000, use that number instead. (E.g. 5001, or 5002)</li>
 <li>This should be the same number that we used to set up the ssh command.</li>
 </ul>
-</div></blockquote>
-<ol class="arabic simple">
+</li>
 <li>If vCDAT loads and no errors appear, then it should be ready to use. If vCDAT does not load, please visit the <a class="reference internal" href="troubleshooting.html#user-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> page for common solutions.</li>
-</ol>
+</ul>
 </div>
 <div class="section" id="updating">
 <h2>Updating<a class="headerlink" href="#updating" title="Permalink to this headline">¶</a></h2>
@@ -228,30 +216,20 @@ The script will let you know if an update is available, and will offer to instal
 </div>
 <div class="section" id="uninstalling">
 <h2>Uninstalling<a class="headerlink" href="#uninstalling" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple" start="0">
-<li>If you are still inside the ‘vcdat’ environment, run <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">deactivate</span></code></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
+<li>If you are still inside the ‘vcdat’ environment, run <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">deactivate</span></code><ul>
 <li>This will remove the <code class="docutils literal notranslate"><span class="pre">(vcdat)</span></code> text prepended to your terminal entries.</li>
 </ul>
-</div></blockquote>
-<ol class="arabic simple">
-<li><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">remove</span> <span class="pre">-n</span> <span class="pre">vcdat</span> <span class="pre">--all</span></code></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">remove</span> <span class="pre">-n</span> <span class="pre">vcdat</span> <span class="pre">--all</span></code><ul>
 <li>This will remove the vcdat environment that we installed vCDAT inside of.</li>
 </ul>
-</div></blockquote>
-<ol class="arabic simple" start="2">
-<li><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">clean</span> <span class="pre">--all</span></code></li>
-</ol>
-<blockquote>
-<div><ul class="simple">
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">clean</span> <span class="pre">--all</span></code><ul>
 <li>This will clean up all of the files that were created during the install procedure.</li>
 </ul>
-</div></blockquote>
+</li>
+</ul>
 </div>
 <div class="section" id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
