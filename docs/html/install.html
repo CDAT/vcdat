@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation &mdash; vCDAT 0.8.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quick Start" href="quick_start.html" />
+    <link rel="prev" title="vCDAT" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> vCDAT
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">For Users:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#desktop-installation">Desktop Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-installation">Server Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating">Updating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uninstalling">Uninstalling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact-us.html">Contact Us</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">vCDAT</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/install.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<span id="user-install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Some testing text</p>
+<ul class="simple">
+<li>If you don’t already have Anaconda, download the Anaconda software package for your system: [Linux](<a class="reference external" href="https://conda.io/docs/user-guide/install/linux.html">https://conda.io/docs/user-guide/install/linux.html</a>) or [Mac](<a class="reference external" href="https://conda.io/docs/user-guide/install/macos.html">https://conda.io/docs/user-guide/install/macos.html</a>)<ul>
+<li>If you do have it, run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">--version</span></code> and make sure the version is at least 4.3.11</li>
+<li>You can run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-n</span> <span class="pre">root</span> <span class="pre">&quot;conda&gt;4.3.13&quot;</span></code> to update it if the version you have is too low.</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="desktop-installation">
+<h2>Desktop Installation<a class="headerlink" href="#desktop-installation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>From your terminal, run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">-n</span> <span class="pre">vcdat</span> <span class="pre">-c</span> <span class="pre">cdat</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">vcdat</span></code><ul>
+<li>This will make an environment named ‘vcdat’ and install vcdat inside of it.</li>
+</ul>
+</li>
+<li>Next, run <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">vcdat</span></code> to use the environment that we created.</li>
+<li>Lastly, run vCDAT itself. <code class="docutils literal notranslate"><span class="pre">vcdat</span></code><ul>
+<li>After a few seconds, your browser should open and load vCDAT. _If no browser opens, open the log file listed in the terminal and run through the troubleshooting steps below._</li>
+</ul>
+</li>
+<li>When you wish to stop running vCDAT, just <code class="docutils literal notranslate"><span class="pre">ctrl+c</span></code> the terminal window.</li>
+<li>If you run other python programs, remember to run <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">deactivate</span></code> to disable the conda environment.</li>
+</ul>
+</div>
+<div class="section" id="server-installation">
+<h2>Server Installation<a class="headerlink" href="#server-installation" title="Permalink to this headline">¶</a></h2>
+<p><em>Please note that vCDAT is still under development. While it is is capable of running on a remote server, the installation process often requires a few extra steps depending on the environment. Please consult our</em> <a class="reference internal" href="troubleshooting.html#user-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> <em>and</em> contact <em>pages for additional help.</em></p>
+<ol class="arabic simple">
+<li>SSH into the remote server and run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">-n</span> <span class="pre">vcdat</span> <span class="pre">-c</span> <span class="pre">cdat</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">vcdat</span></code></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>This will make an environment named ‘vcdat’ and install vcdat inside of it.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple">
+<li>Run <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">vcdat</span></code> to use the environment that we created.</li>
+<li>Run the following command to start up vcdat: <code class="docutils literal notranslate"><span class="pre">vcdat</span> <span class="pre">--print</span> <span class="pre">--no-browser</span></code></li>
+<li>vCDAT will output a variety of log information. Note down the two port numbers that it bound to. In general these will be 5000 and 8000, but they might change slightly if those ports are not available.</li>
+<li>Keep that terminal window open and running. In a new window (on your local machine), type this command with the following modifications: <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">-Y</span> <span class="pre">-N</span> <span class="pre">-L</span> <span class="pre">5000:SERVER:5000</span> <span class="pre">-L</span> <span class="pre">8000:SERVER:8000</span> <span class="pre">SERVER</span></code></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>Replace ‘SERVER’ with your remote server address/name.</li>
+<li>Replace 5000 with the VCDAT_PORT that you noted down previously</li>
+<li>Replace 8000 with the VCSJS_PORT that you noted down previously</li>
+<li>Then run the command, and enter your credentials. <strong>Your terminal window will appear to freeze. This is normal.</strong></li>
+<li>Now, all network traffic that would normally be sent to <em>your</em> port 5000 will now be sent to the <em>server’s</em> port 5000. The same is also true of port 8000. The -N option tells ssh to not start up a remote terminal, which is why it seems to hang. We do this to help keep track of which terminal is making the tunnel.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple">
+<li>You should now have two terminals open. One for running vcdat, and the other for setting up a way to connect to it. Keep both open while using vcdat.</li>
+<li>Open your browser and navigate to the address <cite>localhost:5000</cite></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>If vcdat gave a different port than 5000, use that number instead. (E.g. 5001, or 5002)</li>
+<li>This should be the same number that we used to set up the ssh command.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple">
+<li>If vCDAT loads and no errors appear, then it should be ready to use. If vCDAT does not load, please visit the <a class="reference internal" href="troubleshooting.html#user-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> page for common solutions.</li>
+</ol>
+</div>
+<div class="section" id="updating">
+<h2>Updating<a class="headerlink" href="#updating" title="Permalink to this headline">¶</a></h2>
+<p>Run the following command in your terminal: <code class="docutils literal notranslate"><span class="pre">check_vcdat_update.py</span></code>
+The script will let you know if an update is available, and will offer to install it for you.</p>
+</div>
+<div class="section" id="uninstalling">
+<h2>Uninstalling<a class="headerlink" href="#uninstalling" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple" start="0">
+<li>If you are still inside the ‘vcdat’ environment, run <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">deactivate</span></code></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>This will remove the <code class="docutils literal notranslate"><span class="pre">(vcdat)</span></code> text prepended to your terminal entries.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">remove</span> <span class="pre">-n</span> <span class="pre">vcdat</span> <span class="pre">--all</span></code></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>This will remove the vcdat environment that we installed vCDAT inside of.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">clean</span> <span class="pre">--all</span></code></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>This will clean up all of the files that were created during the install procedure.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p>If you are having issues with vCDAT, please check the <a class="reference internal" href="troubleshooting.html#user-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> page for solutions to common issues.</p>
+<p>If your problems persist, please do not hesitate to <a class="reference internal" href="contact-us.html#contact-us"><span class="std std-ref">Contact Us</span></a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="quick_start.html" class="btn btn-neutral float-right" title="Quick Start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="vCDAT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, James Crean, Charles Doutriaux.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.8.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
