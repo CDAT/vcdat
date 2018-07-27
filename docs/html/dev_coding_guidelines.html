@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>vCDAT &mdash; vCDAT 0.8.0 documentation</title>
+  <title>Coding Guidelines &mdash; vCDAT 0.8.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="user_install.html" /> 
+    <link rel="prev" title="Installation" href="dev_install.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -47,7 +47,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> vCDAT
+            <a href="index.html" class="icon icon-home"> vCDAT
           
 
           
@@ -85,9 +85,9 @@
 <li class="toctree-l1"><a class="reference internal" href="user_contact-us.html">Contact Us</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developers:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="dev_install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dev_coding_guidelines.html">Coding Guidelines</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Coding Guidelines</a></li>
 </ul>
 
             
@@ -102,7 +102,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">vCDAT</a>
+          <a href="index.html">vCDAT</a>
         
       </nav>
 
@@ -131,15 +131,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>vCDAT</li>
+      <li>Coding Guidelines</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/dev_coding_guidelines.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -152,37 +152,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="vcdat">
-<h1>vCDAT<a class="headerlink" href="#vcdat" title="Permalink to this headline">¶</a></h1>
-<a class="reference external image-reference" href="https://travis-ci.org/CDAT/vcdat"><img alt="https://travis-ci.org/CDAT/vcdat.svg?branch=master" src="https://travis-ci.org/CDAT/vcdat.svg?branch=master" /></a>
-<a class="reference external image-reference" href="https://coveralls.io/github/CDAT/vcdat?branch=master"><img alt="https://coveralls.io/repos/github/CDAT/vcdat/badge.svg?branch=master" src="https://coveralls.io/repos/github/CDAT/vcdat/badge.svg?branch=master" /></a>
-<p><strong>New to vCDAT?</strong> Check out the  <a class="reference internal" href="user_install.html#user-install"><span class="std std-ref">Installation</span></a> and <a class="reference internal" href="user_quick_start.html#quick-start"><span class="std std-ref">Quick Start</span></a> pages.</p>
-<p>vCDAT is a desktop application that provides the graphical frontend for the CDAT package. It uses CDAT’s VCS and CDMS modules to render high quality visualizations within a browser.</p>
-<p><em>This project is in the early stages of development. As such please be aware that there may be some bugs and not all features will be available.</em></p>
-<div class="section" id="built-with">
-<h2>Built With<a class="headerlink" href="#built-with" title="Permalink to this headline">¶</a></h2>
-<a class="reference internal image-reference" href="http://js.devexpress.com/Content/Images/features/html5-css-javascript-logos.png"><img alt="http://js.devexpress.com/Content/Images/features/html5-css-javascript-logos.png" src="http://js.devexpress.com/Content/Images/features/html5-css-javascript-logos.png" style="height: 110px;" /></a>
-<a class="reference internal image-reference" href="https://cdn.worldvectorlogo.com/logos/react.svg"><img alt="https://cdn.worldvectorlogo.com/logos/react.svg" src="https://cdn.worldvectorlogo.com/logos/react.svg" width="120px" /></a>
-<a class="reference internal image-reference" href="https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png"><img alt="https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png" src="https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png" style="height: 100px;" /></a>
-<img alt="Flask powered" src="http://flask.pocoo.org/static/badges/flask-powered.png" />
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Developers:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="dev_install.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dev_install.html#basics">Basics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev_install.html#before-running-vcdat">Before Running vCDAT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev_install.html#running-vcdat">Running vCDAT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev_install.html#updating-vcdat-npm-packages">Updating vCDAT npm Packages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev_install.html#local-vcs-widgets">Local vcs-widgets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev_install.html#important-links">Important Links</a></li>
+  <div class="section" id="coding-guidelines">
+<span id="dev-coding-guidelines"></span><h1>Coding Guidelines<a class="headerlink" href="#coding-guidelines" title="Permalink to this headline">¶</a></h1>
+<p>The following is a set of coding guidelines that all code submitted to this project must follow. The overall goal of these guidelines is to increase code readability, maintainability, and consistency, as well as ensure that the code written is testable without excessive workarounds.</p>
+<ul class="simple">
+<li>Naming conventions:<ul>
+<li>newfolder</li>
+<li>NewFile</li>
+<li>NewClass</li>
+<li>newFunction</li>
+<li>new_variable</li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dev_coding_guidelines.html">Coding Guidelines</a></li>
+<li>Filenames should correspond to the class exported by default.<ul>
+<li>Example: <cite>import CoolClass from ‘./cool/CoolClass.js’</cite></li>
 </ul>
-</div>
-</div>
+</li>
+<li>Components that need css should create a folder of the same name<ul>
+<li>Example: <cite>src/js/components/CoolClass/Coolclass.js</cite> and <cite>src/js/components/CoolClass/Coolclass.scss</cite></li>
+</ul>
+</li>
+<li>No console.log()<ul>
+<li>Generally console.log should be for debugging only. Use console.warn or console.error when errors or unexpected states are encountered.</li>
+</ul>
+</li>
+<li>Component testing suggestions:<ul>
+<li>New components: &gt;80%</li>
+<li>Legacy components 50%</li>
+</ul>
+</li>
+</ul>
 </div>
 
 
@@ -193,8 +192,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="user_install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+        <a href="dev_install.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
