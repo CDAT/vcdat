@@ -51,7 +51,7 @@ Server Installation
   * Now, all network traffic that would normally be sent to *your* port 5000 will now be sent to the *server's* port 5000. The same is also true of port 8000. The -N option tells ssh to not start up a remote terminal, which is why it seems to hang. We do this to help keep track of which terminal is making the tunnel. 
 
 - You should now have two terminals open. One for running vcdat, and the other for setting up a way to connect to it. Keep both open while using vcdat.
-- Open your browser and navigate to the address `localhost:5000`
+- Open your browser and navigate to the address ``localhost:5000``
 
   * If vcdat gave a different port than 5000, use that number instead. (E.g. 5001, or 5002)
   * This should be the same number that we used to set up the ssh command.
