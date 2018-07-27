@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Coding Guidelines &mdash; vCDAT 0.8.0 documentation</title>
+  <title>Releases &mdash; vCDAT 0.8.0 documentation</title>
   
 
   
@@ -28,8 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Releases" href="dev_releases.html" />
-    <link rel="prev" title="Installation" href="dev_install.html" /> 
+    <link rel="prev" title="Coding Guidelines" href="dev_coding_guidelines.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -88,8 +87,12 @@
 <p class="caption"><span class="caption-text">Developers:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="dev_install.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Coding Guidelines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dev_releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_coding_guidelines.html">Coding Guidelines</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Releases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#vcdat-manual-releases">vCDAT Manual Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vcs-widgets-release">vcs-widgets Release:</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -135,13 +138,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Coding Guidelines</li>
+      <li>Releases</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/dev_coding_guidelines.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/dev_releases.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -154,36 +157,55 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="coding-guidelines">
-<span id="dev-coding-guidelines"></span><h1>Coding Guidelines<a class="headerlink" href="#coding-guidelines" title="Permalink to this headline">¶</a></h1>
-<p>The following is a set of coding guidelines that all code submitted to this project must follow. The overall goal of these guidelines is to increase code readability, maintainability, and consistency, as well as ensure that the code written is testable without excessive workarounds.</p>
+  <div class="section" id="releases">
+<span id="dev-coding-guidelines"></span><h1>Releases<a class="headerlink" href="#releases" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="vcdat-manual-releases">
+<h2>vCDAT Manual Releases<a class="headerlink" href="#vcdat-manual-releases" title="Permalink to this headline">¶</a></h2>
+<p>In the event that the continuous integration service fails to make a nightly release, the following can be done to create a build an release it manually.</p>
 <ul class="simple">
-<li>Naming conventions:<ul>
-<li>newfolder</li>
-<li>NewFile</li>
-<li>NewClass</li>
-<li>newFunction</li>
-<li>new_variable</li>
+<li><em>Before you can release vCDAT you must be listed as a co-owner of the cdat organization</em></li>
+<li>cd into the vcdat directory and make sure that you are using the base conda environment. (Run <cite>source deactivate</cite> to go from <em>nightly</em> to <em>base</em> for instance)</li>
 </ul>
-</li>
-<li>Filenames should correspond to the class exported by default.<ul>
-<li>Example: <cite>import CoolClass from ‘./cool/CoolClass.js’</cite></li>
-</ul>
-</li>
-<li>Components that need css should create a folder of the same name<ul>
-<li>Example: <cite>src/js/components/CoolClass/Coolclass.js</cite> and <cite>src/js/components/CoolClass/Coolclass.scss</cite></li>
-</ul>
-</li>
-<li>No console.log()<ul>
-<li>Generally console.log should be for debugging only. Use console.warn or console.error when errors or unexpected states are encountered.</li>
-</ul>
-</li>
-<li>Component testing suggestions:<ul>
-<li>New components: &gt;80%</li>
-<li>Legacy components 50%</li>
-</ul>
-</li>
-</ul>
+<p>Once that is done, begin running each command below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir ~/conda-bld <span class="c1"># Creates a directory for our build to go</span>
+conda install -q anaconda-client conda-build <span class="c1"># Needed in order to build and upload our package</span>
+conda config --set anaconda_upload no <span class="c1"># Prevents auto upload since we want to do that ourselves</span>
+conda install -f six <span class="c1"># Not sure this is needed. It was in the old script, and it doesn&#39;t hurt to have it</span>
+git clone git://github.com/cdat/conda-recipes <span class="c1"># Contains the prep_for_build script that we use</span>
+<span class="nb">cd</span> conda-recipes
+ln -s ../conda vcdat <span class="c1"># Creates a symbolic link to our conda directory so that prep_for_build can find it</span>
+python ./prep_for_build.py -v <span class="nv">$NEW_VERSION</span> <span class="c1"># Creates our meta.yaml with the given semantic version number (0.0.0)</span>
+conda build -c cdat -c conda-forge vcdat <span class="c1"># Build the production version of the package</span>
+anaconda -t <span class="nv">$CONDA_UPLOAD_TOKEN</span> upload -u cdat <span class="nv">$BUILT_PACKAGE</span> --force
+<span class="c1"># $CONDA_UPLOAD_TOKEN: can be retrieved from https://anaconda.org/cdat/settings/access</span>
+<span class="c1"># $BUILT_PACKAGE: The full path to the newly built .tar.bz2 package. Use the path output by conda build</span>
+</pre></div>
+</div>
+<p>Finally, make sure to test the release:</p>
+<dl class="docutils">
+<dt>::</dt>
+<dd>conda create -n vcdat-version vcdat -c cdat -c conda-forge
+source activate vcdat-version
+vcdat –print</dd>
+</dl>
+</div>
+<div class="section" id="vcs-widgets-release">
+<h2>vcs-widgets Release:<a class="headerlink" href="#vcs-widgets-release" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>::</dt>
+<dd>cd ~/Projects/UV-CDAT/vcs-widgets
+git pull origin master
+source activate vcdat</dd>
+</dl>
+<p>edit <cite>package.json</cite> with new <cite>version</cite> number</p>
+<dl class="docutils">
+<dt>::</dt>
+<dd>npm build
+npm publish</dd>
+</dl>
+<p><a class="reference external" href="https://anaconda.org/cdat">https://anaconda.org/cdat</a></p>
+<p><a class="reference external" href="https://www.npmjs.com/package/vcs-widgets">https://www.npmjs.com/package/vcs-widgets</a></p>
+</div>
 </div>
 
 
@@ -194,10 +216,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dev_releases.html" class="btn btn-neutral float-right" title="Releases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="dev_install.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="dev_coding_guidelines.html" class="btn btn-neutral" title="Coding Guidelines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

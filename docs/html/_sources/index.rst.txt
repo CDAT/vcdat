@@ -34,7 +34,7 @@ Built With
     :alt: Flask powered
 
 .. toctree::
-  :maxdepth: 2
+  :maxdepth: -1
   :caption: Users:
   :hidden:
    
@@ -44,8 +44,10 @@ Built With
   user_contact-us
 
 .. toctree::
-  :maxdepth: 2
+  :maxdepth: -1
   :caption: Developers:
+  :hidden:
   
   dev_install
   dev_coding_guidelines
+  dev_releases
