@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quick Start &mdash; vCDAT 0.8.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Troubleshooting" href="user_troubleshooting.html" />
+    <link rel="prev" title="Installation" href="user_install.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> vCDAT
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">For Users:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user_install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#run-vcdat">Run vCDAT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#load-a-variable">Load a Variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simple-plot">Simple Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#change-plot-parameters">Change Plot Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stack-plots">Stack Plots</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_contact-us.html">Contact Us</a></li>
+</ul>
+<p class="caption"><span class="caption-text">For Developers:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dev_install.html">Installation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">vCDAT</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Quick Start</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/user_quick_start.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quick-start">
+<span id="id1"></span><h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<p>This guide will walk you through running the vcdat application as well as some steps to create and manipulate a simple plot.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you need some sample data to plot with, and vcs is installed in your current environment, you can run <code class="docutils literal notranslate"><span class="pre">vcs_download_sample_data</span></code> in the terminal to download some basic datasets.</p>
+</div>
+<div class="section" id="run-vcdat">
+<h2>Run vCDAT<a class="headerlink" href="#run-vcdat" title="Permalink to this headline">¶</a></h2>
+<p>Activate your conda environment. For example: <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">nightly</span></code>
+If you have a newer version of conda the command may instead be: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">nightly</span></code></p>
+<p>Next, run the vCDAT server: <code class="docutils literal notranslate"><span class="pre">vcdat</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li>Add the <code class="docutils literal notranslate"><span class="pre">--print</span></code> argument if you would like the log displayed instead of written to a file</li>
+<li>Add the <code class="docutils literal notranslate"><span class="pre">--no-browser</span></code> option if you do not want vcdat to spawn a browser for you</li>
+</ul>
+</div></blockquote>
+<p>If you added the no-browser option, you will need to navigate to the app yourself. E.g. <code class="docutils literal notranslate"><span class="pre">localhost:5000</span></code></p>
+<p>You should now see the vCDAT interface. If not, consult our <a class="reference internal" href="user_troubleshooting.html#user-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> section for help.</p>
+</div>
+<div class="section" id="load-a-variable">
+<h2>Load a Variable<a class="headerlink" href="#load-a-variable" title="Permalink to this headline">¶</a></h2>
+<p>In the left side bar there is a section for handling variables. Click on the green plus button to open the <em>Load Variable</em> menu.</p>
+<p>On the right hand side of the menu is a blue button with a file icon. Click this to bring up the file explorer.</p>
+<p>Click on the file you would like to load and then click the <em>Select</em> button.</p>
+<p>vCDAT will now populate the load variable menu with the data from the selected file. Use the <em>Variable(s)</em> select box to pick out which variable you would liketo visualize.</p>
+<p>Click on <em>Load and Close</em></p>
+</div>
+<div class="section" id="simple-plot">
+<h2>Simple Plot<a class="headerlink" href="#simple-plot" title="Permalink to this headline">¶</a></h2>
+<p>By default, vCDAT shows a single cell. Each cell will display the variables, graphics methods and templates that have been set. To the right of this information is a large plus icon that we can use to add multiple plots to a single cell.</p>
+<p>To plot with the vcs defaults, drag and drop the variable name from the left side bar over the <em>Variables</em> section of a cell.</p>
+<p>vCDAT will automatically plot the given data with the default boxfill method.</p>
+</div>
+<div class="section" id="change-plot-parameters">
+<h2>Change Plot Parameters<a class="headerlink" href="#change-plot-parameters" title="Permalink to this headline">¶</a></h2>
+<p>In order to get a more smooth looking graph we can use an isofill method.</p>
+<p>Click on the rendered plot. This will select the cell, turning the border blue and displaying the plot information in the top bar.</p>
+<p>From here we can change the the Graphics Type from <em>boxfill</em> to <em>isofill</em></p>
+<p>The plot will render again using the new method which will smooth out the data for us.</p>
+</div>
+<div class="section" id="stack-plots">
+<h2>Stack Plots<a class="headerlink" href="#stack-plots" title="Permalink to this headline">¶</a></h2>
+<p>Now, we can stack another plot on top of this one to highlight areas of interest.</p>
+<p>In the tools menu, click on <em>Add Plot</em></p>
+<p>This will add an empty plot for us as noted by the extra row displayed in the top bar. vCDAT will render the plots in order, from the top of this list to the bottom.</p>
+<p>In this case, we want the isofill to plot first, and the isoline to plot after.</p>
+<p>Under Graphics Type for the second plot, select the “isoline” option.</p>
+<p>Now select the same variable as the first plot.</p>
+<p>The isoline plot will now render on top of the isofill.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="user_troubleshooting.html" class="btn btn-neutral float-right" title="Troubleshooting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="user_install.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, James Crean, Charles Doutriaux.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.8.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

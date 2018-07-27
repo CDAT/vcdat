@@ -67,11 +67,9 @@ Now, we can stack another plot on top of this one to highlight areas of interest
 
 In the tools menu, click on *Add Plot*
 
-This will add an empty plot for us as noted by the extra row displayed in the top bar.
+This will add an empty plot for us as noted by the extra row displayed in the top bar. vCDAT will render the plots in order, from the top of this list to the bottom.
 
-vCDAT will render the plots in order, from the top of this list to the bottom.
-
-In this case, we want the isofill to plot first and the isoline to plot after.
+In this case, we want the isofill to plot first, and the isoline to plot after.
 
 Under Graphics Type for the second plot, select the "isoline" option.
 

@@ -1,0 +1,323 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation &mdash; vCDAT 0.8.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Contact Us" href="user_contact-us.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> vCDAT
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">For Users:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_quick_start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_contact-us.html">Contact Us</a></li>
+</ul>
+<p class="caption"><span class="caption-text">For Developers:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basics">Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#before-running-vcdat">Before Running vCDAT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-vcdat">Running vCDAT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-vcdat-npm-packages">Updating vCDAT npm Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#local-vcs-widgets">Local vcs-widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#important-links">Important Links</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">vCDAT</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dev_install.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<span id="dev-install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="basics">
+<h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">update</span>
+<span class="n">apt</span> <span class="n">upgrade</span>
+<span class="n">apt</span> <span class="n">install</span> <span class="n">git</span> <span class="n">openssl</span> <span class="n">gcc</span> <span class="n">libglu1</span><span class="o">-</span><span class="n">mesa</span> <span class="n">mesa</span><span class="o">-</span><span class="n">utils</span> <span class="n">libsm6</span> <span class="n">x11</span><span class="o">-</span><span class="n">apps</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><a class="reference external" href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Set up Github ssh key</a></li>
+<li><a class="reference external" href="https://www.continuum.io/downloads">Download and install anaconda</a></li>
+<li><a class="reference external" href="https://github.com/CDAT/vcdat">Fork vcdat repo</a></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Downloads</span><span class="o">/</span>
+<span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="nb">set</span> <span class="n">ssl_verify</span> <span class="n">false</span>
+<span class="n">cd</span> <span class="o">~/</span><span class="n">Path</span><span class="o">/</span><span class="n">To</span><span class="o">/</span><span class="n">Projects</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">USERNAME</span><span class="o">/</span><span class="n">vcdat</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">vcdat</span>
+<span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="before-running-vcdat">
+<h2>Before Running vCDAT<a class="headerlink" href="#before-running-vcdat" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Turn on/off uvcdat tracking:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">UVCDAT_ANONYMOUS_LOG</span><span class="o">=</span><span class="n">no</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Download data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vcs_download_sample_data</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="running-vcdat">
+<h2>Running vCDAT<a class="headerlink" href="#running-vcdat" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Start the development server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">activate</span> <span class="n">nightly</span>
+<span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">autorun</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">open browser to <code class="docutils literal notranslate"><span class="pre">localhost:5000</span></code></p>
+</li>
+<li><p class="first">click the round <code class="docutils literal notranslate"><span class="pre">+</span></code> next to Variables in the upper left</p>
+</li>
+<li><p class="first">click add</p>
+</li>
+<li><p class="first">navigate to <code class="docutils literal notranslate"><span class="pre">anaconda2/envs/nightly/share/uvcdat/sample/data/clt.nc</span></code></p>
+</li>
+<li><p class="first">click <code class="docutils literal notranslate"><span class="pre">clt.nc</span></code></p>
+</li>
+<li><p class="first">click <code class="docutils literal notranslate"><span class="pre">clt</span></code></p>
+</li>
+<li><p class="first">drag <code class="docutils literal notranslate"><span class="pre">clt</span></code> on to the canvas</p>
+</li>
+</ul>
+<img alt="https://user-images.githubusercontent.com/438922/28264342-61465538-6a9f-11e7-9795-e798857a8ee3.png" src="https://user-images.githubusercontent.com/438922/28264342-61465538-6a9f-11e7-9795-e798857a8ee3.png" />
+</div>
+<div class="section" id="updating-vcdat-npm-packages">
+<h2>Updating vCDAT npm Packages<a class="headerlink" href="#updating-vcdat-npm-packages" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>cd vcdat
+git pull
+./scripts/setup.sh
+cd frontend
+npm install</div></blockquote>
+</div>
+<div class="section" id="local-vcs-widgets">
+<span id="dev-local-vcs-widgets"></span><h2>Local vcs-widgets<a class="headerlink" href="#local-vcs-widgets" title="Permalink to this headline">¶</a></h2>
+<p>When running the autorun script you may see the following line displayed:</p>
+<p><code class="docutils literal notranslate"><span class="pre">vcs-widgets</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">symlinked,</span> <span class="pre">so</span> <span class="pre">will</span> <span class="pre">not</span> <span class="pre">be</span> <span class="pre">automatically</span> <span class="pre">watched.</span></code></p>
+<p>This is generally fine, but is not what we want if we are developing on that package.
+To get a local version into vcdat we just need to tell npm to link it.</p>
+<ol class="arabic simple">
+<li>Create a folder to store global npm modules. For this example we will use <code class="docutils literal notranslate"><span class="pre">~/npm-global</span></code></li>
+<li>Tell npm to use the global folder, otherwise it may get confused. <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">config</span> <span class="pre">set</span> <span class="pre">prefix</span> <span class="pre">~/npm-global/</span></code></li>
+<li>Navigate into the vcs-widgets directory: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">VCS-widgets</span></code></li>
+<li>Register that the package can be linked to: <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">link</span></code></li>
+<li>Navigate back to the vcdat frontend directory: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">../vcdat/frontend</span></code></li>
+<li>Run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">link</span> <span class="pre">vcs-widgets</span></code></li>
+</ol>
+<p>Now when you execute the autorun script the symlink message should be gone, and the widgets should reflect the local version that was linked.</p>
+</div>
+<div class="section" id="important-links">
+<h2>Important Links<a class="headerlink" href="#important-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://anaconda.org/cdat">https://anaconda.org/cdat</a></li>
+<li><a class="reference external" href="https://www.npmjs.com/package/vcs-widgets">https://www.npmjs.com/package/vcs-widgets</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="user_contact-us.html" class="btn btn-neutral" title="Contact Us" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, James Crean, Charles Doutriaux.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.8.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

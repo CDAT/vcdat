@@ -34,14 +34,16 @@ Built With
     :alt: Flask powered
 
 .. toctree::
-   :caption: For Users:
-   :hidden:
-
-   install
-   quick_start
-   troubleshooting
-   contact-us
+  :caption: For Users:
+  :hidden:
+   
+  user_install
+  user_quick_start
+  user_troubleshooting
+  user_contact-us
 
 .. toctree::
-   :caption: For Developers:
-   :hidden:
+  :caption: For Developers:
+  :hidden:
+
+  dev_install
