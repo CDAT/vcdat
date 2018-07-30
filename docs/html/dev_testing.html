@@ -95,14 +95,16 @@
 <li class="toctree-l2"><a class="reference internal" href="#developing-tests">Developing tests</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#vcdat-s-testing-stack">vCDAT’s testing stack</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#directory-structure-and-naming">Directory structure and naming</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#writing-tests">Writing tests</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#debugging-tests">Debugging Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-tests">Writing tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-tips">Testing Tips</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameterizing-tests">Parameterizing Tests</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-tests">Debugging Tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#testing-tools">Testing Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enzyme">Enzyme</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mocha">Mocha</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#chai">Chai</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#testutils">TestUtils</a></li>
 </ul>
 </li>
 </ul>
@@ -213,47 +215,30 @@ mode, and run the mocha tests through nyc:</p>
 <h2>Developing tests<a class="headerlink" href="#developing-tests" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="vcdat-s-testing-stack">
 <span id="id1"></span><h3>vCDAT’s testing stack<a class="headerlink" href="#vcdat-s-testing-stack" title="Permalink to this headline">¶</a></h3>
-<p>We use <a class="reference external" href="https://mochajs.org/">Mocha</a>, <a class="reference external" href="http://chaijs.com/">Chai</a>,
-<a class="reference external" href="https://facebook.github.io/react/docs/test-utils.html">ReactTestUtils</a>,
-<a class="reference external" href="http://airbnb.io/enzyme/">Airbnb’s Enzyme</a>, and
-<a class="reference external" href="https://github.com/tmpvar/jsdom">JSDom</a> to test our application.</p>
-<p>As a React app, vCDAT has some things that need to be set up in order to
-get up and running with tests. For some components, you may need a mock
-DOM into which we can render the test components. For this purpose, we
-include <a class="reference external" href="https://github.com/tmpvar/jsdom">JSDOM</a>, and have a simple
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/dom-mock.js">dom-mock.js</a>
-script that we run before we render a new react component. However, this
-should be the exception rather than the rule. Most components should be
-tested using Enzyme’s ‘shallow’ method which does not require a DOM
-mock, and isolates the rendering to the top level component. This helps
+<p>We use <a class="reference external" href="http://airbnb.io/enzyme/">Enzyme</a>, <a class="reference external" href="https://mochajs.org/">Mocha</a>, and <a class="reference external" href="http://chaijs.com/">Chai</a>,
+to test our application.</p>
+<p>Most components should be tested using Enzyme’s ‘shallow’ method which does not
+require a DOM mock, and isolates the rendering to the top level component. This helps
 assure that our tests are focused on verifying a single component and
-not their child components.</p>
+not their child components. If a component relies on lifecycle methods that shallow does not support,
+or parts of the DOM that shallow does not emulate, use Enzyme’s ‘mount’ method.</p>
 <p>Also, because we use JSX syntax, we need to execute a transpilation step
 with <a class="reference external" href="https://babeljs.io/docs/plugins/preset-react/">Babel</a> when we
 run our tests. This is handled via the compiler flag inside the npm test
 script.</p>
 <p>I will go over directory structure, how to write tests, and a brief
-overview of [Mocha][local-mocha], [Chai][local-chai], and
-[ReactTestUtils][local-test-utils] in the following sections.</p>
+overview of Enzyme, Mocha, and Chai in the following sections.</p>
 </div>
 <div class="section" id="directory-structure-and-naming">
 <h3>Directory structure and naming<a class="headerlink" href="#directory-structure-and-naming" title="Permalink to this headline">¶</a></h3>
 <p>All of vCDAT’s tests are located in
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/">vcdat/frontend/test/mocha</a>.
-Under this directory there are subdirectories for each type of
-Javascript/React component source in our project
-(<a class="reference external" href="https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/actions">actions</a>,
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/components">components</a>,
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/containers">containers</a>,
-and a special directory for the top-level App.js and Store.js files,
-called
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/app">app</a>).</p>
+<a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/">vcdat/frontend/test/mocha</a>.</p>
 <p>Make sure to adhere to the following guidelines when writing your tests:</p>
 <ul class="simple">
 <li>When writing tests for a component, make sure you write the test in
 the correct directory.<ul>
 <li>The directory in
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/">test/mocha/</a>
+<a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/">test/mocha/</a>
 should correspond to the component’s sourcecode origin.</li>
 </ul>
 </li>
@@ -262,9 +247,9 @@ Javascript being tested, followed by the word ‘Test’.</li>
 <li>Inside the .jsx test file, the root level describe() block should
 contain the file name in its description string.</li>
 <li>For example, if you were to write a test for
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/blob/master/frontend/src/js/components/Plotter.jsx">src/js/components/Plotter.jsx</a>,<ul>
+<a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/src/js/components/Plotter.jsx">src/js/components/Plotter.jsx</a>,<ul>
 <li>You should place this test in
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/components">mocha/test/components</a></li>
+<a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/components">mocha/test/components</a></li>
 <li>The test should be called <code class="docutils literal notranslate"><span class="pre">PlotterTest.jsx</span></code></li>
 <li>The root level describe would be
 <code class="docutils literal notranslate"><span class="pre">describe('PlotterTest.jsx</span> <span class="pre">...',</span> <span class="pre">function(){...})</span></code><ul>
@@ -280,47 +265,67 @@ contains the file name</li>
 <div class="section" id="writing-tests">
 <h3>Writing tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h3>
 <p>To explain test writing, I will review
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/tree/master/frontend/test/mocha/example/Example.jsx">Example.jsx</a>
+<a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/Example.jsx">Example.jsx</a>
 and
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx">ExampleTest.jsx</a>,
+<a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx">ExampleTest.jsx</a>,
 which I wrote to make sure that our environment was set up correctly to
 test React components. If you get lost while reading this guide, try
 following along with the code and comments in
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx">ExampleTest</a>.</p>
+<a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx">ExampleTest</a>.</p>
 <p>The
-<a class="reference external" href="https://github.com/UV-CDAT/vcdat/tree/master/frontend/test/mocha/example/Example.jsx">Example</a>
+<a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/Example.jsx">Example</a>
 component is extremely simple. When an <code class="docutils literal notranslate"><span class="pre">&lt;Example</span> <span class="pre">/&gt;</span></code> component is
 rendered into the DOM, it gets replaced with
 <code class="docutils literal notranslate"><span class="pre">&lt;div</span> <span class="pre">class='test'&gt;&lt;span&gt;TEST&lt;/span&gt;&lt;/div&gt;</span></code>.</p>
 <p>To test a react component, we have to import several libraries and other
 Javascript files:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/dom-mock.js">dom-mock.js</a>
-allows us to buld a fake DOM into which we can render react
-components</li>
-<li><a class="reference external" href="https://github.com/tmpvar/jsdom">jsdom</a> must be imported before
-React so TestUtils can use DOM objects and methods</li>
+<li><a class="reference external" href="#enzyme">Enzyme</a> provides shallow and mounted rendering as well as a variety of useful tools to interact with out components.</li>
 <li><a class="reference external" href="#chai">chai</a> lets us use functions like ‘assert’ and ‘expect’ to
 test our rendered html</li>
 <li>Obviously, React needs to be loaded to run React code</li>
-<li><a class="reference external" href="#testutils">TestUtils</a> is React’s library for testing React
-components</li>
 <li>Finally, we have to import the component we are testing</li>
 </ul>
 <p>After we have all the correct libraries and files imported, there are
-three essential things we need to make a test.</p>
+two essential things we need to make a test.</p>
 <ul class="simple">
 <li>a <a class="reference external" href="#describe">describe()</a> block, which lets us group our tests</li>
-<li>a <a class="reference external" href="#hooks">before()</a> block, which we use to create a mock DOM
-before rendering the components</li>
 <li>and an <a class="reference external" href="#it">it()</a> block, which contains the test</li>
 </ul>
-<p>After that, all that’s left to do is use <a class="reference external" href="#testutils">TestUtils</a> to
-render the React component in the DOM, pull that component out of the
-DOM, and test it with an assert. When we run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">test</span></code>, mocha will
-let us know if it gets any errors while running our test.</p>
+<p>After that, all that’s left to do is use <a class="reference external" href="#enzyme">Enzyme</a> to
+shallow render the React component in the DOM, manipulate it, and test it with an assert.
+When we run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">test</span></code>, mocha will let us know if it gets any errors while running our test.</p>
+</div>
+<div class="section" id="testing-tips">
+<h3>Testing Tips<a class="headerlink" href="#testing-tips" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="parameterizing-tests">
+<h4>Parameterizing Tests<a class="headerlink" href="#parameterizing-tests" title="Permalink to this headline">¶</a></h4>
+<p>Parameterizing tests is one of the easiest ways to write tests that cover a large range of cases.
+The CalculatorTest.jsx file contains several example of this for reference.
+Here is a simple example of what a parameterized test might look like:</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">let</span> <span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span> <span class="nb">input</span><span class="p">:</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="s2">&quot;Hello John!&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;Sally?&quot;</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="s2">&quot;Hello Sally!&quot;</span> <span class="p">},</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span>test_cases.forEach(function(test_case, index) {
+    it(`Says hello correctly. Case ${index}`, function() {
+        let props = getProps();
+        let hello_widget = shallow(&lt;Hello {...props} /&gt;);
+        hello_widget.instance().handleHello(input_string: test_case.input)
+        expect(hello_widget.state().helloString).to.equal(test_case.expected);
+    });
+});
+</pre></div>
+</div>
+<p>Notice that the ‘it’ block is inside of the loop.
+This makes each loop a seperate test and will make it easier to determine which cases fail.</p>
+</div>
+</div>
 <div class="section" id="debugging-tests">
-<h4>Debugging Tests<a class="headerlink" href="#debugging-tests" title="Permalink to this headline">¶</a></h4>
+<h3>Debugging Tests<a class="headerlink" href="#debugging-tests" title="Permalink to this headline">¶</a></h3>
 <p>To run a debugger on your tests, follow these steps:</p>
 <ol class="arabic simple">
 <li>Add ‘debugger’ on a line by itself where you would like execution to
@@ -332,9 +337,26 @@ the instance of mocha to inspect.</li>
 tests until your own breakpoints.</li>
 </ol>
 </div>
-</div>
 <div class="section" id="testing-tools">
 <h3>Testing Tools<a class="headerlink" href="#testing-tools" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="enzyme">
+<h4>Enzyme<a class="headerlink" href="#enzyme" title="Permalink to this headline">¶</a></h4>
+<p>Enzyme is a javascript testing tool that provides a variety of tools that makes testing React components easier.</p>
+<p>The full documentation can be found on Airbnb’s
+<a class="reference external" href="http://airbnb.io/enzyme/">API
+Reference</a> page</p>
+<p>The following are some of the most common/useful methods that enzyme provides:</p>
+<ul class="simple">
+<li>shallow: Shallow renders a component so that tests are not affected by child components.</li>
+<li>mount: Mounts a component in a full DOM environment (jsdom), and provides full component lifecycle support.</li>
+<li>instance(): Returns the component instance that enzyme normally wraps. Good for calling component methods directly.</li>
+<li>state(): Returns the component’s state object.</li>
+<li>setState(): Sets the component state in the same manner that React’s setState does.</li>
+<li>props(): Returns a components current props.</li>
+<li>setProps(): Emulates prop changes.</li>
+<li>find(): Search for dom elements that the component has rendered.</li>
+</ul>
+</div>
 <div class="section" id="mocha">
 <h4>Mocha<a class="headerlink" href="#mocha" title="Permalink to this headline">¶</a></h4>
 <div class="section" id="describe">
@@ -455,31 +477,6 @@ documentation</a>:</p>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="testutils">
-<h4>TestUtils<a class="headerlink" href="#testutils" title="Permalink to this headline">¶</a></h4>
-<p>React’s
-<a class="reference external" href="https://facebook.github.io/react/docs/test-utils.html">TestUtils</a>
-library allows us to create React components in a mocked DOM, simulate
-events on DOM elements, and all sorts of other handy things. To be able
-to use this library, you will need to have
-<a class="reference external" href="https://github.com/tmpvar/jsdom">jsdom</a> included before React in
-your test file.</p>
-<p>A basic example of how we use TestUtils:</p>
-<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">before</span><span class="p">(</span><span class="n">function</span><span class="p">(){</span>
-    <span class="n">dom_mock</span><span class="p">(</span><span class="s1">&#39;&lt;html&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">);</span>
-<span class="p">});</span>
-
-<span class="n">var</span> <span class="n">myDiv</span> <span class="o">=</span> <span class="n">TestUtils</span><span class="o">.</span><span class="n">renderIntoDocument</span><span class="p">(</span>
-    <span class="o">&lt;</span><span class="n">ExampleComponent</span> <span class="o">/&gt;</span>
-<span class="p">);</span>
-
-<span class="n">var</span> <span class="n">divText</span> <span class="o">=</span> <span class="n">TestUtils</span><span class="o">.</span><span class="n">findRenderedDOMComponentWithTag</span><span class="p">(</span><span class="n">myDiv</span><span class="p">,</span> <span class="s1">&#39;span&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>Check out the official
-<a class="reference external" href="https://facebook.github.io/react/docs/test-utils.html">documentation</a>
-for more information.</p>
 </div>
 </div>
 </div>

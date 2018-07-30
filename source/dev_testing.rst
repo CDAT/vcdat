@@ -51,22 +51,14 @@ Developing tests
 vCDAT's testing stack
 ~~~~~~~~~~~~~~~~~~~~~
 
-We use `Mocha <https://mochajs.org/>`__, `Chai <http://chaijs.com/>`__,
-`ReactTestUtils <https://facebook.github.io/react/docs/test-utils.html>`__,
-`Airbnb's Enzyme <http://airbnb.io/enzyme/>`__, and
-`JSDom <https://github.com/tmpvar/jsdom>`__ to test our application.
+We use `Enzyme <http://airbnb.io/enzyme/>`__, `Mocha <https://mochajs.org/>`__, and `Chai <http://chaijs.com/>`__,
+to test our application.
 
-As a React app, vCDAT has some things that need to be set up in order to
-get up and running with tests. For some components, you may need a mock
-DOM into which we can render the test components. For this purpose, we
-include `JSDOM <https://github.com/tmpvar/jsdom>`__, and have a simple
-`dom-mock.js <https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/dom-mock.js>`__
-script that we run before we render a new react component. However, this
-should be the exception rather than the rule. Most components should be
-tested using Enzyme's 'shallow' method which does not require a DOM
-mock, and isolates the rendering to the top level component. This helps
+Most components should be tested using Enzyme's 'shallow' method which does not 
+require a DOM mock, and isolates the rendering to the top level component. This helps
 assure that our tests are focused on verifying a single component and
-not their child components.
+not their child components. If a component relies on lifecycle methods that shallow does not support,
+or parts of the DOM that shallow does not emulate, use Enzyme's 'mount' method. 
 
 Also, because we use JSX syntax, we need to execute a transpilation step
 with `Babel <https://babeljs.io/docs/plugins/preset-react/>`__ when we
@@ -74,22 +66,13 @@ run our tests. This is handled via the compiler flag inside the npm test
 script.
 
 I will go over directory structure, how to write tests, and a brief
-overview of [Mocha][local-mocha], [Chai][local-chai], and
-[ReactTestUtils][local-test-utils] in the following sections.
+overview of Enzyme, Mocha, and Chai in the following sections.
 
 Directory structure and naming
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All of vCDAT's tests are located in
-`vcdat/frontend/test/mocha <https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/>`__.
-Under this directory there are subdirectories for each type of
-Javascript/React component source in our project
-(`actions <https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/actions>`__,
-`components <https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/components>`__,
-`containers <https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/containers>`__,
-and a special directory for the top-level App.js and Store.js files,
-called
-`app <https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/app>`__).
+`vcdat/frontend/test/mocha <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/>`__.
 
 Make sure to adhere to the following guidelines when writing your tests:
 
@@ -97,7 +80,7 @@ Make sure to adhere to the following guidelines when writing your tests:
    the correct directory.
 
    -  The directory in
-      `test/mocha/ <https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/>`__
+      `test/mocha/ <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/>`__
       should correspond to the component's sourcecode origin.
 
 -  Test name should be CapitalCase, with the source name of the
@@ -105,10 +88,10 @@ Make sure to adhere to the following guidelines when writing your tests:
 -  Inside the .jsx test file, the root level describe() block should
    contain the file name in its description string.
 -  For example, if you were to write a test for
-   `src/js/components/Plotter.jsx <https://github.com/UV-CDAT/vcdat/blob/master/frontend/src/js/components/Plotter.jsx>`__,
+   `src/js/components/Plotter.jsx <https://github.com/CDAT/vcdat/tree/master/frontend/src/js/components/Plotter.jsx>`__,
 
    -  You should place this test in
-      `mocha/test/components <https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/components>`__
+      `mocha/test/components <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/components>`__
    -  The test should be called ``PlotterTest.jsx``
    -  The root level describe would be
       ``describe('PlotterTest.jsx ...', function(){...})``
@@ -121,16 +104,16 @@ Writing tests
 ~~~~~~~~~~~~~
 
 To explain test writing, I will review
-`Example.jsx <https://github.com/UV-CDAT/vcdat/tree/master/frontend/test/mocha/example/Example.jsx>`__
+`Example.jsx <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/Example.jsx>`__
 and
-`ExampleTest.jsx <https://github.com/UV-CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx>`__,
+`ExampleTest.jsx <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx>`__,
 which I wrote to make sure that our environment was set up correctly to
 test React components. If you get lost while reading this guide, try
 following along with the code and comments in
-`ExampleTest <https://github.com/UV-CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx>`__.
+`ExampleTest <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx>`__.
 
 The
-`Example <https://github.com/UV-CDAT/vcdat/tree/master/frontend/test/mocha/example/Example.jsx>`__
+`Example <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/Example.jsx>`__
 component is extremely simple. When an ``<Example />`` component is
 rendered into the DOM, it gets replaced with
 ``<div class='test'><span>TEST</span></div>``.
@@ -138,33 +121,56 @@ rendered into the DOM, it gets replaced with
 To test a react component, we have to import several libraries and other
 Javascript files:
 
--  `dom-mock.js <https://github.com/UV-CDAT/vcdat/blob/master/frontend/test/mocha/dom-mock.js>`__
-   allows us to buld a fake DOM into which we can render react
-   components
--  `jsdom <https://github.com/tmpvar/jsdom>`__ must be imported before
-   React so TestUtils can use DOM objects and methods
+-  `Enzyme <#enzyme>`__ provides shallow and mounted rendering as well as a variety of useful tools to interact with out components.
 -  `chai <#chai>`__ lets us use functions like 'assert' and 'expect' to
    test our rendered html
 -  Obviously, React needs to be loaded to run React code
--  `TestUtils <#testutils>`__ is React's library for testing React
-   components
 -  Finally, we have to import the component we are testing
 
 After we have all the correct libraries and files imported, there are
-three essential things we need to make a test.
+two essential things we need to make a test.
 
 -  a `describe() <#describe>`__ block, which lets us group our tests
--  a `before() <#hooks>`__ block, which we use to create a mock DOM
-   before rendering the components
 -  and an `it() <#it>`__ block, which contains the test
 
-After that, all that's left to do is use `TestUtils <#testutils>`__ to
-render the React component in the DOM, pull that component out of the
-DOM, and test it with an assert. When we run ``npm test``, mocha will
-let us know if it gets any errors while running our test.
+After that, all that's left to do is use `Enzyme <#enzyme>`__ to
+shallow render the React component in the DOM, manipulate it, and test it with an assert. 
+When we run ``npm test``, mocha will let us know if it gets any errors while running our test.
+
+Testing Tips
+~~~~~~~~~~~~~
+
+Parameterizing Tests
+^^^^^^^^^^^^^^^^^^^^^
+
+Parameterizing tests is one of the easiest ways to write tests that cover a large range of cases. 
+The CalculatorTest.jsx file contains several example of this for reference. 
+Here is a simple example of what a parameterized test might look like:
+
+.. code:: javascript
+
+    let test_cases = [
+        { input: undefined, right: undefined, expected: "Hello!" },
+        { input: "John", right: undefined, expected: "Hello John!" },
+        { input: "Sally?", right: undefined, expected: "Hello Sally!" },
+    ];
+
+.. code:: javascript
+
+    test_cases.forEach(function(test_case, index) {
+        it(`Says hello correctly. Case ${index}`, function() {
+            let props = getProps();
+            let hello_widget = shallow(<Hello {...props} />);
+            hello_widget.instance().handleHello(input_string: test_case.input)
+            expect(hello_widget.state().helloString).to.equal(test_case.expected);
+        });
+    });
+
+Notice that the 'it' block is inside of the loop.
+This makes each loop a seperate test and will make it easier to determine which cases fail.
 
 Debugging Tests
-^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~
 
 To run a debugger on your tests, follow these steps:
 
@@ -178,6 +184,27 @@ To run a debugger on your tests, follow these steps:
 
 Testing Tools
 ~~~~~~~~~~~~~
+
+Enzyme
+^^^^^^^
+
+Enzyme is a javascript testing tool that provides a variety of tools that makes testing React components easier.
+
+The full documentation can be found on Airbnb's 
+`API
+Reference <http://airbnb.io/enzyme/>`__ page
+
+The following are some of the most common/useful methods that enzyme provides:
+
+- shallow: Shallow renders a component so that tests are not affected by child components.
+- mount: Mounts a component in a full DOM environment (jsdom), and provides full component lifecycle support.
+- instance(): Returns the component instance that enzyme normally wraps. Good for calling component methods directly. 
+- state(): Returns the component's state object.
+- setState(): Sets the component state in the same manner that React's setState does.
+- props(): Returns a components current props.
+- setProps(): Emulates prop changes.
+- find(): Search for dom elements that the component has rendered.
+
 
 Mocha
 ^^^^^
@@ -315,32 +342,3 @@ documentation <http://chaijs.com/guide/styles/#should>`__:
    foo.should.equal('bar');
    foo.should.have.length(3);
    beverages.should.have.property('tea').with.length(3);
-
-TestUtils
-^^^^^^^^^
-
-React's
-`TestUtils <https://facebook.github.io/react/docs/test-utils.html>`__
-library allows us to create React components in a mocked DOM, simulate
-events on DOM elements, and all sorts of other handy things. To be able
-to use this library, you will need to have
-`jsdom <https://github.com/tmpvar/jsdom>`__ included before React in
-your test file.
-
-A basic example of how we use TestUtils:
-
-.. code:: javascript
-
-   before(function(){
-       dom_mock('<html><body></body></html>');
-   });
-
-   var myDiv = TestUtils.renderIntoDocument(
-       <ExampleComponent />
-   );
-
-   var divText = TestUtils.findRenderedDOMComponentWithTag(myDiv, 'span');
-
-Check out the official
-`documentation <https://facebook.github.io/react/docs/test-utils.html>`__
-for more information.

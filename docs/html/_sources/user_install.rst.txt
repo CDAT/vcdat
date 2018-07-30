@@ -4,12 +4,13 @@
 Installation
 =================================
 
-Some testing text
-
-- If you don't already have Anaconda, download the Anaconda software package for your system: [Linux](https://conda.io/docs/user-guide/install/linux.html) or [Mac](https://conda.io/docs/user-guide/install/macos.html)
+- If you don't already have Anaconda, download the Anaconda software package for your system: Linux_ or Mac_
 
   * If you do have it, run ``conda --version`` and make sure the version is at least 4.3.11
   * You can run ``conda install -n root "conda>4.3.13"`` to update it if the version you have is too low. 
+
+.. _Linux: https://conda.io/docs/user-guide/install/linux.html
+.. _Mac: https://conda.io/docs/user-guide/install/macos.html
 
 Desktop Installation
 ---------------------
