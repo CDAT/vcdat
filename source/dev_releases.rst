@@ -50,7 +50,7 @@ VCS-Widgets Release:
 -----------------------------
 ::
 
-    cd ~/Projects/UV-CDAT/vcs-widgets
+    cd ~/Projects/CDAT/vcs-widgets
     git pull origin master
     source activate vcdat
 

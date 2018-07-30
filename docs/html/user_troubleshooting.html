@@ -82,7 +82,14 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="user_install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_quick_start.html">Quick Start</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#unable-to-load-driver-swrast-dri-so">Unable to load driver: swrast_dri.so</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#x-error-of-failed-request-badvalue-integer-parameter-out-of-range-for-operation">X Error of failed request:  BadValue (integer parameter out of range for operation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#if-the-above-steps-did-not-fix-the-issue-and-you-installed-vcdat-on-a-remote-server">If the above steps did not fix the issue, and you installed vCDAT on a remote server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#importerror-no-module-named">ImportError: No module named ____</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plots-are-much-larger-than-they-should-be">Plots are much larger than they should be</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="user_contact-us.html">Contact Us</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developers:</span></p>
@@ -158,23 +165,43 @@
   <div class="section" id="troubleshooting">
 <span id="user-troubleshooting"></span><h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
 <p>In order to troubleshoot issues with a vCDAT, open the log file while vcdat is running and compare any errors, starting from the top, to the ones listed here.</p>
-<ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">unable</span> <span class="pre">to</span> <span class="pre">load</span> <span class="pre">driver:</span> <span class="pre">swrast_dri.so</span></code><ul>
+<div class="section" id="unable-to-load-driver-swrast-dri-so">
+<h2>Unable to load driver: swrast_dri.so<a class="headerlink" href="#unable-to-load-driver-swrast-dri-so" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
 <li>This can be fixed by exporting a variable containing the path to the missing file: <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">LD_PRELOAD='/usr/lib/x86_64-linux-gnu/libstdc++.so.6'</span></code></li>
 </ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">Error</span> <span class="pre">of</span> <span class="pre">failed</span> <span class="pre">request:</span>&#160; <span class="pre">BadValue</span> <span class="pre">(integer</span> <span class="pre">parameter</span> <span class="pre">out</span> <span class="pre">of</span> <span class="pre">range</span> <span class="pre">for</span> <span class="pre">operation)</span></code><ul>
+</div></blockquote>
+</div>
+<div class="section" id="x-error-of-failed-request-badvalue-integer-parameter-out-of-range-for-operation">
+<h2>X Error of failed request:  BadValue (integer parameter out of range for operation)<a class="headerlink" href="#x-error-of-failed-request-badvalue-integer-parameter-out-of-range-for-operation" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
 <li>First, try the above step and set the LD_PRELOAD to a valid path.</li>
-<li>If you are on a mac and vCDAT is running on a remote machine, copy the following into a bash terminal: <code class="docutils literal notranslate"><span class="pre">defaults</span> <span class="pre">write</span> <span class="pre">org.macosforge.xquartz.X11</span> <span class="pre">enable_iglx</span> <span class="pre">-bool</span> <span class="pre">true</span></code></li>
+<li>If you are on a Mac and vCDAT is running on a remote machine, copy the following into a bash terminal: <code class="docutils literal notranslate"><span class="pre">defaults</span> <span class="pre">write</span> <span class="pre">org.macosforge.xquartz.X11</span> <span class="pre">enable_iglx</span> <span class="pre">-bool</span> <span class="pre">true</span></code><ul>
 <li>After running that command, <strong>restart your computer, or the change will not take effect</strong>.</li>
 </ul>
 </li>
-<li>If the above steps did not fix the issue, and you installed vCDAT on a remote server<ul>
+<li>If you continue to get these errors after trying the previous steps, you may need to install/update your graphics driver.<ul>
+<li>This is especially commen on Linux where a generic graphics driver may be in use, instead of a hardware specific one.</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="if-the-above-steps-did-not-fix-the-issue-and-you-installed-vcdat-on-a-remote-server">
+<h2>If the above steps did not fix the issue, and you installed vCDAT on a remote server<a class="headerlink" href="#if-the-above-steps-did-not-fix-the-issue-and-you-installed-vcdat-on-a-remote-server" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
 <li>Make sure that the vcdat environment is sourced prior to the next step</li>
 <li>Run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">mesalib</span></code></li>
 </ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">ImportError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">____</span></code><ul>
+</div></blockquote>
+</div>
+<div class="section" id="importerror-no-module-named">
+<h2>ImportError: No module named ____<a class="headerlink" href="#importerror-no-module-named" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
 <li>In order to work around the missing dependencies, simply run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">package</span></code> for each package found to be missing.(It may take several install and run cycles to find and install everything.)</li>
 <li>In the event that a dependency is not properly installed, please let us know by creating a new [issue](<a class="reference external" href="https://github.com/CDAT/vcdat/issues">https://github.com/CDAT/vcdat/issues</a>) with the following information:<ul>
 <li>The output of <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">-V</span></code></li>
@@ -184,8 +211,12 @@
 </ul>
 </li>
 </ul>
-</li>
-<li>Plots are much larger than they should be<ul>
+</div></blockquote>
+</div>
+<div class="section" id="plots-are-much-larger-than-they-should-be">
+<h2>Plots are much larger than they should be<a class="headerlink" href="#plots-are-much-larger-than-they-should-be" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
 <li>This is generally caused by a missing graphics driver</li>
 <li>Install or upgrade your graphics driver by following the generalized steps below.</li>
 <li>First, determine the brand of graphics card your computer has. (Intel, Nvidia, AMD, etc.)</li>
@@ -193,8 +224,8 @@
 <li>Then install an up to date driver for that platform from a reliable source, such as your operating system’s package manager.</li>
 <li>If you cannot update your driver, or if the problem persists, try installing mesa-lib: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">mesalib</span></code></li>
 </ul>
-</li>
-</ul>
+</div></blockquote>
+</div>
 </div>
 
 
