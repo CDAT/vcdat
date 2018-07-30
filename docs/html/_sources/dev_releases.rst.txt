@@ -4,13 +4,20 @@
 Releases
 =================================
 
+Releases can be viewed on anaconda.org_. 
+
+.. _anaconda.org: https://anaconda.org/cdat/vcdat/files
+
+
+
+
 vCDAT Manual Releases
 -----------------------------
 
 In the event that the continuous integration service fails to make a nightly release, the following can be done to create a build an release it manually.
 
-- *Before you can release vCDAT you must be listed as a co-owner of the cdat organization*
-- cd into the vcdat directory and make sure that you are using the base conda environment. (Run `source deactivate` to go from *nightly* to *base* for instance)
+- Before you can release vCDAT you must be listed as a co-owner of the cdat organization
+- cd into the vcdat directory and make sure that you are using the base conda environment. (Run ``source deactivate`` to go from *nightly* to *base* for instance)
 
 Once that is done, begin running each command below:
 
@@ -31,23 +38,25 @@ Once that is done, begin running each command below:
 
 
 Finally, make sure to test the release:
-
 ::
+
     conda create -n vcdat-version vcdat -c cdat -c conda-forge 
     source activate vcdat-version
     vcdat --print
 
-vcs-widgets Release:
------------------------------
+.. _vcs-widgets-release:
 
+VCS-Widgets Release:
+-----------------------------
 ::
+
     cd ~/Projects/UV-CDAT/vcs-widgets
     git pull origin master
     source activate vcdat
 
-edit `package.json` with new `version` number
-
+edit ``package.json`` with new ``version`` number
 ::
+
     npm build
     npm publish
 
