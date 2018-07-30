@@ -104,7 +104,7 @@ Writing tests
 ~~~~~~~~~~~~~
 
 To explain test writing, I will review
-`Example.jsx <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/Example.jsx>`__
+`ExampleComponent.jsx <https://github.com/CDAT/vcdat/blob/master/frontend/test/mocha/example/ExampleComponent.jsx>`__
 and
 `ExampleTest.jsx <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx>`__,
 which I wrote to make sure that our environment was set up correctly to
@@ -113,8 +113,8 @@ following along with the code and comments in
 `ExampleTest <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx>`__.
 
 The
-`Example <https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/Example.jsx>`__
-component is extremely simple. When an ``<Example />`` component is
+`Example <https://github.com/CDAT/vcdat/blob/master/frontend/test/mocha/example/ExampleComponent.jsx>`__
+component is extremely simple. When an ``<ExampleComponent />`` component is
 rendered into the DOM, it gets replaced with
 ``<div class='test'><span>TEST</span></div>``.
 
