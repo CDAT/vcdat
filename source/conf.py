@@ -20,8 +20,8 @@
 # -- Project information -----------------------------------------------------
 
 project = u'vCDAT'
-copyright = u'2018, James Crean, Charles Doutriaux'
-author = u'James Crean, Charles Doutriaux'
+copyright = u'2018, AIMS Team'
+author = u'AIMS Team'
 
 # The short X.Y version
 version = u''
@@ -132,7 +132,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'vCDAT.tex', u'vCDAT Documentation',
-     u'James Crean, Charles Doutriaux', 'manual'),
+     u'AIMS Team', 'manual'),
 ]
 
 
