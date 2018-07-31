@@ -87,6 +87,7 @@
 <p class="caption"><span class="caption-text">Developers:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="dev_install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_environment.html">Development Environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev_coding_guidelines.html">Coding Guidelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev_testing.html">Testing vCDAT</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Releases</a><ul>
@@ -163,7 +164,7 @@
 <p>Releases can be viewed on <a class="reference external" href="https://anaconda.org/cdat/vcdat/files">anaconda.org</a>.</p>
 <div class="section" id="vcdat-manual-releases">
 <h2>vCDAT Manual Releases<a class="headerlink" href="#vcdat-manual-releases" title="Permalink to this headline">¶</a></h2>
-<p>In the event that the continuous integration service fails to make a nightly release, the following can be done to create a build an release it manually.</p>
+<p>In the event that the continuous integration service fails to make a nightly release, the following can be done to create a build and release it manually.</p>
 <ul class="simple">
 <li>Before you can release vCDAT you must be listed as a co-owner of the cdat organization</li>
 <li>cd into the vcdat directory and make sure that you are using the base conda environment. (Run <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">deactivate</span></code> to go from <em>nightly</em> to <em>base</em> for instance)</li>
@@ -183,12 +184,13 @@ anaconda -t <span class="nv">$CONDA_UPLOAD_TOKEN</span> upload -u cdat <span cla
 <span class="c1"># $BUILT_PACKAGE: The full path to the newly built .tar.bz2 package. Use the path output by conda build</span>
 </pre></div>
 </div>
-<p>Finally, make sure to test the release:</p>
+<p>Make sure to test the release:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">vcdat</span><span class="o">-</span><span class="n">version</span> <span class="n">vcdat</span> <span class="o">-</span><span class="n">c</span> <span class="n">cdat</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">vcdat</span><span class="o">-</span><span class="n">version</span>
 <span class="n">vcdat</span> <span class="o">--</span><span class="nb">print</span>
 </pre></div>
 </div>
+<p>Lastly, if the release is in the ‘main’ label, go to <a class="reference external" href="https://github.com/CDAT/vcdat/releases">Github</a> and draft a new release to match the version on Conda.</p>
 </div>
 <div class="section" id="vcs-widgets-release">
 <span id="id1"></span><h2>VCS-Widgets Release:<a class="headerlink" href="#vcs-widgets-release" title="Permalink to this headline">¶</a></h2>
@@ -197,7 +199,7 @@ anaconda -t <span class="nv">$CONDA_UPLOAD_TOKEN</span> upload -u cdat <span cla
 <span class="n">source</span> <span class="n">activate</span> <span class="n">vcdat</span>
 </pre></div>
 </div>
-<p>edit <code class="docutils literal notranslate"><span class="pre">package.json</span></code> with new <code class="docutils literal notranslate"><span class="pre">version</span></code> number</p>
+<p>Edit <code class="docutils literal notranslate"><span class="pre">package.json</span></code> with new <code class="docutils literal notranslate"><span class="pre">version</span></code> number</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">build</span>
 <span class="n">npm</span> <span class="n">publish</span>
 </pre></div>

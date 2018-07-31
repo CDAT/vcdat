@@ -144,7 +144,7 @@ Parameterizing Tests
 ^^^^^^^^^^^^^^^^^^^^^
 
 Parameterizing tests is one of the easiest ways to write tests that cover a large range of cases. 
-The CalculatorTest.jsx file contains several example of this for reference. 
+The CalculatorTest.jsx file contains several examples of this for reference. 
 Here is a simple example of what a parameterized test might look like:
 
 .. code:: javascript

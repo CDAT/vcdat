@@ -49,6 +49,7 @@ Built With
   :hidden:
   
   dev_install
+  dev_environment
   dev_coding_guidelines
   dev_testing
   dev_releases
