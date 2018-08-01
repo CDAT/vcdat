@@ -1,4 +1,4 @@
-.. _dev-coding-guidelines:
+.. _dev-releases:
 
 =================================
 Releases
