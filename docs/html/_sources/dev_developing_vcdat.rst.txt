@@ -151,6 +151,8 @@ Here is what this action does:
         };
     },
 
+*Remember, an action is really just an object* 
+
 When ``dispatch()`` is called with an action. Every reducer is given the action for processing.
 In this case, only the `Spreadhseet model <https://github.com/CDAT/vcdat/blob/master/frontend/src/js/models/Spreadsheet.js>`__ will make any changes to the store.
 This is because each reducer looks at the ``type`` of the action and compares that with the types that it handles
@@ -169,3 +171,36 @@ Once that completes, our store will finish updating and any component that relie
 
 Vcs-js
 -------
+
+Kitware has provided some basic documentation `here <https://github.com/CDAT/vcs-js>`__.
+
+Vcs-js is included via a script tag inside the `index.html <https://github.com/CDAT/vcdat/blob/master/frontend/src/index.html>`__  file.
+Vcs-js provides it's own server with which the vcs object maintains a websocket connection to.
+
+If you need to debug or develop a new feature for Vcs-js, the following is a quick run down of how a call to the ``vcs`` variable is processed.
+
+All functions that the vcs object exposes are listed in the `src/index.js <https://github.com/CDAT/vcs-js/blob/master/src/index.js>`__ file,
+and in addition to being defined here, each must be exported at the bottom of the file.
+
+Notice that each operation makes a function call with a string value such as ``'vcs.createtemplate'``.
+
+Each of these strings corresponds to a function in the `vcs-server directory <https://github.com/CDAT/vcs-js/tree/master/vcs_server>`__ 
+which has been decorated with the same string. ``'vcs.createtemplate'`` corresponds to the function decorated like this:
+
+.. code:: javascript
+
+    @exportRpc('vcs.createtemplate')
+    def somefunction(self, arugment, other_argument):
+        ...
+
+
+In this case, that function lives in `Vizualizer.py <https://github.com/CDAT/vcs-js/blob/master/vcs_server/Visualizer.py>`__. 
+In order to write a new function that vCDAT can call to do operations in Vcs-js, simply fill out the following:
+
+1. Add a new function in `src/index.js <https://github.com/CDAT/vcs-js/blob/master/src/index.js>`__
+2. Export that function at the bottom of `src/index.js <https://github.com/CDAT/vcs-js/blob/master/src/index.js>`__
+3. Create a new function in the `vcs-server directory <https://github.com/CDAT/vcs-js/tree/master/vcs_server>`__ and decorate it with the same string used in step 1.
+4. Run ``python setup.py install`` using the same conda env as vCDAT
+5. Test with vCDAT (You will need to restart any instances if they were already running)
+
+Since ``vcs`` is global you can actually call it from the dev tools directly.
