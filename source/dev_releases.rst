@@ -8,13 +8,19 @@ Releases can be viewed on anaconda.org_.
 
 .. _anaconda.org: https://anaconda.org/cdat/vcdat/files
 
+Under normal circumstances, each commit into master should have a build uploaded to 
+`Anaconda <https://anaconda.org/cdat/vcdat/files>`__ under the **nightly** label.
+If the nightly build is ready to be released to the public, simply edit the labels such
+that it has both the **main** and *nightly* labels. Then, go to 
+`Github <https://github.com/CDAT/vcdat/releases>`__ and draft a new release to match the version on Conda.
 
 
 
 vCDAT Manual Releases
 -----------------------------
 
-In the event that the continuous integration service fails to make a nightly release, the following can be done to create a build and release it manually.
+In the event that the continuous integration service fails to make a nightly release, 
+the following can be done to create a build and release it manually.
 
 - Before you can release vCDAT you must be listed as a co-owner of the cdat organization
 - cd into the vcdat directory and make sure that you are using the base conda environment. (Run ``source deactivate`` to go from *nightly* to *base* for instance)
