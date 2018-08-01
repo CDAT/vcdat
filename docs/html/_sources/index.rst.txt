@@ -51,5 +51,6 @@ Built With
   dev_install
   dev_environment
   dev_coding_guidelines
+  dev_developing_vcdat
   dev_testing
   dev_releases
