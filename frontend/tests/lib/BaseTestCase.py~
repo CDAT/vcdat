@@ -1,13 +1,19 @@
 import unittest
 from selenium import webdriver
 
+this_dir = os.path.abspath(os.path.dirname(__file__))
+libs_dir = os.path.join(this_dir, '..', 'libs')
+sys.path.append(libs_dir)
+
+
+
 class BaseTestCase(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(30)
         self.driver.maximize_window()
 
-        self.driver.get("https://aims1.llnl.gov:8080")
+        self.driver.get("http://localhost:5000")
 
     def tearDown(self):
         self.driver.quit()
