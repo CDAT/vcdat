@@ -1,5 +1,6 @@
 import unittest
 import os 
+import sys
 
 this_dir = os.path.abspath(os.path.dirname(__file__))
 lib_dir = os.path.join(this_dir, '..', 'lib')
