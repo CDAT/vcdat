@@ -1,76 +1,113 @@
+import os
 import time
 
 from BasePage import BasePage
 from BasePage import InvalidPageException
 
-class AddVariableModal(BasePage):
+class LoadVariableModal(BasePage):
 
     # _file_explorer_locator = "btn-primary"
     _load_from_locator = "load-from"
-    
+    _selected_file_locator = './/span[@class="input-group input-group-sm"]//input'
+    _load_button_locator = '//div[@class="modal-footer"]//button[@class="btn btn-primary" and text() = "Load"]'
+
     def __init__(self, driver):
-        super(AddVariableModal, self).__init__(driver)
+        super(LoadVariableModal, self).__init__(driver)
 
     def _validate_page(self, driver):
         title = driver.find_element_by_class_name("modal-title").text.strip()
-        if "Load Variable" not in title:
+        if "Load Variable" in title:
+            print("FOUND title: {t}".format(t=title))
+        else:
             raise InvalidPageException("Pop up does not show 'Load Variable'")
 
-    @property
     def load_from_file(self):
-        print("xxx load_from_file xxx")
-    
+        # click on the file icon in the File row on "Load Variable" pop up
         load_from = self.driver.find_element_by_class_name(self._load_from_locator)        
         load_button = load_from.find_element_by_xpath('.//span[@class="input-group-btn"]//button[@class="btn btn-primary"]')
-        return load_button.click()
+        load_button.click()
+
+    @property
+    def selected_file(self):
+        # return the selected file name in the "Load Variable" pop up
+        load_from = self.driver.find_element_by_class_name(self._load_from_locator)
+        selected_file = load_from.find_element_by_xpath(self._selected_file_locator).get_attribute('value')
+        return selected_file
+
+    def do_load_file(self):
+        self.driver.find_element_by_xpath(self._load_button_locator).click()
+        time.sleep(4)
 
 
 
 class FileExplorerModal(BasePage):
 
-    _dialogs_locator = '//div[@role="dialogs"]'
-    
-    _left_arrow_locator = '//div[@role="dialog"]//button[@class="path-back-button"]'
-    _curr_path_locator = '//div[@role="dialog"]//div[@class="breadcrumbs"]'
+    _file_explorer_title_locator = '//div[@class="fade in modal"]//div[@class="modal-header"]//h4[@class="modal-title"]'
+
+    _body_locator = '//div[@class="fade in modal"]//div[@class="modal-body"]'
+    _left_arrow_locator = './/button[@class="path-back-button btn btn-default"]'
+    _curr_path_locator = './/div[@class="breadcrumbs"]'
     _list_of_paths_locator = './/a[@class="path-segment"]'
+
+    # _paths_list_locator is for finding the scroll list of directories
+    _paths_list_locator = '//div[@class="fade in modal"]//div[@class="modal-body"]//ol[@class="file-list"]'
+
+    _file_explorer_select_locator = '//div[@class="fade in modal"]//div[@class="modal-footer"]//button[text()="Select"]'
+
     def __init__(self, driver):
         super(FileExplorerModal, self).__init__(driver)
 
     def _validate_page(self, driver):
         time.sleep(3)
-        #title = driver.find_element_by_class_name("modal-title").text.strip()
-        #title = driver.find_element_by_xpath(self._pop_up_title_locator).text.strip()
-
-        print("xxx FileExplorerModal._validate_page() xxx")
-        all_dialogs = driver.find_elements_by_xpath(self._dialogs_locator)
-        for dialog in all_dialogs:
-            dialog_attr = dialog.get_attribute("aria-hidden")
-            if dialog_attr and dialog_attr == 'true':
-                continue
-            title = dialog.find_element_by_class_name("modal-title").text.strip()
-            print("xxx xxx xxx title: {t}".format(t=title))
-            if "File Explorer" not in title:
-                raise InvalidPageException("Pop up does not show 'File Explorer'")
-            else:
-                print("Found File Explorer title")
-                return
+        title = driver.find_element_by_xpath(self._file_explorer_title_locator).text.strip()
+        if "File Explorer" not in title:
+            raise InvalidPageException("Pop up does not show 'File Explorer'")
+        else:
+            print("Found File Explorer title")
+        return
 
     def __go_to_root_dir(self):
+        # keep clicking on the left arrow on the File Explorer pop up
+        # till we are at the root directory.
         at_root_dir = False
-        left_arrow_element = self.driver.find_element_by_xpath(self._left_arrow_locator)
-        print("xxx xxx __go_to_root_dir xxx")
+        body = self.driver.find_element_by_xpath(self._body_locator)
+        left_arrow_element = body.find_element_by_xpath(self._left_arrow_locator)
         while at_root_dir == False:
-            print("xxx xxx ...__go_to_root_dir() xxx")
+            print("...click on left arrow")
             left_arrow_element.click()
-            curr_path_element = self.driver.find_element_by_xpath(self._curr_path_locator)
+            curr_path_element = body.find_element_by_xpath(self._curr_path_locator)
             paths_elements = curr_path_element.find_elements_by_xpath(self._list_of_paths_locator)
             if len(paths_elements) == 0:
-                print("xxx no more elements xxx")
+                print("...at root dir")
+                at_root_dir = True
+                time.sleep(3)
 
+    def __get_sample_file(self, filename):
+        # select each path specified in the filename from the scoll list of
+        # paths, and finally click on the "Select" button.
+        path_names = filename.split(os.path.sep)
+        paths_list_element = self.driver.find_element_by_xpath(self._paths_list_locator)
+
+        for p in path_names[1:]:
+            path_locator = ".//li//span[text() = '{p}']".format(p=p)
+            print("...click on {p}".format(p=p))
+            path_element = paths_list_element.find_element_by_xpath(path_locator)
+            path_element.click()
+            time.sleep(2)
+
+        print("...click on 'Select' button in File Explorer pop up")
+        self.driver.find_element_by_xpath(self._file_explorer_select_locator).click()
+        time.sleep(5)
+
+        # verify that the Load Variable pop up says the selected filename.
+
+        
+        
     def load_a_sample_file(self, filename):
         # /Users/muryanto1/work/vcdat/miniconda2/envs/vcdat/share/uvcdat/sample_data/clt.nc
         # sys.prefix: /Users/muryanto1/work/vcdat/miniconda2/envs/vcdat
         print("xxx in load_a_sample_file: {f}".format(f=filename))
         self.__go_to_root_dir()
-        time.sleep(3)
-        return 0
+        time.sleep(1)
+        self.__get_sample_file(filename)
+
