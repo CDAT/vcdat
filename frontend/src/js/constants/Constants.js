@@ -80,7 +80,8 @@ const JOYRIDE_STEPS = [
     {
         title: "Spreadsheet Toolbar",
         text:
-            "The spreadsheet toolbar controls how many rows and columns of cells should be in a given sheet. It also allows for creating and switching between sheets.",
+            "The spreadsheet toolbar controls how many rows and columns of cells should be in a given sheet.".concat(
+            " It also allows for creating and switching between sheets."),
         selector: ".spreadsheet-toolbar",
         position: "right",
         type: "click",
@@ -107,15 +108,63 @@ const JOYRIDE_STEPS = [
             "Use this as an overlay or as an in-cell side-by-side comparison.",
             '</br><span style="color: red;">Clear Cell</span> will reset the cell back to the default. ',
             "This can be undone if you accidentally click it with the undo button.",
-            '</br><span style="color: blue;">Colormap Editor</span> will open a window for creating, editing, and applying colormaps.'
+            '</br><span style="color: blue;">Colormap Editor</span> will open a window for creating, editing, and applying colormaps.',
+            '</br><span style="color: purple;">Export</span> allows you to export/save the plot. NOT Implemented.',
+            '</br><span style="color: orange;">Calculator</span> allows you to create a new variable based on calculations performed on another variable.'
         ),
         selector: ".tools-container",
         position: "right",
         type: "click"
+    },
+    {
+        title: "Calculator",
+        text: "This button opens the calculator tool! Cool right?! Yeah it's cool :p",
+        selector: "#open-calculator-button",
+        position: "right",
+        type: "hover"
+    }
+];
+
+const CALCULATOR_STEPS = [
+    {
+        title: 'Calculator Help',
+        text: 'This is a tutorial to help with understanding the calculator!',
+        selector: '#calculator-main',
+        position: 'bottom-left',
+        type: 'click'
+    },
+    {
+        title: 'Variables',
+        text: "This shows you what variables you have to work with! :]",
+        selector: '#calc-variable-region',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Result Variable',
+        text: "Enter the name of the new variable to store the calculation results.",
+        selector: '#new-variable-name',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Input Variables',
+        text: 'Perform calculations on variables that are dragged into this area.',
+        selector: '#calculation',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Calculator Buttons',
+        text: 'Click on these buttons to enter your calculations! Simple!',
+        selector: '#calc-button-region',
+        position: 'bottom-right',
+        type: 'hover'
     }
 ];
 
 export { JOYRIDE_STEPS };
+export { CALCULATOR_STEPS };
 export { ONE_VAR_PLOTS };
 export { TWO_VAR_PLOTS };
 export { BINARY_OPERATORS };

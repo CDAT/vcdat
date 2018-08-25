@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { ToastContainer } from 'react-toastify'
-import { JOYRIDE_STEPS } from '../constants/Constants.js'
+import { JOYRIDE_STEPS, CALCULATOR_STEPS } from '../constants/Constants.js'
 import Joyride from 'react-joyride'
 import 'react-joyride/lib/react-joyride.scss'
 /* global jQuery */
@@ -29,9 +29,15 @@ class AppContainer extends Component{
         
     }
 
-    startTour(){
+    startTour(steps){
         if(this.joyride){
-            this.setState({jr_run: true})
+            var STEPS = {}
+            switch(steps){
+                case 0: STEPS = JOYRIDE_STEPS; break;
+                case 1: STEPS = CALCULATOR_STEPS;
+            }
+
+            this.setState({jr_run: true, jr_steps: STEPS})
         }
     }
 
@@ -61,7 +67,8 @@ class AppContainer extends Component{
     render() {
         return (
             <div id='app-container'>
-                <Joyride ref={(el)=>{this.joyride = el}}
+                <Joyride 
+                    ref={(el)=>{this.joyride = el}}
                     steps={this.state.jr_steps}
                     run={this.state.jr_run}
                     autoStart={true}

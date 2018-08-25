@@ -554,7 +554,7 @@ class Calculator extends React.Component {
     render() {
         const calculation_string = this.printCalculation();
         return (
-            <Modal show={this.props.show} onHide={this.props.close} bsSize="large" onKeyDown={this.handleKeyDown}>
+            <Modal id='calculator-main' show={this.props.show} onHide={this.props.close} bsSize="large" onKeyDown={this.handleKeyDown}>
                 <Modal.Header closeButton>
                     <Modal.Title>Calculator</Modal.Title>
                 </Modal.Header>
@@ -583,6 +583,8 @@ class Calculator extends React.Component {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
+                    <Button onClick={() => this.props.startTour(1)} className="help-button main-help btn btn-xs btn-default">
+                    <i className="glyphicon glyphicon-question-sign" /> Help</Button>
                     <Button onClick={this.props.close}>Close</Button>
                 </Modal.Footer>
             </Modal>
@@ -596,7 +598,8 @@ Calculator.propTypes = {
     variables: PropTypes.object,
     variable_names: PropTypes.arrayOf(PropTypes.string),
     removeVariable: PropTypes.func,
-    loadVariable: PropTypes.func
+    loadVariable: PropTypes.func,
+    startTour: PropTypes.func
 };
 
 /* istanbul ignore next */

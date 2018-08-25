@@ -136,8 +136,8 @@ class PlotInspectorWrapper extends React.Component {
                     handleOpenExportModal={this.handleOpenExportModal}
                     handleOpenCalculator={this.handleOpenCalculator}
                 />
-                {this.state.show_export_modal && <ExportModal show={this.state.show_export_modal} close={this.handleCloseExportModal} />}
-                {this.state.show_calculator && <Calculator show={this.state.show_calculator} close={this.handleCloseCalculator} />}
+                {this.state.show_export_modal && <ExportModal {...this.props} show={this.state.show_export_modal} close={this.handleCloseExportModal} />}
+                {this.state.show_calculator && <Calculator {...this.props} show={this.state.show_calculator} close={this.handleCloseCalculator} />}
             </div>
         );
     }
