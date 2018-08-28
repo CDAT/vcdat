@@ -43,6 +43,7 @@ class ColormapEditor extends Component {
             updateGraphicsMethod: PropTypes.func,
             applyColormap: PropTypes.func,
             graphics_methods: PropTypes.object,
+            startTour: PropTypes.func,
         }; 
     }
 
@@ -332,84 +333,90 @@ class ColormapEditor extends Component {
         return(
             <div>
                 <Modal show={this.props.show} onHide={this.props.close}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Editing Colormap: {this.state.selected_colormap_name}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="form-inline " style={{display: "flex", justifyContent: "center"}}>
-                            <div className="form-group">
-                                <label htmlFor="cm-select" className="control-label">Colormaps</label>
-                                <select
-                                    name="cm-select"
-                                    className="form-control example"
-                                    style={{marginLeft: "5px", marginRight: "5px"}}
-                                    onChange={(event) => {this.handleSelectColormap(event.target.value)}}
-                                    value={this.state.selected_colormap_name}>
-                                    { this.props.colormaps ? (
-                                        Object.keys(this.props.colormaps).sort(function (a, b) {
-                                            return a.toLowerCase().localeCompare(b.toLowerCase());
-                                        }).map( name => ( <option key={name} value={name}>{name}</option> ))
-                                        ) : (
-                                        <option value="" disabled />
-                                    )}
-                                </select>
+                    <div id='colormap-editor-main'>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Editing Colormap: {this.state.selected_colormap_name}&nbsp;
+                                <Button onClick={() => this.props.startTour(2)} className="help-button main-help btn btn-xs btn-default">
+                                    <i className="glyphicon glyphicon-question-sign" />Help
+                                </Button>
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="form-inline " style={{display: "flex", justifyContent: "center"}}>
+                                <div className="form-group">
+                                    <label htmlFor="cm-select" className="control-label">Colormaps</label>
+                                    <select id='colormap-dropdown'
+                                        name="cm-select"
+                                        className="form-control example"
+                                        style={{marginLeft: "5px", marginRight: "5px"}}
+                                        onChange={(event) => {this.handleSelectColormap(event.target.value)}}
+                                        value={this.state.selected_colormap_name}>
+                                        { this.props.colormaps ? (
+                                            Object.keys(this.props.colormaps).sort(function (a, b) {
+                                                return a.toLowerCase().localeCompare(b.toLowerCase());
+                                            }).map( name => ( <option key={name} value={name}>{name}</option> ))
+                                            ) : (
+                                            <option value="" disabled />
+                                        )}
+                                    </select>
+                                </div>
+                                <div>
+                                    <button 
+                                        title="Create a new copy of the selected colormap"
+                                        onClick={() => {this.handleOpenNewColormapModal()}}
+                                        className="btn btn-primary btn-sm"
+                                        style={{marginLeft: "5px"}}>
+                                            New
+                                    </button>
+                                    <button
+                                        title="Delete Selected Colormap"
+                                        onClick={() => {this.handleDeleteColormap()}}
+                                        className="btn btn-danger btn-sm"
+                                        style={{marginLeft: "5px"}}>
+                                            <i className="glyphicon glyphicon-trash"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div>
-                                <button 
-                                    title="Create a new copy of the selected colormap"
-                                    onClick={() => {this.handleOpenNewColormapModal()}}
-                                    className="btn btn-primary btn-sm"
-                                    style={{marginLeft: "5px"}}>
-                                        New
-                                </button>
-                                <button
-                                    title="Delete Selected Colormap"
-                                    onClick={() => {this.handleDeleteColormap()}}
-                                    className="btn btn-danger btn-sm"
-                                    style={{marginLeft: "5px"}}>
-                                        <i className="glyphicon glyphicon-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <hr/>
-                        <ColorPicker 
-                            color={this.state.currentColor}
-                            onChange={(color) => {this.handleChange(color)}}
-                        />
-                        <ColormapWidget
-                            current_colormap={this.state.current_colormap}
-                            color={this.state.currentColor} 
-                            handleCellClick={(start_cell, end_cell) => {this.handleCellClick(start_cell, end_cell)}}
-                            selected_cells_start={this.state.selected_cells_start}
-                            selected_cells_end= {this.state.selected_cells_end}  
-                        />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button 
-                            style={{float: "left"}}
-                            onClick={() => {this.blendColors()}}>
-                            Blend
-                        </Button>
-                        <Button 
-                            style={{float: "left"}}
-                            onClick={() => {this.resetColormap()}}>
-                            Reset
-                        </Button>
-                        <Button
-                            style={{float: "left"}}
-                            disabled={apply_disabled}
-                            title={ apply_disabled ? 
-                                "A cell must be selected to apply a colormap" 
-                                : 
-                                "Apply the colormap shown to the currently selected cell"
-                            }
-                            onClick={() => {this.handleApplyColormap()}}>
-                            Apply
-                        </Button>
-                        <Button onClick={() => {this.saveColormap(this.state.selected_colormap_name)}} bsStyle="primary">Save</Button>
-                        <Button onClick={this.openImportExportModal.bind(this)}>Import/Export</Button>
-                        <Button onClick={this.props.close}>Close</Button>
-                    </Modal.Footer>
+                            <hr/>
+                            <ColorPicker 
+                                color={this.state.currentColor}
+                                onChange={(color) => {this.handleChange(color)}}
+                            />
+                            <ColormapWidget
+                                current_colormap={this.state.current_colormap}
+                                color={this.state.currentColor} 
+                                handleCellClick={(start_cell, end_cell) => {this.handleCellClick(start_cell, end_cell)}}
+                                selected_cells_start={this.state.selected_cells_start}
+                                selected_cells_end= {this.state.selected_cells_end}  
+                            />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button 
+                                style={{float: "left"}}
+                                onClick={() => {this.blendColors()}}>
+                                Blend
+                            </Button>
+                            <Button 
+                                style={{float: "left"}}
+                                onClick={() => {this.resetColormap()}}>
+                                Reset
+                            </Button>
+                            <Button
+                                style={{float: "left"}}
+                                disabled={apply_disabled}
+                                title={ apply_disabled ? 
+                                    "A cell must be selected to apply a colormap" 
+                                    : 
+                                    "Apply the colormap shown to the currently selected cell"
+                                }
+                                onClick={() => {this.handleApplyColormap()}}>
+                                Apply
+                            </Button>
+                            <Button onClick={() => {this.saveColormap(this.state.selected_colormap_name)}} bsStyle="primary">Save</Button>
+                            <Button onClick={this.openImportExportModal.bind(this)}>Import/Export</Button>
+                            <Button onClick={this.props.close}>Close</Button>
+                        </Modal.Footer>
+                    </div>
                 </Modal>
                 <NewColormapModal 
                     show={this.state.show_new_colormap_modal}

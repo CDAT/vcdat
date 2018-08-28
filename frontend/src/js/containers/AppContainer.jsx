@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { ToastContainer } from 'react-toastify'
-import { JOYRIDE_STEPS, CALCULATOR_STEPS } from '../constants/Constants.js'
+import { JOYRIDE_STEPS, CALCULATOR_STEPS, COLORMAP_STEPS } from '../constants/Constants.js'
 import Joyride from 'react-joyride'
 import 'react-joyride/lib/react-joyride.scss'
 /* global jQuery */
@@ -34,7 +34,8 @@ class AppContainer extends Component{
             var STEPS = {}
             switch(steps){
                 case 0: STEPS = JOYRIDE_STEPS; break;
-                case 1: STEPS = CALCULATOR_STEPS;
+                case 1: STEPS = CALCULATOR_STEPS; break;
+                case 2: STEPS = COLORMAP_STEPS; break;
             }
 
             this.setState({jr_run: true, jr_steps: STEPS})

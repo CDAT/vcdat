@@ -136,8 +136,8 @@ class PlotInspectorWrapper extends React.Component {
                     handleOpenExportModal={this.handleOpenExportModal}
                     handleOpenCalculator={this.handleOpenCalculator}
                 />
-                {this.state.show_export_modal && <ExportModal {...this.props} show={this.state.show_export_modal} close={this.handleCloseExportModal} />}
-                {this.state.show_calculator && <Calculator {...this.props} show={this.state.show_calculator} close={this.handleCloseCalculator} />}
+                {this.state.show_export_modal && <ExportModal show={this.state.show_export_modal} close={this.handleCloseExportModal} />}
+                {this.state.show_calculator && <Calculator startTour={this.props.startTour} show={this.state.show_calculator} close={this.handleCloseCalculator} />}
             </div>
         );
     }
@@ -157,7 +157,8 @@ PlotInspectorWrapper.propTypes = {
     deleteVariableInPlot: PropTypes.func,
     addPlot: PropTypes.func,
     deletePlot: PropTypes.func,
-    cell_selected: PropTypes.string
+    cell_selected: PropTypes.string,
+    startTour: PropTypes.func,
 };
 
 const mapStateToProps = state => {

@@ -110,7 +110,8 @@ const JOYRIDE_STEPS = [
             "This can be undone if you accidentally click it with the undo button.",
             '</br><span style="color: blue;">Colormap Editor</span> will open a window for creating, editing, and applying colormaps.',
             '</br><span style="color: purple;">Export</span> allows you to export/save the plot. NOT Implemented.',
-            '</br><span style="color: orange;">Calculator</span> allows you to create a new variable based on calculations performed on another variable.'
+            '</br><span style="color: orange;">Calculator</span> allows you to create a new variable based on',
+            ' calculations performed on another variable.'
         ),
         selector: ".tools-container",
         position: "right",
@@ -127,37 +128,113 @@ const JOYRIDE_STEPS = [
 
 const CALCULATOR_STEPS = [
     {
-        title: 'Calculator Help',
-        text: 'This is a tutorial to help with understanding the calculator!',
+        title: 'Calculator Tour',
+        text: 'This is a tour of the calculator and how to use it!',
         selector: '#calculator-main',
-        position: 'bottom-left',
+        position: 'left',
         type: 'click'
     },
     {
-        title: 'Variables',
-        text: "This shows you what variables you have to work with! :]",
+        title: 'Variables List',
+        text: "All the available variables that you've loaded are listed here.",
         selector: '#calc-variable-region',
         position: 'right',
         type: 'click'
     },
     {
-        title: 'Result Variable',
-        text: "Enter the name of the new variable to store the calculation results.",
+        title: 'Derived Variable',
+        text: "Enter the name of the new variable you wish to derive here.",
         selector: '#new-variable-name',
         position: 'left',
         type: 'click'
     },
     {
-        title: 'Input Variables',
-        text: 'Perform calculations on variables that are dragged into this area.',
+        title: 'Calculation Area',
+        text: 'The calculation to be performed will be expressed here.'.concat(
+            '<br />To enter a variable, drag it outside of this area and within the green rectangle that appears.'),
         selector: '#calculation',
         position: 'right',
         type: 'click'
     },
     {
-        title: 'Calculator Buttons',
-        text: 'Click on these buttons to enter your calculations! Simple!',
+        title: 'Calculator Operations',
+        text: "The calculator supports TWO operands (constants or variables) and ONE operator, when deriving a new variable.".concat(
+            "However you can use previously derived variables to perform further calculations."),
         selector: '#calc-button-region',
+        position: 'bottom-right',
+        type: 'hover'
+    },
+    {
+        title: 'Regrid Operations',
+        text: "Clicking the 'Regrid' button once you have entered a variable will perform a regrid operation.".concat(
+            "<br />The drop-down on the 'Regrid' button lets you specify what kind of regrid operation to perform.",
+            '<br /><span style="color: blue;">Linear</span> is the default regrid operation.'
+        ),
+        selector: '#regrid',
+        position: 'bottom-right',
+        type: 'hover'
+    },
+    {
+        title: 'Complete Calculation',
+        text: "When you are done setting the calculation click 'Enter' to perform the calculation and have it saved as a new derived variable.",
+        selector: '#enter',
+        position: 'bottom-right',
+        type: 'hover'
+    }
+];
+
+const COLORMAP_STEPS = [
+    {
+        title: 'Colormap Editor Tour',
+        text: 'This is a tour of the Colormap Editor and how to use it!',
+        selector: '#colormap-editor-main',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Colormap List',
+        text: "This dropdown lets you choose from various colormaps.",
+        selector: '#colormap-dropdown',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Calculation Area',
+        text: 'The calculation to be performed will be expressed here.'.concat(
+            'To enter a variable, drag it outside of this area and within the green rectangle that appears.'),
+        selector: '#colormap-cells-container',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Derived Variable',
+        text: "Enter the name of the new variable you wish to derive here.",
+        selector: '#color-pickers',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Calculator Operations',
+        text: "The calculator supports TWO operands (constants or variables) and ONE operator when deriving a new variable.".concat(
+            "<br />However you can use previously derived variables to perform further calculations."),
+        selector: '#calc-button-region',
+        position: 'bottom-right',
+        type: 'hover'
+    },
+    {
+        title: 'Regrid Operations',
+        text: "Clicking the 'Regrid' button once you have entered a variable will perform a regrid operation.".concat(
+            "<br />The drop-down on the 'Regrid' button lets you specify what kind of regrid operation to perform.",
+            '<br /><span style="color: blue;">Linear</span> is the default regrid operation.'
+        ),
+        selector: '#regrid',
+        position: 'bottom-right',
+        type: 'hover'
+    },
+    {
+        title: 'Complete Calculation',
+        text: "When you are done setting the calculation click 'Enter' to perform the calculation and have it saved as a new derived variable.",
+        selector: '#enter',
         position: 'bottom-right',
         type: 'hover'
     }
@@ -165,6 +242,7 @@ const CALCULATOR_STEPS = [
 
 export { JOYRIDE_STEPS };
 export { CALCULATOR_STEPS };
+export { COLORMAP_STEPS };
 export { ONE_VAR_PLOTS };
 export { TWO_VAR_PLOTS };
 export { BINARY_OPERATORS };
