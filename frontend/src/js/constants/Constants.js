@@ -199,45 +199,53 @@ const COLORMAP_STEPS = [
         type: 'click'
     },
     {
-        title: 'Calculation Area',
-        text: 'The calculation to be performed will be expressed here.'.concat(
-            'To enter a variable, drag it outside of this area and within the green rectangle that appears.'),
+        title: 'Create New Colormap',
+        text: "Click this button to create a new copy of the current color-map which you can then modify and save as you like.",
+        selector: '#btn-new-colormap',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Color Grid',
+        text: 'All the colors of the color map are listed here in order. Clicking on a cell will allow you to change its color'.concat(
+            '<br />You can also select a range of cells by first clicking one cell and then holding shift and clicking on another.'
+        ),
         selector: '#colormap-cells-container',
         position: 'right',
         type: 'click'
     },
     {
-        title: 'Derived Variable',
-        text: "Enter the name of the new variable you wish to derive here.",
+        title: 'Color Picker',
+        text: "Once you have selected a cell, you can change the colors of the cell to your choice of predefined or custom colors.".concat(
+            '<br />Note: If you select multiple cells, only the color of the last cell in the range will actually be changed.'
+        ),
         selector: '#color-pickers',
         position: 'left',
         type: 'click'
     },
     {
-        title: 'Calculator Operations',
-        text: "The calculator supports TWO operands (constants or variables) and ONE operator when deriving a new variable.".concat(
-            "<br />However you can use previously derived variables to perform further calculations."),
-        selector: '#calc-button-region',
-        position: 'bottom-right',
-        type: 'hover'
-    },
-    {
-        title: 'Regrid Operations',
-        text: "Clicking the 'Regrid' button once you have entered a variable will perform a regrid operation.".concat(
-            "<br />The drop-down on the 'Regrid' button lets you specify what kind of regrid operation to perform.",
-            '<br /><span style="color: blue;">Linear</span> is the default regrid operation.'
+        title: 'Blend Colors',
+        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
+            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
         ),
-        selector: '#regrid',
-        position: 'bottom-right',
-        type: 'hover'
+        selector: '#btn-blend',
+        position: 'top',
+        type: 'click'
     },
     {
-        title: 'Complete Calculation',
-        text: "When you are done setting the calculation click 'Enter' to perform the calculation and have it saved as a new derived variable.",
-        selector: '#enter',
-        position: 'bottom-right',
-        type: 'hover'
-    }
+        title: 'Save Colormap',
+        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
+        selector: '#btn-save-colormap',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Import and Export',
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
+        selector: '#btn-import-export',
+        position: 'top',
+        type: 'click'
+    },
 ];
 
 export { JOYRIDE_STEPS };

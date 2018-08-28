@@ -362,6 +362,7 @@ class ColormapEditor extends Component {
                                 </div>
                                 <div>
                                     <button 
+                                        id='btn-new-colormap'
                                         title="Create a new copy of the selected colormap"
                                         onClick={() => {this.handleOpenNewColormapModal()}}
                                         className="btn btn-primary btn-sm"
@@ -392,6 +393,7 @@ class ColormapEditor extends Component {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button 
+                                id='btn-blend'
                                 style={{float: "left"}}
                                 onClick={() => {this.blendColors()}}>
                                 Blend
@@ -412,8 +414,8 @@ class ColormapEditor extends Component {
                                 onClick={() => {this.handleApplyColormap()}}>
                                 Apply
                             </Button>
-                            <Button onClick={() => {this.saveColormap(this.state.selected_colormap_name)}} bsStyle="primary">Save</Button>
-                            <Button onClick={this.openImportExportModal.bind(this)}>Import/Export</Button>
+                            <Button id='btn-save-colormap' onClick={() => {this.saveColormap(this.state.selected_colormap_name)}} bsStyle="primary">Save</Button>
+                            <Button id='btn-import-export' onClick={this.openImportExportModal.bind(this)}>Import/Export</Button>
                             <Button onClick={this.props.close}>Close</Button>
                         </Modal.Footer>
                     </div>
