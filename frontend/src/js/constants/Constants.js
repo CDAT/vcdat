@@ -109,41 +109,45 @@ const JOYRIDE_STEPS = [
             '</br><span style="color: red;">Clear Cell</span> will reset the cell back to the default. ',
             "This can be undone if you accidentally click it with the undo button.",
             '</br><span style="color: blue;">Colormap Editor</span> will open a window for creating, editing, and applying colormaps.',
-            '</br><span style="color: purple;">Export</span> allows you to export/save the plot. NOT Implemented.',
-            '</br><span style="color: orange;">Calculator</span> allows you to create a new variable based on',
-            ' calculations performed on another variable.'
+            '</br><span style="color: purple;">Export</span> allows you to export/save the plot.',
+            '</br><span style="color: orange;">Calculator</span> allows you to derive new variables using',
+            ' available variables and mathematical operations.'
         ),
         selector: ".tools-container",
         position: "right",
         type: "click"
-    },
-    {
-        title: "Calculator",
-        text: "This button opens the calculator tool! Cool right?! Yeah it's cool :p",
-        selector: "#open-calculator-button",
-        position: "right",
-        type: "hover"
     }
 ];
-
+    
 const CALCULATOR_STEPS = [
     {
         title: 'Calculator Tour',
-        text: 'This is a tour of the calculator and how to use it!',
+        text: "This is the calculator. It Helps you create new variables. Let's take a look!",
         selector: '#calculator-main',
         position: 'left',
         type: 'click'
     },
     {
+        title: 'Calculator Operations',
+        text: "At the moment the calculator can only perform one operation at the time, either based on ".concat(
+            "<span style='color: orange;'>TWO operands</span> (variables or constants) or a ",
+            "<span style='color: green;'>SINGLE variable OPERATOR.</span>"
+        ),
+        selector: '#calc-button-region',
+        position: 'bottom-right',
+        type: 'hover'
+    },
+    {
         title: 'Variables List',
-        text: "All the available variables that you've loaded are listed here.",
+        text: "All the available variables that you have loaded are listed here.",
         selector: '#calc-variable-region',
         position: 'right',
         type: 'click'
     },
     {
         title: 'Derived Variable',
-        text: "Enter the name of the new variable you wish to derive here.",
+        text: "The final name for the derived variable appears here. VDAT automatically constructs one for you, ".concat(
+            "based on your operations, but you can decide on another name by typing it here."),
         selector: '#new-variable-name',
         position: 'left',
         type: 'click'
@@ -151,23 +155,14 @@ const CALCULATOR_STEPS = [
     {
         title: 'Calculation Area',
         text: 'The calculation to be performed will be expressed here.'.concat(
-            '<br />To enter a variable, drag it outside of this area and within the green rectangle that appears.'),
+            '<br />To use a variable, drag it in the green rectangle.'),
         selector: '#calculation',
         position: 'right',
         type: 'click'
     },
     {
-        title: 'Calculator Operations',
-        text: "The calculator supports TWO operands (constants or variables) and ONE operator, when deriving a new variable.".concat(
-            "However you can use previously derived variables to perform further calculations."),
-        selector: '#calc-button-region',
-        position: 'bottom-right',
-        type: 'hover'
-    },
-    {
         title: 'Regrid Operations',
-        text: "Clicking the 'Regrid' button once you have entered a variable will perform a regrid operation.".concat(
-            "<br />The drop-down on the 'Regrid' button lets you specify what kind of regrid operation to perform.",
+        text: "The 'Regrid' drop-down, let's you decide which regridder tool and method you would like to use.".concat(
             '<br /><span style="color: blue;">Linear</span> is the default regrid operation.'
         ),
         selector: '#regrid',
@@ -175,8 +170,11 @@ const CALCULATOR_STEPS = [
         type: 'hover'
     },
     {
-        title: 'Complete Calculation',
-        text: "When you are done setting the calculation click 'Enter' to perform the calculation and have it saved as a new derived variable.",
+        title: 'Compute New Variable',
+        text: "When you are done setting the calculation click the 'Enter' button or simply press 'Enter' ".concat(
+            "to perform the calculation and have it saved as a new derived variable.",
+            "You can use it right away to derive yet another variable."
+        ),
         selector: '#enter',
         position: 'bottom-right',
         type: 'hover'
@@ -207,7 +205,7 @@ const COLORMAP_STEPS = [
     },
     {
         title: 'Color Grid',
-        text: 'All the colors of the color map are listed here in order. Clicking on a cell will allow you to change its color'.concat(
+        text: 'All the colors of the color map are listed here in order. Clicking on a cell will allow you to change its color.'.concat(
             '<br />You can also select a range of cells by first clicking one cell and then holding shift and clicking on another.'
         ),
         selector: '#colormap-cells-container',
@@ -234,14 +232,14 @@ const COLORMAP_STEPS = [
     },
     {
         title: 'Save Colormap',
-        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
+        text: "Clicking this button will save your changes on the current colormap.",
         selector: '#btn-save-colormap',
         position: 'top',
         type: 'click'
     },
     {
         title: 'Import and Export',
-        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a JSON colormap file.",
         selector: '#btn-import-export',
         position: 'top',
         type: 'click'
