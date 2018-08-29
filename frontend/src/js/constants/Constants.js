@@ -109,20 +109,13 @@ const JOYRIDE_STEPS = [
             '</br><span style="color: red;">Clear Cell</span> will reset the cell back to the default. ',
             "This can be undone if you accidentally click it with the undo button.",
             '</br><span style="color: blue;">Colormap Editor</span> will open a window for creating, editing, and applying colormaps.',
-            '</br><span style="color: purple;">Export</span> allows you to export/save the plot. NOT Implemented.',
-            '</br><span style="color: orange;">Calculator</span> allows you to create a new variable based on',
-            ' calculations performed on another variable.'
+            '</br><span style="color: purple;">Export</span> allows you to export/save the plot.',
+            '</br><span style="color: orange;">Calculator</span> allows you to derive new variables using',
+            ' available variables and mathematical operations.'
         ),
         selector: ".tools-container",
         position: "right",
         type: "click"
-    },
-    {
-        title: "Calculator",
-        text: "This button opens the calculator tool! Cool right?! Yeah it's cool :p",
-        selector: "#open-calculator-button",
-        position: "right",
-        type: "hover"
     }
 ];
 
