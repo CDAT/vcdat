@@ -33,6 +33,7 @@ class LeftSideBar extends Component {
                     selectTemplate={this.props.selectTemplate}
                     updateTemplate={this.props.updateTemplate}
                     removeTemplate={this.props.removeTemplate}
+                    startTour={this.props.startTour}
                 />
             </div>
         )
@@ -57,6 +58,7 @@ LeftSideBar.propTypes ={
     removeVariable: PropTypes.func,
     selectVariable: PropTypes.func,
     selected_variable: PropTypes.string,
+    startTour: PropTypes.func,
 }
 
 const mapStateToProps = (state) => {

@@ -129,21 +129,32 @@ const JOYRIDE_STEPS = [
 const CALCULATOR_STEPS = [
     {
         title: 'Calculator Tour',
-        text: 'This is a tour of the calculator and how to use it!',
+        text: "This is the calculator. It Helps you create new variables. Let's take a look!",
         selector: '#calculator-main',
         position: 'left',
         type: 'click'
     },
     {
+        title: 'Calculator Operations',
+        text: "At the moment the calculator can only perform one operation at the time, either based on ".concat(
+            "<span style='color: orange;'>TWO operands</span> (variables or constants) or a ",
+            "<span style='color: green;'>SINGLE variable OPERATOR.</span>"
+        ),
+        selector: '#calc-button-region',
+        position: 'bottom-right',
+        type: 'hover'
+    },
+    {
         title: 'Variables List',
-        text: "All the available variables that you've loaded are listed here.",
+        text: "All the available variables that you have loaded are listed here.",
         selector: '#calc-variable-region',
         position: 'right',
         type: 'click'
     },
     {
         title: 'Derived Variable',
-        text: "Enter the name of the new variable you wish to derive here.",
+        text: "The final name for the derived variable appears here. VDAT automatically constructs one for you, ".concat(
+            "based on your operations, but you can decide on another name by typing it here."),
         selector: '#new-variable-name',
         position: 'left',
         type: 'click'
@@ -151,23 +162,14 @@ const CALCULATOR_STEPS = [
     {
         title: 'Calculation Area',
         text: 'The calculation to be performed will be expressed here.'.concat(
-            '<br />To enter a variable, drag it outside of this area and within the green rectangle that appears.'),
+            '<br />To use a variable, drag it in the green rectangle.'),
         selector: '#calculation',
         position: 'right',
         type: 'click'
     },
     {
-        title: 'Calculator Operations',
-        text: "The calculator supports TWO operands (constants or variables) and ONE operator, when deriving a new variable.".concat(
-            "However you can use previously derived variables to perform further calculations."),
-        selector: '#calc-button-region',
-        position: 'bottom-right',
-        type: 'hover'
-    },
-    {
         title: 'Regrid Operations',
-        text: "Clicking the 'Regrid' button once you have entered a variable will perform a regrid operation.".concat(
-            "<br />The drop-down on the 'Regrid' button lets you specify what kind of regrid operation to perform.",
+        text: "The 'Regrid' drop-down, let's you decide which regridder tool and method you would like to use".concat(
             '<br /><span style="color: blue;">Linear</span> is the default regrid operation.'
         ),
         selector: '#regrid',
@@ -175,8 +177,11 @@ const CALCULATOR_STEPS = [
         type: 'hover'
     },
     {
-        title: 'Complete Calculation',
-        text: "When you are done setting the calculation click 'Enter' to perform the calculation and have it saved as a new derived variable.",
+        title: 'Compute New Variable',
+        text: "When you are done setting the calculation click the 'Enter' button or simply press 'Enter' ".concat(
+            "to perform the calculation and have it saved as a new derived variable.",
+            "You can use it right away to derive yet another variable."
+        ),
         selector: '#enter',
         position: 'bottom-right',
         type: 'hover'
@@ -248,9 +253,192 @@ const COLORMAP_STEPS = [
     },
 ];
 
+const LOAD_VARIABLE_STEPS = [
+    {
+        title: 'Colormap List',
+        text: "This dropdown lets you choose from various colormaps.",
+        selector: '#colormap-dropdown',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Create New Colormap',
+        text: "Click this button to create a new copy of the current color-map which you can then modify and save as you like.",
+        selector: '#btn-new-colormap',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Color Grid',
+        text: 'All the colors of the color map are listed here in order. Clicking on a cell will allow you to change its color'.concat(
+            '<br />You can also select a range of cells by first clicking one cell and then holding shift and clicking on another.'
+        ),
+        selector: '#colormap-cells-container',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Color Picker',
+        text: "Once you have selected a cell, you can change the colors of the cell to your choice of predefined or custom colors.".concat(
+            '<br />Note: If you select multiple cells, only the color of the last cell in the range will actually be changed.'
+        ),
+        selector: '#color-pickers',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Blend Colors',
+        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
+            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
+        ),
+        selector: '#btn-blend',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Save Colormap',
+        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
+        selector: '#btn-save-colormap',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Import and Export',
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
+        selector: '#btn-import-export',
+        position: 'top',
+        type: 'click'
+    },
+];
+
+const TEMPLATE_EDITOR_STEPS = [
+    {
+        title: 'Template Editor Tour',
+        text: 'This will explain some of the main components of the template editor.',
+        selector: '#template-editor-main',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Template Preview',
+        text: "This shows a preview of the template as changes are made.",
+        selector: '#test-12345',
+        position: 'bottom',
+        type: 'click'
+    },
+    {
+        title: 'Blend Colors',
+        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
+            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
+        ),
+        selector: '#btn-blend',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Save Colormap',
+        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
+        selector: '#btn-save-colormap',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Import and Export',
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
+        selector: '#btn-import-export',
+        position: 'top',
+        type: 'click'
+    },
+];
+
+const BOXFILL_EDITOR_STEPS = [
+    {
+        title: 'Blend Colors',
+        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
+            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
+        ),
+        selector: '#btn-blend',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Save Colormap',
+        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
+        selector: '#btn-save-colormap',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Import and Export',
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
+        selector: '#btn-import-export',
+        position: 'top',
+        type: 'click'
+    },
+];
+
+const ISOFILL_EDITOR_STEPS = [
+    {
+        title: 'Blend Colors',
+        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
+            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
+        ),
+        selector: '#btn-blend',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Save Colormap',
+        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
+        selector: '#btn-save-colormap',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Import and Export',
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
+        selector: '#btn-import-export',
+        position: 'top',
+        type: 'click'
+    },
+];
+
+const ISOLINE_EDITOR_STEPS = [
+    {
+        title: 'Blend Colors',
+        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
+            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
+        ),
+        selector: '#btn-blend',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Save Colormap',
+        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
+        selector: '#btn-save-colormap',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Import and Export',
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
+        selector: '#btn-import-export',
+        position: 'top',
+        type: 'click'
+    },
+];
+
+
+
 export { JOYRIDE_STEPS };
 export { CALCULATOR_STEPS };
 export { COLORMAP_STEPS };
+export { LOAD_VARIABLE_STEPS };
+export { TEMPLATE_EDITOR_STEPS };
+export { BOXFILL_EDITOR_STEPS };
+export { ISOFILL_EDITOR_STEPS };
+export { ISOLINE_EDITOR_STEPS };
 export { ONE_VAR_PLOTS };
 export { TWO_VAR_PLOTS };
 export { BINARY_OPERATORS };
