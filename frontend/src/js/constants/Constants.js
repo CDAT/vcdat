@@ -198,7 +198,9 @@ const COLORMAP_STEPS = [
     },
     {
         title: 'Create New Colormap',
-        text: "Click this button to create a copy of the current color-map which you can then modify and save.",
+        text: "Click this button to create a copy of the current color-map which you can then modify and save.".concat(
+            "<br />Once clicked, a pop-up will appear for you to choose the new colormap name."
+        ),
         selector: '#btn-new-colormap',
         position: 'right',
         type: 'click'
