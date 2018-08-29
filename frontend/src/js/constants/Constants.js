@@ -146,7 +146,7 @@ const CALCULATOR_STEPS = [
     },
     {
         title: 'Derived Variable',
-        text: "The final name for the derived variable appears here. VDAT automatically constructs one for you, ".concat(
+        text: "The final name for the derived variable appears here. vCDAT automatically constructs one for you, ".concat(
             "based on your operations, but you can decide on another name by typing it here."),
         selector: '#new-variable-name',
         position: 'left',
@@ -162,8 +162,8 @@ const CALCULATOR_STEPS = [
     },
     {
         title: 'Regrid Operations',
-        text: "The 'Regrid' drop-down, let's you decide which regridder tool and method you would like to use.".concat(
-            '<br /><span style="color: blue;">Linear</span> is the default regrid operation.'
+        text: "The 'Regrid' drop-down let's you decide which regridder tool and method you would like to use.".concat(
+            '<br /><span style="color: blue;">ESMF/Linear</span> is the default regrid operation.'
         ),
         selector: '#regrid',
         position: 'bottom-right',
@@ -191,21 +191,21 @@ const COLORMAP_STEPS = [
     },
     {
         title: 'Colormap List',
-        text: "This dropdown lets you choose from various colormaps.",
+        text: "This dropdown lets you choose from existing colormaps.",
         selector: '#colormap-dropdown',
         position: 'right',
         type: 'click'
     },
     {
         title: 'Create New Colormap',
-        text: "Click this button to create a new copy of the current color-map which you can then modify and save as you like.",
+        text: "Click this button to create a copy of the current color-map which you can then modify and save.",
         selector: '#btn-new-colormap',
         position: 'right',
         type: 'click'
     },
     {
         title: 'Color Grid',
-        text: 'All the colors of the color map are listed here in order. Clicking on a cell will allow you to change its color.'.concat(
+        text: 'The colors and their respective index are listed here in order. Clicking on a cell will allow you to adjust the color (see next frame).'.concat(
             '<br />You can also select a range of cells by first clicking one cell and then holding shift and clicking on another.'
         ),
         selector: '#colormap-cells-container',
@@ -223,7 +223,7 @@ const COLORMAP_STEPS = [
     },
     {
         title: 'Blend Colors',
-        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
+        text: "While having a cell range selected, clicking this button will interpolate the colors between the first cell".concat(
             ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
         ),
         selector: '#btn-blend',
