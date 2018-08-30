@@ -317,7 +317,8 @@ SpreadsheetContainer.propTypes = {
     shiftSheet: PropTypes.func,
     updateColCount: PropTypes.func,
     updateRowCount: PropTypes.func,
-    updateSelectedCells: PropTypes.func
+    updateSelectedCells: PropTypes.func,
+    startTour: PropTypes.func
 }
 
 const mapStateToProps = (state) => {

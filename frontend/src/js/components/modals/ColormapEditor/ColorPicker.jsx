@@ -62,7 +62,7 @@ class ColorPicker extends Component {
             }
         });
         return(
-            <div>
+            <div id='color-pickers'>
                 <div style={styles.container}>
                     <div style={styles.container_vertical}>
                         <BasicColorSwatch 

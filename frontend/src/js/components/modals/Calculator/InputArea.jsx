@@ -63,7 +63,12 @@ class InputArea extends React.Component {
                 <div id="assignment">
                     <span className="glyphicon glyphicon-arrow-left" />
                 </div>
-                <input id="calculation" type="text" value={this.props.calculation} disabled />
+                <input 
+                    id="calculation"
+                    type="text" 
+                    value={this.props.calculation} 
+                    disabled
+                />
                 <small id="calculation-help-text" className="form-text text-muted">
                     Construct a calculation by dragging variables here.
                 </small>

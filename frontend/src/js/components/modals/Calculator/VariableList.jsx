@@ -52,7 +52,7 @@ class VariableList extends Component {
                         <p className="side-nav-header">Variables</p>
                     </div>
                 </nav>
-                <div className="scroll-area">
+                <div id='calc-variable-region' className="scroll-area">
                     <ul id="calc-variable-list" className="no-bullets left-list">
                         {this.props.variables.map(value => {
                             return <DraggableVariable key={value} variable={value} />;

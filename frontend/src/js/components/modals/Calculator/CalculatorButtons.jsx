@@ -10,7 +10,7 @@ class CalculatorButtons extends React.Component {
     render() {
         /* istanbul ignore next */
         return (
-            <div className="calculator-buttons">
+            <div id="calc-button-region" className="calculator-buttons">
                 <div id="regrid" className="dropdown btn-group">
                     <button
                         type="button"
