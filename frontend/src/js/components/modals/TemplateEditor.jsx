@@ -54,6 +54,7 @@ class TemplateEditor extends Component {
 
     render() {
         const template_name = this.props.template && typeof this.props.template === "object" ? this.props.template.name : "";
+       
         return (
             <Modal show={this.props.show} onHide={this.props.close}>
                 <div id='template-editor-main'>
@@ -67,13 +68,17 @@ class TemplateEditor extends Component {
                     <Modal.Body>
                         {
                             this.props.template === "loading" ? <div style={{display: "flex", justifyContent: "center"}}><span className="loading-spinner"></span></div>
-                            : this.props.template === "error" ? <div id="template-load-error">Error retrieving template data. Try another template, or restart vCDAT. If the problem persists, please send an email to cdat-support@llnl.gov detailing the issue.</div>
-                            : <TemplateEdit 
-                                    id='test-12345'
-                                    templatePreview={"/plotTemplate?tmpl=" + JSON.stringify(this.state.workingTemplate)}
-                                    template={this.state.workingTemplate}
-                                    updateTemplate={this.onUpdate}
-                            />
+                            : this.props.template === "error" ? 
+                                <div id="template-load-error">
+                                    Error retrieving template data. Try another template, or restart vCDAT. 
+                                    If the problem persists, please send an email to cdat-support@llnl.gov detailing the issue.
+                                </div>
+                                :   <TemplateEdit 
+                                        id="joyride-template-edit"
+                                        templatePreview={"/plotTemplate?tmpl=" + JSON.stringify(this.state.workingTemplate)}
+                                        template={this.state.workingTemplate}
+                                        updateTemplate={this.onUpdate}
+                                    />
                         }
                     </Modal.Body>
                     <Modal.Footer>

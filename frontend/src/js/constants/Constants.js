@@ -314,34 +314,11 @@ const TEMPLATE_EDITOR_STEPS = [
     },
     {
         title: 'Template Preview',
-        text: "This shows a preview of the template as changes are made.",
-        selector: '#test-12345',
-        position: 'bottom',
+        text: 'This is a test.',
+        selector: '#joyride-test',
+        position: 'right',
         type: 'click'
-    },
-    {
-        title: 'Blend Colors',
-        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
-            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
-        ),
-        selector: '#btn-blend',
-        position: 'top',
-        type: 'click'
-    },
-    {
-        title: 'Save Colormap',
-        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
-        selector: '#btn-save-colormap',
-        position: 'top',
-        type: 'click'
-    },
-    {
-        title: 'Import and Export',
-        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
-        selector: '#btn-import-export',
-        position: 'top',
-        type: 'click'
-    },
+    }
 ];
 
 const BOXFILL_EDITOR_STEPS = [
