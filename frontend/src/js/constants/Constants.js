@@ -249,7 +249,7 @@ const COLORMAP_STEPS = [
 const LOAD_VARIABLE_STEPS = [
     {
         title: 'Load Variable Form',
-        text: "This form allows you to open a dataset and choose variables which you wish to load into vCDAT",
+        text: "This form allows you to open a data file and choose which variables you wish to load into vCDAT.",
         selector: '#load-variable-form',
         position: 'left',
         type: 'click'
@@ -292,6 +292,27 @@ const LOAD_VARIABLE_STEPS = [
             'the file will be bookmarked for quick and easy access in the future.'
         ),
         selector: '#bookmark-list',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Load Variable',
+        text: 'Click this button to load a variable. The form will remain open allowing you to load multiple variables at a time.',
+        selector: '#btn-load-variable',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Load Variable and Close',
+        text: 'Click this button to load a variable and close the form immediately.',
+        selector: '#btn-load-variable-close',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Load Variable AS',
+        text: 'Click this button to set the name of a variable before you load it. The form will remain open allowing you to load more variables.',
+        selector: '#btn-load-variable-as',
         position: 'left',
         type: 'click'
     },

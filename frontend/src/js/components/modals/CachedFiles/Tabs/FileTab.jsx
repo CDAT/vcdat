@@ -507,6 +507,7 @@ class FileTab extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
+                        id='btn-load-variable'
                         bsStyle="primary"
                         onClick={e => {
                             this.load();
@@ -515,6 +516,7 @@ class FileTab extends Component {
                         Load
                     </Button>
                     <Button
+                        id='btn-load-variable-close'
                         bsStyle="primary"
                         onClick={e => {
                             this.loadAndClose();
@@ -523,6 +525,7 @@ class FileTab extends Component {
                         Load and Close
                     </Button>
                     <Button
+                        id='btn-load-variable-as'
                         bsStyle="primary"
                         onClick={e => {
                             this.loadAs();
