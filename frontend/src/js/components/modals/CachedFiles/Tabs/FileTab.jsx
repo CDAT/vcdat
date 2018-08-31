@@ -350,10 +350,10 @@ class FileTab extends Component {
                                 File
                             </Col>
                             <Col sm={9}>
-                                <InputGroup bsSize="small">
+                                <InputGroup id='file-selection-field' bsSize="small">
                                     <FormControl className="full-width file-path" type="text" value={this.selectedFilePath} />
                                     <InputGroup.Button>
-                                        <Button bsStyle="primary" onClick={() => this.setState({ showFileExplorer: true })}>
+                                        <Button id='btn-open-file' bsStyle="primary" onClick={() => this.setState({ showFileExplorer: true })}>
                                             <Glyphicon glyph="file" />
                                         </Button>
                                         <Button
@@ -372,7 +372,7 @@ class FileTab extends Component {
                                 Variable(s)
                             </Col>
                             <Col sm={9}>
-                                <FormControl
+                                <FormControl id='select-variable'
                                     className="input-sm full-width"
                                     componentClass="select"
                                     onChange={e => this.setState({ selectedVariableName: e.target.value })}
@@ -387,7 +387,10 @@ class FileTab extends Component {
                                 History:
                             </Col>
                             <Col sm={9}>
-                                <FormControl className="history" componentClass="div">
+                                <FormControl
+                                    id='file-history-list'
+                                    className="history"
+                                    componentClass="div">
                                     {this.state.historyFiles.map((file, i) => {
                                         return (
                                             <div
@@ -415,6 +418,7 @@ class FileTab extends Component {
                             </Col>
                             <Col sm={9}>
                                 <FormControl
+                                    id='bookmark-list'
                                     className="bookmarks"
                                     componentClass="div"
                                     style={{ backgroundColor: this.state.showBookmarkZone ? "#d1ecf1" : "#fff" }}

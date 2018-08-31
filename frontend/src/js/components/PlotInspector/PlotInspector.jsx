@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import ColormapEditor from "../modals/ColormapEditor/ColormapEditor.jsx";
-import { ONE_VAR_PLOTS} from "../../constants/Constants.js";
+import { ONE_VAR_PLOTS } from "../../constants/Constants.js";
 class PlotInspector extends React.PureComponent {
     render() {
         return (
@@ -220,7 +220,11 @@ class PlotInspector extends React.PureComponent {
                     </table>
                 </div>
                 {this.props.show_colormap_editor && (
-                    <ColormapEditor startTour={this.props.startTour} show={this.props.show_colormap_editor} close={this.props.handleCloseColormapEditor} />
+                    <ColormapEditor 
+                        startTour={this.props.startTour}
+                        show={this.props.show_colormap_editor}
+                        close={this.props.handleCloseColormapEditor}
+                    />
                 )}
             </div>
         );

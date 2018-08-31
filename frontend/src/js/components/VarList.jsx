@@ -92,6 +92,7 @@ class VarList extends Component {
                 </div>
                 <CachedFiles
                     show={this.state.showFile}
+                    startTour={this.props.startTour}
                     onTryClose={()=>this.setState({ showFile: false })}
                     curVariables={this.props.variables}
                     loadVariables={this.props.loadVariables}
@@ -111,6 +112,7 @@ class VarList extends Component {
 }
 
 VarList.propTypes = {
+    startTour: PropTypes.func,
     cachedFiles: PropTypes.object,
     loadVariables: PropTypes.func,
     variables: PropTypes.oneOfType([

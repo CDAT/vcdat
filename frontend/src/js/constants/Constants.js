@@ -248,58 +248,51 @@ const COLORMAP_STEPS = [
 
 const LOAD_VARIABLE_STEPS = [
     {
-        title: 'Colormap List',
-        text: "This dropdown lets you choose from various colormaps.",
-        selector: '#colormap-dropdown',
-        position: 'right',
-        type: 'click'
-    },
-    {
-        title: 'Create New Colormap',
-        text: "Click this button to create a new copy of the current color-map which you can then modify and save as you like.",
-        selector: '#btn-new-colormap',
-        position: 'right',
-        type: 'click'
-    },
-    {
-        title: 'Color Grid',
-        text: 'All the colors of the color map are listed here in order. Clicking on a cell will allow you to change its color'.concat(
-            '<br />You can also select a range of cells by first clicking one cell and then holding shift and clicking on another.'
-        ),
-        selector: '#colormap-cells-container',
-        position: 'right',
-        type: 'click'
-    },
-    {
-        title: 'Color Picker',
-        text: "Once you have selected a cell, you can change the colors of the cell to your choice of predefined or custom colors.".concat(
-            '<br />Note: If you select multiple cells, only the color of the last cell in the range will actually be changed.'
-        ),
-        selector: '#color-pickers',
+        title: 'Load Variable Form',
+        text: "This form allows you to open a dataset and choose variables which you wish to load into vCDAT",
+        selector: '#load-variable-form',
         position: 'left',
         type: 'click'
     },
     {
-        title: 'Blend Colors',
-        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
-            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
+        title: 'File Data Select',
+        text: "This form field allows you to view the path of the current data file you wish to open.",
+        selector: '#file-selection-field',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Open File',
+        text: 'Click this button to open the file explorer and locate any local data file you wish to open.',
+        selector: '#btn-open-file',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Variable Select',
+        text: 'Once you have a valid data file open, the available variables are detected and placed in this drop-down.'.concat(
+            ' Choose the variable you want to use from the drop-down.'
         ),
-        selector: '#btn-blend',
-        position: 'top',
+        selector: '#select-variable',
+        position: 'left',
         type: 'click'
     },
     {
-        title: 'Save Colormap',
-        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
-        selector: '#btn-save-colormap',
-        position: 'top',
+        title: 'Variable History List',
+        text: 'This area contains a list of data files that have been loaded previously. '.concat(
+            'Selecting a file from this list will automatically populate the form fields and let you load a variable quickly.'
+        ),
+        selector: '#file-history-list',
+        position: 'left',
         type: 'click'
     },
     {
-        title: 'Import and Export',
-        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
-        selector: '#btn-import-export',
-        position: 'top',
+        title: 'Bookmarks',
+        text: 'If you click and drag a file from the history list into this area, '.concat(
+            'the file will be bookmarked for quick and easy access in the future.'
+        ),
+        selector: '#bookmark-list',
+        position: 'left',
         type: 'click'
     },
 ];
