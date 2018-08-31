@@ -24,19 +24,27 @@
 
   
 
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Development Environment" href="dev_environment.html" />
-    <link rel="prev" title="Contact Us" href="user_contact-us.html" /> 
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="vCDAT 0.8.0 documentation" href="index.html"/>
+        <link rel="next" title="Development Environment" href="dev_environment.html"/>
+        <link rel="prev" title="Contact Us" href="user_contact-us.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
    
   <div class="wy-grid-for-nav">
@@ -112,7 +120,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">vCDAT</a>
@@ -120,10 +128,9 @@
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -169,7 +176,7 @@
 <span id="dev-install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="basics">
 <h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">update</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">update</span>
 <span class="n">apt</span> <span class="n">upgrade</span>
 <span class="n">apt</span> <span class="n">install</span> <span class="n">git</span> <span class="n">openssl</span> <span class="n">gcc</span> <span class="n">libglu1</span><span class="o">-</span><span class="n">mesa</span> <span class="n">mesa</span><span class="o">-</span><span class="n">utils</span> <span class="n">libsm6</span> <span class="n">x11</span><span class="o">-</span><span class="n">apps</span>
 </pre></div>
@@ -179,7 +186,7 @@
 <li><a class="reference external" href="https://www.continuum.io/downloads">Download and install anaconda</a></li>
 <li><a class="reference external" href="https://github.com/CDAT/vcdat">Fork vcdat repo</a></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Downloads</span><span class="o">/</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Downloads</span><span class="o">/</span>
 <span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="nb">set</span> <span class="n">ssl_verify</span> <span class="n">false</span>
 <span class="n">cd</span> <span class="o">~/</span><span class="n">Path</span><span class="o">/</span><span class="n">To</span><span class="o">/</span><span class="n">Projects</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">USERNAME</span><span class="o">/</span><span class="n">vcdat</span><span class="o">.</span><span class="n">git</span>
@@ -192,12 +199,12 @@
 <h2>Before Running vCDAT<a class="headerlink" href="#before-running-vcdat" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">Turn on/off uvcdat tracking:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">UVCDAT_ANONYMOUS_LOG</span><span class="o">=</span><span class="n">no</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">UVCDAT_ANONYMOUS_LOG</span><span class="o">=</span><span class="n">no</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Download data:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vcs_download_sample_data</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vcs_download_sample_data</span>
 </pre></div>
 </div>
 </li>
@@ -207,24 +214,24 @@
 <h2>Running vCDAT<a class="headerlink" href="#running-vcdat" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">Start the development server:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">activate</span> <span class="n">nightly</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">activate</span> <span class="n">nightly</span>
 <span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">autorun</span><span class="o">.</span><span class="n">sh</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">open browser to <code class="docutils literal notranslate"><span class="pre">localhost:5000</span></code></p>
+<li><p class="first">open browser to <code class="docutils literal"><span class="pre">localhost:5000</span></code></p>
 </li>
-<li><p class="first">click the round <code class="docutils literal notranslate"><span class="pre">+</span></code> next to Variables in the upper left</p>
+<li><p class="first">click the round <code class="docutils literal"><span class="pre">+</span></code> next to Variables in the upper left</p>
 </li>
 <li><p class="first">click add</p>
 </li>
-<li><p class="first">navigate to <code class="docutils literal notranslate"><span class="pre">anaconda2/envs/nightly/share/uvcdat/sample/data/clt.nc</span></code></p>
+<li><p class="first">navigate to <code class="docutils literal"><span class="pre">anaconda2/envs/nightly/share/uvcdat/sample/data/clt.nc</span></code></p>
 </li>
-<li><p class="first">click <code class="docutils literal notranslate"><span class="pre">clt.nc</span></code></p>
+<li><p class="first">click <code class="docutils literal"><span class="pre">clt.nc</span></code></p>
 </li>
-<li><p class="first">click <code class="docutils literal notranslate"><span class="pre">clt</span></code></p>
+<li><p class="first">click <code class="docutils literal"><span class="pre">clt</span></code></p>
 </li>
-<li><p class="first">drag <code class="docutils literal notranslate"><span class="pre">clt</span></code> on to the canvas</p>
+<li><p class="first">drag <code class="docutils literal"><span class="pre">clt</span></code> on to the canvas</p>
 </li>
 </ul>
 <img alt="https://user-images.githubusercontent.com/438922/28264342-61465538-6a9f-11e7-9795-e798857a8ee3.png" src="https://user-images.githubusercontent.com/438922/28264342-61465538-6a9f-11e7-9795-e798857a8ee3.png" />
@@ -241,16 +248,16 @@ npm install</div></blockquote>
 <div class="section" id="local-vcs-widgets">
 <span id="dev-local-vcs-widgets"></span><h2>Local vcs-widgets<a class="headerlink" href="#local-vcs-widgets" title="Permalink to this headline">¶</a></h2>
 <p>When running the autorun script you may see the following line displayed:</p>
-<p><code class="docutils literal notranslate"><span class="pre">vcs-widgets</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">symlinked,</span> <span class="pre">so</span> <span class="pre">will</span> <span class="pre">not</span> <span class="pre">be</span> <span class="pre">automatically</span> <span class="pre">watched.</span></code></p>
+<p><code class="docutils literal"><span class="pre">vcs-widgets</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">symlinked,</span> <span class="pre">so</span> <span class="pre">will</span> <span class="pre">not</span> <span class="pre">be</span> <span class="pre">automatically</span> <span class="pre">watched.</span></code></p>
 <p>This is generally fine, but is not what we want if we are developing on that package.
 To get a local version into vcdat we just need to tell npm to link it.</p>
 <ol class="arabic simple">
-<li>Create a folder to store global npm modules. For this example we will use <code class="docutils literal notranslate"><span class="pre">~/npm-global</span></code></li>
-<li>Tell npm to use the global folder, otherwise it may get confused. <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">config</span> <span class="pre">set</span> <span class="pre">prefix</span> <span class="pre">~/npm-global/</span></code></li>
-<li>Navigate into the vcs-widgets directory: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">VCS-widgets</span></code></li>
-<li>Register that the package can be linked to: <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">link</span></code></li>
-<li>Navigate back to the vcdat frontend directory: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">../vcdat/frontend</span></code></li>
-<li>Run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">link</span> <span class="pre">vcs-widgets</span></code></li>
+<li>Create a folder to store global npm modules. For this example we will use <code class="docutils literal"><span class="pre">~/npm-global</span></code></li>
+<li>Tell npm to use the global folder, otherwise it may get confused. <code class="docutils literal"><span class="pre">npm</span> <span class="pre">config</span> <span class="pre">set</span> <span class="pre">prefix</span> <span class="pre">~/npm-global/</span></code></li>
+<li>Navigate into the vcs-widgets directory: <code class="docutils literal"><span class="pre">cd</span> <span class="pre">VCS-widgets</span></code></li>
+<li>Register that the package can be linked to: <code class="docutils literal"><span class="pre">npm</span> <span class="pre">link</span></code></li>
+<li>Navigate back to the vcdat frontend directory: <code class="docutils literal"><span class="pre">cd</span> <span class="pre">../vcdat/frontend</span></code></li>
+<li>Run <code class="docutils literal"><span class="pre">npm</span> <span class="pre">link</span> <span class="pre">vcs-widgets</span></code></li>
 </ol>
 <p>Now when you execute the autorun script the symlink message should be gone, and the widgets should reflect the local version that was linked.</p>
 </div>
@@ -265,7 +272,9 @@ To get a local version into vcdat we just need to tell npm to link it.</p>
 
 
            </div>
-           
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -287,7 +296,7 @@ To get a local version into vcdat we just need to tell npm to link it.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
     <p style="margin-top: 12px;">
         This work was performed under the auspices of the U.S. Department of Energy by Lawrence Livermore National Laboratory under Contract DEAC52-07NA27344.
     </p>
@@ -311,7 +320,6 @@ To get a local version into vcdat we just need to tell npm to link it.</p>
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.8.0',
-            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -324,13 +332,19 @@ To get a local version into vcdat we just need to tell npm to link it.</p>
 
   
 
-  <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
 
+  
+  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
+  </script>
+   
 
 </body>
 </html>

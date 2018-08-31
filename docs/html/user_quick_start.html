@@ -24,19 +24,27 @@
 
   
 
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Troubleshooting" href="user_troubleshooting.html" />
-    <link rel="prev" title="Installation" href="user_install.html" /> 
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="vCDAT 0.8.0 documentation" href="index.html"/>
+        <link rel="next" title="Troubleshooting" href="user_troubleshooting.html"/>
+        <link rel="prev" title="Installation" href="user_install.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
    
   <div class="wy-grid-for-nav">
@@ -111,7 +119,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">vCDAT</a>
@@ -119,10 +127,9 @@
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -169,20 +176,20 @@
 <p>This guide will walk you through running the vcdat application as well as some steps to create and manipulate a simple plot.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you need some sample data to plot with, and vcs is installed in your current environment, you can run <code class="docutils literal notranslate"><span class="pre">vcs_download_sample_data</span></code> in the terminal to download some basic datasets.</p>
+<p class="last">If you need some sample data to plot with, and vcs is installed in your current environment, you can run <code class="docutils literal"><span class="pre">vcs_download_sample_data</span></code> in the terminal to download some basic datasets.</p>
 </div>
 <div class="section" id="run-vcdat">
 <h2>Run vCDAT<a class="headerlink" href="#run-vcdat" title="Permalink to this headline">¶</a></h2>
-<p>Activate your conda environment. For example: <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">nightly</span></code>
-If you have a newer version of conda the command may instead be: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">nightly</span></code></p>
-<p>Next, run the vCDAT server: <code class="docutils literal notranslate"><span class="pre">vcdat</span></code></p>
+<p>Activate your conda environment. For example: <code class="docutils literal"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">nightly</span></code>
+If you have a newer version of conda the command may instead be: <code class="docutils literal"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">nightly</span></code></p>
+<p>Next, run the vCDAT server: <code class="docutils literal"><span class="pre">vcdat</span></code></p>
 <blockquote>
 <div><ul class="simple">
-<li>Add the <code class="docutils literal notranslate"><span class="pre">--print</span></code> argument if you would like the log displayed instead of written to a file</li>
-<li>Add the <code class="docutils literal notranslate"><span class="pre">--no-browser</span></code> option if you do not want vcdat to spawn a browser for you</li>
+<li>Add the <code class="docutils literal"><span class="pre">--print</span></code> argument if you would like the log displayed instead of written to a file</li>
+<li>Add the <code class="docutils literal"><span class="pre">--no-browser</span></code> option if you do not want vcdat to spawn a browser for you</li>
 </ul>
 </div></blockquote>
-<p>If you added the no-browser option, you will need to navigate to the app yourself. E.g. <code class="docutils literal notranslate"><span class="pre">localhost:5000</span></code></p>
+<p>If you added the no-browser option, you will need to navigate to the app yourself. E.g. <code class="docutils literal"><span class="pre">localhost:5000</span></code></p>
 <p>You should now see the vCDAT interface. If not, consult our <a class="reference internal" href="user_troubleshooting.html#user-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> section for help.</p>
 </div>
 <div class="section" id="load-a-variable">
@@ -220,7 +227,9 @@ If you have a newer version of conda the command may instead be: <code class="do
 
 
            </div>
-           
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -242,7 +251,7 @@ If you have a newer version of conda the command may instead be: <code class="do
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
     <p style="margin-top: 12px;">
         This work was performed under the auspices of the U.S. Department of Energy by Lawrence Livermore National Laboratory under Contract DEAC52-07NA27344.
     </p>
@@ -266,7 +275,6 @@ If you have a newer version of conda the command may instead be: <code class="do
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.8.0',
-            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -279,13 +287,19 @@ If you have a newer version of conda the command may instead be: <code class="do
 
   
 
-  <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
 
+  
+  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
+  </script>
+   
 
 </body>
 </html>

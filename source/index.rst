@@ -54,3 +54,4 @@ Built With
   dev_developing_vcdat
   dev_testing
   dev_releases
+  dev_manual_testing

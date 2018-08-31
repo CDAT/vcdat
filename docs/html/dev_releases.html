@@ -24,18 +24,26 @@
 
   
 
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Testing vCDAT" href="dev_testing.html" /> 
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="vCDAT 0.8.0 documentation" href="index.html"/>
+        <link rel="prev" title="Testing vCDAT" href="dev_testing.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
    
   <div class="wy-grid-for-nav">
@@ -107,7 +115,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">vCDAT</a>
@@ -115,10 +123,9 @@
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -174,10 +181,10 @@ that it has both the <strong>main</strong> and <em>nightly</em> labels. Then, go
 the following can be done to create a build and release it manually.</p>
 <ul class="simple">
 <li>Before you can release vCDAT you must be listed as a co-owner of the cdat organization</li>
-<li>cd into the vcdat directory and make sure that you are using the base conda environment. (Run <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">deactivate</span></code> to go from <em>nightly</em> to <em>base</em> for instance)</li>
+<li>cd into the vcdat directory and make sure that you are using the base conda environment. (Run <code class="docutils literal"><span class="pre">source</span> <span class="pre">deactivate</span></code> to go from <em>nightly</em> to <em>base</em> for instance)</li>
 </ul>
 <p>Once that is done, begin running each command below:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir ~/conda-bld <span class="c1"># Creates a directory for our build to go</span>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>mkdir ~/conda-bld <span class="c1"># Creates a directory for our build to go</span>
 conda install -q anaconda-client conda-build <span class="c1"># Needed in order to build and upload our package</span>
 conda config --set anaconda_upload no <span class="c1"># Prevents auto upload since we want to do that ourselves</span>
 conda install -f six <span class="c1"># Not sure this is needed. It was in the old script, and it doesn&#39;t hurt to have it</span>
@@ -192,7 +199,7 @@ anaconda -t <span class="nv">$CONDA_UPLOAD_TOKEN</span> upload -u cdat <span cla
 </pre></div>
 </div>
 <p>Make sure to test the release:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">vcdat</span><span class="o">-</span><span class="n">version</span> <span class="n">vcdat</span> <span class="o">-</span><span class="n">c</span> <span class="n">cdat</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">vcdat</span><span class="o">-</span><span class="n">version</span> <span class="n">vcdat</span> <span class="o">-</span><span class="n">c</span> <span class="n">cdat</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">vcdat</span><span class="o">-</span><span class="n">version</span>
 <span class="n">vcdat</span> <span class="o">--</span><span class="nb">print</span>
 </pre></div>
@@ -201,13 +208,13 @@ anaconda -t <span class="nv">$CONDA_UPLOAD_TOKEN</span> upload -u cdat <span cla
 </div>
 <div class="section" id="vcs-widgets-release">
 <span id="id1"></span><h2>VCS-Widgets Release:<a class="headerlink" href="#vcs-widgets-release" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/</span><span class="n">Projects</span><span class="o">/</span><span class="n">CDAT</span><span class="o">/</span><span class="n">vcs</span><span class="o">-</span><span class="n">widgets</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/</span><span class="n">Projects</span><span class="o">/</span><span class="n">CDAT</span><span class="o">/</span><span class="n">vcs</span><span class="o">-</span><span class="n">widgets</span>
 <span class="n">git</span> <span class="n">pull</span> <span class="n">origin</span> <span class="n">master</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">vcdat</span>
 </pre></div>
 </div>
-<p>Edit <code class="docutils literal notranslate"><span class="pre">package.json</span></code> with new <code class="docutils literal notranslate"><span class="pre">version</span></code> number</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">build</span>
+<p>Edit <code class="docutils literal"><span class="pre">package.json</span></code> with new <code class="docutils literal"><span class="pre">version</span></code> number</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">build</span>
 <span class="n">npm</span> <span class="n">publish</span>
 </pre></div>
 </div>
@@ -218,7 +225,9 @@ anaconda -t <span class="nv">$CONDA_UPLOAD_TOKEN</span> upload -u cdat <span cla
 
 
            </div>
-           
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -238,7 +247,7 @@ anaconda -t <span class="nv">$CONDA_UPLOAD_TOKEN</span> upload -u cdat <span cla
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
     <p style="margin-top: 12px;">
         This work was performed under the auspices of the U.S. Department of Energy by Lawrence Livermore National Laboratory under Contract DEAC52-07NA27344.
     </p>
@@ -262,7 +271,6 @@ anaconda -t <span class="nv">$CONDA_UPLOAD_TOKEN</span> upload -u cdat <span cla
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.8.0',
-            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -275,13 +283,19 @@ anaconda -t <span class="nv">$CONDA_UPLOAD_TOKEN</span> upload -u cdat <span cla
 
   
 
-  <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
 
+  
+  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
+  </script>
+   
 
 </body>
 </html>

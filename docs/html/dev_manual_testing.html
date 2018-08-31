@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Manual Testing Guide &mdash; vCDAT 0.8.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="vCDAT 0.8.0 documentation" href="index.html"/>
+        <link rel="prev" title="Releases" href="dev_releases.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> vCDAT
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Users:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_quick_start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_contact-us.html">Contact Us</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="dev_install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_coding_guidelines.html">Coding Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_developing_vcdat.html">Developing vCDAT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_testing.html">Testing vCDAT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_releases.html">Releases</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Manual Testing Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#test-help-tutorials">Test Help Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#set-up-clt-variable-for-testing">Set-up ‘CLT’ variable for testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-plotting-features">Test Plotting Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-calculator-features">Test Calculator Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-colormap-features">Test Colormap Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-graphics-methods-and-templates">Test Graphics Methods and Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-plotting-region-features">Test Plotting Region Features</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">vCDAT</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Manual Testing Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/dev_manual_testing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="manual-testing-guide">
+<h1>Manual Testing Guide<a class="headerlink" href="#manual-testing-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="test-help-tutorials">
+<h2>Test Help Tutorials<a class="headerlink" href="#test-help-tutorials" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Manually test the first help tutorial by clicking the ‘Help’ button at top-left of the page.</li>
+<li>Similarly click on the calculator and colormap buttons, then click their respective ‘Help’ buttons to test their tutorials.</li>
+</ul>
+<p><strong>You should see a step-by-step tutorial that explains vCDAT features.</strong></p>
+</div>
+<hr class="docutils" />
+<div class="section" id="set-up-clt-variable-for-testing">
+<h2>Set-up ‘CLT’ variable for testing<a class="headerlink" href="#set-up-clt-variable-for-testing" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Load vCDAT web page.</li>
+<li>Click the green plus icon next to ‘Variables’ of the left side-bar to open a file.</li>
+<li>Select the ‘clt.nc’ file from your sample_data directory.</li>
+<li>The first variable selected should be labeled ‘clt’, so click ‘Load’, load dialog should remain open so you can load another variable.</li>
+<li>Now choose a variable from the drop-down (like ‘u’ or ‘v’) and click ‘Load and Close’. The form should close after loading the variable.</li>
+<li>From variables list, drag the ‘clt’ variable in the variables list onto the main plot region (has a huge green plus button).</li>
+</ul>
+<p><strong>The plot should be created automatically.</strong></p>
+</div>
+<hr class="docutils" />
+<div class="section" id="test-plotting-features">
+<h2>Test Plotting Features<a class="headerlink" href="#test-plotting-features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>With ‘clt’ variable selected, click the orange ‘edit’ icon (next to green plus icon). This should open a dialog that lets you select a specific range for time, latitude and longitude data. Select a subset of the data (lat/lon/time) by moving the dimension sliders. Click save.</li>
+<li>Check that plot shape has changed and correctly displays the data subset.</li>
+<li>Clicking to edit the ‘clt’ variable again, you can also rearrange the axes of the plot by clicking and dragging the icons next to the longitude, time or latitude labels.</li>
+</ul>
+<p><strong>Based on the order, the plot should change to reflect the new axes positions.</strong></p>
+</div>
+<hr class="docutils" />
+<div class="section" id="test-calculator-features">
+<h2>Test Calculator Features<a class="headerlink" href="#test-calculator-features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Click the ‘Calculator’ button on the top-left corner of the window. This should bring up a calculator modal with the ‘clt’ variable listed on the left.</li>
+<li>Click and drag the ‘clt’ variable onto the green highlighted area that appears (avoid the grayed out area). Click an operator button (+,-,/,x,x^y,regrid), enter a value, then click ‘enter’. This should produce a derived variable with a default name in the variable list. Close the calculator.</li>
+<li>Plot the newly derived variable and check that the results look correct.</li>
+</ul>
+<p><strong>Repeat with different operators and values to test the calculator.</strong></p>
+</div>
+<hr class="docutils" />
+<div class="section" id="test-colormap-features">
+<h2>Test Colormap Features<a class="headerlink" href="#test-colormap-features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Select the ‘clt’ variable and plot it again (make sure axes are in their default order).</li>
+<li>Plot again and then click ‘Colormap Editor’ button on top-left corner of screen.</li>
+<li>Load a different colormap using the ‘Colormaps’ drop-down, then click apply to see the colors updated on the plot.</li>
+<li>Click the ‘New’ button next to the colormap drop-down and name the colormap something (e.g. ‘test’). Then use available features to modify the colormap.</li>
+</ul>
+<p><strong>test your new colormap by clicking ‘apply’ and looking at the plot.</strong></p>
+</div>
+<hr class="docutils" />
+<div class="section" id="test-graphics-methods-and-templates">
+<h2>Test Graphics Methods and Templates<a class="headerlink" href="#test-graphics-methods-and-templates" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Select a template from the template list on the left (like ASD) and drag to plot area. You should see the plot change its layout. Test different (compatible) templates to make sure they’re working.</li>
+<li>Try creating a custom template by clicking the green plus icon, choosing a base template and entering a template name (like ‘test template’).</li>
+<li>With the custom template selected, click the orange edit icon above the template list and use the template editor to modify the custom template.</li>
+<li>Drag the custom template onto the plot area to test that the custom layout is being updated properly.</li>
+</ul>
+<p><strong>Use the same process outlined above, test different (compatible) graphics methods as well.</strong></p>
+</div>
+<hr class="docutils" />
+<div class="section" id="test-plotting-region-features">
+<h2>Test Plotting Region Features<a class="headerlink" href="#test-plotting-region-features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Create a new sheet by clicking the black plus icon next to the ‘Sheet’ tab.</li>
+<li>On the new sheet, change row and column count to 2 using the Rows and Cols spinners located above the plotting area. This should create total of 4 plot regions (2x2).</li>
+<li>On one of the plot regions, click the huge plus button (turns green when hovered over).</li>
+</ul>
+<p><strong>This should let you add another variable to the plot. The plots will end up sharing the same region (for overlaying plots).</strong></p>
+<ul class="simple">
+<li>Now drag variables you choose into each region to check that graphing over multiple regions is working correctly. You can also compare multiple plots with each other this way.</li>
+<li>At the top of the page, each time a variable is added, <strong>you should see it added to a list.</strong></li>
+<li>Using the drop-down menus, change the graphics type, method and template of different variables.</li>
+</ul>
+<p><strong>The changes should automatically update the plot region.</strong></p>
+<ul class="simple">
+<li>At the top of the page, click the x button to check that variables are being deleted off the plot correctly.</li>
+<li>Select one of the 4 plot regions, then click the ‘Clear Cell’ button on the top-left corner of the screen.</li>
+</ul>
+<p><strong>The clear cell button should remove all the variables from the selected plot region.</strong></p>
+<ul class="simple">
+<li>Selecting each plot region, click on the ‘Clear Cell’ button until all regions are clear.</li>
+<li>Once the regions are all cleared (clear button works properly), delete the sheet by clicking the small x button on the sheet tab.</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="dev_releases.html" class="btn btn-neutral" title="Releases" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, AIMS Team.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+    <p style="margin-top: 12px;">
+        This work was performed under the auspices of the U.S. Department of Energy by Lawrence Livermore National Laboratory under Contract DEAC52-07NA27344.
+    </p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.8.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

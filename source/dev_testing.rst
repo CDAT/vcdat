@@ -43,6 +43,12 @@ mode, and run the mocha tests through nyc:
 
 ``NODE_ENV=test nyc [nyc_opts] mocha [mocha-opts]``
 
+Manual testing
+--------------
+
+See the `Manual testing guide <dev_manual_testing.html>`_
+
+
 Developing tests
 ----------------
 
@@ -138,10 +144,10 @@ shallow render the React component in the DOM, manipulate it, and test it with a
 When we run ``npm test``, mocha will let us know if it gets any errors while running our test.
 
 Testing Tips
-~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 Parameterizing Tests
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 Parameterizing tests is one of the easiest ways to write tests that cover a large range of cases. 
 The CalculatorTest.jsx file contains several examples of this for reference. 
@@ -170,7 +176,7 @@ Notice that the 'it' block is inside of the loop.
 This makes each loop a seperate test and will make it easier to determine which cases fail.
 
 Debugging Tests
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 To run a debugger on your tests, follow these steps:
 
