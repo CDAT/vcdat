@@ -25,12 +25,12 @@ If you added the no-browser option, you will need to navigate to the app yoursel
 You should now see the vCDAT interface. If not, consult our :ref:`user-troubleshooting` section for help.
 
 
-Quick help
+Quick Help
 =================================
 
-In the top left corner there is a 'help' button which will give a quick tour of vCDAT features.
+In the top left corner there is a 'Help' button which will give a quick tour of vCDAT features.
 
-More help buttons can be found on specific dialog pages. Click a help button to initiate a quick tutorial.
+More help buttons can be found on specific dialog pages. Click on a help button to initiate a quick tutorial.
 
 
 Load a Variable
