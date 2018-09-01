@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="vCDAT 0.8.0 documentation" href="index.html"/>
-        <link rel="next" title="Releases" href="dev_releases.html"/>
-        <link rel="prev" title="Developing vCDAT" href="dev_developing_vcdat.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Releases" href="dev_releases.html" />
+    <link rel="prev" title="Developing vCDAT" href="dev_developing_vcdat.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -123,6 +115,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dev_releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_manual_testing.html">Manual Testing Guide</a></li>
 </ul>
 
             
@@ -134,7 +127,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">vCDAT</a>
@@ -142,9 +135,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -190,15 +184,15 @@
 <h1>Testing vCDAT<a class="headerlink" href="#testing-vcdat" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="running-tests">
 <h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
-<p>To run the current official test suite, simply type <code class="docutils literal"><span class="pre">npm</span> <span class="pre">test</span></code> in the
+<p>To run the current official test suite, simply type <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">test</span></code> in the
 terminal, anywhere under the frontend directory. This will run Mocha,
 with all of the necessary options to run the existing tests for vCDAT.</p>
 <p>If you wish to run tests on specific files, you’ll need to consult
 <a class="reference external" href="https://mochajs.org/#usage">Mocha’s documentation</a>. I will provide a
 simple example of how to use Mocha’s CLI here.</p>
-<p><code class="docutils literal"><span class="pre">mocha</span> <span class="pre">test/mocha/</span> <span class="pre">-g</span> <span class="pre">'.*Test.js[x]*'</span> <span class="pre">--compilers</span> <span class="pre">jsx:babel-core/register</span> <span class="pre">--recursive</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">mocha</span> <span class="pre">test/mocha/</span> <span class="pre">-g</span> <span class="pre">'.*Test.js[x]*'</span> <span class="pre">--compilers</span> <span class="pre">jsx:babel-core/register</span> <span class="pre">--recursive</span></code></p>
 <p>This is the current default configuration that gets run when you type
-<code class="docutils literal"><span class="pre">npm</span> <span class="pre">test</span></code>. It is necessary to specify that we want to use the babel
+<code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">test</span></code>. It is necessary to specify that we want to use the babel
 compiler, because we are utilizing JSX syntax. The ‘-g’ option tells
 mocha to only run tests whose names match the given pattern. By
 convention, all of our React component and Javascript tests follow
@@ -210,16 +204,16 @@ expression.</p>
 <p>We generate code coverage using <a class="reference external" href="https://github.com/istanbuljs/babel-plugin-istanbul">Babel’s istanbul
 plugin</a> along
 with <a class="reference external" href="https://github.com/istanbuljs/nyc">istanbul nyc</a>. This runs on
-top of our <code class="docutils literal"><span class="pre">npm</span> <span class="pre">test</span></code> script. The combination is great, because
+top of our <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">test</span></code> script. The combination is great, because
 babel-istanbul utilizes babel and webpack, which we already use for
 building vCDAT, and nyc eliminates the need for hooking our mocha tests
 into a karma test runner, thus avoiding a boatload of extra
 dependencies.</p>
 <p>We have an npm script set up for code coverage, so run
-<code class="docutils literal"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">coverage</span></code> to see our current test coverage info.</p>
+<code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">coverage</span></code> to see our current test coverage info.</p>
 <p>If you want to run it by hand, make sure to change the NODE_ENV to test
 mode, and run the mocha tests through nyc:</p>
-<p><code class="docutils literal"><span class="pre">NODE_ENV=test</span> <span class="pre">nyc</span> <span class="pre">[nyc_opts]</span> <span class="pre">mocha</span> <span class="pre">[mocha-opts]</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">NODE_ENV=test</span> <span class="pre">nyc</span> <span class="pre">[nyc_opts]</span> <span class="pre">mocha</span> <span class="pre">[mocha-opts]</span></code></p>
 </div>
 <div class="section" id="manual-testing">
 <h2>Manual testing<a class="headerlink" href="#manual-testing" title="Permalink to this headline">¶</a></h2>
@@ -264,9 +258,9 @@ contain the file name in its description string.</li>
 <a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/src/js/components/Plotter.jsx">src/js/components/Plotter.jsx</a>,<ul>
 <li>You should place this test in
 <a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/components">mocha/test/components</a></li>
-<li>The test should be called <code class="docutils literal"><span class="pre">PlotterTest.jsx</span></code></li>
+<li>The test should be called <code class="docutils literal notranslate"><span class="pre">PlotterTest.jsx</span></code></li>
 <li>The root level describe would be
-<code class="docutils literal"><span class="pre">describe('PlotterTest.jsx</span> <span class="pre">...',</span> <span class="pre">function(){...})</span></code><ul>
+<code class="docutils literal notranslate"><span class="pre">describe('PlotterTest.jsx</span> <span class="pre">...',</span> <span class="pre">function(){...})</span></code><ul>
 <li>This ensures that the default test runner will find your tests</li>
 <li>You can add more to the root describe string, as long as it
 contains the file name</li>
@@ -288,9 +282,9 @@ following along with the code and comments in
 <a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/test/mocha/example/ExampleTest.jsx">ExampleTest</a>.</p>
 <p>The
 <a class="reference external" href="https://github.com/CDAT/vcdat/blob/master/frontend/test/mocha/example/ExampleComponent.jsx">Example</a>
-component is extremely simple. When an <code class="docutils literal"><span class="pre">&lt;ExampleComponent</span> <span class="pre">/&gt;</span></code> component is
+component is extremely simple. When an <code class="docutils literal notranslate"><span class="pre">&lt;ExampleComponent</span> <span class="pre">/&gt;</span></code> component is
 rendered into the DOM, it gets replaced with
-<code class="docutils literal"><span class="pre">&lt;div</span> <span class="pre">class='test'&gt;&lt;span&gt;TEST&lt;/span&gt;&lt;/div&gt;</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">&lt;div</span> <span class="pre">class='test'&gt;&lt;span&gt;TEST&lt;/span&gt;&lt;/div&gt;</span></code>.</p>
 <p>To test a react component, we have to import several libraries and other
 Javascript files:</p>
 <ul class="simple">
@@ -308,7 +302,7 @@ two essential things we need to make a test.</p>
 </ul>
 <p>After that, all that’s left to do is use <a class="reference external" href="#enzyme">Enzyme</a> to
 shallow render the React component in the DOM, manipulate it, and test it with an assert.
-When we run <code class="docutils literal"><span class="pre">npm</span> <span class="pre">test</span></code>, mocha will let us know if it gets any errors while running our test.</p>
+When we run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">test</span></code>, mocha will let us know if it gets any errors while running our test.</p>
 </div>
 <div class="section" id="testing-tips">
 <h3>Testing Tips<a class="headerlink" href="#testing-tips" title="Permalink to this headline">¶</a></h3>
@@ -317,14 +311,14 @@ When we run <code class="docutils literal"><span class="pre">npm</span> <span cl
 <p>Parameterizing tests is one of the easiest ways to write tests that cover a large range of cases.
 The CalculatorTest.jsx file contains several examples of this for reference.
 Here is a simple example of what a parameterized test might look like:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">let</span> <span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">let</span> <span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span> <span class="nb">input</span><span class="p">:</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="s2">&quot;Hello!&quot;</span> <span class="p">},</span>
     <span class="p">{</span> <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="s2">&quot;Hello John!&quot;</span> <span class="p">},</span>
     <span class="p">{</span> <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;Sally?&quot;</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="s2">&quot;Hello Sally!&quot;</span> <span class="p">},</span>
 <span class="p">];</span>
 </pre></div>
 </div>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span>test_cases.forEach(function(test_case, index) {
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span>test_cases.forEach(function(test_case, index) {
     it(`Says hello correctly. Case ${index}`, function() {
         let props = getProps();
         let hello_widget = shallow(&lt;Hello {...props} /&gt;);
@@ -344,7 +338,7 @@ This makes each loop a seperate test and will make it easier to determine which 
 <ol class="arabic simple">
 <li>Add ‘debugger’ on a line by itself where you would like execution to
 pause.</li>
-<li>Run: <code class="docutils literal"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">debug_tests</span></code></li>
+<li>Run: <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">debug_tests</span></code></li>
 <li>Visit: chrome://inspect/#devices and look under “Remote Target” for
 the instance of mocha to inspect.</li>
 <li>Click Chrome’s “Resume Execution” button to allow mocha to execute
@@ -375,12 +369,12 @@ Reference</a> page</p>
 <h4>Mocha<a class="headerlink" href="#mocha" title="Permalink to this headline">¶</a></h4>
 <div class="section" id="describe">
 <h5>describe<a class="headerlink" href="#describe" title="Permalink to this headline">¶</a></h5>
-<p>Mocha’s <code class="docutils literal"><span class="pre">describe()</span></code> function allows us to group tests into their own
+<p>Mocha’s <code class="docutils literal notranslate"><span class="pre">describe()</span></code> function allows us to group tests into their own
 suites. This makes it easy to separate concerns, and provides a simple
-way of running specific tests via Mocha’s CLI. <code class="docutils literal"><span class="pre">describe()</span></code> blocks can
+way of running specific tests via Mocha’s CLI. <code class="docutils literal notranslate"><span class="pre">describe()</span></code> blocks can
 be arbitrarily nested, allowing for separation of suites into
 sub-suites.</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">describe</span><span class="p">(</span><span class="s1">&#39;My_test_suite&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(){</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">describe</span><span class="p">(</span><span class="s1">&#39;My_test_suite&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(){</span>
     <span class="o">//</span> <span class="o">...</span> <span class="n">testing</span> <span class="n">goes</span> <span class="n">here</span>
     <span class="n">describe</span><span class="p">(</span><span class="s1">&#39;A subset of My_test_suite&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(){</span>
         <span class="o">//</span> <span class="o">...</span> <span class="n">more</span> <span class="n">specific</span> <span class="n">tests</span> <span class="n">here</span>
@@ -391,11 +385,11 @@ sub-suites.</p>
 </div>
 <div class="section" id="it">
 <h5>it<a class="headerlink" href="#it" title="Permalink to this headline">¶</a></h5>
-<p><code class="docutils literal"><span class="pre">it()</span></code> blocks contain individual tests in your test suite. They are
+<p><code class="docutils literal notranslate"><span class="pre">it()</span></code> blocks contain individual tests in your test suite. They are
 provided with a string for description, and a function which runs the
 test. Generally, the description string should say something about what
 the result of the test should be.</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">describe</span><span class="p">(</span><span class="s1">&#39;suite&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(){</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">describe</span><span class="p">(</span><span class="s1">&#39;suite&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(){</span>
     <span class="n">it</span><span class="p">(</span><span class="s1">&#39;should fail&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(){</span>
         <span class="k">assert</span><span class="p">(</span><span class="n">false</span><span class="p">);</span>
     <span class="p">})</span>
@@ -407,11 +401,11 @@ the result of the test should be.</p>
 <h5>Hooks<a class="headerlink" href="#hooks" title="Permalink to this headline">¶</a></h5>
 <p><a class="reference external" href="https://mochajs.org/#hooks">Hooks</a> are functions that let you run a
 block of code before or after a function, or a number of functions, in
-your test suites. These hooks include <code class="docutils literal"><span class="pre">before()</span></code>, <code class="docutils literal"><span class="pre">beforeEach()</span></code>,
-<code class="docutils literal"><span class="pre">after()</span></code>, and <code class="docutils literal"><span class="pre">afterEach()</span></code>. These hooks can be invoked with a
+your test suites. These hooks include <code class="docutils literal notranslate"><span class="pre">before()</span></code>, <code class="docutils literal notranslate"><span class="pre">beforeEach()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">after()</span></code>, and <code class="docutils literal notranslate"><span class="pre">afterEach()</span></code>. These hooks can be invoked with a
 description, or with named functions, to help with pinpointing errors.
 They can also be invoked asynchronously.</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">beforeEach</span><span class="p">(</span><span class="s1">&#39;Hooks examples setup&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(){</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">beforeEach</span><span class="p">(</span><span class="s1">&#39;Hooks examples setup&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(){</span>
     <span class="o">//</span> <span class="n">will</span> <span class="n">run</span> <span class="n">before</span> <span class="n">every</span> <span class="n">function</span> <span class="n">following</span>
 <span class="p">});</span>
 <span class="n">describe</span><span class="p">(</span><span class="s1">&#39;Hooks example&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">(){</span>
@@ -445,7 +439,7 @@ documentation</a></p>
 API</a> for more information.</p>
 <p>Example from <a class="reference external" href="http://chaijs.com/guide/styles/#assert">Chai’s
 documentation</a>:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="k">assert</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;chai&#39;</span><span class="p">)</span><span class="o">.</span><span class="k">assert</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="k">assert</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;chai&#39;</span><span class="p">)</span><span class="o">.</span><span class="k">assert</span>
 <span class="n">var</span> <span class="n">foo</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span>
 <span class="n">var</span> <span class="n">beverages</span> <span class="o">=</span> <span class="p">{</span> <span class="n">tea</span><span class="p">:</span> <span class="p">[</span> <span class="s1">&#39;chai&#39;</span><span class="p">,</span> <span class="s1">&#39;matcha&#39;</span><span class="p">,</span> <span class="s1">&#39;oolong&#39;</span> <span class="p">]</span> <span class="p">};</span>
 
@@ -459,11 +453,11 @@ documentation</a>:</p>
 </div>
 <div class="section" id="expect">
 <h5>expect<a class="headerlink" href="#expect" title="Permalink to this headline">¶</a></h5>
-<p><code class="docutils literal"><span class="pre">expect()</span></code> is one of Chai’s <a class="reference external" href="http://chaijs.com/api/bdd/">BDD-style assert
+<p><code class="docutils literal notranslate"><span class="pre">expect()</span></code> is one of Chai’s <a class="reference external" href="http://chaijs.com/api/bdd/">BDD-style assert
 APIs</a>.</p>
 <p>Example from <a class="reference external" href="http://chaijs.com/guide/styles/#expect">Chai’s
 documentation</a>:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">expect</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;chai&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">expect</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">expect</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;chai&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">expect</span>
 <span class="n">var</span> <span class="n">foo</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span>
 <span class="n">var</span> <span class="n">beverages</span> <span class="o">=</span> <span class="p">{</span> <span class="n">tea</span><span class="p">:</span> <span class="p">[</span> <span class="s1">&#39;chai&#39;</span><span class="p">,</span> <span class="s1">&#39;matcha&#39;</span><span class="p">,</span> <span class="s1">&#39;oolong&#39;</span> <span class="p">]</span> <span class="p">};</span>
 
@@ -476,11 +470,11 @@ documentation</a>:</p>
 </div>
 <div class="section" id="should">
 <h5>should<a class="headerlink" href="#should" title="Permalink to this headline">¶</a></h5>
-<p><code class="docutils literal"><span class="pre">should()</span></code> is the other of Chai’s <a class="reference external" href="http://chaijs.com/api/bdd/">BDD-style assert
+<p><code class="docutils literal notranslate"><span class="pre">should()</span></code> is the other of Chai’s <a class="reference external" href="http://chaijs.com/api/bdd/">BDD-style assert
 APIs</a>.</p>
 <p>Example from <a class="reference external" href="http://chaijs.com/guide/styles/#should">Chai’s
 documentation</a>:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">should</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;chai&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span><span class="p">()</span> <span class="o">//</span><span class="n">actually</span> <span class="n">call</span> <span class="n">the</span> <span class="n">function</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">should</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;chai&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">should</span><span class="p">()</span> <span class="o">//</span><span class="n">actually</span> <span class="n">call</span> <span class="n">the</span> <span class="n">function</span>
 <span class="n">var</span> <span class="n">foo</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span>
 <span class="n">var</span> <span class="n">beverages</span> <span class="o">=</span> <span class="p">{</span> <span class="n">tea</span><span class="p">:</span> <span class="p">[</span> <span class="s1">&#39;chai&#39;</span><span class="p">,</span> <span class="s1">&#39;matcha&#39;</span><span class="p">,</span> <span class="s1">&#39;oolong&#39;</span> <span class="p">]</span> <span class="p">};</span>
 
@@ -498,9 +492,7 @@ documentation</a>:</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -522,7 +514,7 @@ documentation</a>:</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
     <p style="margin-top: 12px;">
         This work was performed under the auspices of the U.S. Department of Energy by Lawrence Livermore National Laboratory under Contract DEAC52-07NA27344.
     </p>
@@ -546,6 +538,7 @@ documentation</a>:</p>
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.8.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -558,19 +551,13 @@ documentation</a>:</p>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

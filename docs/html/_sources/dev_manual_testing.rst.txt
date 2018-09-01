@@ -53,7 +53,7 @@ Test Colormap Features
 * Load a different colormap using the ‘Colormaps’ drop-down, then click apply to see the colors updated on the plot.
 * Click the ‘New’ button next to the colormap drop-down and name the colormap something (e.g. ‘test’). Then use available features to modify the colormap.
 
-**test your new colormap by clicking ‘apply’ and looking at the plot.**
+**Test your new colormap by clicking ‘apply’ and looking at the plot.**
 
 ------------
 
@@ -64,7 +64,7 @@ Test Graphics Methods and Templates
 * With the custom template selected, click the orange edit icon above the template list and use the template editor to modify the custom template.
 * Drag the custom template onto the plot area to test that the custom layout is being updated properly.
 
-**Use the same process outlined above, test different (compatible) graphics methods as well.**
+**Use the same process outlined above, to test different (compatible) graphics methods as well.**
 
 ------------
 

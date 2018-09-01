@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="vCDAT 0.8.0 documentation" href="index.html"/>
-        <link rel="next" title="Contact Us" href="user_contact-us.html"/>
-        <link rel="prev" title="Quick Start" href="user_quick_start.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contact Us" href="user_contact-us.html" />
+    <link rel="prev" title="Quick Start" href="user_quick_start.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -108,6 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="dev_developing_vcdat.html">Developing vCDAT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev_testing.html">Testing vCDAT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev_releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_manual_testing.html">Manual Testing Guide</a></li>
 </ul>
 
             
@@ -119,7 +112,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">vCDAT</a>
@@ -127,9 +120,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -178,7 +172,7 @@
 <h2>Unable to load driver: swrast_dri.so<a class="headerlink" href="#unable-to-load-driver-swrast-dri-so" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li>This can be fixed by exporting a variable containing the path to the missing file: <code class="docutils literal"><span class="pre">export</span> <span class="pre">LD_PRELOAD='/usr/lib/x86_64-linux-gnu/libstdc++.so.6'</span></code></li>
+<li>This can be fixed by exporting a variable containing the path to the missing file: <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">LD_PRELOAD='/usr/lib/x86_64-linux-gnu/libstdc++.so.6'</span></code></li>
 </ul>
 </div></blockquote>
 </div>
@@ -187,7 +181,7 @@
 <blockquote>
 <div><ul class="simple">
 <li>First, try the above step and set the LD_PRELOAD to a valid path.</li>
-<li>If you are on a Mac and vCDAT is running on a remote machine, copy the following into a bash terminal: <code class="docutils literal"><span class="pre">defaults</span> <span class="pre">write</span> <span class="pre">org.macosforge.xquartz.X11</span> <span class="pre">enable_iglx</span> <span class="pre">-bool</span> <span class="pre">true</span></code><ul>
+<li>If you are on a Mac and vCDAT is running on a remote machine, copy the following into a bash terminal: <code class="docutils literal notranslate"><span class="pre">defaults</span> <span class="pre">write</span> <span class="pre">org.macosforge.xquartz.X11</span> <span class="pre">enable_iglx</span> <span class="pre">-bool</span> <span class="pre">true</span></code><ul>
 <li>After running that command, <strong>restart your computer, or the change will not take effect</strong>.</li>
 </ul>
 </li>
@@ -203,7 +197,7 @@
 <blockquote>
 <div><ul class="simple">
 <li>Make sure that the vcdat environment is sourced prior to the next step</li>
-<li>Run <code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">mesalib</span></code></li>
+<li>Run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">mesalib</span></code></li>
 </ul>
 </div></blockquote>
 </div>
@@ -211,11 +205,11 @@
 <h2>ImportError: No module named ____<a class="headerlink" href="#importerror-no-module-named" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li>In order to work around the missing dependencies, simply run <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">package</span></code> for each package found to be missing.(It may take several install and run cycles to find and install everything.)</li>
+<li>In order to work around the missing dependencies, simply run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">package</span></code> for each package found to be missing.(It may take several install and run cycles to find and install everything.)</li>
 <li>In the event that a dependency is not properly installed, please let us know by creating a new [issue](<a class="reference external" href="https://github.com/CDAT/vcdat/issues">https://github.com/CDAT/vcdat/issues</a>) with the following information:<ul>
-<li>The output of <code class="docutils literal"><span class="pre">conda</span> <span class="pre">-V</span></code></li>
-<li>The output of <code class="docutils literal"><span class="pre">conda</span> <span class="pre">list</span></code></li>
-<li>The output of the install process when you ran <code class="docutils literal"><span class="pre">conda</span> <span class="pre">create</span></code></li>
+<li>The output of <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">-V</span></code></li>
+<li>The output of <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">list</span></code></li>
+<li>The output of the install process when you ran <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span></code></li>
 <li>The full error text from the vCDAT log file</li>
 </ul>
 </li>
@@ -231,7 +225,7 @@
 <li>First, determine the brand of graphics card your computer has. (Intel, Nvidia, AMD, etc.)</li>
 <li><em>Before proceeding to the next step ensure that all critical files are backed up. Installing an incorrect or corrupt driver can cause the OS to become unable to render a graphical user interface. This can often be fixed by entering the OS’s recovery mode and uninstalling the faulty driver, but this can be a tedious process.</em></li>
 <li>Then install an up to date driver for that platform from a reliable source, such as your operating system’s package manager.</li>
-<li>If you cannot update your driver, or if the problem persists, try installing mesa-lib: <code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">mesalib</span></code></li>
+<li>If you cannot update your driver, or if the problem persists, try installing mesa-lib: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">mesalib</span></code></li>
 </ul>
 </div></blockquote>
 </div>
@@ -239,9 +233,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -263,7 +255,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
     <p style="margin-top: 12px;">
         This work was performed under the auspices of the U.S. Department of Energy by Lawrence Livermore National Laboratory under Contract DEAC52-07NA27344.
     </p>
@@ -287,6 +279,7 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.8.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -299,19 +292,13 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

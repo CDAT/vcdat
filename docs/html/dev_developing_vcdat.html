@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="vCDAT 0.8.0 documentation" href="index.html"/>
-        <link rel="next" title="Testing vCDAT" href="dev_testing.html"/>
-        <link rel="prev" title="Coding Guidelines" href="dev_coding_guidelines.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Testing vCDAT" href="dev_testing.html" />
+    <link rel="prev" title="Coding Guidelines" href="dev_coding_guidelines.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -115,6 +107,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dev_testing.html">Testing vCDAT</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev_releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_manual_testing.html">Manual Testing Guide</a></li>
 </ul>
 
             
@@ -126,7 +119,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">vCDAT</a>
@@ -134,9 +127,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -203,11 +197,11 @@ but I have supplied some basic information here with an emphasis on how we use R
 In some instances, you will only need to provide some additional props. In other, more complex cases,
 it may be easier to export an unwrapped version for testing. Historically, these components have been
 named “PureComponents” in vCDAT. For example, if the component was named “Example”, we would export the wrapped
-“Example” as the default and the unwrapped one would look like <code class="docutils literal"><span class="pre">export</span> <span class="pre">{</span> <span class="pre">Example</span> <span class="pre">as</span> <span class="pre">PureExample</span> <span class="pre">}</span></code></p>
+“Example” as the default and the unwrapped one would look like <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">{</span> <span class="pre">Example</span> <span class="pre">as</span> <span class="pre">PureExample</span> <span class="pre">}</span></code></p>
 </div>
 <p>A component that uses Redux does not ‘inherit’ from Redux like you might expect. Instead, a component is
 ‘wrapped’ by the connect function.</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">default</span> <span class="n">connect</span><span class="p">(</span><span class="n">mapStateToProps</span><span class="p">,</span> <span class="n">mapDispatchToProps</span><span class="p">)(</span><span class="n">Example</span><span class="p">);</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">default</span> <span class="n">connect</span><span class="p">(</span><span class="n">mapStateToProps</span><span class="p">,</span> <span class="n">mapDispatchToProps</span><span class="p">)(</span><span class="n">Example</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Where mapStateToProps and mapDispatchToProps are functions.</p>
@@ -215,20 +209,20 @@ named “PureComponents” in vCDAT. For example, if the component was named “
 <h4>mapStateToProps<a class="headerlink" href="#mapstatetoprops" title="Permalink to this headline">¶</a></h4>
 <p>mapStateToProps does exactly what it says. It will take state from redux and hand it to the component as props.
 The function is expected to return an object containing the bits of state we want.</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">mapStateToProps</span> <span class="o">=</span> <span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">mapStateToProps</span> <span class="o">=</span> <span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="n">selected_template</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">present</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">selected_template</span><span class="p">,</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>We could then access this via <code class="docutils literal"><span class="pre">this.props.selected_template</span></code>.</p>
+<p>We could then access this via <code class="docutils literal notranslate"><span class="pre">this.props.selected_template</span></code>.</p>
 </div>
 <div class="section" id="mapdispatchtoprops">
 <h4>mapDispatchToProps<a class="headerlink" href="#mapdispatchtoprops" title="Permalink to this headline">¶</a></h4>
 <p>The dispatch function is what tells Redux that the store needs to change.
 The function should return an object where each key maps to a function.</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">mapDispatchToProps</span> <span class="o">=</span> <span class="p">(</span><span class="n">dispatch</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">mapDispatchToProps</span> <span class="o">=</span> <span class="p">(</span><span class="n">dispatch</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="n">deselectCell</span><span class="p">:</span> <span class="n">function</span><span class="p">(){</span>
             <span class="n">dispatch</span><span class="p">(</span><span class="n">Actions</span><span class="o">.</span><span class="n">deselectCell</span><span class="p">())</span>
@@ -237,7 +231,7 @@ The function should return an object where each key maps to a function.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>We could then deselect a cell by calling <code class="docutils literal"><span class="pre">this.props.deselectCell()</span></code></p>
+<p>We could then deselect a cell by calling <code class="docutils literal notranslate"><span class="pre">this.props.deselectCell()</span></code></p>
 </div>
 </div>
 <div class="section" id="actions">
@@ -245,12 +239,12 @@ The function should return an object where each key maps to a function.</p>
 <p>An action is simply an object that contains data describing how the store should change.
 Actions are always given to the store by the dispatch function that comes from <a class="reference internal" href="#connect"><span class="std std-ref">Connect</span></a>.
 We keep all of the actions that can be dispatched in the <a class="reference external" href="https://github.com/CDAT/vcdat/blob/master/frontend/src/js/constants/Actions.js">Actions.js</a> file.
-The only thing required by any action is that it has a <code class="docutils literal"><span class="pre">type</span></code> key.</p>
+The only thing required by any action is that it has a <code class="docutils literal notranslate"><span class="pre">type</span></code> key.</p>
 </div>
 <div class="section" id="how-it-works">
 <h3>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h3>
 <p>Once loaded, the redux <a class="reference external" href="https://github.com/CDAT/vcdat/blob/master/frontend/src/js/Store.js">store</a> will initialize it’s state.
-It does this by calling <code class="docutils literal"><span class="pre">getInitialState()</span></code> on each <a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/src/js/models">model</a>.
+It does this by calling <code class="docutils literal notranslate"><span class="pre">getInitialState()</span></code> on each <a class="reference external" href="https://github.com/CDAT/vcdat/tree/master/frontend/src/js/models">model</a>.
 Once initialized, Redux follows a very simple pattern.</p>
 <p>When something in the store (The top level object that holds everything redux knows about our application)
 needs to be updated, a component will dispatch an ‘Action’. This ‘Action’ essentially boils down to a javascript object with a ‘type’ key.
@@ -259,7 +253,7 @@ Each reduce function will look at the action type to determine what, if anything
 <p>Let’s look at an example. Here is what happens when a user clicks a cell to select it.</p>
 <p>Inside the <a class="reference external" href="https://github.com/CDAT/vcdat/blob/master/frontend/src/js/components/Cell.jsx">Cell component</a>
 the following code segment runs in response to the browser event.</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">selectCell</span><span class="p">(){</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">selectCell</span><span class="p">(){</span>
     <span class="n">let</span> <span class="nb">id</span> <span class="o">=</span> <span class="n">this</span><span class="o">.</span><span class="n">getOwnCellId</span><span class="p">()</span>
     <span class="k">if</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">props</span><span class="o">.</span><span class="n">selected_cell_id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">){</span>
         <span class="o">//</span> <span class="n">this</span><span class="o">.</span><span class="n">props</span><span class="o">.</span><span class="n">deselectCell</span><span class="p">()</span> <span class="o">//</span> <span class="k">if</span> <span class="n">a</span> <span class="n">cell</span> <span class="ow">is</span> <span class="n">selected</span><span class="p">,</span> <span class="n">a</span> <span class="n">user</span> <span class="n">clicking</span> <span class="n">on</span> <span class="n">it</span> <span class="n">should</span> <span class="n">deselect</span> <span class="n">it</span><span class="o">.</span>
@@ -272,11 +266,11 @@ the following code segment runs in response to the browser event.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>What is important to look at here is <code class="docutils literal"><span class="pre">this.props.selectCell(id)</span></code>.
+<p>What is important to look at here is <code class="docutils literal notranslate"><span class="pre">this.props.selectCell(id)</span></code>.
 This function actually comes from the way we connect this component to Redux.</p>
 <p>Look <a class="reference external" href="https://github.com/CDAT/vcdat/blob/master/frontend/src/js/components/Cell.jsx#L136">further down</a>
 and you will see that selectCell comes from the mapDispatchToProps function:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">mapDispatchToProps</span> <span class="o">=</span> <span class="p">(</span><span class="n">dispatch</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">mapDispatchToProps</span> <span class="o">=</span> <span class="p">(</span><span class="n">dispatch</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="n">selectCell</span><span class="p">:</span> <span class="n">function</span><span class="p">(</span><span class="n">cell_id</span><span class="p">){</span>
             <span class="n">dispatch</span><span class="p">(</span><span class="n">Actions</span><span class="o">.</span><span class="n">selectCell</span><span class="p">(</span><span class="n">cell_id</span><span class="p">))</span>
@@ -289,7 +283,7 @@ and you will see that selectCell comes from the mapDispatchToProps function:</p>
 file. This file simply gives us a single reliable place to reuse our actions,
 and helps assure that the formatting of these objects is consistent.</p>
 <p>Here is what this action does:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="n">selectCell</span><span class="p">(</span><span class="n">cell_id</span><span class="p">)</span> <span class="p">{</span>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">selectCell</span><span class="p">(</span><span class="n">cell_id</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;SELECT_CELL&quot;</span><span class="p">,</span>
         <span class="n">cell_id</span><span class="p">:</span> <span class="n">cell_id</span>
@@ -298,11 +292,11 @@ and helps assure that the formatting of these objects is consistent.</p>
 </pre></div>
 </div>
 <p><em>Remember, an action is really just an object</em></p>
-<p>When <code class="docutils literal"><span class="pre">dispatch()</span></code> is called with an action. Every reducer is given the action for processing.
+<p>When <code class="docutils literal notranslate"><span class="pre">dispatch()</span></code> is called with an action. Every reducer is given the action for processing.
 In this case, only the <a class="reference external" href="https://github.com/CDAT/vcdat/blob/master/frontend/src/js/models/Spreadsheet.js">Spreadhseet model</a> will make any changes to the store.
-This is because each reducer looks at the <code class="docutils literal"><span class="pre">type</span></code> of the action and compares that with the types that it handles</p>
-<p>Inside the Spreadsheet model we see that it indeed handles an action of type <code class="docutils literal"><span class="pre">SELECT_CELL</span></code></p>
-<p>Once that completes, our store will finish updating and any component that relied on <code class="docutils literal"><span class="pre">selected_cell_id</span></code> will recieve the new value.</p>
+This is because each reducer looks at the <code class="docutils literal notranslate"><span class="pre">type</span></code> of the action and compares that with the types that it handles</p>
+<p>Inside the Spreadsheet model we see that it indeed handles an action of type <code class="docutils literal notranslate"><span class="pre">SELECT_CELL</span></code></p>
+<p>Once that completes, our store will finish updating and any component that relied on <code class="docutils literal notranslate"><span class="pre">selected_cell_id</span></code> will recieve the new value.</p>
 </div>
 </div>
 <div class="section" id="vcs-js">
@@ -310,13 +304,13 @@ This is because each reducer looks at the <code class="docutils literal"><span c
 <p>Kitware has provided some basic documentation <a class="reference external" href="https://github.com/CDAT/vcs-js">here</a>.</p>
 <p>Vcs-js is included via a script tag inside the <a class="reference external" href="https://github.com/CDAT/vcdat/blob/master/frontend/src/index.html">index.html</a>  file.
 Vcs-js provides it’s own server with which the vcs object maintains a websocket connection to.</p>
-<p>If you need to debug or develop a new feature for Vcs-js, the following is a quick run down of how a call to the <code class="docutils literal"><span class="pre">vcs</span></code> variable is processed.</p>
+<p>If you need to debug or develop a new feature for Vcs-js, the following is a quick run down of how a call to the <code class="docutils literal notranslate"><span class="pre">vcs</span></code> variable is processed.</p>
 <p>All functions that the vcs object exposes are listed in the <a class="reference external" href="https://github.com/CDAT/vcs-js/blob/master/src/index.js">src/index.js</a> file,
 and in addition to being defined here, each must be exported at the bottom of the file.</p>
-<p>Notice that each operation makes a function call with a string value such as <code class="docutils literal"><span class="pre">'vcs.createtemplate'</span></code>.</p>
+<p>Notice that each operation makes a function call with a string value such as <code class="docutils literal notranslate"><span class="pre">'vcs.createtemplate'</span></code>.</p>
 <p>Each of these strings corresponds to a function in the <a class="reference external" href="https://github.com/CDAT/vcs-js/tree/master/vcs_server">vcs-server directory</a>
-which has been decorated with the same string. <code class="docutils literal"><span class="pre">'vcs.createtemplate'</span></code> corresponds to the function decorated like this:</p>
-<div class="code javascript highlight-default"><div class="highlight"><pre><span></span><span class="nd">@exportRpc</span><span class="p">(</span><span class="s1">&#39;vcs.createtemplate&#39;</span><span class="p">)</span>
+which has been decorated with the same string. <code class="docutils literal notranslate"><span class="pre">'vcs.createtemplate'</span></code> corresponds to the function decorated like this:</p>
+<div class="code javascript highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@exportRpc</span><span class="p">(</span><span class="s1">&#39;vcs.createtemplate&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">somefunction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arugment</span><span class="p">,</span> <span class="n">other_argument</span><span class="p">):</span>
     <span class="o">...</span>
 </pre></div>
@@ -327,18 +321,16 @@ In order to write a new function that vCDAT can call to do operations in Vcs-js,
 <li>Add a new function in <a class="reference external" href="https://github.com/CDAT/vcs-js/blob/master/src/index.js">src/index.js</a></li>
 <li>Export that function at the bottom of <a class="reference external" href="https://github.com/CDAT/vcs-js/blob/master/src/index.js">src/index.js</a></li>
 <li>Create a new function in the <a class="reference external" href="https://github.com/CDAT/vcs-js/tree/master/vcs_server">vcs-server directory</a> and decorate it with the same string used in step 1.</li>
-<li>Run <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code> using the same conda env as vCDAT</li>
+<li>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code> using the same conda env as vCDAT</li>
 <li>Test with vCDAT (You will need to restart any instances if they were already running)</li>
 </ol>
-<p>Since <code class="docutils literal"><span class="pre">vcs</span></code> is global you can actually call it from the dev tools directly.</p>
+<p>Since <code class="docutils literal notranslate"><span class="pre">vcs</span></code> is global you can actually call it from the dev tools directly.</p>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -360,7 +352,7 @@ In order to write a new function that vCDAT can call to do operations in Vcs-js,
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
     <p style="margin-top: 12px;">
         This work was performed under the auspices of the U.S. Department of Energy by Lawrence Livermore National Laboratory under Contract DEAC52-07NA27344.
     </p>
@@ -384,6 +376,7 @@ In order to write a new function that vCDAT can call to do operations in Vcs-js,
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.8.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -396,19 +389,13 @@ In order to write a new function that vCDAT can call to do operations in Vcs-js,
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>
