@@ -16,7 +16,7 @@ os.chdir("..")
 
 setup(
   name="vcdat",
-  version="0.7.0",
+  version="1.0.0",
   description="A user interface for visualizing and analysing climate data.",
   url="http://github.com/CDAT/vcdat",
   packages=['vcdat'],
