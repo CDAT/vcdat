@@ -8,6 +8,8 @@ class MainPage(BasePage):
 
     _alert_locator = '//div[@role="alert"]'
 
+    _var_delete_locator = "//li[@class='action-remove-button']"
+
     def __init__(self, driver):
         super(MainPage, self).__init__(driver)
 
@@ -36,5 +38,19 @@ class MainPage(BasePage):
         Verifies that <var> is listed on the 'Variables' left panel
         '''
         var_locator = "//ul[@id='var-list']//a[text() = \"{t}\"]".format(t=var)
-        self.driver.find_element_by_xpath(var_locator)
-        
+
+        #var_locator = "//ul[@id='var-list']//li[@class='active']//a[contains(text() = \"{t}\")]".format(t=var)
+        #var_locator = '//div[@class="left-size-list"]//div[@class="scroll-area"]//ul[@id="var-list"]//li[@class="active"]'
+        return self.driver.find_element_by_xpath(var_locator)
+         
+
+    def delete_variable(self, var):
+        print("...click on the variable {v} on main page".format(v=var))
+        var_element = self.find_variable(var)
+        var_element.click()
+
+        print("...click on delete variable (the x button)")
+        var_delete_element = self.driver.find_element_by_xpath(self._var_delete_locator)
+        var_delete_element.click()
+
+

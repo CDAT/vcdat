@@ -10,14 +10,12 @@ sys.path.append(lib_dir)
 # from BaseTestCase import BaseTestCase
 from BaseTestCase import BaseTestCase
 from MainPage import MainPage
-from AddVariable import LoadVariableModal
-from AddVariable import FileExplorerModal
+from Variable import LoadVariableModal
+from Variable import FileExplorerModal
 
-class AddVariableTest(BaseTestCase):
-    def testAddVariable(self):
+class variableTest(BaseTestCase):
 
-        # click on the Variable + button on main page
-        main_page = MainPage(self.driver)
+    def _add_variable(self, main_page, data_file):
         main_page.add_variable()
         time.sleep(3)
 
@@ -32,8 +30,6 @@ class AddVariableTest(BaseTestCase):
         file_explorer_pop_up = FileExplorerModal(self.driver)
 
         # find the data file on the "File Explorer" pop up.
-        # TEMPORARY hard code
-        data_file = "/Users/muryanto1/work/vcdat/miniconda2/envs/vcdat/share/uvcdat/sample_data/clt.nc"
         file_explorer_pop_up.load_a_sample_file(data_file)
 
         # verify the selected file on the "Load Variable" pop up
@@ -52,10 +48,35 @@ class AddVariableTest(BaseTestCase):
         # confirm that the data file name is listed on the left Variables panel
         nc_name = os.path.basename(data_file)
         just_nc_name = os.path.splitext(nc_name)[0]
+        print("xxx DEBUG xxx...just_nc_name: {}".format(just_nc_name))
         main_page.find_variable(just_nc_name)        
         
+        # REVISIT --- variable the value listed in the "Variable(s) text box
         var = load_variable.variable_name()
         print("xxx xxx var: {v}".format(v=var))
+
+        # click on "Close" button on the Load Variable pop-up
+        load_variable.close()
+        print("...sleep 2 seconds")
+        time.sleep(2)
+
+    def _remove_variable(self, main_page, var_name):
+        print("xxx delete_variable, var_name: {}".format(var_name))
+        main_page.delete_variable(var_name)
+        print("...sleep for 5 seconds...")
+        time.sleep(5)
+
+    def testAddVariable(self):
+        # click on the Variable + button on main page
+        main_page = MainPage(self.driver)
+
+        # TEMPORARY hard code
+        data_file = "/Users/muryanto1/work/vcdat/miniconda2/envs/vcdat/share/uvcdat/sample_data/clt.nc"
+        self._add_variable(main_page, data_file)
+
+        # TEMPORARY
+        var_name = 'clt'
+        self._remove_variable(main_page, var_name)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

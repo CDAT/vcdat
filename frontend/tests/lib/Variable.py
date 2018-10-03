@@ -5,11 +5,14 @@ from BasePage import BasePage
 from BasePage import InvalidPageException
 
 class LoadVariableModal(BasePage):
+    # "Load Variable" pop up
 
     # _file_explorer_locator = "btn-primary"
-    _load_from_locator = "load-from"
-    _selected_file_locator = './/span[@class="input-group input-group-sm"]//input'
+    _selected_file_locator = '//div[@class="load-from"]//span[@class="input-group input-group-sm"]//input'
+    _file_button_locator = '//div[@class="load-from"]//span[@class="input-group-btn"]//button[@class="btn btn-primary"]'
+
     _load_button_locator = '//div[@class="modal-footer"]//button[@class="btn btn-primary" and text() = "Load"]'
+    _close_button_locator = '//div[@class="modal-footer"]//button[@class="btn btn-default" and text() = "Close"]'
 
     _variable_name_opts_locator = '//optgroup[@label="---Variables---"]//option'
 
@@ -25,20 +28,26 @@ class LoadVariableModal(BasePage):
 
     def load_from_file(self):
         # click on the file icon in the File row on "Load Variable" pop up
-        load_from = self.driver.find_element_by_class_name(self._load_from_locator)        
-        load_button = load_from.find_element_by_xpath('.//span[@class="input-group-btn"]//button[@class="btn btn-primary"]')
+        print("...click on File icon in the File row on 'Load variable' pop up")
+        load_button = self.driver.find_element_by_xpath(self._file_button_locator)
         load_button.click()
+
+    def do_load_file(self):
+        print("...click on 'Load' button on 'Load Variable' pop up")
+        self.driver.find_element_by_xpath(self._load_button_locator).click()
+        time.sleep(4)
+
+    def close(self):
+        # click on the close button on "Load Variable" pop up
+        print("...click on 'Close' button on 'Load Variable' pop up")
+        close_button = self.driver.find_element_by_xpath(self._close_button_locator)
+        close_button.click()
 
     @property
     def selected_file(self):
         # return the selected file name in the "Load Variable" pop up
-        load_from = self.driver.find_element_by_class_name(self._load_from_locator)
-        selected_file = load_from.find_element_by_xpath(self._selected_file_locator).get_attribute('value')
+        selected_file = self.driver.find_element_by_xpath(self._selected_file_locator).get_attribute('value')
         return selected_file
-
-    def do_load_file(self):
-        self.driver.find_element_by_xpath(self._load_button_locator).click()
-        time.sleep(4)
 
     def variable_name(self):
         option_elements = self.driver.find_elements_by_xpath(self._variable_name_opts_locator)
@@ -115,4 +124,6 @@ class FileExplorerModal(BasePage):
         self.__go_to_root_dir()
         time.sleep(1)
         self.__get_sample_file(filename)
+
+
 
