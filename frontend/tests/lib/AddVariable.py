@@ -11,6 +11,8 @@ class LoadVariableModal(BasePage):
     _selected_file_locator = './/span[@class="input-group input-group-sm"]//input'
     _load_button_locator = '//div[@class="modal-footer"]//button[@class="btn btn-primary" and text() = "Load"]'
 
+    _variable_name_opts_locator = '//optgroup[@label="---Variables---"]//option'
+
     def __init__(self, driver):
         super(LoadVariableModal, self).__init__(driver)
 
@@ -38,7 +40,10 @@ class LoadVariableModal(BasePage):
         self.driver.find_element_by_xpath(self._load_button_locator).click()
         time.sleep(4)
 
-
+    def variable_name(self):
+        option_elements = self.driver.find_elements_by_xpath(self._variable_name_opts_locator)
+        print("xxx xxx # of variable options elements: {}".format(len(option_elements)))
+        return(option_elements[0].get_attribute('value'))
 
 class FileExplorerModal(BasePage):
 

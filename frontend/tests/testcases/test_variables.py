@@ -53,6 +53,9 @@ class AddVariableTest(BaseTestCase):
         nc_name = os.path.basename(data_file)
         just_nc_name = os.path.splitext(nc_name)[0]
         main_page.find_variable(just_nc_name)        
+        
+        var = load_variable.variable_name()
+        print("xxx xxx var: {v}".format(v=var))
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

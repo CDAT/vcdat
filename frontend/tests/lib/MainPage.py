@@ -32,7 +32,9 @@ class MainPage(BasePage):
 
     # Variables panel
     def find_variable(self, var):
+        '''
+        Verifies that <var> is listed on the 'Variables' left panel
+        '''
         var_locator = "//ul[@id='var-list']//a[text() = \"{t}\"]".format(t=var)
         self.driver.find_element_by_xpath(var_locator)
-
-
+        
