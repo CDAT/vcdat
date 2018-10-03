@@ -66,7 +66,7 @@ class variableTest(BaseTestCase):
         print("...sleep for 5 seconds...")
         time.sleep(5)
 
-    def testAddVariable(self):
+    def COMMENTOUTtestAddVariable(self):
         # click on the Variable + button on main page
         main_page = MainPage(self.driver)
 
@@ -77,6 +77,20 @@ class variableTest(BaseTestCase):
         # TEMPORARY
         var_name = 'clt'
         self._remove_variable(main_page, var_name)
+
+
+    def testPlotVariable(self):
+        # click on the Variable + button on main page
+        main_page = MainPage(self.driver)
+
+        # TEMPORARY hard code
+        data_file = "/Users/muryanto1/work/vcdat/miniconda2/envs/vcdat/share/uvcdat/sample_data/clt.nc"
+        self._add_variable(main_page, data_file)
+
+        # TEMPORARY
+        var_name = 'clt'
+        main_page.plot_variable(var_name)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
