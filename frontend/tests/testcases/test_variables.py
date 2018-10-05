@@ -89,8 +89,9 @@ class variableTest(BaseTestCase):
 
         # TEMPORARY
         var_name = 'clt'
-        main_page.plot_variable(var_name)
+        main_page.plot_variable(var_name, 0)
 
+        self._remove_variable(main_page, var_name)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
