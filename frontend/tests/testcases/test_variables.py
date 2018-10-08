@@ -17,14 +17,12 @@ class variableTest(BaseTestCase):
 
     def _add_variable(self, main_page, data_file):
         main_page.add_variable()
-        time.sleep(3)
-
+        
         # verify that we have "Load Variable" pop up
         load_variable = LoadVariableModal(self.driver)
 
         # click on the file icon in the File row on "Load Variable" pop up
         load_variable.load_from_file()
-        time.sleep(3)
 
         # verify that we have "File Explorer" pop up
         file_explorer_pop_up = FileExplorerModal(self.driver)
@@ -39,11 +37,13 @@ class variableTest(BaseTestCase):
         self.assertEqual(selected_file_name, data_file, err_msg)
 
         # click on the Load button on the "Load Variable" pop up
-        load_variable.do_load_file()
+        # TEMPORARY var_name
+        var_name = 'clt'
+        load_variable.do_load_file(main_page, var_name)
 
         # alert_element = self.driver.find_element_by_xpath('//div[@role="alert"]').text.strip()
         # assert(alert_element.startswith("Successfully Loaded"))
-        main_page.wait_till_file_loaded()
+        ####main_page.wait_till_file_loaded()
 
         # confirm that the data file name is listed on the left Variables panel
         nc_name = os.path.basename(data_file)

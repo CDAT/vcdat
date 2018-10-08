@@ -1,6 +1,11 @@
 import os
 import time
 
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 from BasePage import BasePage
 from BasePage import InvalidPageException
 
@@ -8,6 +13,7 @@ class LoadVariableModal(BasePage):
     # "Load Variable" pop up
 
     # _file_explorer_locator = "btn-primary"
+    _file_explorer_pop_up_locator = "//h4[text() = 'File Explorer']"
     _selected_file_locator = '//div[@class="load-from"]//span[@class="input-group input-group-sm"]//input'
     _file_button_locator = '//div[@class="load-from"]//span[@class="input-group-btn"]//button[@class="btn btn-primary"]'
 
@@ -31,11 +37,14 @@ class LoadVariableModal(BasePage):
         print("...click on File icon in the File row on 'Load variable' pop up")
         load_button = self.driver.find_element_by_xpath(self._file_button_locator)
         load_button.click()
+        file_explorer_pop_up = WebDriverWait(self.driver, 
+                                             self._wait_timeout).until(EC.visibility_of_element_located((By.XPATH, self._file_explorer_pop_up_locator)))
 
-    def do_load_file(self):
+    def do_load_file(self, main_page, var_name):
         print("...click on 'Load' button on 'Load Variable' pop up")
         self.driver.find_element_by_xpath(self._load_button_locator).click()
-        time.sleep(4)
+        ##time.sleep(4)        
+        main_page.wait_till_file_loaded(var_name)
 
     def close(self):
         # click on the close button on "Load Variable" pop up

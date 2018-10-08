@@ -2,6 +2,9 @@ from abc import abstractmethod
 
 class BasePage(object):
     """ All page objects inherit from this """
+
+    _wait_timeout = 10
+
     def __init__(self, driver):
         self._validate_page(driver)
         self.driver = driver

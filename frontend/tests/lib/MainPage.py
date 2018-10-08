@@ -6,17 +6,20 @@ from selenium.common.exceptions import NoSuchElementException
 
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
-
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class MainPage(BasePage):
 
     _alert_locator = '//div[@role="alert"]'
-
+    #_alert_pop_up_locator = "/div[contains(text(), 'Successfully Loaded')]"
     _var_delete_locator = "//li[@class='action-remove-button']"
-
+    _load_variable_pop_up_locator = "//h4[text() = 'Load Variable']"
     # _variable_plot_locator = "//div[@class='plotter-plots']//div[@id='plot000']//h4[text() = 'Variables:']"
     #_variable_plot_locator = "//div[@class='plotter-plots']//div[@id='plot000']//div[@class='plot-var first-var']"
     #_variable_plot_locator = "//div[@class='plotter-plots']//div[@data-plot-index=0]"
+
 
     def __init__(self, driver):
         super(MainPage, self).__init__(driver)
@@ -24,12 +27,13 @@ class MainPage(BasePage):
     def add_variable(self):
         variables = self.driver.find_element_by_class_name("var-list-container")
         variables.find_element_by_class_name("action-add-button").click()
+        load_variable_pop_up_el = WebDriverWait(self.driver, 
+                                                self._wait_timeout).until(EC.visibility_of_element_located((By.XPATH, self._load_variable_pop_up_locator)))
 
-    def wait_till_file_loaded(self):
+    def wait_till_file_loaded(self, var_name):
         # this may not belong to MainPage class
-        alert_element_text = self.driver.find_element_by_xpath(self._alert_locator).text.strip()
-        assert(alert_element_text.startswith("Successfully Loaded"))
-        
+        alert_pop_up_locator = "//div[contains(text(), 'Successfully Loaded {var}')]".format(var=var_name)
+        alert_pop_up_el = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.XPATH, alert_pop_up_locator)))
         alert_is_up = True
         while alert_is_up:
             try:
@@ -104,7 +108,7 @@ class MainPage(BasePage):
         
         #ActionChains(self.driver).click_and_hold(var_element).move_to_element(plot_area_element).click(plot_area_element).release().perform()
         #ActionChains(self.driver).click_and_hold(var_element).move_to_element(plot_area_element).click_and_hold(plot_area_element).release().perform()
-        
+        ActionChains(self.driver).move_to_element_with_offset(plot_area_element, 0, 0).click(plot_area_element).perform()
         ActionChains(self.driver).click_and_hold(var_element).move_to_element_with_offset(plot_area_element, 0, 0).release().perform()
         print("...sleep for 5 seconds...")
         time.sleep(5)
