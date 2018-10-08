@@ -43,7 +43,6 @@ class LoadVariableModal(BasePage):
     def do_load_file(self, main_page, var_name):
         print("...click on 'Load' button on 'Load Variable' pop up")
         self.driver.find_element_by_xpath(self._load_button_locator).click()
-        ##time.sleep(4)        
         main_page.wait_till_file_loaded(var_name)
 
     def close(self):
@@ -81,7 +80,6 @@ class FileExplorerModal(BasePage):
         super(FileExplorerModal, self).__init__(driver)
 
     def _validate_page(self, driver):
-        time.sleep(3)
         title = driver.find_element_by_xpath(self._file_explorer_title_locator).text.strip()
         if "File Explorer" not in title:
             raise InvalidPageException("Pop up does not show 'File Explorer'")
@@ -103,7 +101,7 @@ class FileExplorerModal(BasePage):
             if len(paths_elements) == 0:
                 print("...at root dir")
                 at_root_dir = True
-                time.sleep(3)
+                time.sleep(self._delay)
 
     def __get_sample_file(self, filename):
         # select each path specified in the filename from the scoll list of
@@ -116,14 +114,15 @@ class FileExplorerModal(BasePage):
             print("...click on {p}".format(p=p))
             path_element = paths_list_element.find_element_by_xpath(path_locator)
             path_element.click()
-            time.sleep(2)
+            time.sleep(self._delay)
 
         print("...click on 'Select' button in File Explorer pop up")
         self.driver.find_element_by_xpath(self._file_explorer_select_locator).click()
-        time.sleep(5)
 
-        # verify that the Load Variable pop up says the selected filename.
-
+        # verify that the Load Variable pop up says the selected filename 
+        # in the 'File' input area
+        file_input_area_locator = "//input[@value='{f}']".format(f=filename)
+        self.driver.find_element_by_xpath(file_input_area_locator)
         
         
     def load_a_sample_file(self, filename):
@@ -131,7 +130,6 @@ class FileExplorerModal(BasePage):
         # sys.prefix: /Users/muryanto1/work/vcdat/miniconda2/envs/vcdat
         print("xxx in load_a_sample_file: {f}".format(f=filename))
         self.__go_to_root_dir()
-        time.sleep(1)
         self.__get_sample_file(filename)
 
 

@@ -51,8 +51,6 @@ class MainPage(BasePage):
         '''
         var_locator = "//ul[@id='var-list']//a[text() = \"{t}\"]".format(t=var)
 
-        #var_locator = "//ul[@id='var-list']//li[@class='active']//a[contains(text() = \"{t}\")]".format(t=var)
-        #var_locator = '//div[@class="left-size-list"]//div[@class="scroll-area"]//ul[@id="var-list"]//li[@class="active"]'
         return self.driver.find_element_by_xpath(var_locator)
          
 
@@ -65,50 +63,21 @@ class MainPage(BasePage):
         var_delete_element = self.driver.find_element_by_xpath(self._var_delete_locator)
         var_delete_element.click()
 
-    def plot_variablePREV(self, var, index):
-        # REVISIT, should take an argument to plot in which plot area.
-
-        print("...click on the variable {v} on main page".format(v=var))
-        var_element = self.find_variable(var)
-        var_element.click()
-        print("...sleep for 3 seconds...")
-        time.sleep(3)
-        variable_plot_locator = "//div[@class='plotter-plots']//div[@data-plot-index='{i}']".format(i=index)
-        plot_area_element = self.driver.find_element_by_xpath(variable_plot_locator)
-        plot_area_element.click()
-        print("...drag the variable to the plot area...")
-        # WORKS - my mouse has to be on the plot area
-        ActionChains(self.driver).drag_and_drop(var_element, plot_area_element).perform()
-        #ActionChains(self.driver).drag_and_drop_by_offset(var_element, 2, -1).perform()
-
-        # WORKS - my mouse has to be on the plot area
-        #ActionChains(self.driver).click_and_hold(var_element).move_by_offset(10, -10).release().perform()
-        print("...sleep for 10 seconds...")
-        time.sleep(10)
-
-
     def plot_variable(self, var, index):
         # REVISIT, should take an argument to plot in which plot area.
 
         print("...click on the variable {v} on main page".format(v=var))
         var_element = self.find_variable(var)
         var_element.click()
-        print("...sleep for 3 seconds...")
-        time.sleep(3)
+
         variable_plot_locator = "//div[@class='plotter-plots']//div[@data-plot-index='{i}']".format(i=index)
         plot_area_element = self.driver.find_element_by_xpath(variable_plot_locator)
         plot_area_element.click()
         print("...drag the variable to the plot area...")
-        # WORKS - my mouse has to be on the plot area
-        #ActionChains(self.driver).drag_and_drop(var_element, plot_area_element).perform()
+        ActionChains(self.driver).click_and_hold(var_element).move_to_element(plot_area_element).release().perform()
 
-        # WORKS - my mouse has to be on the plot area
-        #ActionChains(self.driver).click_and_hold(var_element).move_by_offset(10, -10).release().perform()
-
-        
-        #ActionChains(self.driver).click_and_hold(var_element).move_to_element(plot_area_element).click(plot_area_element).release().perform()
-        #ActionChains(self.driver).click_and_hold(var_element).move_to_element(plot_area_element).click_and_hold(plot_area_element).release().perform()
-        ActionChains(self.driver).move_to_element_with_offset(plot_area_element, 0, 0).click(plot_area_element).perform()
-        ActionChains(self.driver).click_and_hold(var_element).move_to_element_with_offset(plot_area_element, 0, 0).release().perform()
-        print("...sleep for 5 seconds...")
-        time.sleep(5)
+        # wait till canvas is visible
+        canvas_index_locator = "//div[@id='canvas_{i}_{i}_{i}']".format(i=index)
+        print("xxx xxx canvas_index_locator: {}".format(canvas_index_locator))
+        canvas_el = WebDriverWait(self.driver, 
+                                  self._wait_timeout).until(EC.visibility_of_element_located((By.XPATH, canvas_index_locator)))

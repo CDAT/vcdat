@@ -4,6 +4,7 @@ class BasePage(object):
     """ All page objects inherit from this """
 
     _wait_timeout = 10
+    _delay = 3
 
     def __init__(self, driver):
         self._validate_page(driver)
