@@ -13,12 +13,8 @@ from selenium.webdriver.support import expected_conditions as EC
 class MainPage(BasePage):
 
     _alert_locator = '//div[@role="alert"]'
-    #_alert_pop_up_locator = "/div[contains(text(), 'Successfully Loaded')]"
     _var_delete_locator = "//li[@class='action-remove-button']"
     _load_variable_pop_up_locator = "//h4[text() = 'Load Variable']"
-    # _variable_plot_locator = "//div[@class='plotter-plots']//div[@id='plot000']//h4[text() = 'Variables:']"
-    #_variable_plot_locator = "//div[@class='plotter-plots']//div[@id='plot000']//div[@class='plot-var first-var']"
-    #_variable_plot_locator = "//div[@class='plotter-plots']//div[@data-plot-index=0]"
 
 
     def __init__(self, driver):

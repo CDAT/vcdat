@@ -114,7 +114,8 @@ class FileExplorerModal(BasePage):
             print("...click on {p}".format(p=p))
             path_element = paths_list_element.find_element_by_xpath(path_locator)
             path_element.click()
-            time.sleep(self._delay)
+            #time.sleep(self._delay)
+            time.sleep(2)
 
         print("...click on 'Select' button in File Explorer pop up")
         self.driver.find_element_by_xpath(self._file_explorer_select_locator).click()

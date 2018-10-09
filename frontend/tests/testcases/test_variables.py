@@ -41,10 +41,6 @@ class variableTest(BaseTestCase):
         var_name = 'clt'
         load_variable.do_load_file(main_page, var_name)
 
-        # alert_element = self.driver.find_element_by_xpath('//div[@role="alert"]').text.strip()
-        # assert(alert_element.startswith("Successfully Loaded"))
-        ####main_page.wait_till_file_loaded()
-
         # confirm that the data file name is listed on the left Variables panel
         nc_name = os.path.basename(data_file)
         just_nc_name = os.path.splitext(nc_name)[0]
@@ -57,14 +53,19 @@ class variableTest(BaseTestCase):
 
         # click on "Close" button on the Load Variable pop-up
         load_variable.close()
-        print("...sleep 2 seconds")
-        time.sleep(2)
+        time.sleep(3)
 
     def _remove_variable(self, main_page, var_name):
         print("xxx delete_variable, var_name: {}".format(var_name))
         main_page.delete_variable(var_name)
         print("...sleep for 5 seconds...")
         time.sleep(5)
+        try:
+            main_page.find_variable(var_name)
+        except NoSuchElementException:
+            print("Good...variable is deleted...")
+        except:
+            print("Not good...variable is not deleted...")
 
     def COMMENTOUTtestAddVariable(self):
         # click on the Variable + button on main page
