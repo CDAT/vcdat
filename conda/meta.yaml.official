@@ -1,5 +1,5 @@
 about:
-  home: http://gitub.com/UV-CDAT/vcdat
+  home: http://github.com/UV-CDAT/vcdat
 package:
   name: vcdat
   version: "0.7.0"

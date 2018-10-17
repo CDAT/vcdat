@@ -1,10 +1,10 @@
 package:
   name: vcdat
-  version: @VERSION@
+  version: 1.0.rc1
 
 source:
-  git_rev: @UVCDAT_BRANCH@
-  git_url: git://github.com/UV-CDAT/vcdat.git
+  git_rev: v1.0.rc1
+  git_url: git://github.com/CDAT/vcdat.git
 
 requirements:
   build:
@@ -24,4 +24,4 @@ build:
   noarch_python: true
 
 about:
-  home: http://github.com/UV-CDAT/vcdat
+  home: http://github.com/CDAT/vcdat
