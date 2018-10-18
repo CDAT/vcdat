@@ -118,6 +118,135 @@ const JOYRIDE_STEPS = [
         type: "click"
     }
 ];
+    
+const CALCULATOR_STEPS = [
+    {
+        title: 'Calculator Tour',
+        text: "This is the calculator. It Helps you create new variables. Let's take a look!",
+        selector: '#calculator-main',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Calculator Operations',
+        text: "At the moment the calculator can only perform one operation at the time, either based on ".concat(
+            "<span style='color: orange;'>TWO operands</span> (variables or constants) or a ",
+            "<span style='color: green;'>SINGLE variable OPERATOR.</span>"
+        ),
+        selector: '#calc-button-region',
+        position: 'bottom-right',
+        type: 'hover'
+    },
+    {
+        title: 'Variables List',
+        text: "All the available variables that you have loaded are listed here.",
+        selector: '#calc-variable-region',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Derived Variable',
+        text: "The final name for the derived variable appears here. vCDAT automatically constructs one for you, ".concat(
+            "based on your operations, but you can decide on another name by typing it here."),
+        selector: '#new-variable-name',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Calculation Area',
+        text: 'The calculation to be performed will be expressed here.'.concat(
+            '<br />To use a variable, drag it in the green rectangle.'),
+        selector: '#calculation',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Regrid Operations',
+        text: "The 'Regrid' drop-down let's you decide which regridder tool and method you would like to use.".concat(
+            '<br /><span style="color: blue;">ESMF/Linear</span> is the default regrid operation.'
+        ),
+        selector: '#regrid',
+        position: 'bottom-right',
+        type: 'hover'
+    },
+    {
+        title: 'Compute New Variable',
+        text: "When you are done setting the calculation click the 'Enter' button or simply press 'Enter' ".concat(
+            "to perform the calculation and have it saved as a new derived variable.",
+            "You can use it right away to derive yet another variable."
+        ),
+        selector: '#enter',
+        position: 'bottom-right',
+        type: 'hover'
+    }
+];
+
+const COLORMAP_STEPS = [
+    {
+        title: 'Colormap Editor Tour',
+        text: 'This is a tour of the Colormap Editor and how to use it!',
+        selector: '#colormap-editor-main',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Colormap List',
+        text: "This dropdown lets you choose from existing colormaps.",
+        selector: '#colormap-dropdown',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Create New Colormap',
+        text: "Click this button to create a copy of the current color-map which you can then modify and save.".concat(
+            "<br />Once clicked, a pop-up will appear for you to choose the new colormap name."
+        ),
+        selector: '#btn-new-colormap',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Color Grid',
+        text: 'The colors and their respective index are listed here in order. Clicking on a cell will allow you to adjust the color (see next frame).'.concat(
+            '<br />You can also select a range of cells by first clicking one cell and then holding shift and clicking on another.'
+        ),
+        selector: '#colormap-cells-container',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Color Picker',
+        text: "Once you have selected a cell, you can change the colors of the cell to your choice of predefined or custom colors.".concat(
+            '<br />Note: If you select multiple cells, only the color of the last cell in the range will actually be changed.'
+        ),
+        selector: '#color-pickers',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Blend Colors',
+        text: "While having a cell range selected, clicking this button will interpolate the colors between the first cell".concat(
+            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
+        ),
+        selector: '#btn-blend',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Save Colormap',
+        text: "Clicking this button will save your changes on the current colormap.",
+        selector: '#btn-save-colormap',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Import and Export',
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a JSON colormap file.",
+        selector: '#btn-import-export',
+        position: 'top',
+        type: 'click'
+    },
+];
 
 const CALCULATOR_STEPS = [
     {
@@ -418,11 +547,14 @@ const ISOLINE_EDITOR_STEPS = [
 export { JOYRIDE_STEPS };
 export { CALCULATOR_STEPS };
 export { COLORMAP_STEPS };
+<<<<<<< HEAD
 export { LOAD_VARIABLE_STEPS };
 export { TEMPLATE_EDITOR_STEPS };
 export { BOXFILL_EDITOR_STEPS };
 export { ISOFILL_EDITOR_STEPS };
 export { ISOLINE_EDITOR_STEPS };
+=======
+>>>>>>> 2bb6930b036294e1ec25fe5abd874fee33801ae5
 export { ONE_VAR_PLOTS };
 export { TWO_VAR_PLOTS };
 export { BINARY_OPERATORS };
