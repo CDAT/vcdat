@@ -12,7 +12,7 @@ requirements:
   - setuptools
   - nodejs
   run:
-  - python
+  - python =2
   - flask
   - vcs
   - cdms2

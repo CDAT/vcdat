@@ -5,7 +5,7 @@ import './CachedFiles.scss'
 import FileTab from './Tabs/FileTab.jsx'
 // import Esgf from './Tabs/EsgfTab.jsx'
 // import OpendapTab from './Tabs/OpendapTab.jsx'
-import TabBar from '../../TabBar/TabBar.jsx'
+// import TabBar from '../../TabBar/TabBar.jsx'
 
 class CachedFiles extends Component {
 
@@ -13,7 +13,7 @@ class CachedFiles extends Component {
         super(props);
         this.state = {
             hasError: false,
-            selected_tab: 0,
+            /*selected_tab: 0,
             tabs: [
                 {
                     id: "file",
@@ -29,9 +29,9 @@ class CachedFiles extends Component {
                     display_name: "OpenDAP",
                     disabled: true,
                 },
-            ]
+            ]*/
         }
-        this.switchTab = this.switchTab.bind(this)
+        //this.switchTab = this.switchTab.bind(this)
     }
 
     //Added this function to cause this component to become an error boundary and catch issues with loading files/variables.
@@ -39,10 +39,10 @@ class CachedFiles extends Component {
         this.setState({hasError: true});
         console.log(error);
     }
-
+    /*
     switchTab(index){
         this.setState({selected_tab: index});
-    }
+    }*/
 
     render() {
         return (
@@ -50,21 +50,21 @@ class CachedFiles extends Component {
                 <div id='load-variable-form'>
                     <Modal.Header closeButton>
                         {
-                            this.state.selected_tab === 3 ? (
+                            /*this.state.selected_tab === 3 ? (
                                 <Modal.Title>Variable Info</Modal.Title>
-                            ) : (
-                                <Modal.Title>Load Variable &nbsp;
-                                    <Button onClick={() => this.props.startTour(3)} className='help-button main-help btn btn-xs btn-default'>
-                                        <i className='glyphicon glyphicon-question-sign' />Help
-                                    </Button>
-                                </Modal.Title>
-                            )
+                            ) : (*/
+                            <Modal.Title>Load Variable &nbsp;
+                                <Button onClick={() => this.props.startTour(3)} className='help-button main-help btn btn-xs btn-default'>
+                                    <i className='glyphicon glyphicon-question-sign' />Help
+                                </Button>
+                            </Modal.Title>
+                            //)
                         }
                     </Modal.Header>
-                    <TabBar tabs={this.state.tabs} selected_tab={this.state.selected_tab} switchTab={this.switchTab} />
+                    {/*<TabBar tabs={this.state.tabs} selected_tab={this.state.selected_tab} switchTab={this.switchTab} />*/}
                         {
-                            this.state.selected_tab == 1 ? <div className="Dummy-esgf-component">ESGF</div> :
-                            this.state.selected_tab == 2 ? <div className="Dummy-opendap-component">OpenDAP</div> :
+                            //this.state.selected_tab == 1 ? <div className="Dummy-esgf-component">ESGF</div> :
+                            //this.state.selected_tab == 2 ? <div className="Dummy-opendap-component">OpenDAP</div> :
                             <FileTab {...this.props} hasError={this.state.hasError} handleError={()=>{this.setState({hasError: false})}} />
                         }
                 </div>
