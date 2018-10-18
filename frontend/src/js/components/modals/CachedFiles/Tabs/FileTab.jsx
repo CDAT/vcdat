@@ -217,6 +217,7 @@ class FileTab extends Component {
                             ];
                             window.localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles));
                             const selected_variable = getDefaultVariable(Object.keys(variablesAxes[0]));
+                            
                             self.setState({
                                 variablesAxes,
                                 selectedFile: file,
@@ -335,6 +336,11 @@ class FileTab extends Component {
         let selected_file_path = "";
         if (this.state.selectedFile) {
             selected_file_path = cleanPath(this.state.selectedFile.path) + "/" + this.state.selectedFile.name;
+        }
+        if(this.props.hasError){
+            this.props.handleError();
+            console.log("File info modal restarted due to error.");
+            toast.error("Error occurred loading file.", { position: toast.POSITION.BOTTOM_CENTER });
         }
         return (
             <div>

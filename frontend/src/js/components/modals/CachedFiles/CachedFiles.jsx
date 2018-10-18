@@ -8,9 +8,11 @@ import FileTab from './Tabs/FileTab.jsx'
 import TabBar from '../../TabBar/TabBar.jsx'
 
 class CachedFiles extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
+            hasError: false,
             selected_tab: 0,
             tabs: [
                 {
@@ -32,8 +34,14 @@ class CachedFiles extends Component {
         this.switchTab = this.switchTab.bind(this)
     }
 
+    //Added this function to cause this component to become an error boundary and catch issues with loading files/variables.
+    componentDidCatch(error, info) {
+        this.setState({hasError: true});
+        console.log(error);
+    }
+
     switchTab(index){
-        this.setState({ selected_tab: index})
+        this.setState({selected_tab: index});
     }
 
     render() {
@@ -57,7 +65,7 @@ class CachedFiles extends Component {
                         {
                             this.state.selected_tab == 1 ? <div className="Dummy-esgf-component">ESGF</div> :
                             this.state.selected_tab == 2 ? <div className="Dummy-opendap-component">OpenDAP</div> :
-                            <FileTab {...this.props} />
+                            <FileTab {...this.props} hasError={this.state.hasError} handleError={()=>{this.setState({hasError: false})}} />
                         }
                 </div>
             </Modal>

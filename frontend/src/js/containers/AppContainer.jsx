@@ -25,10 +25,6 @@ class AppContainer extends Component{
         this.handleJoyrideEvents = this.handleJoyrideEvents.bind(this)
     }
 
-    componentDidMount(){
-        
-    }
-
     startTour(steps){
         if(this.joyride){
             var STEPS = {}
