@@ -77,6 +77,8 @@ CachedFiles.propTypes = {
     show: PropTypes.bool.isRequired,
     startTour: PropTypes.func,
     onTryClose: PropTypes.func.isRequired,
+    hasError: PropTypes.bool.isRequired,
+    handleError: PropTypes.func.isRequired
 }
 
 export default CachedFiles
