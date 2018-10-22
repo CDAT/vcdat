@@ -54,26 +54,38 @@ class TemplateEditor extends Component {
 
     render() {
         const template_name = this.props.template && typeof this.props.template === "object" ? this.props.template.name : "";
+       
         return (
             <Modal show={this.props.show} onHide={this.props.close}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit {template_name}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {
-                        this.props.template === "loading" ? <div style={{display: "flex", justifyContent: "center"}}><span className="loading-spinner"></span></div>
-                        : this.props.template === "error" ? <div id="template-load-error">Error retrieving template data. Try another template, or restart vCDAT. If the problem persists, please send an email to cdat-support@llnl.gov detailing the issue.</div>
-                        : <TemplateEdit 
-                                templatePreview={"/plotTemplate?tmpl=" + JSON.stringify(this.state.workingTemplate)}
-                                template={this.state.workingTemplate}
-                                updateTemplate={this.onUpdate}
-                          />
-                    }
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.saveTemplate} bsStyle="primary" disabled={this.props.template === "error"}>Save</Button>
-                    <Button onClick={this.props.close} bsStyle="default">Cancel</Button>    
-                </Modal.Footer>
+                <div id='template-editor-main'>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edit {template_name} &nbsp;
+                            <Button onClick={() => this.props.startTour(3)} className="help-button main-help btn btn-xs btn-default">
+                                <i className="glyphicon glyphicon-question-sign" />Help
+                            </Button>
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {
+                            this.props.template === "loading" ? <div style={{display: "flex", justifyContent: "center"}}><span className="loading-spinner"></span></div>
+                            : this.props.template === "error" ? 
+                                <div id="template-load-error">
+                                    Error retrieving template data. Try another template, or restart vCDAT. 
+                                    If the problem persists, please send an email to cdat-support@llnl.gov detailing the issue.
+                                </div>
+                                :   <TemplateEdit 
+                                        id="joyride-template-edit"
+                                        templatePreview={"/plotTemplate?tmpl=" + JSON.stringify(this.state.workingTemplate)}
+                                        template={this.state.workingTemplate}
+                                        updateTemplate={this.onUpdate}
+                                    />
+                        }
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.saveTemplate} bsStyle="primary" disabled={this.props.template === "error"}>Save</Button>
+                        <Button onClick={this.props.close} bsStyle="default">Cancel</Button>    
+                    </Modal.Footer>
+                </div>
             </Modal>
         );
     }
@@ -82,6 +94,7 @@ class TemplateEditor extends Component {
 TemplateEditor.propTypes = {
     show: PropTypes.bool,
     close: PropTypes.func,
+    startTour: PropTypes.func,
     template: PropTypes.oneOfType([
         PropTypes.string, // valid states: "loading" or "error"
         PropTypes.object, // template is an object if loading was successfull

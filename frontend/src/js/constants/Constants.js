@@ -248,9 +248,183 @@ const COLORMAP_STEPS = [
     },
 ];
 
+const LOAD_VARIABLE_STEPS = [
+    {
+        title: 'Load Variable Form',
+        text: "This form allows you to open a data file and choose which variables you wish to load into vCDAT.",
+        selector: '#load-variable-form',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'File Data Select',
+        text: "This form field allows you to view the path of the current data file you wish to open.",
+        selector: '#file-selection-field',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Open File',
+        text: 'Click this button to open the file explorer and locate any local data file you wish to open.',
+        selector: '#btn-open-file',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Variable Select',
+        text: 'Once you have a valid data file open, the available variables are detected and placed in this drop-down.'.concat(
+            ' Choose the variable you want to use from the drop-down.'
+        ),
+        selector: '#select-variable',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Variable History List',
+        text: 'This area contains a list of data files that have been loaded previously. '.concat(
+            'Selecting a file from this list will automatically populate the form fields and let you load a variable quickly.'
+        ),
+        selector: '#file-history-list',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Bookmarks',
+        text: 'If you click and drag a file from the history list into this area, '.concat(
+            'the file will be bookmarked for quick and easy access in the future.'
+        ),
+        selector: '#bookmark-list',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Load Variable',
+        text: 'Click this button to load a variable. The form will remain open allowing you to load multiple variables at a time.',
+        selector: '#btn-load-variable',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Load Variable and Close',
+        text: 'Click this button to load a variable and close the form immediately.',
+        selector: '#btn-load-variable-close',
+        position: 'left',
+        type: 'click'
+    },
+    {
+        title: 'Load Variable AS',
+        text: 'Click this button to set the name of a variable before you load it. The form will remain open allowing you to load more variables.',
+        selector: '#btn-load-variable-as',
+        position: 'left',
+        type: 'click'
+    },
+];
+
+const TEMPLATE_EDITOR_STEPS = [
+    {
+        title: 'Template Editor Tour',
+        text: 'This will explain some of the main components of the template editor.',
+        selector: '#template-editor-main',
+        position: 'right',
+        type: 'click'
+    },
+    {
+        title: 'Template Preview',
+        text: 'This is a test.',
+        selector: '#joyride-test',
+        position: 'right',
+        type: 'click'
+    }
+];
+
+const BOXFILL_EDITOR_STEPS = [
+    {
+        title: 'Blend Colors',
+        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
+            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
+        ),
+        selector: '#btn-blend',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Save Colormap',
+        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
+        selector: '#btn-save-colormap',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Import and Export',
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
+        selector: '#btn-import-export',
+        position: 'top',
+        type: 'click'
+    },
+];
+
+const ISOFILL_EDITOR_STEPS = [
+    {
+        title: 'Blend Colors',
+        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
+            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
+        ),
+        selector: '#btn-blend',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Save Colormap',
+        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
+        selector: '#btn-save-colormap',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Import and Export',
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
+        selector: '#btn-import-export',
+        position: 'top',
+        type: 'click'
+    },
+];
+
+const ISOLINE_EDITOR_STEPS = [
+    {
+        title: 'Blend Colors',
+        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
+            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
+        ),
+        selector: '#btn-blend',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Save Colormap',
+        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
+        selector: '#btn-save-colormap',
+        position: 'top',
+        type: 'click'
+    },
+    {
+        title: 'Import and Export',
+        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
+        selector: '#btn-import-export',
+        position: 'top',
+        type: 'click'
+    },
+];
+
+
+
 export { JOYRIDE_STEPS };
 export { CALCULATOR_STEPS };
 export { COLORMAP_STEPS };
+export { LOAD_VARIABLE_STEPS };
+export { TEMPLATE_EDITOR_STEPS };
+export { BOXFILL_EDITOR_STEPS };
+export { ISOFILL_EDITOR_STEPS };
+export { ISOLINE_EDITOR_STEPS };
 export { ONE_VAR_PLOTS };
 export { TWO_VAR_PLOTS };
 export { BINARY_OPERATORS };
