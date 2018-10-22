@@ -7,6 +7,8 @@ Installation
 Basics
 -----------------------------
 
+* For Linux users, you can make sure your environment is up to date by using the following commands:
+
 ::
 
   apt update
@@ -26,7 +28,7 @@ Basics
   cd Downloads/
   conda config --set ssl_verify false
   cd ~/Path/To/Projects
-  git clone git@github.com:USERNAME/vcdat.git
+  git clone git@github.com:CDAT/vcdat.git
   cd vcdat
   ./scripts/setup.sh
 

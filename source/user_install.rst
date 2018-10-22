@@ -16,7 +16,7 @@ Desktop Installation
 ---------------------
 
 
-- From your terminal, run ``conda create -n vcdat -c cdat -c conda-forge vcdat``
+- From your terminal, run ``conda create -n vcdat -c cdat -c conda-forge vcdat python=2``
 
   * This will make an environment named 'vcdat' and install vcdat inside of it.
 
