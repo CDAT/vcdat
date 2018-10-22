@@ -1,7 +1,6 @@
 export VERSION="1.0"
 export BUILD_NAME="rc2"
 export CONDA_BLD_PATH=~/conda-bld
-USER="downiec"
 PLATFORM="osx-64"
 PKG="vcdat"
 
@@ -27,7 +26,7 @@ if [ $? -eq 1 ]; then
 fi
 
 if [ ! -z "$1" ]; then
-    anaconda upload -u $USER -l "$1" $CONDA_BLD_PATH/$PLATFORM/$PKG-$VERSION-$BUILD_NAME.tar.bz2 
+    anaconda upload -c cdat -l "$1" $CONDA_BLD_PATH/$PLATFORM/$PKG-$VERSION-$BUILD_NAME.tar.bz2 
 else
-    anaconda upload -u $USER $CONDA_BLD_PATH/$PLATFORM/$PKG-$VERSION-$BUILD_NAME.tar.bz2
+    anaconda upload -c cdat $CONDA_BLD_PATH/$PLATFORM/$PKG-$VERSION-$BUILD_NAME.tar.bz2
 fi
