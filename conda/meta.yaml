@@ -12,10 +12,10 @@ requirements:
   - python=2
   - nodejs
   - flask
-  - vcs 2.12
-  - cdms2 2.12
-  - cdutil 2.12
-  - genutil 2.12
+  - vcs
+  - cdms2
+  - cdutil
+  - genutil
   - service_identity
   - vcsaddons
   - vcs-js
