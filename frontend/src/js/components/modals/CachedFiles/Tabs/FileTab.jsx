@@ -217,6 +217,7 @@ class FileTab extends Component {
                             ];
                             window.localStorage.setItem(HISTORY_KEY, JSON.stringify(historyFiles));
                             const selected_variable = getDefaultVariable(Object.keys(variablesAxes[0]));
+                            
                             self.setState({
                                 variablesAxes,
                                 selectedFile: file,
@@ -336,6 +337,11 @@ class FileTab extends Component {
         if (this.state.selectedFile) {
             selected_file_path = cleanPath(this.state.selectedFile.path) + "/" + this.state.selectedFile.name;
         }
+        if(this.props.hasError){
+            this.props.handleError();
+            console.log("File info modal restarted due to error.");
+            toast.error("Error occurred loading file.", { position: toast.POSITION.BOTTOM_CENTER });
+        }
         return (
             <div>
                 <Modal.Body>
@@ -350,10 +356,10 @@ class FileTab extends Component {
                                 File
                             </Col>
                             <Col sm={9}>
-                                <InputGroup bsSize="small">
+                                <InputGroup id='file-selection-field' bsSize="small">
                                     <FormControl className="full-width file-path" type="text" value={this.selectedFilePath} />
                                     <InputGroup.Button>
-                                        <Button bsStyle="primary" onClick={() => this.setState({ showFileExplorer: true })}>
+                                        <Button id='btn-open-file' bsStyle="primary" onClick={() => this.setState({ showFileExplorer: true })}>
                                             <Glyphicon glyph="file" />
                                         </Button>
                                         <Button
@@ -372,7 +378,7 @@ class FileTab extends Component {
                                 Variable(s)
                             </Col>
                             <Col sm={9}>
-                                <FormControl
+                                <FormControl id='select-variable'
                                     className="input-sm full-width"
                                     componentClass="select"
                                     onChange={e => this.setState({ selectedVariableName: e.target.value })}
@@ -387,7 +393,10 @@ class FileTab extends Component {
                                 History:
                             </Col>
                             <Col sm={9}>
-                                <FormControl className="history" componentClass="div">
+                                <FormControl
+                                    id='file-history-list'
+                                    className="history"
+                                    componentClass="div">
                                     {this.state.historyFiles.map((file, i) => {
                                         return (
                                             <div
@@ -415,6 +424,7 @@ class FileTab extends Component {
                             </Col>
                             <Col sm={9}>
                                 <FormControl
+                                    id='bookmark-list'
                                     className="bookmarks"
                                     componentClass="div"
                                     style={{ backgroundColor: this.state.showBookmarkZone ? "#d1ecf1" : "#fff" }}
@@ -503,6 +513,7 @@ class FileTab extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
+                        id='btn-load-variable'
                         bsStyle="primary"
                         onClick={e => {
                             this.load();
@@ -511,6 +522,7 @@ class FileTab extends Component {
                         Load
                     </Button>
                     <Button
+                        id='btn-load-variable-close'
                         bsStyle="primary"
                         onClick={e => {
                             this.loadAndClose();
@@ -519,6 +531,7 @@ class FileTab extends Component {
                         Load and Close
                     </Button>
                     <Button
+                        id='btn-load-variable-as'
                         bsStyle="primary"
                         onClick={e => {
                             this.loadAs();

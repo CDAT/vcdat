@@ -220,7 +220,11 @@ class PlotInspector extends React.PureComponent {
                     </table>
                 </div>
                 {this.props.show_colormap_editor && (
-                    <ColormapEditor startTour={this.props.startTour} show={this.props.show_colormap_editor} close={this.props.handleCloseColormapEditor} />
+                    <ColormapEditor 
+                        startTour={this.props.startTour}
+                        show={this.props.show_colormap_editor}
+                        close={this.props.handleCloseColormapEditor}
+                    />
                 )}
             </div>
         );
