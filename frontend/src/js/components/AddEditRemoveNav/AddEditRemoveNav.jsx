@@ -15,8 +15,8 @@ class AddEditRemoveNav extends PureComponent {
                                 </a>
                             </li>
                             <li className="action-edit-button">
-                                <a href="#" onClick={this.props.editAction} title={this.props.editText ? this.props.editText : ""}>
-                                    <i className={`glyphicon glyphicon-edit ${this.props.editAction ? "" : "disabled"}`}></i>
+                                <a href="#" id={`${this.props.title.replace(" ", "-")}-anchor`} onClick={this.props.editAction} title={this.props.editText ? this.props.editText : ""}>
+                                    <i id={`${this.props.title.replace(" ", "-")}`} className={`glyphicon glyphicon-edit ${this.props.editAction ? "" : "disabled"}`}></i>
                                 </a>
                             </li>
                             <li className="action-remove-button">
