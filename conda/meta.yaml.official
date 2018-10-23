@@ -5,19 +5,19 @@ package:
   version: "1.0"
 requirements:
   build:
-  - python=2
+  - python =2
   - setuptools
   - nodejs
   run:
-  - python=2
+  - python =2
   - nodejs
   - flask
-  - vcs
-  - cdms2
-  - cdutil
-  - genutil
+  - vcs 8.0
+  - cdms2 3.0
+  - cdutil 8.0
+  - genutil 8.1
   - service_identity
-  - vcsaddons
+  - vcsaddons 8.0
   - vcs-js
 source:
   git_url: git://github.com/CDAT/vcdat.git
