@@ -12,7 +12,7 @@ requirements:
   - setuptools
   - nodejs
   run:
-  - python
+  - python =2
   - flask
   - vcs
   - cdms2
@@ -24,4 +24,4 @@ build:
   noarch_python: true
 
 about:
-  home: http://gitub.com/UV-CDAT/vcdat
+  home: http://github.com/UV-CDAT/vcdat

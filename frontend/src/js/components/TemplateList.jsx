@@ -159,6 +159,7 @@ class TemplateList extends Component {
                     </ul>
                 </div>
                 <TemplateEditor
+                    startTour={this.props.startTour}
                     show={this.state.showTemplateEditor}
                     close={/* istanbul ignore next */ () => this.setState({showTemplateEditor: false})}
                     template={this.state.template_data}
@@ -183,6 +184,7 @@ TemplateList.propTypes = {
     selectTemplate: PropTypes.func,
     updateTemplate: PropTypes.func,
     removeTemplate: PropTypes.func,
+    startTour: PropTypes.func,
 }
 
 export default TemplateList;

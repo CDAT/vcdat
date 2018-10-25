@@ -18,6 +18,7 @@ class LeftSideBar extends Component {
                     removeVariable={this.props.removeVariable}
                     selectVariable={this.props.selectVariable}
                     selected_variable={this.props.selected_variable}
+                    startTour={this.props.startTour}
                 />
                 <GMList 
                     updateGraphicsMethod={this.props.updateGraphicsMethod}
@@ -33,6 +34,7 @@ class LeftSideBar extends Component {
                     selectTemplate={this.props.selectTemplate}
                     updateTemplate={this.props.updateTemplate}
                     removeTemplate={this.props.removeTemplate}
+                    startTour={this.props.startTour}
                 />
             </div>
         )
@@ -57,6 +59,8 @@ LeftSideBar.propTypes ={
     removeVariable: PropTypes.func,
     selectVariable: PropTypes.func,
     selected_variable: PropTypes.string,
+    startTour: PropTypes.func,
+    
 }
 
 const mapStateToProps = (state) => {
