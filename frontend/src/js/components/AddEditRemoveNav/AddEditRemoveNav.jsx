@@ -3,6 +3,12 @@ import PropTypes from 'prop-types'
 import "./AddEditRemoveNav.scss"
 
 class AddEditRemoveNav extends PureComponent {
+    constructor(props){
+      if(!props.title){
+        props.title = 'default title';
+      }
+      super(props);
+    }
     render() {
         return (
             <nav className="navbar navbar-default">
