@@ -53,7 +53,6 @@ class GMList extends Component {
             toast.info("A Graphics Method must be selected to edit", { position: toast.POSITION.BOTTOM_CENTER })
             return
         }
-
         const gm = this.props.graphics_methods[this.props.selected_graphics_type][this.props.selected_graphics_method]
         if(SUPPORTED_GM_EDITORS && !SUPPORTED_GM_EDITORS.includes(gm.g_name)) {
             toast.warn("This graphics method does not have an editor yet.", { position: toast.POSITION.BOTTOM_CENTER })
@@ -118,6 +117,17 @@ class GMList extends Component {
             let gm = path[1]
             let gm_parent = path[0]
             this.props.selectGraphicsMethod(gm_parent, gm)
+            const g_name = this.props.graphics_methods[gm_parent][gm]["g_name"]
+            let edit_button = document.getElementById("Graphics-Methods");
+            let edit_anchor = document.getElementById("Graphics-Methods-anchor");
+            if (!SUPPORTED_GM_EDITORS.includes(g_name)){
+              edit_button.className = "glyphicon glyphicon-edit.disabled"
+              edit_anchor.className = "disabled"
+            }
+            else {
+              edit_button.className = "glyphicon glyphicon-edit"
+              edit_anchor.className = ""
+            }
         }
     }
 
@@ -138,7 +148,7 @@ class GMList extends Component {
 
         return (
             <div className='left-side-list scroll-area-list-parent gm-list-container'>
-                <AddEditRemoveNav 
+                <AddEditRemoveNav
                     title='Graphics Methods'
                     addAction={this.clickedAdd}
                     addText="Create a new Graphics Method"
@@ -157,7 +167,7 @@ class GMList extends Component {
                             show={this.state.show_edit_modal}
                             onHide={this.closeEditModal}
                         />
-                    :   
+                    :
                         ""
                 }
                 <div className='scroll-area'>
