@@ -170,20 +170,23 @@
 <span id="dev-install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="basics">
 <h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h2>
+<p>For Linux users, you can make sure your environment is up to date by using the following commands:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">update</span>
 <span class="n">apt</span> <span class="n">upgrade</span>
 <span class="n">apt</span> <span class="n">install</span> <span class="n">git</span> <span class="n">openssl</span> <span class="n">gcc</span> <span class="n">libglu1</span><span class="o">-</span><span class="n">mesa</span> <span class="n">mesa</span><span class="o">-</span><span class="n">utils</span> <span class="n">libsm6</span> <span class="n">x11</span><span class="o">-</span><span class="n">apps</span>
 </pre></div>
 </div>
+<p>Below are useful links for setting up basic development requirements:</p>
 <ul class="simple">
 <li><a class="reference external" href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Set up Github ssh key</a></li>
 <li><a class="reference external" href="https://www.continuum.io/downloads">Download and install anaconda</a></li>
 <li><a class="reference external" href="https://github.com/CDAT/vcdat">Fork vcdat repo</a></li>
 </ul>
+<p>Follow the commands below to install the vcdat development environment:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Downloads</span><span class="o">/</span>
 <span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="nb">set</span> <span class="n">ssl_verify</span> <span class="n">false</span>
 <span class="n">cd</span> <span class="o">~/</span><span class="n">Path</span><span class="o">/</span><span class="n">To</span><span class="o">/</span><span class="n">Projects</span>
-<span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">USERNAME</span><span class="o">/</span><span class="n">vcdat</span><span class="o">.</span><span class="n">git</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">CDAT</span><span class="o">/</span><span class="n">vcdat</span><span class="o">.</span><span class="n">git</span>
 <span class="n">cd</span> <span class="n">vcdat</span>
 <span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">sh</span>
 </pre></div>
@@ -284,7 +287,7 @@ To get a local version into vcdat we just need to tell npm to link it.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, AIMS Team.
+        &copy; Copyright 2018, AIMS Team
 
     </p>
   </div>
@@ -308,20 +311,14 @@ To get a local version into vcdat we just need to tell npm to link it.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.8.0',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
