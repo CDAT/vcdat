@@ -1,5 +1,5 @@
 $add-base: rgba(40, 167, 69, .8);
-$edit-base: rgba(217, 120, 36, .8); 
+$edit-base: rgba(217, 120, 36, .8);
 $remove-base:rgba(196, 28, 31, .8);
 
 $add-hover:rgba(66, 193, 95, .8);
@@ -31,6 +31,9 @@ li.action-edit-button:hover i.glyphicon.glyphicon-edit{
 
 li.action-edit-button:hover i.glyphicon.glyphicon-edit.disabled{
     color: $disabled-hover;
+}
+#Graphics-Methods-anchor.disabled{
+  pointer-events: none;
 }
 
 i.glyphicon.glyphicon-remove-sign{
