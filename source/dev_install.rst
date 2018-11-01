@@ -7,17 +7,21 @@ Installation
 Basics
 -----------------------------
 
-* For Linux users, you can make sure your environment is up to date by using the following commands:
+For Linux users, you can make sure your environment is up to date by using the following commands:
 
 ::
 
   apt update
   apt upgrade
   apt install git openssl gcc libglu1-mesa mesa-utils libsm6 x11-apps
-    
+
+Below are useful links for setting up basic development requirements:
+
 * `Set up Github ssh key`_
 * `Download and install anaconda`_
 * `Fork vcdat repo`_
+
+Follow the commands below to install the vcdat development environment:
 
 .. _Set up Github ssh key: https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 .. _Download and install anaconda: https://www.continuum.io/downloads
