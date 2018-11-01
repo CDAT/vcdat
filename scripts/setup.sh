@@ -47,7 +47,7 @@ if [[ $current_dir == */vcdat* ]]; then
     conda env remove -y -n ${CONDA_ENV}
 
     # Create a new one
-    conda create -y -n ${CONDA_ENV} -c cdat/label/nightly -c conda-forge -c cdat
+    conda create -y -n ${CONDA_ENV} -c cdat/label/nightly -c conda-forge -c cdat vcdat
 
     source activate ${CONDA_ENV}
     cd frontend
