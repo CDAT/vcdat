@@ -7,34 +7,30 @@ Installation
 Basics
 -----------------------------
 
-For Linux users, you can make sure your environment is up to date by using the following commands:
+* Useful links for setting up basic development requirements:
 
-::
-
-  apt update
-  apt upgrade
-  apt install git openssl gcc libglu1-mesa mesa-utils libsm6 x11-apps
-
-Below are useful links for setting up basic development requirements:
-
-* `Set up Github ssh key`_
-* `Download and install anaconda`_
-* `Fork vcdat repo`_
-
-Follow the commands below to install the vcdat development environment:
+    | `Set up Github ssh key`_
+    | `Download and install anaconda`_
+    | `Fork vcdat repo`_
 
 .. _Set up Github ssh key: https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 .. _Download and install anaconda: https://www.continuum.io/downloads
 .. _Fork vcdat repo: https://github.com/CDAT/vcdat
 
-::
+* For Linux users, you can make sure your environment is up to date by doing the following::
 
-  cd Downloads/
-  conda config --set ssl_verify false
-  cd ~/Path/To/Projects
-  git clone git@github.com:CDAT/vcdat.git
-  cd vcdat
-  ./scripts/setup.sh
+    apt update
+    apt upgrade
+    apt install git openssl gcc libglu1-mesa mesa-utils libsm6 x11-apps
+
+* Commands below will install the vcdat development environment::
+
+    cd Downloads/
+    conda config --set ssl_verify false
+    cd ~/Path/To/Projects
+    git clone git@github.com:CDAT/vcdat.git
+    cd vcdat
+    ./scripts/setup.sh
 
 Before Running vCDAT
 -----------------------------
