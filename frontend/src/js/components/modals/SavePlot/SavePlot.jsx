@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
-import FileSaver from 'file-saver'
+//import FileSaver from 'file-saver'
 import './SavePlot.scss'
 
 class SavePlot extends Component{
@@ -12,14 +12,16 @@ class SavePlot extends Component{
             name: "",
             img_url: "",
         }
-        this.savePlot = this.savePlot.bind(this)
+        this.savePlot = this.savePlot.bind(this);
+        this.canvas = null;
     }
     /* istanbul ignore next */
     componentDidMount(){
         let elements = document.querySelectorAll(`.cell-stack-top > #canvas_${this.props.selected_cell_id} > canvas`)
         if(elements && elements.length > 0){
-            let canvas = elements[0]
-            canvas.toBlob((blob)=>{
+            let canvas_el = elements[0];
+            this.canvas = vcs.init(canvas_el);
+            canvas_el.toBlob((blob)=>{
                 this.blob = blob
                 this.setState({img_url: URL.createObjectURL(blob)})
             })
@@ -27,8 +29,9 @@ class SavePlot extends Component{
     }
     /* istanbul ignore next */
     savePlot(){
-        if(this.blob){
-            FileSaver.saveAs(this.blob, this.state.name)
+        if(this.canvas){
+            console.log(this.canvas);
+            //FileSaver.saveAs(this.blob, this.state.name)
         }
         else{
             toast.warn("No image available to save.", {position: toast.POSITION.BOTTOM_CENTER})

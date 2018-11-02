@@ -39,8 +39,9 @@ class ColormapModel extends BaseModel {
         }
         catch(e){
             if(e.name == "ReferenceError"){
+                
+                console.warn("Warning: vcs is not defined. Is the vcs server running?");
                 return $.get("getColormaps");
-                console.warn("Warning: vcs is not defined. Is the vcs server running?")
             }
             else{
                 throw e
