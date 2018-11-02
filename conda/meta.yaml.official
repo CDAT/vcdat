@@ -1,24 +1,26 @@
 about:
-  home: http://github.com/UV-CDAT/vcdat
+  home: http://github.com/CDAT/vcdat
 package:
   name: vcdat
-  version: "0.7.0"
+  version: "1.0"
 requirements:
   build:
-  - python
+  - python =2
   - setuptools
   - nodejs
   run:
-  - python
+  - python =2
+  - nodejs
   - flask
-  - vcs 2.12
-  - cdms2 2.12
-  - cdutil 2.12
-  - genutil 2.12
+  - vcs 8.0
+  - cdms2 3.0
+  - cdutil 8.0
+  - genutil 8.1
+  - service_identity
+  - vcsaddons 8.0
   - vcs-js
 source:
-  git_rev: v0.0.4
-  git_url: git://github.com/UV-CDAT/vcdat.git
+  git_url: git://github.com/CDAT/vcdat.git
 build:
   noarch_python: false
   number: 1

@@ -4,7 +4,7 @@ package:
 
 source:
   git_rev: @UVCDAT_BRANCH@
-  git_url: git://github.com/UV-CDAT/vcdat.git
+  git_url: git://github.com/CDAT/vcdat.git
 
 requirements:
   build:
@@ -13,15 +13,18 @@ requirements:
   - nodejs
   run:
   - python =2
+  - nodejs
   - flask
-  - vcs
-  - cdms2
+  - vcs 8.0
+  - cdms2 3.0
+  - cdutil 8.0
+  - genutil 8.1
+  - service_identity
+  - vcsaddons 8.0
   - vcs-js
-  - genutil
-  - proj4 <5
 
 build:
   noarch_python: true
 
 about:
-  home: http://github.com/UV-CDAT/vcdat
+  home: http://github.com/CDAT/vcdat
