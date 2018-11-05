@@ -208,7 +208,7 @@ Canvas.propTypes = {
     col: PropTypes.number,
     selected_cell_id: PropTypes.string,
     cell_id: PropTypes.string,
-    can_plot: PropTypes.bool
+    can_plot: PropTypes.bool,
 };
 
 const mapStateToProps = (state, ownProps) => {

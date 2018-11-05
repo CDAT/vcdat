@@ -38,7 +38,7 @@ class ExportModal extends Component {
                     <TabBar tabs={this.state.tabs} selected_tab={this.state.selected_tab} switchTab={this.switchTab}/>
                     <hr/>
                     {
-                        this.state.selected_tab === 1 ? "Not yet implemented" : <SavePlot />
+                        this.state.selected_tab === 1 ? "Not yet implemented" : <SavePlot variables={this.props.variables} plots={this.props.plots} />
                     }
                 </Modal.Body>
                 <Modal.Footer>
@@ -53,6 +53,9 @@ class ExportModal extends Component {
 ExportModal.propTypes = {
     show: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
+    // Added for screenshot testing
+    plots: PropTypes.array,
+    variables: PropTypes.array,
 }
 
 export default ExportModal
