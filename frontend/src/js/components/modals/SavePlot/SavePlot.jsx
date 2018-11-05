@@ -68,7 +68,7 @@ class SavePlot extends Component{
             
             canvas.plot(variable, graphicMethod).then((info) => {
                 console.log(info);
-                canvas.screenshot(ext, true, false, fileName, 1024, 1024).then((result, msg) => {
+                canvas.screenshot(ext, true, false, fileName).then((result, msg) => {
                     console.log('Got screenshot result:');
                     console.log(result);
                     
