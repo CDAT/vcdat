@@ -151,12 +151,15 @@ class ColormapEditor extends Component {
         }
     }
 
-    createNewColormap(new_cm_name){
+    createNewColormap(new_cm_name, colormap=this.state.selected_colormap_name){
+      console.log("Inside createNewColormap")
+      console.log("new_cm_name:", new_cm_name)
+      console.log("colormap:", colormap)
         if(Object.keys(this.props.colormaps).indexOf(new_cm_name) >= 0){
             toast.warn("A colormap with that name already exists. Please select a different name", {position: toast.POSITION.BOTTOM_CENTER})
         }
         else{
-            return this.createNewColormapInVcs(this.state.selected_colormap_name, new_cm_name).then((result)=>{
+            return this.createNewColormapInVcs(colormap, new_cm_name).then((result)=>{
                 if(result){
                     this.handleSelectColormap(new_cm_name)
                     this.setState({
@@ -170,6 +173,9 @@ class ColormapEditor extends Component {
     }
 
     saveColormap(name){
+      console.log("name:", name)
+      name = name.substring(0, name.indexOf( ".json" ));
+      console.log("name after cut:", name)
         if(name){
             try{
                 console.log("in saveColormap")
@@ -433,6 +439,7 @@ class ColormapEditor extends Component {
                     close={()=>{this.closeImportExportModal()}}
                     current_colormap={this.state.current_colormap}
                     saveColormap={(name, cm) => this.saveColormap(name, cm)}
+                    createNewColormap={(name, cm) => this.createNewColormap(name, cm)}
                 />
             </div>
         )

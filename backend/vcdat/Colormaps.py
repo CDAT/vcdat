@@ -1,4 +1,5 @@
 import vcs
+import json
 
 
 def get_cmaps():
@@ -19,3 +20,11 @@ def export_colormap(colormap_name , file_path="/tmp/test_export"):
             raise
         else:
             return "Exported colormap {} to {}".format(colormap_name, file_path)
+
+
+def import_colormap(colormap_name, file_path):
+    with open(file_path, 'r') as fd:
+        jsonObj = json.loads(fd.read())
+
+    myColorMap = vcs.createcolormap()
+    myColorMap.index = jsonObj['Cp']['default']['index']

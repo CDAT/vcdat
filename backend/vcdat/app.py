@@ -136,7 +136,7 @@ def get_colormaps():
     return json.dumps(colormaps)
 
 
-@app.route("/exportColormap/")
+@app.route("/exportColormap")
 def colormap_export():
     print("request:", request.args)
     print("inside colormap_export")

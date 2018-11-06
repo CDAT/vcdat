@@ -20,7 +20,8 @@ class ImportExportModal extends Component {
             show: PropTypes.bool.isRequired, // show the modal
             close: PropTypes.func.isRequired, // close the modal
             current_colormap: PropTypes.array,
-            saveColormap: PropTypes.func
+            saveColormap: PropTypes.func,
+            createNewColormap: PropTypes.func
         };
     }
 
@@ -78,12 +79,9 @@ class ImportExportModal extends Component {
       const name = this.state.name.substring(0, this.state.name.indexOf( ".json" ));
       let myObject = {"Cp":{}};
       myObject["Cp"][name] = {"index": {"data": {}}}
-      console.log("myObject:", myObject)
-      console.log("colormapData", this.state.colormapData)
       for (var i = 0; i < this.state.colormapData.length; i++){
         myObject["Cp"][name]["index"]["data"][i] = this.state.colormapData[i]
       }
-      console.log("myObject after population:", myObject)
 
       // Create hidden anchor tag for downloading the dynamically create JSON object
       var element = document.createElement('a');
@@ -100,6 +98,7 @@ class ImportExportModal extends Component {
     importColormap(){
         console.log("props in importColormap:", this.props)
         console.log("state in importColormap:", this.state)
+        this.props.createNewColormap(this.state.importName, this.state.importColormap)
         this.props.saveColormap(this.state.importName, this.state.importColormap)
     }
 
