@@ -22,12 +22,4 @@ describe("ExportModalTest.jsx", function() {
         var export_modal = shallow(<ExportModal {...props} />);
         expect(export_modal).to.have.lengthOf(1);
     });
-
-    it("Switch tab sets correct state", () => {
-        const props = getProps();
-        var export_modal = shallow(<ExportModal {...props} />);
-        expect(export_modal.state().selected_tab).to.equal(0);
-        export_modal.instance().switchTab(1);
-        expect(export_modal.state().selected_tab).to.equal(1);
-    });
 });

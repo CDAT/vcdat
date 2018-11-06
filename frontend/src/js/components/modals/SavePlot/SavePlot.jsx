@@ -28,7 +28,7 @@ class SavePlot extends Component{
             // Update default dimensions to match current window size
             this.props.handleDimensionUpdate([this.canvasDiv.width,this.canvasDiv.height]);
             
-            this.canvasDiv.toBlob((blob)=>{
+            this.canvasDiv.toBlob((blob) => {
                 this.setState({img_url: URL.createObjectURL(blob)})
             });
         }
@@ -45,11 +45,13 @@ class SavePlot extends Component{
                 toast.warn("Enter a filename.", {position: toast.POSITION.BOTTOM_CENTER});
                 return;
             }
+
             var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
 
             if(ext===fileName){
                 ext = "";// No extension was entered
             }
+
             switch(ext){
                 case "":
                     ext = this.props.exportType;
@@ -94,9 +96,7 @@ class SavePlot extends Component{
             let canvas = vcs.init(this.canvasDiv);
             
             canvas.plot(variable, graphicMethod, plotInfo.template).then((info) => {
-                console.log(this.props.exportDimensions);
                 canvas.screenshot(ext, true, false, fileName, this.props.exportDimensions[0], this.props.exportDimensions[1]).then((result, msg) => {
-                    console.log(this.props.exportDimensions);
                     console.log(msg);
                     if(result.success){
                         const { blob, type } = result;
@@ -107,7 +107,6 @@ class SavePlot extends Component{
                     } else {
                         console.log(result.msg);
                     }
-                    
                 }).catch((err) => {
                     console.log(err);
                     toast.error("Error occurred when saving plot.", {position: toast.POSITION.BOTTOM_CENTER});

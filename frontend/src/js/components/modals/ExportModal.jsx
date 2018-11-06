@@ -7,11 +7,18 @@ class ExportModal extends Component {
 
     constructor(props) {
         super(props);
+        
+        this.minWidth = 512;
+        this.minHeight = 512;
+        this.maxWidth = 4096;
+        this.maxHeight = 4096;
+
         this.state = {
             exportWidth: 1024,
             exportHeight: 768,
             exportType: 'png'
         }
+        
         this.handleChangeExt = this.handleChangeExt.bind(this);
         this.handleDimensionUpdate = this.handleDimensionUpdate.bind(this);
         this.handleDimensionChange = this.handleDimensionChange.bind(this);
@@ -59,11 +66,11 @@ class ExportModal extends Component {
                         <input
                             name="widthInput"
                             type="number"
-                            min="512"
-                            max="4096"
+                            min={this.minWidth}
+                            max={this.maxWidth}
                             style={{width: "150px", float: "left"}}
                             value={this.state.exportWidth}
-                            pattern="[0-9]{5}"
+                            pattern="[0-9]"
                             className="form-control"
                             placeholder="width"
                             onChange={(e) => this.handleDimensionChange(e,"exportWidth")}
@@ -73,11 +80,11 @@ class ExportModal extends Component {
                         <input
                             name="heightInput"
                             type="number"
-                            min="512"
-                            max="4096"
+                            min={this.minHeight}
+                            max={this.maxHeight}
                             style={{width: "150px", float: "left"}}
                             value={this.state.exportHeight}
-                            pattern="[0-9]{5}"
+                            pattern="[0-9]"
                             className="form-control"
                             placeholder="height"
                             onChange={(e) => this.handleDimensionChange(e,"exportHeight")}
