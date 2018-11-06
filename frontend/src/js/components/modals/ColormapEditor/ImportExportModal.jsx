@@ -20,6 +20,7 @@ class ImportExportModal extends Component {
             show: PropTypes.bool.isRequired, // show the modal
             close: PropTypes.func.isRequired, // close the modal
             current_colormap: PropTypes.array,
+            current_colormap_name: PropTypes.string,
             saveColormap: PropTypes.func,
             createNewColormap: PropTypes.func
         };
@@ -31,6 +32,7 @@ class ImportExportModal extends Component {
             colormap: this.props.current_colormap,
         }
 
+        // TODO: this can be removed
         let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(colormap));
         this.setState({
             name: e.target.value,
@@ -38,7 +40,6 @@ class ImportExportModal extends Component {
             colormapData: this.props.current_colormap
 
         })
-        console.log("this.state:", this.state )
     }
 
     handleFileChange(e){
@@ -53,22 +54,24 @@ class ImportExportModal extends Component {
                 console.error("Unable to import colormap. Please check that the file contains valid json.")
                 return
             }
+            // TODO: check keys of obj for "name" and "colormap" to see if in the old json format; otherwise convert to old format
+            let old_json_format = {}
+            let name = Object.keys(obj["Cp"])[0]
+            old_json_format["name"] = name
+            old_json_format["colormap"] = []
+            let myColorValues = Object(obj["Cp"][name]["index"]["data"]);
+            for (let i=0 ; i < Object.keys(myColorValues).length; i++){
+              old_json_format["colormap"].push(myColorValues[String(i)])
+            }
+            obj = old_json_format
             let keys = Object.keys(obj)
-            console.log("keys:", keys)
-            console.log("event.target.result:", event.target.result)
-            console.log("obj:", obj)
-            // let name = Object.keys(obj["Cp"])[0]
-            // console.log("name:", name)
-            // let colormap = obj["Cp"]
-            // TODO: attempting to parse old way of exporting json; need to be updated to parse the new way that matches vcs
+
             if(keys.indexOf("name") === -1 || keys.indexOf("colormap") === -1){
                 console.error(
                     "Unable to import colormap. Please check that the file contains both 'name' and 'colormap' keys."
                 )
                 return
             }
-            console.log("obj.name:", obj.name)
-            console.log("obj.colormap:", obj.colormap)
             this.setState({importName: obj.name, importColormap: obj.colormap})
         }
         reader.onload = handleLoad.bind(this)
@@ -96,9 +99,7 @@ class ImportExportModal extends Component {
     }
 
     importColormap(){
-        console.log("props in importColormap:", this.props)
-        console.log("state in importColormap:", this.state)
-        this.props.createNewColormap(this.state.importName, this.state.importColormap)
+        this.props.createNewColormap(this.state.importName, this.props.current_colormap_name)
         this.props.saveColormap(this.state.importName, this.state.importColormap)
     }
 
