@@ -1,31 +1,49 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Button } from 'react-bootstrap'
-import TabBar from '../TabBar/TabBar.jsx'
 import SavePlot from './SavePlot/SavePlot.jsx'
 
 class ExportModal extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            tabs: [
-                {
-                    id: "plot",
-                    display_name: "Plots",
-                },
-                {
-                    id: "vcs",
-                    display_name: "Vcs",
-                    disabled: true,
-                },
-            ],
-            selected_tab: 0
+            exportWidth: 1024,
+            exportHeight: 768,
+            exportType: 'png'
         }
-        this.switchTab = this.switchTab.bind(this)
+        this.handleChangeExt = this.handleChangeExt.bind(this);
+        this.handleDimensionUpdate = this.handleDimensionUpdate.bind(this);
+        this.handleDimensionChange = this.handleDimensionChange.bind(this);
+        this.handleDimensionExit = this.handleDimensionExit.bind(this);
     }
 
-    switchTab(index){
-        this.setState({selected_tab: index})
+    handleChangeExt(type){
+        this.setState({exportType: type});
+    }
+
+    handleDimensionUpdate(dimensions){
+        this.setState({exportWidth: dimensions[0], exportHeight: dimensions[1]});
+    }
+
+    handleDimensionChange(e, dim){
+        if (!e.target.validity.badInput) {
+            let value = Number(e.target.value);
+            this.setState({[dim]: value});
+        }
+    }
+
+    handleDimensionExit(e, dim){
+        if (!e.target.validity.badInput) {
+            let value = Number(e.target.value);
+            if(e.target.validity.rangeOverflow){
+                value = Number(e.target.max);
+            }
+            else if(e.target.validity.rangeUnderflow){
+                value = Number(e.target.min);
+            }
+            this.setState({[dim]: value});
+        }
     }
 
     render(){
@@ -35,11 +53,73 @@ class ExportModal extends Component {
                     <Modal.Title>Export</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <TabBar tabs={this.state.tabs} selected_tab={this.state.selected_tab} switchTab={this.switchTab}/>
-                    <hr/>
-                    {
-                        this.state.selected_tab === 1 ? "Not yet implemented" : <SavePlot />
-                    }
+                    <form>
+                        <label>Plot Export Dimensions</label><br />
+                        <label htmlFor="widthInput" style={{float: "left", margin: "5px"}} >Width: </label>
+                        <input
+                            name="widthInput"
+                            type="number"
+                            min="512"
+                            max="4096"
+                            style={{width: "150px", float: "left"}}
+                            value={this.state.exportWidth}
+                            pattern="[0-9]{5}"
+                            className="form-control"
+                            placeholder="width"
+                            onChange={(e) => this.handleDimensionChange(e,"exportWidth")}
+                            onBlur={(e) => this.handleDimensionExit(e,"exportWidth")}
+                        />
+                        <label htmlFor="heightInput" style={{float: "left", margin: "5px"}} >Height: </label>
+                        <input
+                            name="heightInput"
+                            type="number"
+                            min="512"
+                            max="4096"
+                            style={{width: "150px", float: "left"}}
+                            value={this.state.exportHeight}
+                            pattern="[0-9]{5}"
+                            className="form-control"
+                            placeholder="height"
+                            onChange={(e) => this.handleDimensionChange(e,"exportHeight")}
+                            onBlur={(e) => this.handleDimensionExit(e,"exportHeight")}
+                        />
+                        <label htmlFor="ext" style={{float: "left", margin: "5px"}} >Export Type: </label>
+                        <label style={{float: "left", margin: "5px"}}> PNG 
+                            <input 
+                                type="radio"
+                                name="ext"
+                                value="png" 
+                                checked={this.state.exportType==='png'}
+                                onChange={(e) => this.handleChangeExt(e.target.value)}
+                            />
+                        </label>
+                        <label style={{float: "left", margin: "5px"}}> PDF 
+                            <input 
+                                type="radio"
+                                name="ext"
+                                value="pdf" 
+                                checked={this.state.exportType==='pdf'}
+                                onChange={(e) => this.handleChangeExt(e.target.value)}
+                            />
+                        </label>
+                        <label style={{float: "left", margin: "5px"}}> SVG 
+                            <input
+                                type="radio"
+                                name="ext"
+                                value="svg" 
+                                checked={this.state.exportType==='svg'}
+                                onChange={(e) => this.handleChangeExt(e.target.value)}
+                            />
+                        </label>
+                    </form>
+                    <br />
+                    <hr />
+                    <SavePlot 
+                        exportDimensions={[this.state.exportWidth,this.state.exportHeight]}
+                        exportType={this.state.exportType}
+                        handleChangeExt={this.handleChangeExt}
+                        handleDimensionUpdate={this.handleDimensionUpdate}
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.close}>Close</Button>
@@ -49,8 +129,8 @@ class ExportModal extends Component {
     }
 }
 
-
 ExportModal.propTypes = {
+    selected_cell_id: PropTypes.string,
     show: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
 }

@@ -14,6 +14,8 @@ class SavePlot extends Component{
         }
         this.savePlot = this.savePlot.bind(this);
         this.canvasDiv = null;
+        this.exportDimensions = this.props.exportDimensions;
+        this.exportType = this.props.exportType;
     }
 
     /* istanbul ignore next */
@@ -22,7 +24,10 @@ class SavePlot extends Component{
         let elements = document.querySelectorAll(`.cell-stack-top > #canvas_${this.props.selected_cell_id} > canvas`);
         if(elements && elements.length > 0){
             this.canvasDiv = elements[0];
-
+            
+            // Update default dimensions to match current window size
+            this.props.handleDimensionUpdate([this.canvasDiv.width,this.canvasDiv.height]);
+            
             this.canvasDiv.toBlob((blob)=>{
                 this.setState({img_url: URL.createObjectURL(blob)})
             });
@@ -41,22 +46,31 @@ class SavePlot extends Component{
                 return;
             }
             var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
+
+            if(ext===fileName){
+                ext = "";// No extension was entered
+            }
             switch(ext){
+                case "":
+                    ext = this.props.exportType;
+                    fileName = fileName + "." + ext;
+                    this.setState({"name": fileName});
+                    break;
                 case "png":
+                    this.props.handleChangeExt("png");
+                    this.setState({"name": fileName});
+                    break;
                 case "svg":
+                    this.props.handleChangeExt("svg");
+                    this.setState({"name": fileName});
+                    break;
                 case "pdf":
-                case "ps":
+                    this.props.handleChangeExt("pdf");
+                    this.setState({"name": fileName});
                     break;
                 default:
-                    if(ext===fileName){
-                        ext = "png";
-                        fileName = fileName + "." + ext;
-                        this.setState({"name": fileName});
-                    }
-                    else {
-                        toast.warn("Invalid extension name used.", {position: toast.POSITION.BOTTOM_CENTER});
-                        return;
-                    }
+                    toast.warn("Invalid extension name used.", {position: toast.POSITION.BOTTOM_CENTER});
+                    return;
             }
             
             // Prepare parameters
@@ -80,16 +94,16 @@ class SavePlot extends Component{
             let canvas = vcs.init(this.canvasDiv);
             
             canvas.plot(variable, graphicMethod, plotInfo.template).then((info) => {
-                console.log(info);
-                canvas.screenshot(ext, true, false, fileName,2000, 1200).then((result, msg) => {
+                console.log(this.props.exportDimensions);
+                canvas.screenshot(ext, true, false, fileName, this.props.exportDimensions[0], this.props.exportDimensions[1]).then((result, msg) => {
+                    console.log(this.props.exportDimensions);
                     console.log(msg);
                     if(result.success){
                         const { blob, type } = result;
                         console.log(type + " file was saved.");
-
                         FileSaver.saveAs(blob, this.state.name);
-                        //this.props.onSave();
                         toast.success("Plot saved!", {position: toast.POSITION.BOTTOM_CENTER});
+                        this.setState({name:""});
                     } else {
                         console.log(result.msg);
                     }
@@ -151,6 +165,10 @@ SavePlot.propTypes = {
     show: PropTypes.bool,
     selected_cell_id: PropTypes.string,
     // Added for save plot functionality:
+    exportDimensions: PropTypes.array,
+    handleDimensionUpdate: PropTypes.func,
+    handleChangeExt: PropTypes.func,
+    exportType: PropTypes.string,
     onSave: PropTypes.func,
     variables: PropTypes.any,
     graphics: PropTypes.any,
