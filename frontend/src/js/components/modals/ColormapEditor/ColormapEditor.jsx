@@ -152,9 +152,6 @@ class ColormapEditor extends Component {
     }
 
     createNewColormap(new_cm_name, colormap=this.state.selected_colormap_name){
-      console.log("Inside createNewColormap")
-      console.log("new_cm_name:", new_cm_name)
-      console.log("colormap:", colormap)
         if(Object.keys(this.props.colormaps).indexOf(new_cm_name) >= 0){
             toast.warn("A colormap with that name already exists. Please select a different name", {position: toast.POSITION.BOTTOM_CENTER})
         }
@@ -172,17 +169,14 @@ class ColormapEditor extends Component {
         }
     }
 
-    saveColormap(name){
-      console.log("name:", name)
-      name = name.substring(0, name.indexOf( ".json" ));
-      console.log("name after cut:", name)
+    saveColormap(name, colormap=this.state.current_colormap){
         if(name){
             try{
-                console.log("in saveColormap")
-                console.log("name:", name)
-                console.log("this.state.current_colormap", this.state.current_colormap)
-                return vcs.setcolormap(name, this.state.current_colormap).then(() => {
-                    this.props.saveColormap(name, this.state.current_colormap)
+                return vcs.setcolormap(name, colormap).then(() => {
+                    if (colormap != this.state.current_colormap){
+                      this.setState({current_colormap: colormap})
+                    }
+                    this.props.saveColormap(name, colormap)
                     toast.success("Save Successful", { position: toast.POSITION.BOTTOM_CENTER });
                     PubSub.publish(PubSubEvents.colormap_update, name)
                 },
@@ -438,6 +432,7 @@ class ColormapEditor extends Component {
                     show={this.state.show_import_export_modal}
                     close={()=>{this.closeImportExportModal()}}
                     current_colormap={this.state.current_colormap}
+                    current_colormap_name={this.state.selected_colormap_name}
                     saveColormap={(name, cm) => this.saveColormap(name, cm)}
                     createNewColormap={(name, cm) => this.createNewColormap(name, cm)}
                 />
