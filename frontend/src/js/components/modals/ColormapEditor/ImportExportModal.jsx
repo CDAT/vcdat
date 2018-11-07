@@ -8,19 +8,21 @@ class ImportExportModal extends Component {
         super(props);
         this.state = {
             name: "",
-            data: "",
             importName: "",
             importColormap: [],
+            colormapData: ""
         }
     }
 
-    static get propTypes() { 
-        return { 
+    static get propTypes() {
+        return {
             show: PropTypes.bool.isRequired, // show the modal
             close: PropTypes.func.isRequired, // close the modal
             current_colormap: PropTypes.array,
+            current_colormap_name: PropTypes.string,
             saveColormap: PropTypes.func,
-        }; 
+            createNewColormap: PropTypes.func
+        };
     }
 
     handleChange(e) {
@@ -28,11 +30,24 @@ class ImportExportModal extends Component {
             name: e.target.value,
             colormap: this.props.current_colormap,
         }
-        let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(colormap));
+
         this.setState({
             name: e.target.value,
-            data: data
+            colormapData: this.props.current_colormap
+
         })
+    }
+
+    convertToOldJson(obj){
+      let old_json_format = {}
+      let name = Object.keys(obj["Cp"])[0]
+      old_json_format["name"] = name
+      old_json_format["colormap"] = []
+      let myColorValues = Object(obj["Cp"][name]["index"]["data"]);
+      for (let i=0 ; i < Object.keys(myColorValues).length; i++){
+        old_json_format["colormap"].push(myColorValues[String(i)])
+      }
+      return old_json_format
     }
 
     handleFileChange(e){
@@ -47,7 +62,13 @@ class ImportExportModal extends Component {
                 console.error("Unable to import colormap. Please check that the file contains valid json.")
                 return
             }
+
+            if (Object.keys(obj)[0] == "Cp"){
+              obj = this.convertToOldJson(obj);
+            }
+
             let keys = Object.keys(obj)
+
             if(keys.indexOf("name") === -1 || keys.indexOf("colormap") === -1){
                 console.error(
                     "Unable to import colormap. Please check that the file contains both 'name' and 'colormap' keys."
@@ -60,8 +81,29 @@ class ImportExportModal extends Component {
         reader.readAsText(e.target.files[0])
     }
 
+    exportColormap(){
+      const name = this.state.name.substring(0, this.state.name.indexOf( ".json" ));
+      let myObject = {"Cp":{}};
+      myObject["Cp"][name] = {"index": {"data": {}}}
+      for (var i = 0; i < this.state.colormapData.length; i++){
+        myObject["Cp"][name]["index"]["data"][i] = this.state.colormapData[i]
+      }
+
+      // Create hidden anchor tag for downloading the dynamically create JSON object
+      var element = document.createElement('a');
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(myObject));
+      element.setAttribute('href', dataStr);
+      element.setAttribute('download', this.state.name);
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+
+    }
+
     importColormap(){
-        this.props.saveColormap(this.state.importName, this.state.importColormap) 
+        this.props.createNewColormap(this.state.importName, this.props.current_colormap_name)
+        this.props.saveColormap(this.state.importName, this.state.importColormap)
     }
 
     render(){
@@ -74,7 +116,7 @@ class ImportExportModal extends Component {
                     <Modal.Body>
                         <h4>Export Current Colormap</h4>
                         <div className="form-group form-inline">
-                            <input 
+                            <input
                                 placeholder="filename.json"
                                 className="form-control"
                                 type="text"
@@ -82,9 +124,9 @@ class ImportExportModal extends Component {
                                 onChange={(e)=>{this.handleChange(e)}}>
                             </input>
                             <Button
+                                id="downloadAnchorElem"
                                 className="btn btn-primary form-control"
-                                href={this.state.data}
-                                download={this.state.name}>
+                                onClick={()=>{this.exportColormap()}}>
                                 Download
                             </Button>
                         </div>
@@ -97,7 +139,7 @@ class ImportExportModal extends Component {
                                 type="file"
                                 onChange={(e)=>{this.handleFileChange(e)}}>
                             </input>
-                            <Button 
+                            <Button
                                 className="btn btn-primary form-control"
                                 onClick={()=>{this.importColormap()}}>
                                 Upload
