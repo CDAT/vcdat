@@ -8,7 +8,6 @@ class ImportExportModal extends Component {
         super(props);
         this.state = {
             name: "",
-            data: "",
             importName: "",
             importColormap: [],
             colormapData: ""
@@ -32,11 +31,8 @@ class ImportExportModal extends Component {
             colormap: this.props.current_colormap,
         }
 
-        // TODO: this can be removed
-        let data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(colormap));
         this.setState({
             name: e.target.value,
-            data: data,
             colormapData: this.props.current_colormap
 
         })
