@@ -12,26 +12,112 @@ class SavePlot extends Component{
             name: "",
             img_url: "",
         }
-        this.savePlot = this.savePlot.bind(this)
+        this.savePlot = this.savePlot.bind(this);
+        this.canvasDiv = null;
+        this.exportDimensions = this.props.exportDimensions;
+        this.exportType = this.props.exportType;
     }
+
     /* istanbul ignore next */
     componentDidMount(){
-        let elements = document.querySelectorAll(`.cell-stack-top > #canvas_${this.props.selected_cell_id} > canvas`)
+        
+        let elements = document.querySelectorAll(`.cell-stack-top > #canvas_${this.props.selected_cell_id} > canvas`);
         if(elements && elements.length > 0){
-            let canvas = elements[0]
-            canvas.toBlob((blob)=>{
-                this.blob = blob
+            this.canvasDiv = elements[0];
+            
+            // Update default dimensions to match current window size
+            this.props.handleDimensionUpdate([this.canvasDiv.width,this.canvasDiv.height]);
+            
+            this.canvasDiv.toBlob((blob) => {
                 this.setState({img_url: URL.createObjectURL(blob)})
-            })
+            });
         }
     }
     /* istanbul ignore next */
     savePlot(){
-        if(this.blob){
-            FileSaver.saveAs(this.blob, this.state.name)
+
+        if(this.canvasDiv){
+
+            // Validate screenshot name
+            let fileName = this.state.name;
+
+            if(fileName==""){
+                toast.warn("Enter a filename.", {position: toast.POSITION.BOTTOM_CENTER});
+                return;
+            }
+
+            var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
+
+            if(ext===fileName){
+                ext = "";// No extension was entered
+            }
+
+            switch(ext){
+                case "":
+                    ext = this.props.exportType;
+                    fileName = fileName + "." + ext;
+                    this.setState({"name": fileName});
+                    break;
+                case "png":
+                    this.props.handleChangeExt("png");
+                    this.setState({"name": fileName});
+                    break;
+                case "svg":
+                    this.props.handleChangeExt("svg");
+                    this.setState({"name": fileName});
+                    break;
+                case "pdf":
+                    this.props.handleChangeExt("pdf");
+                    this.setState({"name": fileName});
+                    break;
+                default:
+                    toast.warn("Invalid extension name used.", {position: toast.POSITION.BOTTOM_CENTER});
+                    return;
+            }
+            
+            // Prepare parameters
+            // format of `sheet_row_col`. Ex: "0_0_0"
+            let sheet_row_col = this.props.selected_cell_id.split("_").map(function (str_val) { return Number(str_val) });
+            let sheet = sheet_row_col[0];
+            let row = sheet_row_col[1];
+            let col = sheet_row_col[2];
+            
+            // Get info about the plot from redux store props
+            let plotInfo = this.props.sheets_model.sheets[sheet].cells[row][col].plots[0];
+
+            let variable = {
+                uri: this.props.variables[plotInfo.variables[0]].path,
+                variable: this.props.variables[plotInfo.variables[0]].cdms_var_name,
+            };
+
+            let graphicMethod = this.props.graphics[plotInfo.graphics_method_parent][plotInfo.graphics_method];
+
+            // Initialize canvas object and plot
+            let canvas = vcs.init(this.canvasDiv);
+            
+            canvas.plot(variable, graphicMethod, plotInfo.template).then((info) => {
+                canvas.screenshot(ext, true, false, fileName, this.props.exportDimensions[0], this.props.exportDimensions[1]).then((result, msg) => {
+                    console.log(msg);
+                    if(result.success){
+                        const { blob, type } = result;
+                        console.log(type + " file was saved.");
+                        FileSaver.saveAs(blob, this.state.name);
+                        toast.success("Plot saved!", {position: toast.POSITION.BOTTOM_CENTER});
+                        this.setState({name:""});
+                    } else {
+                        console.log(result.msg);
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                    toast.error("Error occurred when saving plot.", {position: toast.POSITION.BOTTOM_CENTER});
+                });
+            }).catch((err) => {
+                console.log(err);
+                toast.error("Error occurred when plotting.", {position: toast.POSITION.BOTTOM_CENTER});
+            });
         }
         else{
-            toast.warn("No image available to save.", {position: toast.POSITION.BOTTOM_CENTER})
+            toast.warn("No image available to save.", {position: toast.POSITION.BOTTOM_CENTER});
         }
     }
 
@@ -64,8 +150,12 @@ class SavePlot extends Component{
 }
 
 const mapStateToProps = (state) => {
+
     return {
-        selected_cell_id: state.present.sheets_model.selected_cell_id
+        selected_cell_id: state.present.sheets_model.selected_cell_id,
+        sheets_model: state.present.sheets_model,
+        variables: state.present.variables,
+        graphics: state.present.graphics_methods
     }
 }
 
@@ -73,6 +163,15 @@ SavePlot.propTypes = {
     onTryClose: PropTypes.func,
     show: PropTypes.bool,
     selected_cell_id: PropTypes.string,
+    // Added for save plot functionality:
+    exportDimensions: PropTypes.array,
+    handleDimensionUpdate: PropTypes.func,
+    handleChangeExt: PropTypes.func,
+    exportType: PropTypes.string,
+    onSave: PropTypes.func,
+    variables: PropTypes.any,
+    graphics: PropTypes.any,
+    sheets_model: PropTypes.any
 }
 
 export default connect(mapStateToProps, null)(SavePlot)
