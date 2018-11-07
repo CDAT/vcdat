@@ -7,7 +7,7 @@ import json
 from flask import Flask, send_from_directory, request, send_file, Response, jsonify
 from Templates import templ_from_json
 from Files import getFilesObject
-from Colormaps import get_cmaps, export_colormap
+from Colormaps import get_cmaps
 import weakref
 import functools
 
@@ -131,17 +131,9 @@ def get_default_methods():
 @app.route("/getColormaps")
 @jsonresp
 def get_colormaps():
-    print("inside get_colormaps")
     colormaps = get_cmaps()
     return json.dumps(colormaps)
 
-
-@app.route("/exportColormap")
-def colormap_export():
-    print("request:", request.args)
-    print("inside colormap_export")
-    colormap_name = request.args.get('colormap_name', None)
-    return export_colormap(colormap_name)
 
 @app.route("/getInitialFileTree")
 def get_initial_file_tree():
