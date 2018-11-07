@@ -38,6 +38,18 @@ class ImportExportModal extends Component {
         })
     }
 
+    convertToOldJson(obj){
+      let old_json_format = {}
+      let name = Object.keys(obj["Cp"])[0]
+      old_json_format["name"] = name
+      old_json_format["colormap"] = []
+      let myColorValues = Object(obj["Cp"][name]["index"]["data"]);
+      for (let i=0 ; i < Object.keys(myColorValues).length; i++){
+        old_json_format["colormap"].push(myColorValues[String(i)])
+      }
+      return old_json_format
+    }
+
     handleFileChange(e){
         let reader = new window.FileReader()
         function handleLoad(event){
@@ -50,16 +62,11 @@ class ImportExportModal extends Component {
                 console.error("Unable to import colormap. Please check that the file contains valid json.")
                 return
             }
-            // TODO: check keys of obj for "name" and "colormap" to see if in the old json format; otherwise convert to old format
-            let old_json_format = {}
-            let name = Object.keys(obj["Cp"])[0]
-            old_json_format["name"] = name
-            old_json_format["colormap"] = []
-            let myColorValues = Object(obj["Cp"][name]["index"]["data"]);
-            for (let i=0 ; i < Object.keys(myColorValues).length; i++){
-              old_json_format["colormap"].push(myColorValues[String(i)])
+
+            if (Object.keys(obj)[0] == "Cp"){
+              obj = this.convertToOldJson(obj);
             }
-            obj = old_json_format
+
             let keys = Object.keys(obj)
 
             if(keys.indexOf("name") === -1 || keys.indexOf("colormap") === -1){
