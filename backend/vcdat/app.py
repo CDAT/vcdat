@@ -20,7 +20,7 @@ def jsonresp(f):
         return r
     return wrap
 
-  
+
 app = Flask(__name__, static_url_path='')
 _ = vcs.init()
 
@@ -77,12 +77,12 @@ def serve_resource_file(path):
             mimetype = "image/svg"
         else:
             mimetype = "text/plain"
-        try: 
+        try:
             return Response(pkg_resources.resource_string(__name__, "resources/" + path), mimetype=mimetype)
         except IOError:
             return Response(status=404)
 
-  
+
 @app.route("/plotTemplate")
 def plot_template():
     tmpl = json.loads(request.args["tmpl"])
@@ -108,26 +108,26 @@ def plot_template():
     # For certain templates the renWin can be None
     if(canvas.backend.renWin):
         # Only call render if renWin exists
-        canvas.backend.renWin.Render() 
+        canvas.backend.renWin.Render()
         canvas.png(tmp)
     # create response from the tmp file, blank or otherwise
-    resp = send_file(tmp) 
+    resp = send_file(tmp)
     # Clean up file automatically after request
     wr = weakref.ref(resp, lambda x: os.remove(tmp))
     canvas.close()
     # clean up temporary boxfill and template we created
-    del vcs.elements["boxfill"][g.name] 
+    del vcs.elements["boxfill"][g.name]
     del vcs.elements["template"][t.name]
     return resp
 
-  
+
 @app.route("/getDefaultMethods")
 @jsonresp
 def get_default_methods():
     default_gms = get_default_gms()
     return json.dumps(default_gms)
 
-  
+
 @app.route("/getColormaps")
 @jsonresp
 def get_colormaps():

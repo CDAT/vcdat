@@ -25,7 +25,7 @@ class ColormapEditor extends Component {
             selected_cells_end: -1,
             current_colormap: this.props.colormaps[this.props.default_colormap].map(function(arr) {
                 return arr.slice()
-            }), // an array of arrays representing the current cells 
+            }), // an array of arrays representing the current cells
         }
     }
 
@@ -44,7 +44,7 @@ class ColormapEditor extends Component {
             applyColormap: PropTypes.func,
             graphics_methods: PropTypes.object,
             startTour: PropTypes.func,
-        }; 
+        };
     }
 
     handleChange(color) {
@@ -141,7 +141,7 @@ class ColormapEditor extends Component {
                     selected_cells_start: -1,
                     selected_cells_end: -1,
                 })
-            } 
+            }
             else{
                 return
             }
@@ -151,12 +151,12 @@ class ColormapEditor extends Component {
         }
     }
 
-    createNewColormap(new_cm_name){
+    createNewColormap(new_cm_name, colormap=this.state.selected_colormap_name){
         if(Object.keys(this.props.colormaps).indexOf(new_cm_name) >= 0){
             toast.warn("A colormap with that name already exists. Please select a different name", {position: toast.POSITION.BOTTOM_CENTER})
         }
         else{
-            return this.createNewColormapInVcs(this.state.selected_colormap_name, new_cm_name).then((result)=>{
+            return this.createNewColormapInVcs(colormap, new_cm_name).then((result)=>{
                 if(result){
                     this.handleSelectColormap(new_cm_name)
                     this.setState({
@@ -169,11 +169,14 @@ class ColormapEditor extends Component {
         }
     }
 
-    saveColormap(name){
+    saveColormap(name, colormap=this.state.current_colormap){
         if(name){
             try{
-                return vcs.setcolormap(name, this.state.current_colormap).then(() => {
-                    this.props.saveColormap(name, this.state.current_colormap)
+                return vcs.setcolormap(name, colormap).then(() => {
+                    if (colormap != this.state.current_colormap){
+                      this.setState({current_colormap: colormap})
+                    }
+                    this.props.saveColormap(name, colormap)
                     toast.success("Save Successful", { position: toast.POSITION.BOTTOM_CENTER });
                     PubSub.publish(PubSubEvents.colormap_update, name)
                 },
@@ -183,7 +186,7 @@ class ColormapEditor extends Component {
                         toast.error(error.data.exception, {position: toast.POSITION.BOTTOM_CENTER})
                     }
                     catch(e){
-                        toast.error("Failed to save colormap", { position: toast.POSITION.BOTTOM_CENTER });        
+                        toast.error("Failed to save colormap", { position: toast.POSITION.BOTTOM_CENTER });
                     }
                 })
             }
@@ -222,11 +225,11 @@ class ColormapEditor extends Component {
             catch(e){
                 return false
             }
-            
+
         }
         return new Promise((resolve, reject) => {
             try{
-                /* eslint-disable no-undef */ 
+                /* eslint-disable no-undef */
                 if(vcs){
                     vcs.getcolormapnames().then((names) => {
                         if(names.indexOf(colormap_name) >= 0){
@@ -270,7 +273,7 @@ class ColormapEditor extends Component {
     }
 
     createNewColormapInVcs(base_cm, name){
-        // create should copy the current colormap, save it into vcs, 
+        // create should copy the current colormap, save it into vcs,
         // add it to redux and set it as active in the widget, and close the modal
         // cancel should close the modal
         try{
@@ -295,7 +298,7 @@ class ColormapEditor extends Component {
             toast.error("Failed to create colormap", {position: toast.POSITION.BOTTOM_CENTER})
         }
         return Promise.resolve(false)
-        
+
     }
 
     blendColors(){
@@ -319,7 +322,7 @@ class ColormapEditor extends Component {
         let blendedColormap = this.state.current_colormap.map(function(arr) {
             return arr.slice(); // copy inner array of colors
         });
-        
+
         for(let count = 1; currentCell < endCell; currentCell++, count++){
             blendedColormap[currentCell][0] = startColor[0] + (redStep * count)
             blendedColormap[currentCell][1] = startColor[1] + (greenStep * count)
@@ -361,7 +364,7 @@ class ColormapEditor extends Component {
                                     </select>
                                 </div>
                                 <div>
-                                    <button 
+                                    <button
                                         id='btn-new-colormap'
                                         title="Create a new copy of the selected colormap"
                                         onClick={() => {this.handleOpenNewColormapModal()}}
@@ -379,26 +382,26 @@ class ColormapEditor extends Component {
                                 </div>
                             </div>
                             <hr/>
-                            <ColorPicker 
+                            <ColorPicker
                                 color={this.state.currentColor}
                                 onChange={(color) => {this.handleChange(color)}}
                             />
                             <ColormapWidget
                                 current_colormap={this.state.current_colormap}
-                                color={this.state.currentColor} 
+                                color={this.state.currentColor}
                                 handleCellClick={(start_cell, end_cell) => {this.handleCellClick(start_cell, end_cell)}}
                                 selected_cells_start={this.state.selected_cells_start}
-                                selected_cells_end= {this.state.selected_cells_end}  
+                                selected_cells_end= {this.state.selected_cells_end}
                             />
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button 
+                            <Button
                                 id='btn-blend'
                                 style={{float: "left"}}
                                 onClick={() => {this.blendColors()}}>
                                 Blend
                             </Button>
-                            <Button 
+                            <Button
                                 style={{float: "left"}}
                                 onClick={() => {this.resetColormap()}}>
                                 Reset
@@ -406,9 +409,9 @@ class ColormapEditor extends Component {
                             <Button
                                 style={{float: "left"}}
                                 disabled={apply_disabled}
-                                title={ apply_disabled ? 
-                                    "A cell must be selected to apply a colormap" 
-                                    : 
+                                title={ apply_disabled ?
+                                    "A cell must be selected to apply a colormap"
+                                    :
                                     "Apply the colormap shown to the currently selected cell"
                                 }
                                 onClick={() => {this.handleApplyColormap()}}>
@@ -420,7 +423,7 @@ class ColormapEditor extends Component {
                         </Modal.Footer>
                     </div>
                 </Modal>
-                <NewColormapModal 
+                <NewColormapModal
                     show={this.state.show_new_colormap_modal}
                     close={() => this.setState({show_new_colormap_modal: false})}
                     newColormap={(name) => this.createNewColormap(name)}
@@ -429,7 +432,9 @@ class ColormapEditor extends Component {
                     show={this.state.show_import_export_modal}
                     close={()=>{this.closeImportExportModal()}}
                     current_colormap={this.state.current_colormap}
+                    current_colormap_name={this.state.selected_colormap_name}
                     saveColormap={(name, cm) => this.saveColormap(name, cm)}
+                    createNewColormap={(name, cm) => this.createNewColormap(name, cm)}
                 />
             </div>
         )
@@ -470,7 +475,7 @@ const mapDispatchToProps = (dispatch) => {
                 }
             }
             return false
-            
+
         },
         applyColormap: (graphics_method_parent, graphics_method, row, col, plot_index) =>{
             dispatch(Actions.swapGraphicsMethodInPlot(graphics_method_parent, graphics_method, row, col, plot_index));
