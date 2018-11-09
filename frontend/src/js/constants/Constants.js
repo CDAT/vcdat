@@ -207,7 +207,8 @@ const COLORMAP_STEPS = [
     },
     {
         title: 'Color Grid',
-        text: 'The colors and their respective index are listed here in order. Clicking on a cell will allow you to adjust the color (see next frame).'.concat(
+        text: 'The colors and their respective index are listed here in order. '.concat(
+            'Clicking on a cell will allow you to adjust the color (see next frame).',
             '<br />You can also select a range of cells by first clicking one cell and then holding shift and clicking on another.'
         ),
         selector: '#colormap-cells-container',
@@ -320,111 +321,10 @@ const LOAD_VARIABLE_STEPS = [
     },
 ];
 
-const TEMPLATE_EDITOR_STEPS = [
-    {
-        title: 'Template Editor Tour',
-        text: 'This will explain some of the main components of the template editor.',
-        selector: '#template-editor-main',
-        position: 'right',
-        type: 'click'
-    },
-    {
-        title: 'Template Preview',
-        text: 'This is a test.',
-        selector: '#joyride-test',
-        position: 'right',
-        type: 'click'
-    }
-];
-
-const BOXFILL_EDITOR_STEPS = [
-    {
-        title: 'Blend Colors',
-        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
-            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
-        ),
-        selector: '#btn-blend',
-        position: 'top',
-        type: 'click'
-    },
-    {
-        title: 'Save Colormap',
-        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
-        selector: '#btn-save-colormap',
-        position: 'top',
-        type: 'click'
-    },
-    {
-        title: 'Import and Export',
-        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
-        selector: '#btn-import-export',
-        position: 'top',
-        type: 'click'
-    },
-];
-
-const ISOFILL_EDITOR_STEPS = [
-    {
-        title: 'Blend Colors',
-        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
-            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
-        ),
-        selector: '#btn-blend',
-        position: 'top',
-        type: 'click'
-    },
-    {
-        title: 'Save Colormap',
-        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
-        selector: '#btn-save-colormap',
-        position: 'top',
-        type: 'click'
-    },
-    {
-        title: 'Import and Export',
-        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
-        selector: '#btn-import-export',
-        position: 'top',
-        type: 'click'
-    },
-];
-
-const ISOLINE_EDITOR_STEPS = [
-    {
-        title: 'Blend Colors',
-        text: "Clicking this button while having a cell range selected will interpolate the colors between the first cell".concat(
-            ' and the last cell of the selected range.<br />It is a fast way to create your own custom color map!'
-        ),
-        selector: '#btn-blend',
-        position: 'top',
-        type: 'click'
-    },
-    {
-        title: 'Save Colormap',
-        text: "Clicking this button will save your changes on the current colormap.<br />Note: ",
-        selector: '#btn-save-colormap',
-        position: 'top',
-        type: 'click'
-    },
-    {
-        title: 'Import and Export',
-        text: "Click this button if you wish to export your colormap as a JSON file for download, or to import a colormap JSON file.",
-        selector: '#btn-import-export',
-        position: 'top',
-        type: 'click'
-    },
-];
-
-
-
 export { JOYRIDE_STEPS };
 export { CALCULATOR_STEPS };
 export { COLORMAP_STEPS };
 export { LOAD_VARIABLE_STEPS };
-export { TEMPLATE_EDITOR_STEPS };
-export { BOXFILL_EDITOR_STEPS };
-export { ISOFILL_EDITOR_STEPS };
-export { ISOLINE_EDITOR_STEPS };
 export { ONE_VAR_PLOTS };
 export { TWO_VAR_PLOTS };
 export { BINARY_OPERATORS };

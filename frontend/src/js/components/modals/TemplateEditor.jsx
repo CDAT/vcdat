@@ -59,15 +59,14 @@ class TemplateEditor extends Component {
             <Modal show={this.props.show} onHide={this.props.close}>
                 <div id='template-editor-main'>
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit {template_name} &nbsp;
-                            <Button onClick={() => this.props.startTour(3)} className="help-button main-help btn btn-xs btn-default">
-                                <i className="glyphicon glyphicon-question-sign" />Help
-                            </Button>
-                        </Modal.Title>
+                        <Modal.Title>Edit {template_name} &nbsp;</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         {
-                            this.props.template === "loading" ? <div style={{display: "flex", justifyContent: "center"}}><span className="loading-spinner"></span></div>
+                            this.props.template === "loading" ? 
+                                <div style={{display: "flex", justifyContent: "center"}}>
+                                    <span className="loading-spinner"></span>
+                                </div>
                             : this.props.template === "error" ? 
                                 <div id="template-load-error">
                                     Error retrieving template data. Try another template, or restart vCDAT. 
@@ -94,7 +93,6 @@ class TemplateEditor extends Component {
 TemplateEditor.propTypes = {
     show: PropTypes.bool,
     close: PropTypes.func,
-    startTour: PropTypes.func,
     template: PropTypes.oneOfType([
         PropTypes.string, // valid states: "loading" or "error"
         PropTypes.object, // template is an object if loading was successfull
