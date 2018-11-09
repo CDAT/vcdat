@@ -169,14 +169,10 @@
   <div class="section" id="quick-start">
 <span id="id1"></span><h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
 <p>This guide will walk you through running the vcdat application as well as some steps to create and manipulate a simple plot.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you need some sample data to plot with, and vcs is installed in your current environment, you can run <code class="docutils literal notranslate"><span class="pre">vcs_download_sample_data</span></code> in the terminal to download some basic datasets.</p>
-</div>
 <div class="section" id="run-vcdat">
 <h2>Run vCDAT<a class="headerlink" href="#run-vcdat" title="Permalink to this headline">¶</a></h2>
-<p>Activate your conda environment. For example: <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">nightly</span></code>
-If you have a newer version of conda the command may instead be: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">nightly</span></code></p>
+<p>Activate your conda environment. For example: <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">vcdat</span></code>
+If you have a newer version of conda the command may instead be: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">vcdat</span></code></p>
 <p>Next, run the vCDAT server: <code class="docutils literal notranslate"><span class="pre">vcdat</span></code></p>
 <blockquote>
 <div><ul class="simple">
@@ -186,11 +182,18 @@ If you have a newer version of conda the command may instead be: <code class="do
 </div></blockquote>
 <p>If you added the no-browser option, you will need to navigate to the app yourself. E.g. <code class="docutils literal notranslate"><span class="pre">localhost:5000</span></code></p>
 <p>You should now see the vCDAT interface. If not, consult our <a class="reference internal" href="user_troubleshooting.html#user-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> section for help.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<div class="last line-block">
+<div class="line">If you need some sample data to plot with, once you activate your conda environment, run: <code class="docutils literal notranslate"><span class="pre">vcs_download_sample_data</span></code> in the terminal to download some basic datasets.</div>
+<div class="line">The sample datasets will be found in your vcdat environment: <code class="docutils literal notranslate"><span class="pre">anaconda2/envs/vcdat/share/uvcdat/sample_data/clt.nc</span></code></div>
+</div>
+</div>
 </div>
 <div class="section" id="quick-help">
 <h2>Quick Help<a class="headerlink" href="#quick-help" title="Permalink to this headline">¶</a></h2>
 <p>In the top left corner there is a ‘Help’ button which will give a quick tour of vCDAT features.</p>
-<p>More help buttons can be found on specific dialog pages. Click on a help button to initiate a quick tutorial.</p>
+<p>More help buttons can be found on specific dialog pages. Click on a ‘help’ button to initiate a tutorial.</p>
 </div>
 <div class="section" id="load-a-variable">
 <h2>Load a Variable<a class="headerlink" href="#load-a-variable" title="Permalink to this headline">¶</a></h2>

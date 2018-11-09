@@ -6,14 +6,11 @@ Quick Start
 
 This guide will walk you through running the vcdat application as well as some steps to create and manipulate a simple plot.
 
-.. note:: If you need some sample data to plot with, and vcs is installed in your current environment, you can run ``vcs_download_sample_data`` in the terminal to download some basic datasets.
-
-
 Run vCDAT
 =================================
 
-Activate your conda environment. For example: ``source activate nightly``
-If you have a newer version of conda the command may instead be: ``conda activate nightly``
+Activate your conda environment. For example: ``source activate vcdat``
+If you have a newer version of conda the command may instead be: ``conda activate vcdat``
 
 Next, run the vCDAT server: ``vcdat``
 
@@ -24,13 +21,15 @@ If you added the no-browser option, you will need to navigate to the app yoursel
 
 You should now see the vCDAT interface. If not, consult our :ref:`user-troubleshooting` section for help.
 
+.. Note:: | If you need some sample data to plot with, once you activate your conda environment, run: ``vcs_download_sample_data`` in the terminal to download some basic datasets.
+  | The sample datasets will be found in your vcdat environment: ``anaconda2/envs/vcdat/share/uvcdat/sample_data/clt.nc``
 
 Quick Help
 =================================
 
 In the top left corner there is a 'Help' button which will give a quick tour of vCDAT features.
 
-More help buttons can be found on specific dialog pages. Click on a help button to initiate a quick tutorial.
+More help buttons can be found on specific dialog pages. Click on a 'help' button to initiate a tutorial.
 
 
 Load a Variable
