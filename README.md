@@ -3,9 +3,7 @@
 [![Build Status](https://travis-ci.org/CDAT/vcdat.svg?branch=master)](https://travis-ci.org/CDAT/vcdat)
 [![Coverage Status](https://coveralls.io/repos/github/CDAT/vcdat/badge.svg?branch=master)](https://coveralls.io/github/CDAT/vcdat?branch=master)
 
-#### New to vCDAT? Check out the documentation for [Users](https://cdat.github.io/vcdat/docs/html/user_install.html) and [Developers](https://cdat.github.io/vcdat/docs/html/dev_install.html)
-
-_This project is in the early stages of development. As such please be aware that there may be some bugs and not all features will be available._
+#### New to vCDAT? Check out the [documentation](https://cdat.github.io/vcdat/docs/html/user_install.html) 
 
 vCDAT is a desktop application that provides the graphical frontend for the CDAT package. It uses CDAT's VCS and CDMS modules to render high quality visualizations within a browser.
 
