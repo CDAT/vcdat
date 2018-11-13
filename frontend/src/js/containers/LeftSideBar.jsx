@@ -34,7 +34,6 @@ class LeftSideBar extends Component {
                     selectTemplate={this.props.selectTemplate}
                     updateTemplate={this.props.updateTemplate}
                     removeTemplate={this.props.removeTemplate}
-                    startTour={this.props.startTour}
                 />
             </div>
         )
@@ -59,6 +58,11 @@ LeftSideBar.propTypes ={
     removeVariable: PropTypes.func,
     selectVariable: PropTypes.func,
     selected_variable: PropTypes.string,
+    updateGraphicsMethod: PropTypes.func,
+    default_methods: PropTypes.any,
+    selected_graphics_type: PropTypes.any,
+    selected_graphics_method: PropTypes.func,
+    selectGraphicsMethod: PropTypes.func,
     startTour: PropTypes.func,
     
 }

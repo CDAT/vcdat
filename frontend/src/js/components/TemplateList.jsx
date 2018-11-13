@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 function TemplateItem(props) {
     // This function is injected by the Dra
     return props.connectDragSource(
-        <li className={props.active ? "active" : ""} onClick={(e) => {props.selectTemplate(props.template)}}>
+        <li className={props.active ? "active" : ""} onClick={() => {props.selectTemplate(props.template)}}>
             <a>{props.template}</a>
         </li>
     );
@@ -159,7 +159,6 @@ class TemplateList extends Component {
                     </ul>
                 </div>
                 <TemplateEditor
-                    startTour={this.props.startTour}
                     show={this.state.showTemplateEditor}
                     close={/* istanbul ignore next */ () => this.setState({showTemplateEditor: false})}
                     template={this.state.template_data}
@@ -184,7 +183,6 @@ TemplateList.propTypes = {
     selectTemplate: PropTypes.func,
     updateTemplate: PropTypes.func,
     removeTemplate: PropTypes.func,
-    startTour: PropTypes.func,
 }
 
 export default TemplateList;
