@@ -10,9 +10,6 @@ This will watch the source files and rebuild as well as run a webserver that wil
 
 Make sure that the files have been saved and built before uploading them to github for hosting. 
 
-
 #### Troubleshooting
 
 * If the table of contents on the left side has issues where links disappear when switching pages, try deleting the contents of the docs/html/ folder. Sometimes this fixes the issue. 
-
-

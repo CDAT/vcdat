@@ -29,3 +29,15 @@ Inside the .vscode/ folder we recommend adding the following settings:
 It is highly recommended to open the VSCode Command Palette (Mac: Shift + CMD + P) 
 and use the ``Python: Select Interpreter`` command to select the python from your conda environment.
 
+Documentation Updates
+---------------------
+
+* To setup environment for updating this documentation, you will need to use the 'gh-pages' branch of vCDAT:
+
+::
+
+  git clone https://github.com/CDAT/vcdat.git
+  git checkout gh-pages
+  git clean -df #Remove non-related files from repo.
+
+* Once you have the gh-pages branch of vCDAT. You can follow the steps shown in the [README.md](https://github.com/CDAT/vcdat/tree/gh-pages) file.

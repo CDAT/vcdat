@@ -40,8 +40,10 @@ ImportError: No module named ____
     + The output of the install process when you ran ``conda create``
     + The full error text from the vCDAT log file
 
-Plots are much larger than they should be
-------------------------------------------
+Plots are much larger than they should be OR 
+--------------------------------------------
+exported plots have rendering issues
+------------------------------------
 
   + This is generally caused by a missing graphics driver
   + Install or upgrade your graphics driver by following the generalized steps below.

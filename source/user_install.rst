@@ -34,7 +34,7 @@ Server Installation
 
 .. Yeah the sub lists are indented with 3 spaces instead of two. Text apparently has to line up with the parent
 
-*Please note that vCDAT is still under development. While it is is capable of running on a remote server, the installation process often requires a few extra steps depending on the environment. Please consult our* :ref:`user-troubleshooting` *and* contact *pages for additional help.*
+*Please note that vCDAT is capable of running on a remote server, the installation process often requires a few extra steps depending on the environment. Please consult our* :ref:`user-troubleshooting` *and* contact *pages for additional help.*
 
 - SSH into the remote server and run ``conda create -n vcdat -c cdat -c conda-forge vcdat``
 

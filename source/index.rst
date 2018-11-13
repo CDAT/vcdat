@@ -16,8 +16,6 @@ vCDAT
 
 vCDAT is a desktop application that provides the graphical frontend for the CDAT package. It uses CDAT's VCS and CDMS modules to render high quality visualizations within a browser.
 
-*This project is in the early stages of development. As such please be aware that there may be some bugs and not all features will be available.*
-
 Built With
 ~~~~~~~~~~~
 
