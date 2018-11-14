@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toast } from 'react-toastify'
 import FileSaver from 'file-saver'
+import _ from "lodash";
 import './SavePlot.scss'
 
 class SavePlot extends Component{
@@ -13,9 +14,15 @@ class SavePlot extends Component{
             img_url: "",
         }
         this.savePlot = this.savePlot.bind(this);
-        this.canvasDiv = null;
+        this.plotAll = this.plotAll.bind(this);
+        this.prepareCanvas = this.prepareCanvas.bind(this);
         this.exportDimensions = this.props.exportDimensions;
         this.exportType = this.props.exportType;
+        this.canvasDiv = null;
+        this.canvas = null;
+        this.error = false;
+        this.ready = false; // Whether canvas is ready for export
+        this.notify = false; // If user clicked save before plots were finished, notify when ready.
     }
 
     /* istanbul ignore next */
@@ -24,19 +31,138 @@ class SavePlot extends Component{
         let elements = document.querySelectorAll(`.cell-stack-top > #canvas_${this.props.selected_cell_id} > canvas`);
         if(elements && elements.length > 0){
             this.canvasDiv = elements[0];
-            
+
             // Update default dimensions to match current window size
             this.props.handleDimensionUpdate([this.canvasDiv.width,this.canvasDiv.height]);
             
+            // Create plot preview thumbnail
             this.canvasDiv.toBlob((blob) => {
                 this.setState({img_url: URL.createObjectURL(blob)})
             });
+
+            // Initialize canvas object
+            this.canvas = vcs.init(this.canvasDiv);
+
+            this.prepareCanvas();
         }
     }
+
+    prepareCanvas() {
+        // Plot on the canvas for future saving and set ready flag when done
+        this.plotAll().then(
+            success=>{
+                this.ready=true;
+                this.error = false;
+                if(this.notify) {
+                    this.notify = false;
+                    toast.success("Export ready!", {position: toast.POSITION.BOTTOM_CENTER});
+                }}, 
+            error=>{
+                toast.warn("Plotting error occurred.", {position: toast.POSITION.BOTTOM_CENTER});
+                this.error = true;
+                console.log("Plotting error: ",error);
+
+            }
+        );
+    }
+
+    // Plots on the canvas all the layers
+    async plotAll() {
+        
+        if(this.props.plots){
+            for (let [index, plot] of this.props.plots.entries()) {
+                await this.plot(plot, index);
+            }
+            console.log("Plots finished!");
+        }
+        else{
+            console.log("Plots weren't loaded.");
+        }
+    }
+
+    // This was directly taken from Canvas.jsx
+    plot(plot, index) {
+        if (plot.variables.length > 0) {
+            var variables = this.props.plotVariables[index];
+            var dataSpecs = variables.map(function(variable) {
+                var dataSpec;
+                if (variable.json) {
+                    dataSpec = {
+                        uri: variable.path,
+                        variable: variable.cdms_var_name,
+                        json: variable.json
+                    };
+                } else {
+                    dataSpec = {
+                        uri: variable.path,
+                        variable: variable.cdms_var_name
+                    };
+                }
+
+                var subRegion = {};
+                variable.dimension.filter(dimension => dimension.values).forEach(dimension => {
+                    subRegion[dimension.axisName] = dimension.values.range;
+                });
+                if (!_.isEmpty(subRegion)) {
+                    dataSpec["operations"] = [{ subRegion }];
+                }
+                if (!_.isEmpty(variable.transforms)) {
+                    if (!dataSpec["operations"]) {
+                        dataSpec["operations"] = [];
+                    }
+                    dataSpec["operations"].push({ transform: variable.transforms });
+                }
+                var axis_order = variable.dimension.map(dimension => variable.axisList.indexOf(dimension.axisName));
+                if (axis_order.some((order, index) => order !== index)) {
+                    dataSpec["axis_order"] = axis_order;
+                }
+                return dataSpec;
+            });
+            console.log("Plot " + index + " for export.", dataSpecs, this.props.plotGMs[index], plot.template);
+            return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).then(
+                success => {
+                    console.log("Plot " + index + " complete.");
+                    return;
+                },
+                error => {
+                    this.canvas.close();
+                    this.error = true;
+                    delete this.canvas;
+                    this.canvas = vcs.init(this.div);
+                    if (error.data) {
+                        console.warn("Error while creating save plot: ", error);
+                        toast.error(error.data.exception, { position: toast.POSITION.BOTTOM_CENTER });
+                    } else {
+                        console.warn("Unknown error while saving plot: ", error);
+                        toast.error("Error while saving plot.", { position: toast.POSITION.BOTTOM_CENTER });
+                    }
+                }
+            );
+        }
+    }
+
     /* istanbul ignore next */
     savePlot(){
 
         if(this.canvasDiv){
+
+            if(!this.canvas) {
+                console.log("Canvas object is empty.");
+                return;
+            }
+
+            // Cancel export if canvas plots aren't ready
+            if(!this.ready) {
+
+                if(this.error){
+                    // If an error had occurred, try plotting again
+                    this.prepareCanvas();
+                }
+
+                this.notify = true; // Set notify flag, so user will be notified when plot is ready to save
+                toast.warn("Performing plotting operation again. Will notify when ready to save.", {position: toast.POSITION.BOTTOM_CENTER});
+                return;
+            }
 
             // Validate screenshot name
             let fileName = this.state.name;
@@ -75,45 +201,23 @@ class SavePlot extends Component{
                     return;
             }
             
-            // Prepare parameters
-            // format of `sheet_row_col`. Ex: "0_0_0"
-            let sheet_row_col = this.props.selected_cell_id.split("_").map(function (str_val) { return Number(str_val) });
-            let sheet = sheet_row_col[0];
-            let row = sheet_row_col[1];
-            let col = sheet_row_col[2];
-            
-            // Get info about the plot from redux store props
-            let plotInfo = this.props.sheets_model.sheets[sheet].cells[row][col].plots[0];
-
-            let variable = {
-                uri: this.props.variables[plotInfo.variables[0]].path,
-                variable: this.props.variables[plotInfo.variables[0]].cdms_var_name,
-            };
-
-            let graphicMethod = this.props.graphics[plotInfo.graphics_method_parent][plotInfo.graphics_method];
-
-            // Initialize canvas object and plot
-            let canvas = vcs.init(this.canvasDiv);
-            
-            canvas.plot(variable, graphicMethod, plotInfo.template).then((info) => {
-                canvas.screenshot(ext, true, false, fileName, this.props.exportDimensions[0], this.props.exportDimensions[1]).then((result, msg) => {
+            // Create screenshot and save
+            this.canvas.screenshot(ext, true, false, fileName, this.props.exportDimensions[0], this.props.exportDimensions[1]).then((result, msg) => {
+                if(msg){
                     console.log(msg);
-                    if(result.success){
-                        const { blob, type } = result;
-                        console.log(type + " file was saved.");
-                        FileSaver.saveAs(blob, this.state.name);
-                        toast.success("Plot saved!", {position: toast.POSITION.BOTTOM_CENTER});
-                        this.setState({name:""});
-                    } else {
-                        console.log(result.msg);
-                    }
-                }).catch((err) => {
-                    console.log(err);
-                    toast.error("Error occurred when saving plot.", {position: toast.POSITION.BOTTOM_CENTER});
-                });
+                }
+
+                if(result.success){
+                    const { blob, type } = result;
+                    FileSaver.saveAs(blob, this.state.name);
+                    toast.success("Plot saved!", {position: toast.POSITION.BOTTOM_CENTER});
+                    this.setState({name:""});
+                } else {
+                    console.log(result.msg);
+                }
             }).catch((err) => {
                 console.log(err);
-                toast.error("Error occurred when plotting.", {position: toast.POSITION.BOTTOM_CENTER});
+                toast.error("Error occurred when saving plot.", {position: toast.POSITION.BOTTOM_CENTER});
             });
         }
         else{
@@ -149,13 +253,32 @@ class SavePlot extends Component{
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
 
-    return {
-        selected_cell_id: state.present.sheets_model.selected_cell_id,
-        sheets_model: state.present.sheets_model,
-        variables: state.present.variables,
-        graphics: state.present.graphics_methods
+    // When GMs are loaded, use this function to extract them from the state
+    var get_gm_for_plot = plot => {
+        return state.present.graphics_methods[plot.graphics_method_parent][plot.graphics_method];
+    };
+
+    var get_vars_for_plot = plot => {
+        return plot.variables.map(variable => {
+            return state.present.variables[variable];
+        });
+    };
+
+    if(ownProps.plots){
+        return {
+            selected_cell_id: state.present.sheets_model.selected_cell_id,
+            plotVariables: ownProps.plots.map(get_vars_for_plot),
+            plotGMs: ownProps.plots.map(get_gm_for_plot)
+        }
+    }
+    else {
+        return {
+            selected_cell_id: state.present.sheets_model.selected_cell_id,
+            plotVariables: null,
+            plotGMs: null
+        }
     }
 }
 
@@ -168,10 +291,10 @@ SavePlot.propTypes = {
     handleDimensionUpdate: PropTypes.func,
     handleChangeExt: PropTypes.func,
     exportType: PropTypes.string,
+    plots: PropTypes.any,
+    plotVariables: PropTypes.array,
+    plotGMs: PropTypes.array,
     onSave: PropTypes.func,
-    variables: PropTypes.any,
-    graphics: PropTypes.any,
-    sheets_model: PropTypes.any
 }
 
-export default connect(mapStateToProps, null)(SavePlot)
+export default connect(mapStateToProps)(SavePlot);
