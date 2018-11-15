@@ -9,7 +9,7 @@ const JOYRIDE_STEPS = [
         text: "The following tour will help guide you through the basic features of vCDAT. ".concat(
             'Click "Next" to continue the tour. ',
             '<div class="contact-us-link">Found a bug or need help? ',
-            '<a href="https://github.com/CDAT/vcdat/wiki/Contact-Us" target="_blank">Contact Us</a></div>'
+            '<a href="https://cdat.github.io/vcdat/docs/html/user_contact-us.html" target="_blank">Contact Us</a></div>'
         ),
         selector: ".joyride",
         position: "top",
@@ -107,7 +107,7 @@ const JOYRIDE_STEPS = [
             '</br><span style="color: green;">Add Plot</span> will add an additional plot to a cell. ',
             "Use this as an overlay or as an in-cell side-by-side comparison.",
             '</br><span style="color: red;">Clear Cell</span> will reset the cell back to the default. ',
-            "This can be undone if you accidentally click it with the undo button.",
+            "This can be undone with the undo button, if you accidentally click the 'clear cell' button.",
             '</br><span style="color: blue;">Colormap Editor</span> will open a window for creating, editing, and applying colormaps.',
             '</br><span style="color: purple;">Export</span> allows you to export/save the plot.',
             '</br><span style="color: orange;">Calculator</span> allows you to derive new variables using',

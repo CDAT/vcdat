@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Button } from 'react-bootstrap'
+import { connect } from 'react-redux'
 import SavePlot from './SavePlot/SavePlot.jsx'
 
 class ExportModal extends Component {
@@ -23,6 +24,7 @@ class ExportModal extends Component {
         this.handleDimensionUpdate = this.handleDimensionUpdate.bind(this);
         this.handleDimensionChange = this.handleDimensionChange.bind(this);
         this.handleDimensionExit = this.handleDimensionExit.bind(this);
+        this.plots = null;
     }
 
     handleChangeExt(type){
@@ -54,6 +56,11 @@ class ExportModal extends Component {
     }
 
     render(){
+
+        if(this.props.cells && this.props.row >= 0 && this.props.col >= 0){
+            this.plots = this.props.cells[this.props.row][this.props.col].plots;
+        }
+        
         return(
             <Modal show={this.props.show} onHide={this.props.close} bsSize="large">
                 <Modal.Header closeButton>
@@ -126,6 +133,7 @@ class ExportModal extends Component {
                         exportType={this.state.exportType}
                         handleChangeExt={this.handleChangeExt}
                         handleDimensionUpdate={this.handleDimensionUpdate}
+                        plots={this.plots}
                     />
                 </Modal.Body>
                 <Modal.Footer>
@@ -136,10 +144,29 @@ class ExportModal extends Component {
     }
 }
 
-ExportModal.propTypes = {
-    selected_cell_id: PropTypes.string,
-    show: PropTypes.bool.isRequired,
-    close: PropTypes.func.isRequired,
+const mapStateToProps = (state) => {
+    // Prepare parameters to pass to save plot component
+    // format of `sheet_row_col`. Ex: "0_0_0"
+    let sheet_row_col = state.present.sheets_model.selected_cell_id.split("_").map(
+        function (str_val) { return Number(str_val) }
+    );
+    let row = sheet_row_col[1];
+    let col = sheet_row_col[2];
+    return {
+        cells: state.present.sheets_model.sheets[state.present.sheets_model.cur_sheet_index].cells,
+        row: row,
+        col: col
+    }
 }
 
-export default ExportModal
+ExportModal.propTypes = {
+    show: PropTypes.bool.isRequired,
+    close: PropTypes.func.isRequired,
+    // Added for getting plot information
+    sheet_row_col: PropTypes.array,
+    cells: PropTypes.any,
+    row: PropTypes.number,
+    col: PropTypes.number
+}
+
+export default connect(mapStateToProps, null)(ExportModal)

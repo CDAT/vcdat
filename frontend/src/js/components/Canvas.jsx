@@ -111,7 +111,7 @@ class Canvas extends Component {
                 }
                 return dataSpec;
             });
-            console.log("plotting", dataSpecs, this.props.plotGMs[index], plot.template);
+            console.log("Plotting",index, dataSpecs, this.props.plotGMs[index], plot.template);
             return this.canvas.plot(dataSpecs, this.props.plotGMs[index], plot.template).then(
                 success => {
                     return;
