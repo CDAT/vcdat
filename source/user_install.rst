@@ -23,10 +23,10 @@ Desktop Installation
 - Next, run ``source activate vcdat`` to use the environment that we created.
 - Lastly, run vCDAT itself. ``vcdat``
 
-  * After a few seconds, your browser should open and load vCDAT. _If no browser opens, open the log file listed in the terminal and run through the troubleshooting steps below._  
+  * After a few seconds, your browser should open and load vCDAT. If no browser opens, open the log file listed in the terminal and run through the troubleshooting steps below.  
 
-- When you wish to stop running vCDAT, just ``ctrl+c`` the terminal window.
-- If you run other python programs, remember to run ``source deactivate`` to disable the conda environment.
+- When you wish to stop running vCDAT, just ``ctrl+c`` in the terminal window.
+- If you run other python programs, remember to run ``source deactivate`` to disable the vcdat conda environment.
 
 
 Server Installation
