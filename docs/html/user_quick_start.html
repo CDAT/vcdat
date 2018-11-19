@@ -181,12 +181,13 @@ If you have a newer version of conda the command may instead be: <code class="do
 </ul>
 </div></blockquote>
 <p>If you added the no-browser option, you will need to navigate to the app yourself. E.g. <code class="docutils literal notranslate"><span class="pre">localhost:5000</span></code></p>
-<p>You should now see the vCDAT interface. If not, consult our <a class="reference internal" href="user_troubleshooting.html#user-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> section for help.</p>
+<p>You should now see the vCDAT interface in a new browser window. If not, consult our <a class="reference internal" href="user_troubleshooting.html#user-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> section for help.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <div class="last line-block">
-<div class="line">If you need some sample data to plot with, once you activate your conda environment, run: <code class="docutils literal notranslate"><span class="pre">vcs_download_sample_data</span></code> in the terminal to download some basic datasets.</div>
-<div class="line">The sample datasets will be found in your vcdat environment: <code class="docutils literal notranslate"><span class="pre">anaconda2/envs/vcdat/share/uvcdat/sample_data/clt.nc</span></code></div>
+<div class="line">If you need some sample data to plot, once you activate your conda environment, run: <code class="docutils literal notranslate"><span class="pre">vcs_download_sample_data</span></code> in the terminal to download some basic datasets. (If vCDAT has opened up a browser window, open a second terminal session to run the command to download the sample data so you don’t have to kill the vcdat session (via Ctrl C) to get a prompt in the terminal window.)</div>
+<div class="line">The sample datasets will be found in your vcdat environment. If you installed a Python 2 version of Anaconda the path to one of the sample data files will be: <code class="docutils literal notranslate"><span class="pre">anaconda2/envs/vcdat/share/uvcdat/sample_data/clt.nc</span></code></div>
+<div class="line">The clt.nc file is a NetCDF file containing monthly Total Cloudiness values for ten years: from January 1979 through December 1988.</div>
 </div>
 </div>
 </div>
@@ -200,7 +201,7 @@ If you have a newer version of conda the command may instead be: <code class="do
 <p>In the left side bar there is a section for handling variables. Click on the green plus button to open the <em>Load Variable</em> menu.</p>
 <p>On the right hand side of the menu is a blue button with a file icon. Click this to bring up the file explorer.</p>
 <p>Click on the file you would like to load and then click the <em>Select</em> button.</p>
-<p>vCDAT will now populate the load variable menu with the data from the selected file. Use the <em>Variable(s)</em> select box to pick out which variable you would liketo visualize.</p>
+<p>vCDAT will now populate the load variable menu with the data from the selected file. Use the <em>Variable(s)</em> select box to pick out which variable you would like to visualize.</p>
 <p>Click on <em>Load and Close</em></p>
 </div>
 <div class="section" id="simple-plot">

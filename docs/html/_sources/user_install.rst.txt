@@ -27,7 +27,9 @@ Desktop Installation
 
 - When you wish to stop running vCDAT, just ``ctrl+c`` in the terminal window.
 - If you run other python programs, remember to run ``source deactivate`` to disable the vcdat conda environment.
+- If you've never used vCDAT before, visit our Quick-Start_ page.
 
+.. _Quick-Start: https://cdat.github.io/vcdat/docs/html/user_quick_start.html
 
 Server Installation
 ---------------------

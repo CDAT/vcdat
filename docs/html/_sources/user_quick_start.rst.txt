@@ -19,10 +19,11 @@ Next, run the vCDAT server: ``vcdat``
 
 If you added the no-browser option, you will need to navigate to the app yourself. E.g. ``localhost:5000``
 
-You should now see the vCDAT interface. If not, consult our :ref:`user-troubleshooting` section for help.
+You should now see the vCDAT interface in a new browser window. If not, consult our :ref:`user-troubleshooting` section for help.
 
-.. Note:: | If you need some sample data to plot with, once you activate your conda environment, run: ``vcs_download_sample_data`` in the terminal to download some basic datasets.
-  | The sample datasets will be found in your vcdat environment: ``anaconda2/envs/vcdat/share/uvcdat/sample_data/clt.nc``
+.. Note:: | If you need some sample data to plot, once you activate your conda environment, run: ``vcs_download_sample_data`` in the terminal to download some basic datasets. (If vCDAT has opened up a browser window, open a second terminal session to run the command to download the sample data so you don't have to kill the vcdat session (via Ctrl C) to get a prompt in the terminal window.)
+  | The sample datasets will be found in your vcdat environment. If you installed a Python 2 version of Anaconda the path to one of the sample data files will be: ``anaconda2/envs/vcdat/share/uvcdat/sample_data/clt.nc``
+  | The clt.nc file is a NetCDF file containing monthly Total Cloudiness values for ten years: from January 1979 through December 1988.
 
 Quick Help
 =================================
@@ -41,7 +42,7 @@ On the right hand side of the menu is a blue button with a file icon. Click this
 
 Click on the file you would like to load and then click the *Select* button.
 
-vCDAT will now populate the load variable menu with the data from the selected file. Use the *Variable(s)* select box to pick out which variable you would liketo visualize.
+vCDAT will now populate the load variable menu with the data from the selected file. Use the *Variable(s)* select box to pick out which variable you would like to visualize.
 
 Click on *Load and Close*
 
